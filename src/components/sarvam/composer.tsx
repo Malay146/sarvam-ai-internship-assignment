@@ -314,6 +314,13 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
 
 /** Sarvam's spectrum, end to end: indigo → lilac → peach → orange [sampled: indigo glow + sun gradients]. */
 const SPECTRUM = "linear-gradient(90deg in oklab, #3333cc 0%, #7c71d0 26%, #c2abcc 48%, #fabea3 70%, #fa9b43 86%, #e6651b 100%)";
+/** A colour on the brand spectrum, t = 0 (indigo) → 1 (orange). Stops from SPECTRUM, mixed linearly in sRGB. */
+const SPECTRUM_STOPS: [number, string][] = [[0, "#3333cc"], [0.26, "#7c71d0"], [0.48, "#b394c6"], [0.7, "#f2a07f"], [0.86, "#fa9b43"], [1, "#e6651b"]];
+function spectrumAt(t: number) {
+  const i = Math.max(0, SPECTRUM_STOPS.findIndex(([o]) => o >= t) - 1), [o0, a] = SPECTRUM_STOPS[i], [o1, b] = SPECTRUM_STOPS[Math.min(i + 1, SPECTRUM_STOPS.length - 1)];
+  const u = o1 === o0 ? 0 : (t - o0) / (o1 - o0), h = (c: string) => [1, 3, 5].map((j) => parseInt(c.slice(j, j + 2), 16));
+  return "#" + h(a).map((v, j) => Math.round(v + (h(b)[j] - v) * u).toString(16).padStart(2, "0")).join("");
+}
 /** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
  *  The top-right corner holds a line medallion (nested true-offset outlines around a lotus line-motif), cropped by
  *  the corner and drawn in the same spectrum, so the art and the strip are one system. */
@@ -333,16 +340,16 @@ function spectrumDevice(spec: BannerSpec, F: Frame, id: string, land: boolean): 
     <>
       <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
         <defs>
-          {/* spectrum stroke: indigo at the lower-left of the medallion → orange at its upper-right */}
-          <linearGradient id={k("sp")} gradientUnits="userSpaceOnUse" x1={cx - R * 1.6} y1={cy + R * 1.6} x2={F.W} y2={0}>
-            <stop offset="0" stopColor="#3333cc" /><stop offset="0.3" stopColor="#7c71d0" /><stop offset="0.5" stopColor="#c2abcc" /><stop offset="0.68" stopColor="#fa9b43" /><stop offset="1" stopColor="#e6651b" />
-          </linearGradient>
+          <radialGradient id={k("core")} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R}><stop offset="0" stopColor="#e8effc" /><stop offset="0.6" stopColor="#ecdff0" /><stop offset="1" stopColor="#fde3d2" /></radialGradient>
           <radialGradient id={k("wash")} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R * 1.7}><stop offset="0" stopColor="#e8effc" stopOpacity="0.9" /><stop offset="1" stopColor="#e8effc" stopOpacity="0" /></radialGradient>
         </defs>
         {/* a faint periwinkle wash so the corner has depth without a blur on any line */}
         <circle cx={cx} cy={cy} r={R * 1.7} fill={`url(#${k("wash")})`} />
-        {rings.map((o, i) => <OffsetLine key={o} id={k(`r${i}`)} d={d} off={R * o} lw={i === 0 ? 1.75 : 1.25} color={`url(#${k("sp")})`} opacity={1 - i * 0.13} />)}
-        <g transform={`translate(${cx} ${cy}) scale(${mS})`} fill="none" stroke={`url(#${k("sp")})`} strokeWidth={1.5 / mS} strokeLinejoin="round"
+        {/* the core: a soft spectrum tint inside the medallion (periwinkle centre → peach edge), crisp-edged */}
+        <path d={d} fill={`url(#${k("core")})`} />
+        {/* dispersion: each ring one solid hue, stepping through the spectrum from the centre out (light through a prism) */}
+        {rings.map((o, i) => <OffsetLine key={o} id={k(`r${i}`)} d={d} off={R * o} lw={1.5} color={spectrumAt(i / (rings.length - 1))} opacity={1 - i * 0.06} />)}
+        <g transform={`translate(${cx} ${cy}) scale(${mS})`} fill="none" stroke="#3333cc" strokeWidth={1.5 / mS} strokeLinejoin="round"
           style={{ transformBox: "view-box" }} dangerouslySetInnerHTML={{ __html: motif }} />
       </svg>
       <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />

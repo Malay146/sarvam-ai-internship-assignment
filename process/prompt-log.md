@@ -382,3 +382,10 @@ Entry format:
   - At first the gradient barely reached orange, so it's now aimed at the frame corner.
   - On LinkedIn the outer ring crossed "Prism", so landscape uses one ring fewer and the medallion sits further into the corner.
 - QA PASS in both formats.
+
+## 2026-11-04 — Spectrum corner: dispersion rings
+- Prompt (verbatim): "Loved it but that gradient thing, I feel like, should be much better on the top-right thing."
+- Cause: one diagonal gradient across every ring, plus fading opacity, washed the middle rings to pale lilac. Orange only showed at the very corner.
+- Change: each ring is now one solid hue, stepping through the spectrum from indigo (inner) to orange (outer), at near-full opacity (`spectrumAt(t)`). The rings read as light dispersing through a prism, and they match the strip below.
+- Added a crisp spectrum tint inside the core (periwinkle centre → peach edge), and the lotus motif is now in solid indigo.
+- Before / after: `process/screens/banners-simple/spectrum-gradient-before-after.png` (left: before, middle: rings only, right: rings + tinted core ✅). QA PASS, re-exported.
