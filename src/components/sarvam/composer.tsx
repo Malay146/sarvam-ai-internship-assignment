@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  whole?: boolean;                 // medallion-glow: keep the whole shape in frame on LinkedIn too (no vertical bleed)
   divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
   horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
   ornament?: Ornament;             // spectrum device: one SOLID shape in the spectrum (supersedes the line rosettes)
@@ -247,7 +248,8 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
     // Padding rule: ≥ 1.5·M clear on both sides always; on portrait the shape sits fully inside (≥ M top and bottom); landscape may bleed vertically only.
     const sideMax = (F.W - F.M * 3) / g.width;
-    const s = glow ? (land ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.22) / g.height)) : Math.min(sideMax, (F.H - F.M * 2) / g.height))
+    // whole: the shape reads as the same object on Meta and LinkedIn (on LinkedIn only its top and bottom tips touch the edges)
+    const s = glow ? (land && !spec.whole ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.22) / g.height)) : Math.min(sideMax, (land ? F.H * 1.12 : F.H - F.M * 2) / g.height))
                    : (land ? Math.min((F.W * 0.5) / g.width, (F.H * 0.86) / g.height) : Math.min((F.W * 0.66) / g.width, (F.H * 0.62) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;

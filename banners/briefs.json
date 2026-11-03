@@ -120,13 +120,14 @@
       "situation": "launch",
       "background": "dawn",
       "device": "medallion-glow",
-      "shape": "Cusped window",
+      "shape": "Eight-point star",
       "treatment": "white",
       "mark": "none",
       "titleStyle": "sans",
       "primary": "Sarvam Prism",
       "secondary": "Fast, accurate decisions in 44 ms",
-      "secondaryPlace": "below"
+      "secondaryPlace": "below",
+      "whole": true
     }
   },
   {

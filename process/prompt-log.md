@@ -508,3 +508,9 @@ Entry format:
     - sovereign: "Sarvam's own models" / "Indus Cowork, with data residency in India"
 - QA now enforces it: the headline is ≤ 2 lines on LinkedIn and set at ≥ 72px (LinkedIn) / 96px (Meta). Otherwise it fails with "shorten the copy, don't shrink the type".
 - Result: all 13 presets × 2 formats + the full set PASS; the set is re-exported.
+
+## 2026-11-04 — Prism: Eight-point star, same object in both formats
+- Prompt (verbatim): "use a different type of pattern, the same in portrait and landscape, for this one." (screenshot: prism, Cusped window)
+- Shape: Cusped window → **Eight-point star**, the one glow medallion not used elsewhere in the set.
+- New `whole` option for medallion-glow: on LinkedIn the shape no longer bleeds off the frame (it was cropped to ~70% of its height), so it reads as the same object on both formats.
+- First try fitted the whole star inside the frame. The LinkedIn headline fell to 59px (QA fail, min 72). Scaled to 1.12 H instead: only the top and bottom tips touch the edges, and the headline is back above 72px. QA PASS, re-exported.
