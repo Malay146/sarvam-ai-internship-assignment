@@ -9,7 +9,8 @@
 @media (hover: hover) { .hub-link:hover .sr-card { border-color: var(--color-sr-grey-400); } .hub-link:hover .sr-card::after { opacity: 1; } }
 .hub-link:focus-visible .sr-card { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .hub-wide { display: grid; grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-2) var(--space-2) var(--space-6); border: var(--border-default); border-radius: var(--radius-card); background: var(--color-sr-white); text-decoration: none; color: inherit; position: relative; transition: border-color var(--duration-normal) var(--ease-standard); }
-.hub-wide__art { border-radius: calc(var(--radius-card) - var(--space-2)); overflow: hidden; aspect-ratio: 2.2 / 1; }
+/* width: 100% is explicit: Safari sizes an aspect-ratio grid item from its SVG (300px default) instead of stretching it. */
+.hub-wide__art { width: 100%; min-width: 0; border-radius: calc(var(--radius-card) - var(--space-2)); overflow: hidden; aspect-ratio: 2.2 / 1; }
 .hub-wide__text { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-4); }
 @media (min-width: 1024px) { .hub-wide { grid-template-columns: 1.4fr 1fr; align-items: center; padding: var(--space-2); } .hub-wide__text { padding: var(--space-8); } }
 @media (hover: hover) { .hub-wide:hover { border-color: var(--color-sr-grey-400); } .hub-wide:hover::after { opacity: 1; } }

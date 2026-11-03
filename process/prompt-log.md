@@ -310,3 +310,9 @@ Entry format:
 - New situations: capability, product, mission. QA: 24/24 situations × formats + 6/6 set PASS. Builder switch median still ~20 ms.
 - Nav: "Banners" link added. /system: the Studio and Banner builder cards now sit as equal siblings (stacked below 1024). check-layout PASS at 10 widths, check-nav PASS.
 - Screens: `process/screens/banners-r7/`, `process/screens/system-tools-row.png`.
+
+## 2026-11-04 — Overview tools row broken in Safari
+- Prompt (verbatim): "this layout is not proper. Fix it." (screenshot: tool-card art at half width, empty space beside it)
+- Cause: WebKit sizes an `aspect-ratio` grid item from its SVG's default 300px width instead of stretching it. Chromium was fine, so the Chromium-only QA missed it.
+- Fix: `.hub-wide__art { width: 100% }`. WebKit (via Playwright) now matches Chromium at 375 / 768 / 1280 / 1504. I scanned seven pages in WebKit for any other collapsed aspect box: none found.
+- Lesson: QA now includes a WebKit pass (`npx playwright install webkit`).
