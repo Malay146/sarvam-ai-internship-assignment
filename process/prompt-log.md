@@ -343,3 +343,17 @@ Entry format:
 - Prompt (verbatim): "no, remove it. I don't like it."
 - I reverted the afterglow device, its two Prism banners, the Tilt control, the noise image and the doc rules (commit 9fd5b6d reverted). Malay's references and the three rounds stay in `process/screens/refs-afterglow/` as a record of a direction that was tried and rejected.
 - Note for the write-up: copying a reference's effect too literally, even recoloured in brand hues, read as foreign to the system. The soft, fuzzy band fights the brand's "sharp, not soft" rule. That rule held.
+
+## 2026-11-04 — "Precision" taste round tried and removed
+- Prompts (verbatim): "Now suggest some ideas to improve it way better while still keeping this minimal and simple, yet make it so clear and sharper. Suggest some ideas to add our own taste into it." → "do all the things. Also is it for a banner?" → "Honestly remove it. We need something simpler yet effective. Suggest something else for the banner."
+- What was tried:
+  - construction hairlines
+  - prism-edge outlines
+  - a faceted "gem" device
+  - number + unit typography
+  - an inset frame with registration ticks
+  - one key light
+  - a bold crop
+  - All of it was applied to three Prism candidates (`process/screens/rejected-precision/three-options.png`).
+- Removed before commit; the engine is back to the previous state.
+- Lesson: "do all the things" stacked several touches on each banner. Each one was sharp, but together they made the art busier, not simpler. The next proposal should be one move, not a toolkit.
