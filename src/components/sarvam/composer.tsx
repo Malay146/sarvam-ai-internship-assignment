@@ -32,9 +32,11 @@ export type BannerSpec = {
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
   titleSize?: { portrait?: number; landscape?: number };
-  lineSize?: { portrait?: number; landscape?: number };    // set the supporting line size directly (px)   // set the headline size directly (px); the text box widens to hold it, centred
+  lineSize?: { portrait?: number; landscape?: number };
+  textShift?: { portrait?: number; landscape?: number };   // nudge the whole text block vertically (px, negative = up)    // set the supporting line size directly (px)   // set the headline size directly (px); the text box widens to hold it, centred
   logoTone?: "white" | "black";   // override the logo colour (e.g. white on a gradient whose top is dark)
-  logoLeftOnLinkedIn?: boolean;    // top logo sits top-left on LinkedIn (when the shape fills the top centre)
+  markOnLinkedIn?: MarkPlace;      // LinkedIn logo place when it differs from Meta (e.g. inside the shape above the title)
+  landScale?: number;              // medallion-glow + whole: shape height on LinkedIn as a multiple of the frame height (default 1.12)
   whole?: boolean;                 // medallion-glow: keep the whole shape in frame on LinkedIn too (no vertical bleed)
   divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
   horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
@@ -253,7 +255,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
     // Padding rule: ≥ 1.5·M clear on both sides always; on portrait the shape sits fully inside (≥ M top and bottom); landscape may bleed vertically only.
     const sideMax = (F.W - F.M * 3) / g.width;
     // whole: the shape reads as the same object on Meta and LinkedIn (on LinkedIn only its top and bottom tips touch the edges)
-    const s = glow ? (land && !spec.whole ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.22) / g.height)) : Math.min(sideMax, (land ? F.H * 1.12 : F.H - F.M * 2) / g.height))
+    const s = glow ? (land && !spec.whole ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.22) / g.height)) : Math.min(sideMax, (land ? F.H * (spec.landScale ?? 1.12) : F.H - F.M * 2) / g.height))
                    : (land ? Math.min((F.W * 0.5) / g.width, (F.H * 0.86) / g.height) : Math.min((F.W * 0.66) / g.width, (F.H * 0.62) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;
@@ -720,8 +722,10 @@ function CardSlot({ kind, area }: { kind: "plan" | "research" | "review"; area: 
 
 const SECONDARY_FILL: Record<Treatment, TextFill> = { white: "white", gold: "goldMute", indigo: "indigo", ink: "ink" };
 
-function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
+function BannerImpl({ spec: spec0, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
   const F = FORMATS[format], land = format === "landscape";
+  // per-format logo place: LinkedIn may put the logo somewhere else than Meta
+  const spec: BannerSpec = land && spec0.markOnLinkedIn ? { ...spec0, mark: spec0.markOnLinkedIn } : spec0;
   // Layout rearranges per format: split needs width (portrait/square → stacked); stacked needs height (landscape → split).
   // Text-free devices sit beside the text; the script mandala holds the text on portrait and sits beside it on landscape.
   const req: Layout = EDITORIAL.has(spec.device) ? "editorial" : BESIDE.has(spec.device) ? "split" : spec.device === "script-mandala" ? (land ? "split" : "centered") : spec.layout ?? "centered";
@@ -782,11 +786,19 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   const forced = spec.titleSize?.[format === "landscape" ? "landscape" : "portrait"];
   const forcedLine = spec.lineSize?.[format === "landscape" ? "landscape" : "portrait"];
   const S = { p: forced ?? Math.round(base.p * k), s: forcedLine ? forcedLine / (land ? 1 : 0.94) : Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
+  const S0gap = base.gap;
   if (forced) {
     // widen the text box (centred) to the widest forced line at this size, so the title isn't re-wrapped smaller
     const need = Math.max(...spec.primary.split("\n").map((l) => l.length)) * forced * charW(pFont, pWeight, spec.primary) * 1.04;
     if (need > open.w) open = { ...open, x: open.x - (need - open.w) / 2, w: need };
+    // and tall enough for the whole stack at the forced size (centred, so the layout doesn't move)
+    const lines = spec.primary.split("\n").length, sLines = spec.secondary ? 1 : 0;
+    const markH = spec.mark === "inside" && layout === "centered" ? (spec.logo === "logomark" ? markW * 0.55 : land ? 16 : 20) + base.gap * 0.7 + S0gap : 0;
+    const needH = markH + lines * forced * (sans ? 1.06 : 1.04) + forced * 0.7 + (sLines ? S0gap + (land ? 26 : 34) * 1.6 : 0);
+    if (needH > open.h) open = { ...open, y: open.y - (needH - open.h) / 2, h: needH };
   }
+  const shift = spec.textShift?.[land ? "landscape" : "portrait"];
+  if (shift) open = { ...open, y: open.y + shift };
   const primary = (
     <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment} align={align}
       font={sans ? "text" : "display"} weight={sans ? 600 : 400} tracking={num ? -0.05 : sans ? -0.035 : -0.04} leading={sans ? 1.06 : 1.04} />
@@ -805,7 +817,7 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
       <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
       {!centreMark && (spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
         <Lockup logomark={spec.logo === "logomark"} tone={spec.logoTone ?? (layout === "centered" || editorial ? markTone : onLight ? "black" : "white")} width={markW} partner={spec.partner}
-          style={{ position: "absolute", top: F.M, ...(align === "left" || (land && spec.logoLeftOnLinkedIn) ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
+          style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
       <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? D.textJustify ?? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>

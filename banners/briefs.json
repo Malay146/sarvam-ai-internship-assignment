@@ -131,13 +131,14 @@
       "treatment": "white",
       "mark": "top",
       "titleStyle": "sans",
-      "primary": "Sarvam Prism",
+      "primary": "Sarvam\nPrism",
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below",
       "whole": true,
       "logo": "logomark",
       "logoTone": "white",
-      "logoLeftOnLinkedIn": true
+      "markOnLinkedIn": "inside",
+      "landScale": 1.4
     }
   },
   {

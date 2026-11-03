@@ -537,3 +537,9 @@ Entry format:
 - Prompt (verbatim): [meta-prism screenshot] "In these have that Sarvam spiral logo out of the pattern on top. Don't change anything else in both landscape and portrait."
 - `prism` now has the logomark at the top, outside the star. Nothing else changed.
 - After looking: the logo rendered black (the dawn ground counts as light) → new `logoTone: "white"`. On LinkedIn the star fills the top centre, so a centred logo landed inside the pattern → new `logoLeftOnLinkedIn`, which puts it top-left at the margin. QA PASS, re-exported.
+
+## 2026-11-04 — Prism LinkedIn: logomark inside the star, above the title
+- Prompts (verbatim): "in landscape put it in the pattern only. Just about the title" → "Shift it a little bit upward." → "You know what you can do to fit it? Increase the size of the pattern in the landscape only, then fix the logo. It will be fitted perfectly."
+- New `markOnLinkedIn` option: LinkedIn puts the logomark inside the star above the title; Meta keeps it above the star.
+- With the logo inside, the title shrank (79 → 68px). I first patched it with a forced size, a forced line break and an upward nudge (the new `titleSize` and `textShift` options, plus a taller box for forced sizes).
+- Malay's better fix: grow the star on LinkedIn only (new `landScale`, 1.12 → 1.4 × frame height). The opening grows, and the logo + two-line title + line fit at full size with no overrides, so the patches were removed from this banner. QA PASS.
