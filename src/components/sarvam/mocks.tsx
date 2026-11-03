@@ -24,8 +24,9 @@ function StepIcon({ state }: { state: StepState }) {
 const PLAN_STEPS = ["Pull the inbound list", "Score accounts on intent", "Draft outreach in your voice", "Leave a list for your review"];
 const PLAN_TIMES = ["09:02", "09:06", "09:11", "09:14"];
 const PLAN_LOOP = [1500, 1500, 1500, 1500, 2600];
-export function MockPlan() {
-  const [ref, phase] = useLoop(PLAN_LOOP);           // phase 0–3: step `phase` is active · 4: all done
+export function MockPlan({ freeze }: { freeze?: number } = {}) {
+  const [ref, loopPhase] = useLoop(PLAN_LOOP);
+  const phase = freeze ?? loopPhase;           // phase 0–3: step `phase` is active · 4: all done
   const done = Math.min(phase, 4);
   const finished = phase === 4;
   return (
@@ -59,8 +60,9 @@ export function MockPlan() {
 const QUERY = "Indian SaaS market, 2026 outlook";
 const SOURCES = [["Market size and growth", "industry-report.in"], ["Competitor positioning", "analyst-notes.com"], ["Recent launches", "news.example.org"]] as const;
 const RESEARCH_LOOP = [1400, 1100, 1100, 1100, 2800];
-export function MockResearch() {
-  const [ref, phase] = useLoop(RESEARCH_LOOP);       // 0 typing · 1–3 source n read · 4 diff shown
+export function MockResearch({ freeze }: { freeze?: number } = {}) {
+  const [ref, loopPhase] = useLoop(RESEARCH_LOOP);
+  const phase = freeze ?? loopPhase;       // 0 typing · 1–3 source n read · 4 diff shown
   return (
     <div ref={ref} className="sr-mock sr-mock--research" aria-hidden>
       <div className="sr-mock__query">
@@ -97,8 +99,9 @@ export function MockResearch() {
 
 /* 3 · Checks its own work ─ claims get sourced, checks tick, it waits for your yes, then approval lands. */
 const REVIEW_LOOP = [1200, 1100, 1100, 1700, 2400];
-export function MockReview() {
-  const [ref, phase] = useLoop(REVIEW_LOOP);         // 0 draft · 1 claim 1 · 2 claim 2 · 3 waiting · 4 approved
+export function MockReview({ freeze }: { freeze?: number } = {}) {
+  const [ref, loopPhase] = useLoop(REVIEW_LOOP);
+  const phase = freeze ?? loopPhase;         // 0 draft · 1 claim 1 · 2 claim 2 · 3 waiting · 4 approved
   const pass = Math.min(3, Math.max(1, phase));
   const Mark = ({ on, children, n }: { on: boolean; children: React.ReactNode; n: number }) => (
     <span className="sr-mock__claim">

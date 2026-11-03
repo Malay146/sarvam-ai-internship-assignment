@@ -20,7 +20,7 @@ const EXPRESSIONS = [
     id: "community", name: "Community", line: "People, warmly", use: "Stories, programs, events, partners",
     chips: ["sr-gradient-lavender-dusk", "sr-gradient-spring", "sr-gradient-meadow", "sr-tint-green"],
     rules: [["Surface", "Soft campaign gradient"], ["Device", "Soft cloud, gloss shapes or a shape cluster"], ["Type", "Season Mix, centred on a cloud"], ["Wordmark", "Top-centre, black, partner lockup"]],
-    sample: <Artboard width={1080} height={1350} label="Community banner sample"><CommunityBanner /></Artboard>,
+    sample: <Artboard width={1080} height={1350} label="Community banner sample"><CommunityBanner format="portrait" title="Your newest colleague lives in Slack." /></Artboard>,
   },
 ];
 

@@ -196,3 +196,12 @@ Entry format:
   - `recipes/landing-page.md`: 12-section order mapped to components and expressions, per-breakpoint behaviour, quality gates, export.
   - `SKILL.md`: an entry point with frontmatter, how to use it, a task → files routing table, a file index, non-negotiables.
   - `scripts/build-design-md.mjs` → `design.md` (all files in one, ~125k characters) for tools that take a single file.
+
+## 2026-11-04 — Banners round 1 → 2 (all Indus Cowork)
+- Prompt (verbatim): "but before that i need to see the banners you know, so check and change and improve it"
+- Built: `banners.tsx` rewritten as format-aware compositions (portrait 1080×1350, square 1080×1080, landscape 1200×627) on the recipe grids; `banner-set.tsx` (6 banners: the same 3 campaigns on Meta and LinkedIn, the way Sarvam posts the same art everywhere); `/banners` review page; `/banners/[id]` raw route; `scripts/export-banners.mjs` (exact-size PNGs, reduced motion → frozen mock states via a new `freeze` prop).
+  - Launch (Campaign): "Meet Indus Cowork" on saffron-rose, nested gateways; the wordmark + headline now sit **inside the innermost arch** (as in Sarvam's Knowledge Fabric post) instead of having arch lines cross the wordmark.
+  - Feature (Product): "It plans the work before it starts." + the MockPlan state "2 of 4" on an indigo tint (split layout on LinkedIn).
+  - Where it lives (Community): "Your newest colleague lives in Slack." on lavender-dusk with a soft scalloped cloud.
+- Round-1 self-critique → fixes: the cloud was too soft to read as a shape (blur 0.06 → 0.032, centred on the text, stretched to a wide oval on landscape); the LinkedIn launch headline wrapped (text box 0.78 → 0.86 of the arch); the expressions page was previewing the square community banner in a 4:5 frame.
+- Screens: `process/screens/banners-r2/`.
