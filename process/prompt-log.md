@@ -514,3 +514,8 @@ Entry format:
 - Shape: Cusped window → **Eight-point star**, the one glow medallion not used elsewhere in the set.
 - New `whole` option for medallion-glow: on LinkedIn the shape no longer bleeds off the frame (it was cropped to ~70% of its height), so it reads as the same object on both formats.
 - First try fitted the whole star inside the frame. The LinkedIn headline fell to 59px (QA fail, min 72). Scaled to 1.12 H instead: only the top and bottom tips touch the edges, and the headline is back above 72px. QA PASS, re-exported.
+
+## 2026-11-04 — your-yes: portrait version, logomark above the shape, two-line title
+- Prompts (verbatim): "show me the portrait version of this." · "Imported. Keep the Sarvam logo out of the pattern." · "Like at the top" · "If possible try to make the title a two-liner." · "Don't change the pattern. The pattern was good."
+- Added a Meta portrait to `your-yes`. The logomark moved out of the shape to the top centre. The title is forced to two lines ("Nothing ships / without your yes"). The shape stays the Ogee cross. (While Malay was replying I briefly tested Quatrefoil and Scalloped; both were reverted.)
+- Open: on portrait the Ogee cross's core is narrow, so the two-line title sets at 63px, under the 96px Meta minimum (QA flags it). LinkedIn passes at full size.

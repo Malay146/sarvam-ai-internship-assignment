@@ -58,7 +58,8 @@
   {
     "id": "your-yes",
     "formats": {
-      "linkedin": "landscape"
+      "linkedin": "landscape",
+      "meta": "portrait"
     },
     "spec": {
       "situation": "announcement",
@@ -66,10 +67,10 @@
       "device": "medallion-glow",
       "shape": "Ogee cross",
       "treatment": "white",
-      "mark": "inside",
+      "mark": "top",
       "logo": "logomark",
       "titleStyle": "serif",
-      "primary": "Nothing ships without your yes",
+      "primary": "Nothing ships\nwithout your yes",
       "secondary": "Every task waits for your approval",
       "secondaryPlace": "below"
     }
