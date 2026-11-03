@@ -1,4 +1,4 @@
-import { Artboard, CampaignBanner, CommunityBanner, Eyebrow, Footer, Nav, ProductBanner, SYSTEM_NAV, HeroGlow } from "@/components/sarvam";
+import { Artboard, CampaignBanner, CommunityBanner, Eyebrow, Footer, Nav, ProductBanner, SYSTEM_NAV } from "@/components/sarvam";
 import "../hub.css";
 
 export const metadata = { title: "Expressions · Sarvam design system" };
@@ -29,7 +29,6 @@ export default function ExpressionsPage() {
     <>
       <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
       <main className="hub sr-under-nav">
-        <HeroGlow />
         <header className="sr-container hub-intro">
           <Eyebrow>Expressions</Eyebrow>
           <h1 className="sr-display-product">One system, three ways to show up</h1>

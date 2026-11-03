@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import "./system.css";
-import { HeroGlow, Nav, SYSTEM_NAV } from "@/components/sarvam";
+import { Nav, SYSTEM_NAV } from "@/components/sarvam";
 
 export const metadata = { title: "Tokens · Sarvam design system" };
 
@@ -97,7 +97,6 @@ export default function SystemPage() {
     <>
     <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
     <main className="sys-page sr-under-nav">
-      <HeroGlow />
       <header className="sys-hero">
         
         <div className="sys-heroInner">
