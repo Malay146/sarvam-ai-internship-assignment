@@ -4,7 +4,7 @@ import { Artboard, BACKGROUNDS, Banner, DEVICES, SITUATIONS, TREATMENTS, shapesF
 import { EMBLEM_ICONS, type EmblemIcon } from "@/components/sarvam/composer";
 import { FORMATS, type BannerFormat } from "@/components/sarvam/banners";
 
-const SIT: [Situation, string][] = [["launch", "Launch"], ["announcement", "Announcement"], ["milestone", "Milestone"], ["funding", "Funding"], ["event", "Event"], ["story", "Story"], ["partnership", "Partnership"], ["program", "Program"], ["capability", "Capability"], ["product", "Product"], ["mission", "Mission"]];
+const SIT: [Situation, string][] = [["launch", "Launch"], ["announcement", "Announcement"], ["milestone", "Milestone"], ["funding", "Funding"], ["event", "Event"], ["story", "Story"], ["partnership", "Partnership"], ["program", "Program"], ["capability", "Capability"], ["mission", "Mission"]];
 const label = (s: string) => s.replace(/-/g, " ");
 
 function Seg<T extends string>({ name, value, options, onChange, swatch }: { name: string; value?: T; options: readonly T[]; onChange: (v: T) => void; swatch?: (v: T) => string }) {

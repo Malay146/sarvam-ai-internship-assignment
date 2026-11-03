@@ -167,5 +167,112 @@
       "secondaryPlace": "below",
       "situation": "launch"
     }
+  },
+  {
+    "id": "prism-rise",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "device": "spectrum",
+      "background": "plain",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "secondaryPlace": "below",
+      "ornament": "lotus",
+      "place": "rise",
+      "petals": 7,
+      "primary": "Sarvam Prism",
+      "secondary": "Fast, accurate decisions in 44 ms",
+      "divider": "Scroll fan",
+      "situation": "launch"
+    }
+  },
+  {
+    "id": "prism-bloom",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "device": "spectrum",
+      "background": "plain",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "secondaryPlace": "below",
+      "ornament": "lotus",
+      "place": "center",
+      "petals": 8,
+      "primary": "Sarvam Prism",
+      "secondary": "Fast, accurate decisions in 44 ms",
+      "divider": "Lotus rule",
+      "situation": "launch"
+    }
+  },
+  {
+    "id": "fam-approval",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "device": "spectrum",
+      "background": "plain",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "secondaryPlace": "below",
+      "ornament": "quatrefoil",
+      "place": "corner",
+      "primary": "Nothing ships without your yes",
+      "secondary": "Every task waits for your approval",
+      "divider": "Bead rule",
+      "situation": "launch"
+    }
+  },
+  {
+    "id": "fam-slack",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "device": "spectrum",
+      "background": "plain",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "secondaryPlace": "below",
+      "ornament": "arch",
+      "place": "rise",
+      "primary": "Message a teammate like a colleague",
+      "secondary": "Indus Cowork, in Slack and Indus Chat",
+      "situation": "launch"
+    }
+  },
+  {
+    "id": "fam-early",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "device": "spectrum",
+      "background": "plain",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "secondaryPlace": "below",
+      "ornament": "lotus",
+      "place": "rise",
+      "petals": 1,
+      "primary": "Indus Cowork early access",
+      "secondary": "Talk to us about your team's workflows",
+      "divider": "Lotus rule",
+      "situation": "launch"
+    }
   }
 ]

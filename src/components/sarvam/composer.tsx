@@ -2,7 +2,7 @@
 // Situations are presets of these choices. Spec: design-system/recipes/banner-builder.md.
 import { memo, type CSSProperties, type ReactNode } from "react";
 import {
-  FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, MOTIF_PRESETS, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath, motifPaths,
+  DIVIDER_PRESETS, FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, MOTIF_PRESETS, dividerPaths, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath, motifPaths,
   type GatewayParams, type GlossPalette,
 } from "@/lib/shapes";
 import { StyledText, balanceLines, charW, type TextFill } from "./StyledText";
@@ -15,7 +15,7 @@ export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "nig
 export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "spectrum" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "mission";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -31,6 +31,11 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  divider?: string;                // a /studio divider preset between headline and supporting line, drawn in the spectrum
+  ornament?: Ornament;             // spectrum device: one SOLID shape in the spectrum (supersedes the line rosettes)
+  place?: "corner" | "rise" | "center" | "small";   // where the ornament sits; the text takes the space it leaves
+  petals?: number;                 // lotus / petal: petal count (corner/center: full flower; rise: an upward fan)
+  ornamentTone?: "spectrum" | "white";   // white = tone-on-tone on a gradient ground
   rosetteSolid?: boolean;          // spectrum device, lens: filled petals with a base → tip gradient instead of lines
   rosette?: "circles" | "lobes" | "lens" | "orbits" | "rings";   // spectrum device: the corner rosette (circles = the logomark's own construction)
 };
@@ -65,7 +70,6 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
   capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
-  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", card: "plan", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
   mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
 };
 
@@ -186,7 +190,7 @@ function Carved({ id, d, W, H, cx, cy, step, count, pal, inner }: {
 /** Device layer + the opening (where the text block goes). */
 type Frame = { W: number; H: number; M: number };
 /** fit(r): the opening at text-box aspect r (w/h). Lets the layout try a taller box when a 3-part stack (mark, headline, line) needs height. */
-type DeviceOut = { layer: ReactNode; open: Rect; lightInside: boolean; fit?: (r: number) => Rect };
+type DeviceOut = { layer: ReactNode; open: Rect; lightInside: boolean; fit?: (r: number) => Rect; textAlign?: "left" | "center"; textJustify?: "flex-start" | "center" | "flex-end" };
 function textAspectFor(spec: BannerSpec, f: BannerFormat) {
   const land = f === "landscape";
   return spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
@@ -329,8 +333,10 @@ const mixHex = (a: string, b: string, t: number) => { const h = (c: string) => [
  *  The top-right corner holds a rosette built the way Sarvam's logomark is built: ONE element repeated around a centre
  *  (identical shape, identical line: 4.5px Meta / 3.5px LinkedIn, even rotation), each copy one hue of the spectrum, cropped by the corner. */
 type Rosette = NonNullable<BannerSpec["rosette"]>;
+export type Ornament = "lotus" | "star" | "quatrefoil" | "ogee" | "arch";
 function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean): DeviceOut {
   const h = land ? 8 : 12, y = F.H - F.M - h;
+  if (spec.ornament) return ornamentDevice(spec, F, _id, land, y, h);
   const kind = spec.rosette ?? "circles";
   const R = land ? F.H * 0.38 : F.W * 0.36;                     // rosette radius (the whole rosette spans 2R)
   const cx = F.W - (land ? F.H * 0.16 : F.W * 0.14), cy = land ? F.H * 0.16 : F.W * 0.14;
@@ -381,6 +387,114 @@ function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean):
     </>
   );
   return { layer, open: { x: 0, y: 0, w: F.W, h: y }, lightInside: true };
+}
+
+/** Ornament (spectrum device): ONE solid shape from the brand geometry, filled with the spectrum, placed by `place`.
+ *  Lotus petals are each filled base → tip (pale tint → full hue); solid shapes get a spectrum fill + a pale centre. */
+function ornamentDevice(spec: BannerSpec, F: Frame, id: string, land: boolean, stripY: number, stripH: number): DeviceOut {
+  const k = (s: string) => `${id}-${s}`;
+  const kind = spec.ornament!, place = spec.place ?? "corner", white = spec.ornamentTone === "white";
+  const dark = DARK_BG.has(spec.background), edge = spec.background === "plain" ? "#fcfcfc" : dark ? "#13121e" : "#ffffff";
+  // Geometry per placement. R = the ornament's reach from its centre.
+  let cx: number, cy: number, R: number;
+  const solid = kind !== "lotus";
+  // Landscape rearranges "rise": the ornament stands at the right on the strip, the text takes the left column.
+  if (place === "rise") { cx = land ? F.W * 0.77 : F.W / 2; cy = stripY - (land ? 14 : 28); R = land ? F.H * 0.5 : F.W * 0.46; }
+  else if (place === "corner" && solid) {
+    // solid shapes stay whole (a cropped medallion reads as a blob): top-right, inside the side padding
+    R = land ? F.H * 0.36 : F.W * 0.26; cx = F.W - F.M * 1.5 - R; cy = land ? F.H * 0.44 : F.M + R * 1.05;
+  }
+  else if (place === "center") { if (land) { cx = F.W * 0.79; cy = F.H * 0.47; R = F.H * 0.38; } else { cx = F.W / 2; cy = F.H * 0.33; R = F.W * 0.29; } }
+  else { R = (land ? F.H * 0.38 : F.W * 0.36) * (land ? 1.22 : 1.32) * (place === "small" ? 0.5 : 1); cx = F.W - (land ? F.H * 0.16 : F.W * 0.14); cy = land ? F.H * 0.16 : F.W * 0.14; }
+  // Hue by direction: corner → indigo toward the canvas, orange toward the corner; elsewhere left (indigo) → right (orange).
+  const hueAt = (dx: number, dy: number) => place === "corner" || place === "small" ? (1 + (dx - dy) / Math.SQRT2) / 2 : (1 + dx) / 2;
+  const fillOf = (c: string) => (white ? "#ffffff" : c);
+  let els: ReactNode, solidTop: number | undefined;
+  if (kind === "lotus") {
+    const n = Math.max(1, spec.petals ?? 8);
+    const fan = place === "rise";                          // rising: an upward fan of petals; otherwise a full flower
+    const L = R, w = L * (n === 1 ? 0.42 : 0.36);
+    const d = `M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`;
+    els = Array.from({ length: n }, (_, i) => {
+      const a = fan ? (n === 1 ? 0 : -72 + (144 * i) / (n - 1)) : (360 / n) * i;
+      const r = (a * Math.PI) / 180, c = spectrumAt(hueAt(Math.sin(r), -Math.cos(r)));
+      if (n === 1 && !white) return (
+        <g key={i}>
+          <defs><linearGradient id={k(`p${i}`)} x1="0" y1="1" x2="0" y2="0">{SPECTRUM_STOPS.map(([o, cc]) => <stop key={o} offset={o} stopColor={cc} />)}</linearGradient>
+            <radialGradient id={k(`q${i}`)} cx="0.5" cy="0.6" r="0.5"><stop offset="0" stopColor="#ffffff" stopOpacity="0.45" /><stop offset="1" stopColor="#ffffff" stopOpacity="0" /></radialGradient></defs>
+          <path d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} fill={`url(#${k(`p${i}`)})`} />
+          <path d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} fill={`url(#${k(`q${i}`)})`} />
+        </g>
+      );
+      return (
+        <g key={i}>
+          <defs><linearGradient id={k(`p${i}`)} x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor={white ? "#ffffff" : mixHex(c, "#ffffff", 0.7)} stopOpacity={white ? 0.55 : 1} />
+            <stop offset="0.55" stopColor={fillOf(mixHex(c, "#ffffff", 0.2))} stopOpacity={white ? 0.75 : 1} />
+            <stop offset="1" stopColor={fillOf(c)} stopOpacity={white ? 0.95 : 1} /></linearGradient></defs>
+          <path d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} fill={`url(#${k(`p${i}`)})`} stroke={white ? "none" : edge} strokeWidth={land ? 2 : 2.5} />
+        </g>
+      );
+    });
+  } else {
+    // solid shapes: medallions sit centred on (cx, cy); the arch stands on the strip when rising
+    const g = tight(kind === "arch"
+      ? gatewayPath({ ...GATEWAY_PRESETS["Domed door"], bottom: "flat", notch: 0, frame: 0, waist: 0, aspect: 1.25 })
+      : medallionPath({ ...MEDALLION_PRESETS[kind === "star" ? "Eight-point star" : kind === "quatrefoil" ? "Quatrefoil" : "Ogee cross"], aspect: 1, frame: 0 }));
+    const size = R * (kind === "arch" ? 1.45 : 1.7), s = size / Math.max(g.width, g.height), w = g.width * s, hh = g.height * s;
+    const oy = kind === "arch" && place === "rise" ? cy - hh : cy - hh / 2;
+    const d = fitPath(g, s, cx - w / 2, oy);
+    solidTop = oy;
+    const [x1, y1, x2, y2] = place === "corner" || place === "small" ? [cx - w / 2, cy + hh / 2, cx + w / 2, cy - hh / 2] : [cx - w / 2, cy, cx + w / 2, cy];
+    els = (
+      <>
+        <defs>
+          <linearGradient id={k("sf")} gradientUnits="userSpaceOnUse" x1={x1} y1={y1} x2={x2} y2={y2}>
+            {white ? <><stop offset="0" stopColor="#ffffff" stopOpacity="0.7" /><stop offset="1" stopColor="#ffffff" stopOpacity="0.95" /></>
+              : SPECTRUM_STOPS.map(([o, c]) => <stop key={o} offset={o} stopColor={c} />)}
+          </linearGradient>
+          <radialGradient id={k("sl")} gradientUnits="userSpaceOnUse" cx={cx} cy={oy + hh / 2} r={Math.max(w, hh) * 0.5}>
+            <stop offset="0" stopColor="#ffffff" stopOpacity={white ? 0 : 0.6} /><stop offset="0.7" stopColor="#ffffff" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <path d={d} fill={`url(#${k("sf")})`} />
+        <path d={d} fill={`url(#${k("sl")})`} />
+      </>
+    );
+  }
+  // Text region: whatever the ornament leaves free (measured from the shape's real top for solid shapes).
+  const shapeTop = solidTop ?? cy - R;
+  const top = place === "center" && !land ? cy + R + 40 : 0;
+  const bottom = place === "rise" && !land ? shapeTop - 32 : stripY;
+  const sideText = land && (place === "center" || place === "rise" || (place === "corner" && solid));
+  const open: Rect = sideText ? { x: 0, y: 0, w: F.W * (place === "rise" ? 0.5 : 0.54), h: stripY } : { x: 0, y: top, w: F.W, h: bottom - top };
+  const layer = (
+    <>
+      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <defs><clipPath id={k("clip")}><rect x={0} y={0} width={F.W} height={stripY} /></clipPath></defs>
+        <g clipPath={`url(#${k("clip")})`}>{els}</g>
+      </svg>
+      <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: stripY, height: stripH, background: SPECTRUM }} />
+    </>
+  );
+  const centred = !land && (place === "rise" || place === "center");
+  return { layer, open, lightInside: !DARK_BG.has(spec.background), textAlign: centred ? "center" : "left", textJustify: centred ? "center" : sideText ? "center" : "flex-end" };
+}
+
+/** Studio divider in the spectrum: the preset's lines and petals, one gradient left (indigo) → right (orange). */
+function SpectrumDivider({ name, width, id, dark }: { name: string; width: number; id: string; dark: boolean }) {
+  const P = DIVIDER_PRESETS[name] ?? DIVIDER_PRESETS["Lotus rule"];
+  const g = `${id}-dv`;
+  const html = dividerPaths(P).join("").replaceAll("currentColor", `url(#${g})`);
+  return (
+    <svg data-qa="divider" viewBox="0 30 400 55" width={width} height={(width * 55) / 400} fill="none" stroke={`url(#${g})`} strokeWidth={(3 * 400) / width}
+      strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", overflow: "visible" }} aria-hidden>
+      <defs><linearGradient id={g} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="400" y2="0">
+        {SPECTRUM_STOPS.map(([o, c]) => <stop key={o} offset={o} stopColor={dark && o < 0.3 ? mixHex(c, "#ffffff", 0.35) : c} />)}
+      </linearGradient></defs>
+      <g dangerouslySetInnerHTML={{ __html: html }} />
+    </svg>
+  );
 }
 
 /* ── Subject-led devices (banner-builder.md §5) ── */
@@ -593,15 +707,16 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   const dev = layout === "centered" || editorial ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
   const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id, layout !== "centered", format);
   // Editorial: one left column (≥ 1.5·M from the sides), anchored to the bottom of the space the device leaves.
-  const edBottom = Math.min(D.open.y + D.open.h, F.H - F.M) - (spec.device === "spectrum" ? (land ? 44 : 64) : 0);
-  let open: Rect = editorial ? { x: F.M * 1.5, y: F.M + markSpace + 24, w: F.W - F.M * 3, h: edBottom - (F.M + markSpace + 24) }
+  const edBottom = Math.min(D.open.y + D.open.h, F.H - F.M) - (spec.device === "spectrum" && D.open.y + D.open.h >= F.H - F.M * 2 ? (land ? 44 : 64) : 0);
+  const edTop = Math.max(F.M + markSpace + 24, D.open.y), edLeft = Math.max(F.M * 1.5, D.open.x), edRight = Math.min(F.W - F.M * 1.5, D.open.x + D.open.w);
+  let open: Rect = editorial ? { x: edLeft, y: edTop, w: edRight - edLeft, h: edBottom - edTop }
     : layout === "centered" ? D.open
     // Split: an editorial column from the top (gradients lighten toward the bottom, so the text stays on the deep part).
     : layout === "split" ? { x: F.M, y: F.M + markSpace + (markSpace ? 12 : 0), w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace - (markSpace ? 12 : 0) }
     : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
   const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && spec.device !== "arch-window" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
   const lightInside = layout === "centered" ? D.lightInside : !DARK_BG.has(spec.background);
-  const align: "center" | "left" = layout === "split" || editorial ? "left" : "center";
+  const align: "center" | "left" = editorial ? D.textAlign ?? "left" : layout === "split" ? "left" : "center";
   const onLight = lightInside || spec.treatment === "ink" || spec.treatment === "indigo";
   const num = !!spec.primaryIsNumber, sans = spec.titleStyle === "sans";
   // Headlines dominate, as in Sarvam's posts (~15–18% of the frame height per line); the fit loop shrinks them only when needed.
@@ -609,6 +724,7 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   // Fit: shrink type until the block fits the opening (width via wrapping, height via measured lines). Never below 60%.
   if (editorial) { base.p = Math.round(base.p * 1.3); base.s = Math.round(base.s * 1.1); }
   const pFont = sans ? "text" : "display", pWeight = sans ? 600 : 400;
+  const dividerW = land ? 300 : 440;
   const blockH = (k: number) => {
     const ps = base.p * k, ss = Math.max(base.s * k, land ? 20 : 28);   // the supporting line never drops below its floor, so measure it at the floor
     const cw = ps * charW(pFont, pWeight, spec.primary);
@@ -616,7 +732,8 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
     const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > 3 ? 99 : plines.length;   // too wide, or more than 3 lines → too big
     const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
     const markH = spec.mark === "inside" && layout === "centered" ? (spec.logo === "logomark" ? markW * 0.55 : land ? 16 : 20) + base.gap * 0.7 : 0;
-    return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.45 : 0);
+    const divH = spec.divider ? dividerW * (55 / 400) + base.gap : 0;
+    return markH + pl * ps * 1.2 + divH + (sl ? base.gap + sl * ss * 1.45 : 0);
   };
   // Fixed steps (100 / 86 / 74 / 64 / 55 / 48 % of the base): the largest that fits. Same hierarchy on every banner.
   const STEPS = [1, 0.86, 0.74, 0.64, 0.55, 0.48];
@@ -655,10 +772,11 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
           style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
-      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
+      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? D.textJustify ?? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
         {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
+        {spec.divider && <SpectrumDivider name={spec.divider} width={dividerW} id={id} dark={DARK_BG.has(spec.background)} />}
         {spec.secondaryPlace !== "above" && secondary}
       </div>
     </div>

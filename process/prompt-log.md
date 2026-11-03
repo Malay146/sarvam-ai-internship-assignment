@@ -429,3 +429,28 @@ Entry format:
 ## 2026-11-04 — Lotus: bigger, fewer, broader petals
 - Prompts (verbatim): "make it bigger in size and have a little bit fewer petals in number." → "Make the petal thicker."
 - Lens rosette: 12 → 8 petals; length ×1.32 (Meta) / ×1.22 (LinkedIn); petal width 0.26 R → 0.36 × length. It stays clear of the headline in both formats. QA PASS, re-exported.
+
+## 2026-11-04 — Spectrum family: ornaments, placements, dividers; pruned to distinct ones
+- Prompts (verbatim): "now suggest some other sets of banner designs." → "do all of it. I will remove some if I don't like it." → "Maybe use our dividers also to decorate it and make it look good." → "Wait what? Why so many of them? Remove the similar ones." → "As I have told you I need different ones."
+- Engine:
+  - `ornament` (lotus / quatrefoil / star / ogee / arch, solid with spectrum fills)
+  - `place` (corner / rise / center / small, each with its own text region and alignment; landscape rearranges rise and center to the right)
+  - `petals`, `ornamentTone: white`
+  - `divider` (/studio divider presets in the spectrum between headline and supporting line, counted in the fit)
+- Fixes after looking:
+  - Cropped solid medallions read as purple blobs → solids sit whole in the top-right.
+  - Text overlapped the rising arch → the text box ends above the shape's measured top.
+  - The single petal was flat lilac → it runs the full spectrum base to tip.
+  - LinkedIn rise squeezed the text → it rearranges to fan right, text left.
+  - LinkedIn bloom touched "Prism" → moved to 0.79 W.
+  - Dividers were too small → 440 / 300 px.
+- I built 16 and Malay rightly flagged that most repeated one idea. Kept one per distinct composition:
+  - `prism-bloom`: centred lotus + divider
+  - `prism-rise`: rising lotus fan + divider
+  - `fam-approval`: whole quatrefoil + bead divider
+  - `fam-slack`: arch rising from the strip
+  - `fam-early`: a single spectrum petal + lotus divider
+  - Plus the existing `prism-spectrum` (corner lotus).
+  - Dropped: dark, tone-on-tone, number, launch, quote, event, three teasers, star, ogee.
+- Lesson: "do all of it" still means distinct. Build variety in composition, not repeats of one layout.
+- QA PASS for the whole set. Sheet: `process/screens/banners-simple/spectrum-family.png`.
