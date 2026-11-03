@@ -2,13 +2,13 @@
 import { useMemo, useState } from "react";
 import {
   DIVIDER_PRESETS, FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, MOTIF_PRESETS,
-  GLOW_PALETTES, dividerSVG, flowerPath, flowerSVG, gatewayPath, gatewaySVG, glowSVG, medallionPath, medallionSVG, motifPaths, patternSVG,
+  GLOSS_PALETTES, GLOW_PALETTES, cloudSVG, glossSVG, dividerSVG, flowerPath, flowerSVG, gatewayPath, gatewaySVG, glowSVG, medallionPath, medallionSVG, motifPaths, patternSVG,
   randomDivider, randomFlower, randomGateway, randomMedallion, randomMotif, rng,
-  type DividerParams, type FlowerParams, type GatewayParams, type GlowPalette, type MedallionParams, type MotifParams,
+  type DividerParams, type FlowerParams, type GatewayParams, type GlossPalette, type GlowPalette, type MedallionParams, type MotifParams,
 } from "@/lib/shapes";
 
 type Mode = "gateway" | "medallion" | "flower" | "motif" | "divider";
-type Render = "solid" | "line" | "glow";
+type Render = "solid" | "line" | "glow" | "gloss" | "cloud";
 const MODES: [Mode, string][] = [["gateway", "Gateway"], ["medallion", "Medallion"], ["flower", "Flower"], ["motif", "Line motif"], ["divider", "Divider"]];
 
 // [label, class, ink] — ink keeps every symbol ≥ 3:1 against its surface (components.md §3.2)
@@ -53,6 +53,7 @@ export default function Studio() {
   const [d, setD] = useState<DividerParams>(DIVIDER_PRESETS["Scroll fan"]);
   const [render, setRender] = useState<Render>("solid");
   const [palette, setPalette] = useState<GlowPalette>("lavender");
+  const [gloss, setGloss] = useState<GlossPalette>("periwinkle");
   const [surface, setSurface] = useState<string>("sr-gradient-dusk");
   const [pat, setPat] = useState({ cols: 6, gap: 10, stagger: true });
   const [seed, setSeed] = useState(7);
@@ -62,29 +63,33 @@ export default function Studio() {
   const glyph = useMemo(() => {
     const r: "solid" | "line" = render === "line" ? "line" : "solid";
     if (render === "glow" && (mode === "gateway" || mode === "medallion" || mode === "flower")) return glowSVG(geomFor(mode), palette, "main");
+    if (render === "gloss" && (mode === "gateway" || mode === "medallion" || mode === "flower")) return glossSVG(geomFor(mode), gloss, "main");
+    if (render === "cloud" && (mode === "gateway" || mode === "medallion" || mode === "flower")) return cloudSVG(geomFor(mode));
     if (mode === "gateway") return gatewaySVG(g, r, "main");
     if (mode === "medallion") return medallionSVG(md, r, "main");
     if (mode === "flower") return flowerSVG(fl, r, "main");
     if (mode === "motif") return motifSVG(m);
     return dividerSVG(d);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, g, md, fl, m, d, render, palette]);
+  }, [mode, g, md, fl, m, d, render, palette, gloss]);
 
   const windowShape = mode === "gateway" ? gatewayPath(g) : mode === "medallion" ? medallionPath(md) : null;
   const isGlow = render === "glow" && mode !== "motif" && mode !== "divider";
-  const pattern = useMemo(() => (mode === "divider" || isGlow ? "" : patternSVG(glyph, { ...pat, width: 480, height: 480 })), [mode, glyph, pat, isGlow]);
+  const isArt = (render === "gloss" || render === "cloud") && mode !== "motif" && mode !== "divider";
+  const pattern = useMemo(() => (mode === "divider" || isGlow || render === "cloud" ? "" : patternSVG(glyph, { ...pat, width: 480, height: 480 })), [mode, glyph, pat, isGlow, render]);
 
   const gallery = useMemo(() => {
     const r = rng(seed * 31 + mode.length);
     return Array.from({ length: 24 }, (_, i) => {
-      const glow = render === "glow";
-      if (mode === "gateway") { const v = randomGateway(r); return { svg: glow ? glowSVG(gatewayPath(v), palette, `g${i}`) : gatewaySVG(v, "solid", `g${i}`), use: () => setG(v) }; }
-      if (mode === "medallion") { const v = randomMedallion(r); return { svg: glow ? glowSVG(medallionPath(v), palette, `m${i}`) : medallionSVG(v, "solid", `m${i}`), use: () => setMd(v) }; }
-      if (mode === "flower") { const v = randomFlower(r); return { svg: glow ? glowSVG(flowerPath(v), palette, `f${i}`) : flowerSVG(v, "solid", `f${i}`), use: () => setFl(v) }; }
+      const art = (geom: { d: string; width: number; height: number }, fallback: string, k: string) =>
+        render === "glow" ? glowSVG(geom, palette, k) : render === "gloss" ? glossSVG(geom, gloss, k) : fallback;
+      if (mode === "gateway") { const v = randomGateway(r); return { svg: art(gatewayPath(v), gatewaySVG(v, "solid", `g${i}`), `g${i}`), use: () => setG(v) }; }
+      if (mode === "medallion") { const v = randomMedallion(r); return { svg: art(medallionPath(v), medallionSVG(v, "solid", `m${i}`), `m${i}`), use: () => setMd(v) }; }
+      if (mode === "flower") { const v = randomFlower(r); return { svg: art(flowerPath(v), flowerSVG(v, "solid", `f${i}`), `f${i}`), use: () => setFl(v) }; }
       if (mode === "motif") { const v = randomMotif(r); return { svg: motifSVG(v), use: () => setM(v) }; }
       const v = randomDivider(r); return { svg: dividerSVG(v), use: () => setD(v) };
     });
-  }, [seed, mode, render, palette]);
+  }, [seed, mode, render, palette, gloss]);
 
   const presets: Record<string, () => void> = useMemo(() => {
     const bind = <T,>(src: Record<string, T>, set: (v: T) => void) => Object.fromEntries(Object.entries(src).map(([k, v]) => [k, () => set(v)]));
@@ -103,7 +108,8 @@ export default function Studio() {
         <div className="st-presets">{Object.entries(presets).map(([k, fn]) => <button key={k} className="sr-chip" onClick={fn}>{k}</button>)}</div>
 
         <div className="st-fields">
-          {solidCapable && <Seg label="Render" value={render} options={["solid", "line", "glow"] as const} onChange={setRender} />}
+          {solidCapable && <Seg label="Render" value={render} options={["solid", "line", "glow", "gloss", "cloud"] as const} onChange={setRender} />}
+          {solidCapable && render === "gloss" && <Seg label="Gloss palette" value={gloss} options={Object.keys(GLOSS_PALETTES) as GlossPalette[]} onChange={setGloss} />}
           {solidCapable && render === "glow" && <Seg label="Glow palette" value={palette} options={Object.keys(GLOW_PALETTES) as GlowPalette[]} onChange={setPalette} />}
 
           {mode === "gateway" && <>
@@ -185,6 +191,8 @@ export default function Studio() {
         <div className={`st-preview${mode === "divider" ? " st-preview--wide" : ""}`}>
           {isGlow ? (
             <figure className="st-card st-card--glow"><Svg html={glyph} className="st-glowcard" /><figcaption className="sr-meta">Glow · {palette}</figcaption></figure>
+          ) : isArt ? (
+            <figure className={`st-card ${render === "cloud" ? "sr-gradient-lavender-dusk" : ""}`}><Svg html={glyph} className="st-glyph" /><figcaption className="sr-meta">{render === "gloss" ? `Gloss · ${gloss}` : "Soft cloud on lavender dusk"}</figcaption></figure>
           ) : windowShape ? (
             <figure className="st-card">
               <svg viewBox={`0 0 ${windowShape.width} ${windowShape.height}`} className="st-mask" role="img" aria-label="Shape as a window">
@@ -203,9 +211,9 @@ export default function Studio() {
           )}
           <figure className="st-card">
             <Svg html={isGlow ? (mode === "gateway" ? gatewaySVG(g, "solid", "sil") : mode === "medallion" ? medallionSVG(md, "solid", "sil") : flowerSVG(fl, "solid", "sil")) : glyph} className={`st-glyph${mode === "divider" ? " st-glyph--wide" : ""}`} />
-            <figcaption className="sr-meta">{isGlow ? "Silhouette" : solidCapable ? (render === "solid" ? "Solid · cut lines 1.5px" : "Line · 1.5 stroke") : mode === "divider" ? "2px ornament line · round caps" : "1.5 stroke · currentColor"}</figcaption>
+            <figcaption className="sr-meta">{isGlow || isArt ? "Silhouette source" : solidCapable ? (render === "solid" ? "Solid · cut lines 1.5px" : "Line · 1.5 stroke") : mode === "divider" ? "2px ornament line · round caps" : "1.5 stroke · currentColor"}</figcaption>
           </figure>
-          {mode !== "divider" && !isGlow && (
+          {mode !== "divider" && !isGlow && pattern && (
             <figure className={`st-card st-card--pattern ${surface}`}>
               <Svg html={pattern} className="st-pattern" style={{ color: inkFor(surface), opacity: 0.9 }} />
               <figcaption className="sr-meta">Pattern · {pat.cols} columns · {pat.stagger ? "staggered" : "grid"}</figcaption>

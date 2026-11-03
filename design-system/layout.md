@@ -204,7 +204,7 @@ Background: `--gradient-haze` rising behind the lower half of the hero and the m
 ### P4. Feature rows (text + tinted visual)
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| Each feature is one card. **Visual on top**, then title → body → CTA → checklist `[observed]`. Every row has the same order (no alternating). | Visual and text side by side (4 / 4 columns), the visual **always on the right**. | 5 / 7 split, the visual always on the right. Sarvam keeps the visual on the right `[observed]`; we keep it consistent rather than alternating. |
+| Each feature is one card. **Visual on top**, then title → body → CTA → checklist `[observed]`. Every row has the same order (no alternating). | Still **stacked** (visual on top, full width) so the product mock keeps ≥ 380px and stays readable; text under it. `[addition, from QA: side-by-side at 768 squeezed the mock to 187px]` | 5 / 7 split, the visual always on the right. Sarvam keeps the visual on the right `[observed]`; we keep it consistent rather than alternating. |
 
 Tints in sequence: indigo → orange → green (`tokens.md` §2.4b). All feature rows share the same height and the same checklist length (3 items) (§5).
 
@@ -226,7 +226,7 @@ Tints in sequence: indigo → orange → green (`tokens.md` §2.4b). All feature
 ### P8. Timeline ("Runs while you sleep")
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| **Vertical list**: mono time (eyebrow-mono) above each event title and description `[observed]`; a vertical line connects the dots. | Vertical, 2 columns of events. | **Horizontal**: 5 events on one line with a progress line and dots (`--ring-dot`) `[observed]`; all event titles 1 line, all descriptions 2 lines (§5). |
+| **Vertical list**: mono time (eyebrow-mono) above each event title and description `[observed]`; a vertical line connects the dots. | 2 columns of events (768–1279). | **Horizontal from 1280**: 5 events on one line with a progress line and dots (`--ring-dot`) `[observed]`; all event titles 1 line, all descriptions 2 lines (§5). |
 
 ### P9. Numbered steps (01 / 02 / 03)
 | Phone | Tablet | Laptop+ |
@@ -251,7 +251,7 @@ Tints in sequence: indigo → orange → green (`tokens.md` §2.4b). All feature
 ### P13. Closing CTA card
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| `--gradient-night` card, radius 24, inside the container. Centred display-2 headline (white), symbol, "Talk to Us". Height ≈ 420. | Same, height ≈ 380. | Same, height ≈ 440, with faint mandala line arcs `[observed]`. |
+| `--gradient-night` card, radius 24, inside the container. Centred display-2 headline (white), symbol, "Talk to Us". Height ≈ 420. | Same, height ≈ 380. | Same, height ≈ 460. Behind it, our **ring lattice**: a half rosette (5 + 7 circles, white 20%) centred on the bottom edge, growing up layer by layer on entry. `[addition: Sarvam enlarges its logomark here, which logo.md forbids us to copy]` |
 
 ### P14. Footer
 | Phone | Tablet | Laptop+ |
@@ -295,7 +295,7 @@ Sarvam's mobile hierarchy, spacing and type sizes are kept exactly (`typography.
 ### 8.1 Between breakpoints
 - **Type is fluid** (`typography.md`), so text never jumps.
 - **Containers are percentages**, so margins grow smoothly.
-- **Grids switch at breakpoints**, but the cards inside use **container queries**, so a card adapts to its own width rather than the viewport's:
+- **Grids switch at breakpoints**, but standalone cards use **container queries**, so a card adapts to its own width rather than the viewport's. ⚠️ Never put `container-type` on a card that is a **subgrid** item: size containment collapses its height (found in QA). Use a viewport media query for those.
   ```css
   .card { container-type: inline-size; }
   @container (min-width: 420px) { .card--horizontal { grid-template-columns: 40px 1fr; } }

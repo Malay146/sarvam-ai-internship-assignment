@@ -202,7 +202,7 @@ The Indus Cowork page uses quieter versions of the spectrum: a haze behind the h
 
 | Token / class | Value (summary) | Use on sarvam.ai |
 |---|---|---|
-| `--gradient-night` / `.sr-gradient-night` | `#1b1b29` → `#30344a` → `#4d5372` → `#68749f` → `#899bd2`, vertical | Closing CTA card ("Meet your first teammate."), white display-2 text in the top 40% |
+| `--gradient-night` / `.sr-gradient-night` | `#13121e 0%` → `#a5bbfc 116.55%`, vertical `[verified, exact from sarvam.ai markup]` | Closing CTA card ("Meet your first teammate."), white display-2 text in the top 40% |
 | `--gradient-haze` / `.sr-haze` | transparent → `#f2f6fd` → `#e3ebfc` → `#cfddfc` → `#bed1fc`, vertical | Lower half of the product hero, behind the product mockup |
 | `--gradient-tint-indigo` / `.sr-tint-indigo` | `#e6ecfd` → `#d5dffc` → `#b8c9fa`, 135° | Feature panel 1 ("Plans the work") |
 | `--gradient-tint-orange` / `.sr-tint-orange` | `#fcecdb` → `#f8dbb9` → `#efbb7e`, 135° | Feature panel 2 ("Researches on its own") |
@@ -236,6 +236,26 @@ Sarvam's gradient imagery carries a fine film grain (look closely at brand-img-0
 - **Accent glow** `[verified pattern]`: a single blurred blob (`sr-orange-800` or `sr-indigo-400`, `blur(80px)`, opacity 0.4–0.7) behind a card or section is allowed on `sf` surfaces.
 
 ---
+
+### 2.8 More surfaces (see `components.md` §2)
+Mesh glow (5 colour triads), light card mesh, dark orbs, button surfaces, glass, well and bevel shadows, and the cursor spotlight are tokens/classes in `tokens.css`, documented with their use in `components.md` §2. Campaign gradients for social banners: §2.9.
+
+### 2.9 Campaign gradients `[sampled, Sarvam social posts]`
+Sarvam's social feed uses a wider palette than the website: earthy and floral, but always smooth, vertical and grainy. Each one is sampled from a real post (`references/social/`). They are used in the **Campaign** and **Community** expressions (`expressions.md`), never on the website UI.
+
+| Token / class | Ramp (top → bottom) | Seen in | Mood |
+|---|---|---|---|
+| `--gradient-olive` | gold `#c2a12d` → olive `#5b7828` → deep olive `#486523` | Knowledge Fabric for Agents | research, depth |
+| `--gradient-meadow` | leaf `#8fbf6f` → sage `#aed1a7` → periwinkle `#b0c6ef` | Indic DiarBench | datasets, open research |
+| `--gradient-saffron-rose` | saffron `#f1c480` → rose `#c4706e` → magenta `#a13060` | Sarvam 30B | model launches |
+| `--gradient-lavender-dusk` | cream `#f1f4e9` → lavender `#c6bdd3` → violet `#5957c4` | Supernova customer story | stories, partnerships |
+| `--gradient-spring` | cream `#f2f6e8` → pistachio `#d9dfb3` → leaf `#98c659` | Equal customer story | stories, growth |
+| `--color-cloud` | `#f7efed` warm white | soft-cloud glow | text ground on gradients |
+
+Rules:
+- One campaign gradient per banner. Grain always. OKLab blending (§2.5).
+- Text sits in the gradient's calm zone or on a soft cloud. Dark text on the pale ends; white only on olive, saffron-rose (middle down) and the violet end of lavender-dusk.
+- Blue and orange together remains the **website** rule. Campaign art may use one family when the subject calls for it, because Sarvam's own posts do.
 
 ## 3. Spacing
 

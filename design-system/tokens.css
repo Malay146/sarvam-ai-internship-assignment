@@ -161,6 +161,15 @@
   --shadow-inner-soft: inset 0 0 6px rgb(0 0 0 / 0.08);
   /* Spotlight that follows the cursor on dark cards: see .sr-spotlight (reads per-element --gx/--gy). */
 
+
+  /* Campaign gradients [sampled from Sarvam social posts, references/social/] */
+  --gradient-olive: linear-gradient(180deg, #c2a12d 0%, #96932c 12%, #72842a 25%, #5b7828 38%, #4f7027 50%, #486523 75%, #4e6323 88%, #646a22 100%);
+  --gradient-meadow: linear-gradient(180deg, #8fbf6f 0%, #96c577 12%, #9fc985 25%, #a7cf97 38%, #aed1a7 50%, #b7d2bd 62%, #b9d1d3 75%, #b6cce1 88%, #b0c6ef 100%);
+  --gradient-saffron-rose: linear-gradient(180deg, #f1c480 0%, #e3a97c 15%, #d48c74 32%, #c4706e 50%, #b5546a 68%, #a73b62 84%, #a13060 100%);
+  --gradient-lavender-dusk: linear-gradient(180deg, #f1f4e9 0%, #efefe3 12%, #e8e5dd 25%, #dad4d7 38%, #c6bdd3 50%, #aca1cd 62%, #9289cc 75%, #736dc6 88%, #5957c4 100%);
+  --gradient-spring: linear-gradient(180deg, #f2f6e8 0%, #edefe0 12%, #eaecd5 25%, #e4e5c6 38%, #d9dfb3 50%, #c9d69c 62%, #b9d085 75%, #a6cb6c 88%, #98c659 100%);
+  --color-cloud: #f7efed;   /* [sampled] warm white of the soft-cloud glow (customer stories) */
+
   /* Film grain, layered over every gradient. Breaks up 8-bit banding,
      matches the grain in Sarvam's own gradient imagery. [sampled pattern] */
   --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .22'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -320,6 +329,11 @@
    Browsers without support keep the sRGB values above. ── */
 @supports (background: linear-gradient(in oklab, red, blue)) {
   :root {
+    --gradient-olive: linear-gradient(in oklab 180deg, #c2a12d 0%, #96932c 12%, #72842a 25%, #5b7828 38%, #4f7027 50%, #486523 75%, #4e6323 88%, #646a22 100%);
+    --gradient-meadow: linear-gradient(in oklab 180deg, #8fbf6f 0%, #96c577 12%, #9fc985 25%, #a7cf97 38%, #aed1a7 50%, #b7d2bd 62%, #b9d1d3 75%, #b6cce1 88%, #b0c6ef 100%);
+    --gradient-saffron-rose: linear-gradient(in oklab 180deg, #f1c480 0%, #e3a97c 15%, #d48c74 32%, #c4706e 50%, #b5546a 68%, #a73b62 84%, #a13060 100%);
+    --gradient-lavender-dusk: linear-gradient(in oklab 180deg, #f1f4e9 0%, #efefe3 12%, #e8e5dd 25%, #dad4d7 38%, #c6bdd3 50%, #aca1cd 62%, #9289cc 75%, #736dc6 88%, #5957c4 100%);
+    --gradient-spring: linear-gradient(in oklab 180deg, #f2f6e8 0%, #edefe0 12%, #eaecd5 25%, #e4e5c6 38%, #d9dfb3 50%, #c9d69c 62%, #b9d085 75%, #a6cb6c 88%, #98c659 100%);
     --gradient-night: linear-gradient(in oklab 180deg, #13121e 0%, #a5bbfc 116.55%);
     --gradient-haze: linear-gradient(in oklab 180deg, rgb(255 255 255 / 0) 0%, #f2f6fd 30%, #e3ebfc 50%, #cfddfc 70%, #c4d5fa 85%, #bed1fc 100%);
     --gradient-tint-indigo: linear-gradient(in oklab 135deg, #e6ecfd 0%, #d5dffc 50%, #b8c9fa 100%);
@@ -350,6 +364,13 @@
 .sr-tint-green { background-image: var(--texture-grain), var(--gradient-tint-green); }
 .sr-haze { background-image: var(--gradient-haze); }
 .sr-gradient-night { background-image: var(--texture-grain), var(--gradient-night); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
+
+/* Campaign gradient utilities (with grain) */
+.sr-gradient-olive { background-image: var(--texture-grain), var(--gradient-olive); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
+.sr-gradient-meadow { background-image: var(--texture-grain), var(--gradient-meadow); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
+.sr-gradient-saffron-rose { background-image: var(--texture-grain), var(--gradient-saffron-rose); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
+.sr-gradient-lavender-dusk { background-image: var(--texture-grain), var(--gradient-lavender-dusk); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
+.sr-gradient-spring { background-image: var(--texture-grain), var(--gradient-spring); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal; }
 
 /* Mesh glow presets: Sarvam's colour triads [verified] (deep / mid / pale) */
 .sr-mesh {

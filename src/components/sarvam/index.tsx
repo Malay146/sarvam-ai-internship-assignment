@@ -223,8 +223,12 @@ export function CtaCard({ title, cta }: { title: string; cta: ReactNode }) {
 }
 
 /* ── Nav (P1) ── */
-const NAV = ["Products", "Developers", "Resources", "Company"];
-export function Nav({ cta = "Talk to Us" }: { cta?: string }) {
+const NAV = ["Products", "Developers", "Resources", "Company"].map((label) => ({ label, href: "#" }));
+export const SYSTEM_NAV = [
+  { label: "Overview", href: "/system" }, { label: "Tokens", href: "/system/tokens" }, { label: "Components", href: "/components" },
+  { label: "Expressions", href: "/system/expressions" }, { label: "Studio", href: "/studio" },
+];
+export function Nav({ cta = "Talk to Us", links = NAV, ctaHref = "#" }: { cta?: string; links?: { label: string; href: string }[]; ctaHref?: string }) {
   return (
     <nav className="sr-nav" aria-label="Main">
       <div className="sr-container sr-nav__bar">
@@ -232,13 +236,13 @@ export function Nav({ cta = "Talk to Us" }: { cta?: string }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/sarvam-wordmark-black.svg" alt="Sarvam" />
         </a>
-        <ul className="sr-nav__links">{NAV.map((l) => <li key={l}><a href="#">{l}</a></li>)}</ul>
+        <ul className="sr-nav__links">{links.map((l) => <li key={l.label}><a href={l.href}>{l.label}</a></li>)}</ul>
         <div className="sr-nav__actions">
-          <Button variant="secondary">{cta}</Button>
+          <Button variant="secondary" href={ctaHref}>{cta}</Button>
           <details className="sr-nav__menu">
             <summary aria-label="Open menu"><Menu strokeWidth={ICON_STROKE} /></summary>
             <div className="sr-nav__sheet">
-              {NAV.map((l) => <a key={l} href="#">{l}<ArrowRight width={20} strokeWidth={ICON_STROKE} /></a>)}
+              {links.map((l) => <a key={l.label} href={l.href}>{l.label}<ArrowRight width={20} strokeWidth={ICON_STROKE} /></a>)}
             </div>
           </details>
         </div>

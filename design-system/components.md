@@ -174,7 +174,7 @@ Min-height 32, radius full, text 14. Neutral: white + light bevel. Tinted: 50 ba
 - **Anatomy:** white card (radius 24, padding 16) holding a tint panel + text block (h3 → body → CTA → 3-item checklist).
 - **Tiers:**
   - phone: **panel on top**, text below `[observed]`.
-  - tablet: 50/50, text left, panel right.
+  - tablet: still stacked (panel on top, full width) so the mock stays readable.
   - ≥1024: 5fr / 7fr.
   - The panel is **always on the right**: no alternating `[addition]`.
 - **Sequence:** indigo → orange → green. Checklist icons use the tone's accessible shade.

@@ -1,4 +1,4 @@
-import { Eyebrow, Nav } from "@/components/sarvam";
+import { Eyebrow, Nav, SYSTEM_NAV } from "@/components/sarvam";
 import Studio from "./Studio";
 import "./studio.css";
 
@@ -7,7 +7,7 @@ export const metadata = { title: "Studio · Sarvam design system" };
 export default function StudioPage() {
   return (
     <>
-      <Nav />
+      <Nav links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
       <main className="sr-container st-page">
         <header className="st-intro">
           <Eyebrow>Internal tool</Eyebrow>

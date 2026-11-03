@@ -358,6 +358,50 @@ export function glowSVG(geom: { d: string; width: number; height: number }, pale
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${f(W)} ${f(Hc)}">${defs}${card}${shape}<rect width="${f(W)}" height="${f(Hc)}" filter="url(#${id("grain")})" style="mix-blend-mode:overlay"/></svg>`;
 }
 
+/* ───────────── Gloss render (polished 3D-look fill) ───────────── */
+// From Sarvam's social art (Startup Program, Fintech Fest): radial body light centre → coloured edge,
+// a top-left highlight, a tinted inner shadow, a rim light and a soft coloured drop shadow. Brand ramps only.
+export const GLOSS_PALETTES = {
+  periwinkle: { centre: "#e8effc", mid: "#a7c0f1", edge: "#e380a8", shade: "#4250d5" },
+  indigo: { centre: "#a7c0f1", mid: "#556adc", edge: "#3333cc", shade: "#11115b" },
+  leaf: { centre: "#f4f0c8", mid: "#acd587", edge: "#6ea335", shade: "#385418" },
+  saffron: { centre: "#fddcce", mid: "#f59970", edge: "#e96c2f", shade: "#a5460f" },
+  rose: { centre: "#fceaf0", mid: "#efabc5", edge: "#d4508e", shade: "#871f4b" },
+} as const;
+export type GlossPalette = keyof typeof GLOSS_PALETTES;
+
+export function glossSVG(geom: { d: string; width: number; height: number }, palette: GlossPalette, uid = "gs"): string {
+  const P = GLOSS_PALETTES[palette], id = (k: string) => `${k}-${uid}`, pad = 10;
+  const W = geom.width + pad * 2, H = geom.height + pad * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${f(W)} ${f(H)}">
+  <defs>
+    <radialGradient id="${id("body")}" cx="0.45" cy="0.42" r="0.62"><stop offset="0" stop-color="${P.centre}"/><stop offset="0.55" stop-color="${P.mid}"/><stop offset="1" stop-color="${P.edge}"/></radialGradient>
+    <radialGradient id="${id("hi")}" cx="0.3" cy="0.22" r="0.4"><stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${id("rim")}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.15"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.45"/></linearGradient>
+    <clipPath id="${id("clip")}"><path d="${geom.d}"/></clipPath>
+    <filter id="${id("drop")}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="${P.shade}" flood-opacity="0.22"/></filter>
+    <filter id="${id("inner")}" x="-10%" y="-10%" width="120%" height="120%">
+      <feOffset dx="-2" dy="-3" in="SourceAlpha" result="o"/><feGaussianBlur in="o" stdDeviation="3" result="b"/>
+      <feComposite in="b" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="inner"/>
+      <feFlood flood-color="${P.shade}" flood-opacity="0.35"/><feComposite in2="inner" operator="in" result="t"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="t"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#${id("drop")})"><path d="${geom.d}" fill="url(#${id("body")})" filter="url(#${id("inner")})"/></g>
+  <g clip-path="url(#${id("clip")})"><ellipse cx="${f(geom.width * 0.32)}" cy="${f(geom.height * 0.22)}" rx="${f(geom.width * 0.42)}" ry="${f(geom.height * 0.3)}" fill="url(#${id("hi")})"/></g>
+  <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="1"/>
+</svg>`;
+}
+
+/* ───────────── Soft cloud (blurred scalloped glow for text grounds) ───────────── */
+export function cloudSVG(geom: { d: string; width: number; height: number }, color = "#f7efed", softness = 0.07): string {
+  const pad = Math.max(geom.width, geom.height) * 0.3, blur = Math.max(geom.width, geom.height) * softness;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${f(-pad)} ${f(-pad)} ${f(geom.width + pad * 2)} ${f(geom.height + pad * 2)}" preserveAspectRatio="xMidYMid meet">
+  <defs><filter id="cloudblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${f(blur)}"/></filter></defs>
+  <path d="${geom.d}" fill="${color}" filter="url(#cloudblur)"/>
+</svg>`;
+}
+
 /* ───────────── Line motifs (radial) ───────────── */
 export type MotifParams = {
   petals: number;        // 4 – 16

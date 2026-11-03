@@ -163,7 +163,7 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - [x] Collect Sarvam social posts → `/references/social/` (12 posts, renamed `NN-type-subject-ratio.png`, analysed in README.md)
 - [x] Screenshot sarvam.ai home + /indus-cowork at 375 / 768 / 1440 → `/references/site/`
 - [x] Choose the subject: Indus Cowork
-- [ ] Write the design system (done: tokens, typography, layout, components, imagery, logo, voice; pages /system, /components, /studio; QA script `scripts/check-layout.mjs`. Next: recipes, SKILL.md, single design.md)
+- [ ] Write the design system (done: tokens incl. campaign gradients, typography, layout, components, expressions, imagery, logo, voice; review site /system (hub), /system/tokens, /system/expressions, /components, /studio; QA scripts check-layout + check-motion. Next: recipes (with banner grids), SKILL.md, single design.md)
 - [ ] Run before/after tests, log them
 - [ ] Generate + refine 3 Meta + 3 LinkedIn banners (render HTML/CSS → PNG at exact sizes via Playwright)
 - [ ] Build landing page in Next.js from the same tokens; deploy to Vercel
@@ -212,4 +212,5 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - **Malay's flair rule: sibling consistency.** Side-by-side blocks have equal width and height, aligned inner rows, and identical line counts per text slot at every width (layout.md §5). Write copy to the character budget and run `node scripts/check-layout.mjs <url>` before calling any section done.
 - Mobile gets equal care to desktop (Malay's explicit ask).
 - **Icons: Nucleo Core outline 24px only** (Malay owns Nucleo Pro). Import from `@/components/icons`; add new ones via the Nucleo MCP and copy them into `src/components/icons/nucleo/`. No other icon library.
+- **Three expressions** (`design-system/expressions.md`): Campaign / Product / Community, picked by content type. Banners and page sections must name their expression.
 - **Social references:** `references/social/` (12 posts, indexed and analysed in its README). Sarvam posts the same art on every platform.

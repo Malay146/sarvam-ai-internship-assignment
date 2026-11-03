@@ -14,7 +14,7 @@ What goes into Sarvam visuals: gradients, gateway shapes, motifs, product UI and
 4. **Product UI is real and readable:** real Indus Cowork states, text ≥ 12px at the final size, white cards on tints.
 5. **Ornaments are punctuation.** At most one motif or divider per composition, small, in a quiet colour.
 6. **Every symbol reaches ≥ 3:1** against its background (dark ink on tints, white on deep gradients).
-7. **Never recreate the Sarvam logomark** or anything built from overlapping circles in a lotus layout. Motifs use petals and arcs, not ring constructions.
+7. **Never recreate the Sarvam logomark.** No closed, lotus-like mark built from overlapping circles, and never a ring construction used as a symbol. The one allowed ring construction is the CTA **ring lattice**: a half rosette at ≤ 20% white, cropped by the card edge, purely as background texture.
 
 ---
 
@@ -126,7 +126,7 @@ no futuristic or sci-fi elements, documentary style.
 | Use real, readable product states | Use lorem ipsum or blurry UI screenshots |
 | Make dividers soft and round, quiet in colour | Use sharp, heavy, colourful ornaments |
 | Use cinematic, candid Indian photography | Use stock "AI" imagery, robots or circuit brains |
-| Use generated petal motifs | Build motifs from overlapping circles (too close to the logomark) |
+| Use generated petal motifs and echo rings | Build a symbol from overlapping circles (too close to the logomark) |
 
 ---
 
