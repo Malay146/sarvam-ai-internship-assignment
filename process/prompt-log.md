@@ -419,3 +419,9 @@ Entry format:
   - Joining the existing circles and lobes.
 - Tried and dropped **arches** (Mihrab gateway repeated by rotation). Even after moving them onto an inner ring, the gateway's long straight sides read as boxy door frames, not a rosette.
 - Sheet: `process/screens/banners-simple/rosette-set-thick.png`. The prism-spectrum banner stays on circles. QA PASS, re-exported. The builder's "Corner rosette" control lists all five.
+
+## 2026-11-04 — Prism spectrum: solid lotus
+- Prompts (verbatim): "use a different type of pattern. I don't want circles." → "Yeah now make it solid and have a gradient in it."
+- The rosette switched to **lens** (12 vesica petals, a lotus).
+- Then made solid (`rosetteSolid`): each petal is filled base → tip, from a 70% white tint of its spectrum hue to the full hue, so the lotus shows the whole spectrum (indigo petals facing the canvas, orange toward the corner). A 2.5px (Meta) / 2px (LinkedIn) canvas-coloured edge keeps the overlapping petals crisp at the centre. No blur, no stroke colour.
+- QA PASS, re-exported. The builder has a Petals line / solid control.

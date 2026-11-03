@@ -47,6 +47,7 @@ export default function Maker() {
         <label className="mk-field"><span>Partner (lockup next to the wordmark, optional)</span>
           <input value={spec.partner ?? ""} placeholder="e.g. Supernova" onChange={(e) => set({ partner: e.target.value || undefined })} /></label>
         {spec.device === "spectrum" && <Seg name="Corner rosette" value={spec.rosette ?? "circles"} options={["circles", "lens", "orbits", "rings", "lobes"] as const} onChange={(v) => set({ rosette: v })} />}
+        {spec.device === "spectrum" && spec.rosette === "lens" && <Seg name="Petals" value={spec.rosetteSolid ? "solid" : "line"} options={["line", "solid"] as const} onChange={(v) => set({ rosetteSolid: v === "solid" })} />}
         {spec.device === "emblem" && <Seg name="Emblem object" value={spec.icon ?? "sparkle"} options={Object.keys(EMBLEM_ICONS) as EmblemIcon[]} onChange={(v) => set({ icon: v })} />}
         {((spec.layout ?? "centered") !== "centered" || spec.device === "arch-window") && <Seg name={spec.device === "arch-window" ? "Product through the arch" : "Product card inside the device"} value={spec.card ?? "none"} options={["none", "plan", "research", "review"] as const} onChange={(v) => set({ card: v === "none" ? undefined : v })} />}
         <Seg name="Headline style" value={spec.titleStyle} options={["serif", "sans"] as const} onChange={(v) => set({ titleStyle: v })} />

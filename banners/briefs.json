@@ -145,7 +145,8 @@
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below",
       "situation": "launch",
-      "rosette": "circles"
+      "rosette": "lens",
+      "rosetteSolid": true
     }
   },
   {

@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  rosetteSolid?: boolean;          // spectrum device, lens: filled petals with a base → tip gradient instead of lines
   rosette?: "circles" | "lobes" | "lens" | "orbits" | "rings";   // spectrum device: the corner rosette (circles = the logomark's own construction)
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
@@ -322,6 +323,8 @@ function spectrumAt(t: number) {
   const u = o1 === o0 ? 0 : (t - o0) / (o1 - o0), h = (c: string) => [1, 3, 5].map((j) => parseInt(c.slice(j, j + 2), 16));
   return "#" + h(a).map((v, j) => Math.round(v + (h(b)[j] - v) * u).toString(16).padStart(2, "0")).join("");
 }
+/** Mix two hex colours (t = 0 → a, 1 → b). */
+const mixHex = (a: string, b: string, t: number) => { const h = (c: string) => [1, 3, 5].map((j) => parseInt(c.slice(j, j + 2), 16)); return "#" + h(a).map((v, j) => Math.round(v + (h(b)[j] - v) * t).toString(16).padStart(2, "0")).join(""); };
 /** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
  *  The top-right corner holds a rosette built the way Sarvam's logomark is built: ONE element repeated around a centre
  *  (identical shape, identical line: 4.5px Meta / 3.5px LinkedIn, even rotation), each copy one hue of the spectrum, cropped by the corner. */
@@ -345,8 +348,15 @@ function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean):
       }
       case "lens": {
         // vesica petals: equal lenses from the centre outward (a lotus drawn with two arcs each)
-        const L = R, w = R * 0.26;
-        return <path key={i} d={`M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`} transform={`translate(${cx} ${cy}) rotate(${a})`} stroke={c} />;
+        const L = R, w = R * 0.26, d = `M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`;
+        if (!spec.rosetteSolid) return <path key={i} d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} stroke={c} />;
+        // solid: each petal filled base → tip, from a pale tint of its hue to the full hue; a canvas-coloured edge keeps overlaps crisp
+        return (
+          <g key={i}>
+            <defs><linearGradient id={`${_id}-pt${i}`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor={mixHex(c, "#ffffff", 0.7)} /><stop offset="0.55" stopColor={mixHex(c, "#ffffff", 0.2)} /><stop offset="1" stopColor={c} /></linearGradient></defs>
+            <path d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} fill={`url(#${_id}-pt${i})`} stroke="#fcfcfc" strokeWidth={land ? 2 : 2.5} />
+          </g>
+        );
       }
       case "orbits":
         // equal ellipses sharing the centre, each turned by 180/n: a calm spirograph
