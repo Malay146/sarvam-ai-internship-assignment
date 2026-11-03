@@ -17,7 +17,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | 4 | **Never stretch** | Uniform scale only. Medallions are 1:1; gateways change structure per format, never scale |
 | 5 | **Padding** | ≥ 1.5 × margin of clear space on both sides (Meta 108px, LinkedIn 84px). Meta: the shape sits fully inside (≥ 72px top and bottom). LinkedIn may bleed off the top and bottom only |
 | 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
-| 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Max 3 lines. Supporting line ≥ 28px Meta / 20px LinkedIn |
+| 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Headline max **3 lines on Meta, 2 lines on LinkedIn** (every layout), and never set below **96px on Meta / 72px on LinkedIn**: if it won't fit, make room (wider text column, bigger opening) or shorten the copy, never shrink the type (QA fails otherwise). Supporting line ≥ 28px Meta / 20px LinkedIn |
 | 8 | **Sharp, not soft** | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
 | 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 | 9 | **Logo** | Official files only. Wordmark 124px (Meta) / 96px (LinkedIn), **or** the logomark alone (height 0.55× that), never both. White on dark, black on light, or none. Partner lockups always use the wordmark |
@@ -83,7 +83,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 |---|---|---|
 | `centered` | text inside the device | same |
 | `editorial` | one left column (≥ 1.5·M from the sides) anchored low, wordmark top-left aligned to the column, type base ×1.3 | same |
-| `split` | text left (left-aligned), device right 53% | becomes **stacked** |
+| `split` | text left (left-aligned, 56% column so a headline holds two lines at full size), device right 44% | becomes **stacked** |
 | `stacked` | becomes **split** | text top 44%, device bottom 56% |
 
 ### Slots (not text sections)

@@ -490,3 +490,21 @@ Entry format:
 - Found and fixed: the `product` preset had been dropped by accident in the spectrum-family commit (05ccb5c); restored.
 - Product: the arch window keeps its design; the product card inside is now optional and off, so it's a lit, empty doorway.
 - QA: set + 28 preset renders PASS.
+
+## 2026-11-04 — LinkedIn headlines: two lines, at full size
+- Prompts (verbatim): [event + capability preset screenshots] "in this the landscape ones should have only the title in two lines." → "The text should not get smaller. It should be visually proper only."
+- Rule: LinkedIn headlines ≤ 2 lines in every layout (Meta ≤ 3).
+- My first fix let the type step down to fit two lines. Malay rejected it: the type shrank (event 100 → 86px, capability → 86px, product 64px, slack 55px).
+- Second fix — make room, don't shrink:
+  - The LinkedIn split text column went from 47% to 56%.
+  - The gloss clusters moved outward (text box 480 → 620px).
+  - The LinkedIn gateway grew (0.5 W → 0.6 W, 0.86 H → 0.94 H).
+  - The Meta script mandala keeps one ring and a 0.76 R disc, with the wordmark moved to the top.
+  - Copy that was simply too long for two lines was shortened, still using voice.md facts:
+    - "Message it like a colleague"
+    - "It plans the work first"
+    - "Your colleague in Slack"
+    - "Shipping faster, together"
+    - sovereign: "Sarvam's own models" / "Indus Cowork, with data residency in India"
+- QA now enforces it: the headline is ≤ 2 lines on LinkedIn and set at ≥ 72px (LinkedIn) / 96px (Meta). Otherwise it fails with "shorten the copy, don't shrink the type".
+- Result: all 13 presets × 2 formats + the full set PASS; the set is re-exported.

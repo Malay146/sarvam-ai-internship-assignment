@@ -29,14 +29,19 @@ async function check(label, f, spec) {
       const rg = document.createRange(); rg.selectNodeContents(el); const b = rg.getBoundingClientRect(); return { x: b.left - root.left, y: b.top - root.top, w: b.width, h: b.height };
     });
     const marks = [...document.querySelectorAll("[data-qa=mark]")].map(rel);
+    // the headline = the text block set largest
+    const heads = [...document.querySelectorAll("svg[data-qa=text]")].map((s) => ({ n: s.querySelectorAll("text").length, px: parseFloat(getComputedStyle(s.querySelector("text")).fontSize) })).sort((a, b) => b.px - a.px);
+    const headLines = heads[0]?.n ?? 0, headPx = heads[0]?.px ?? 0;
     const open = rel(document.querySelector("[data-qa=open]"));
-    return { glyphs, marks, open };
+    return { glyphs, marks, open, headLines, headPx };
   }, { W, H, M });
   const issues = [];
   const ov = (a, c, pad = 0) => a.x < c.x + c.w + pad && c.x < a.x + a.w + pad && a.y < c.y + c.h + pad && c.y < a.y + a.h + pad;
   const inside = (a, c, tol = 2) => a.x >= c.x - tol && a.y >= c.y - tol && a.x + a.w <= c.x + c.w + tol && a.y + a.h <= c.y + c.h + tol;
   const safe = { x: M, y: M * 0.6, w: W - 2 * M, h: H - M * 1.2 };
   if (r.glyphs.length > 2) issues.push(`${r.glyphs.length} text sections (max 2)`);
+  if (r.headPx && r.headPx < (f === "landscape" ? 72 : 96)) issues.push(`headline set at ${r.headPx}px (min ${f === "landscape" ? 72 : 96}): shorten the copy, don't shrink the type`);
+  if (r.headLines > (f === "landscape" ? 2 : 3)) issues.push(`headline has ${r.headLines} lines (max ${f === "landscape" ? 2 : 3})`);
   r.glyphs.forEach((g, i) => { if (!inside(g, r.open)) issues.push(`text ${i + 1} spills out of the device opening`); if (!inside(g, safe)) issues.push(`text ${i + 1} outside the safe margin`); });
   for (let i = 0; i < r.glyphs.length; i++) for (let j = i + 1; j < r.glyphs.length; j++) if (ov(r.glyphs[i], r.glyphs[j])) issues.push(`text ${i + 1} overlaps text ${j + 1}`);
   r.marks.forEach((m) => { r.glyphs.forEach((g, i) => { if (ov(m, g, 8)) issues.push(`wordmark touches text ${i + 1}`); }); if (!inside(m, { x: 0, y: 0, w: W, h: H }) || m.y < 24 || m.y + m.h > H - 24) issues.push("wordmark too close to the edge"); });

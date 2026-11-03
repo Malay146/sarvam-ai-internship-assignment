@@ -87,7 +87,7 @@
       "treatment": "white",
       "mark": "inside",
       "titleStyle": "serif",
-      "primary": "Message a teammate like a colleague",
+      "primary": "Message it like a colleague",
       "secondary": "Indus Cowork, in Slack and Indus Chat",
       "secondaryPlace": "below"
     }
@@ -105,8 +105,8 @@
       "treatment": "white",
       "mark": "inside",
       "titleStyle": "sans",
-      "primary": "Built on Sarvam's own models",
-      "secondary": "With data residency in India",
+      "primary": "Sarvam's own models",
+      "secondary": "Indus Cowork, with data residency in India",
       "secondaryPlace": "below"
     }
   },

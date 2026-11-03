@@ -113,7 +113,7 @@ Use only these claims.
 | Card title | 15 characters | 1 line |
 | Card description | 54–58 characters | 2 lines; siblings ±4 characters |
 | Lead | 160 characters | ≤ 4 lines on phone |
-| Banner headline | 8 words / 40 characters | ≤ 3 lines (Meta), ≤ 2 lines (LinkedIn) |
+| Banner headline | 8 words / 40 characters; ~26 characters when it sits inside a shape on LinkedIn | ≤ 3 lines (Meta), ≤ 2 lines (LinkedIn), at full size |
 | Banner subhead | 70 characters | 1–2 lines |
 | Eyebrow | 24 characters | uppercase via CSS, written in sentence case |
 

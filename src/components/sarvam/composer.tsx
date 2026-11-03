@@ -63,18 +63,18 @@ const EDITORIAL = new Set<Device>(["spectrum"]);
 
 export const SITUATIONS: Record<Situation, BannerSpec> = {
   launch: { situation: "launch", background: "saffron-rose", device: "medallion-glow", shape: "Onion lantern", treatment: "white", mark: "inside", titleStyle: "sans", primary: "Indus Cowork", secondary: "An AI teammate that finishes the work", secondaryPlace: "below" },
-  announcement: { situation: "announcement", background: "dusk", device: "gateway-echo", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Message a teammate like a colleague", secondary: "Indus Cowork, in Slack and Indus Chat", secondaryPlace: "below" },
+  announcement: { situation: "announcement", background: "dusk", device: "gateway-echo", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Message it like a colleague", secondary: "Indus Cowork, in Slack and Indus Chat", secondaryPlace: "below" },
   milestone: { situation: "milestone", background: "night", device: "medallion-glow", shape: "Scalloped medallion", treatment: "gold", mark: "bottom", titleStyle: "serif", primary: "100+", primaryIsNumber: true, secondary: "apps your teammates can work in", secondaryPlace: "below" },
   funding: { situation: "funding", background: "olive", device: "medallion-glow", shape: "Onion lantern", treatment: "gold", mark: "inside", titleStyle: "serif", primary: "$300 Million", primaryIsNumber: true, secondary: "Announcing Series B", secondaryPlace: "above" },
   event: { situation: "event", background: "spring", device: "gloss", treatment: "indigo", mark: "top", titleStyle: "serif", primary: "Build your first teammate", secondary: "A live Indus Cowork session", secondaryPlace: "below" },
-  story: { situation: "story", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
-  partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
+  story: { situation: "story", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Your colleague in Slack" },
+  partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster, together" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
   capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
-  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
+  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work first", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
   spectrum: { situation: "spectrum", background: "plain", device: "spectrum", rosette: "lens", rosetteSolid: true, treatment: "ink", mark: "top", titleStyle: "serif", primary: "Work that runs on schedule", secondary: "Indus Cowork teammates run scheduled tasks", secondaryPlace: "below" },
   sunrise: { situation: "sunrise", background: "plain", device: "spectrum", ornament: "lotus", place: "rise", petals: 7, horizon: "bottom", divider: "Scroll fan", treatment: "ink", mark: "top", titleStyle: "serif", primary: "Research, built in", secondary: "Indus Cowork searches the web for you", secondaryPlace: "below" },
-  mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
+  mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "top", titleStyle: "serif", primary: "AI for all from India" },
 };
 
 /* ── Carved layer palettes (radial core → edge per band). Brand ramps only. ── */
@@ -225,7 +225,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
     const preset = GATEWAY_PRESETS[name] ?? GATEWAY_PRESETS["Domed door"];
     const g = gatewayPath({ ...preset, bottom: "flat", notch: 0, frame: 0, aspect: land ? 0.82 : f === "square" ? 1.02 : 1.24 });
     // Sized by width so the opening is generous; anchored to the bottom edge.
-    const s = Math.min((land ? F.W * 0.5 : F.W * 0.66) / g.width, (F.H * 0.86) / g.height), w = g.width * s, h = g.height * s;
+    const s = Math.min((land ? F.W * 0.6 : F.W * 0.66) / g.width, (F.H * (land ? 0.94 : 0.86)) / g.height), w = g.width * s, h = g.height * s;
     const x = (F.W - w) / 2, y = F.H - h + 2;
     const d = fitPath(g, s, x, y);
     const open = innerRect(d, F.W / 2, y + h * (land ? 0.6 : 0.64), textAspect);
@@ -302,9 +302,9 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
       });
       return { layer: <>{one}</>, open: { x: F.W * 0.2, y: F.H * 0.2, w: F.W * 0.6, h: F.H * 0.6 }, lightInside: true };
     }
-    const unit = land ? 130 : 200;
+    const unit = land ? 118 : 200;
     const sides = [-1, 1];
-    const cx0 = land ? 200 : F.W / 2 - 230, cy0 = land ? F.H / 2 + 10 : F.H * (f === "portrait" ? 0.7 : 0.72);
+    const cx0 = land ? 150 : F.W / 2 - 230, cy0 = land ? F.H / 2 + 10 : F.H * (f === "portrait" ? 0.7 : 0.72);
     const els = sides.flatMap((side, si) => items.map(([key, palette, dx, dy, s], j) => {
       const [kind, name] = key.split(":");
       const geom = kind === "m" ? medallionPath(MEDALLION_PRESETS[name]) : flowerPath(FLOWER_PRESETS[name]);
@@ -314,7 +314,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _f
       const html = glossSVG(geom, palette, `${id}-g${si}${j}`).replace("<svg ", '<svg width="100%" height="100%" ');
       return <div key={`${si}-${j}`} aria-hidden style={{ position: "absolute", left: cx - size / 2, top: cy - size / 2, width: size, height: size }} dangerouslySetInnerHTML={{ __html: html }} />;
     }));
-    const open: Rect = land ? { x: 360, y: F.M, w: F.W - 720, h: F.H - F.M * 2 } : { x: F.M, y: F.M + 60, w: safe.w, h: cy0 - unit * 0.75 - F.M - 60 };
+    const open: Rect = land ? { x: 290, y: F.M, w: F.W - 580, h: F.H - F.M * 2 } : { x: F.M, y: F.M + 60, w: safe.w, h: cy0 - unit * 0.75 - F.M - 60 };
     return { layer: <>{els}</>, open, lightInside: true };
   }
   return { layer: null, open: { ...safe, y: safe.y + 40, h: safe.h - 40 }, lightInside: !DARK_BG.has(spec.background) };
@@ -636,11 +636,12 @@ function scriptMandalaDevice(spec: BannerSpec, F: Frame, id: string, beside: boo
   const R = beside ? Math.min(F.W * 0.5 - F.M * 0.5, F.H * 0.62) : (F.W - F.M * 3) / 2;
   const cx = F.W / 2, cy = F.H / 2;
   const fs = R * 0.075, ink = dark ? "#ffffff" : PAL[spec.background].shadow;
-  const rings = [
-    { r: R - fs * 0.9, n: 18, op: 0.42 },
-    { r: R * 0.79 - fs * 0.6, n: 13, op: 0.62 },
-  ];
-  const disc = R * 0.6;
+  // Meta holds the headline in the disc, so it keeps one ring of scripts and a larger disc (type stays large);
+  // LinkedIn (logomark in the centre) keeps both rings.
+  const rings = beside
+    ? [{ r: R - fs * 0.9, n: 18, op: 0.42 }, { r: R * 0.79 - fs * 0.6, n: 13, op: 0.62 }]
+    : [{ r: R - fs * 0.9, n: 18, op: 0.55 }];
+  const disc = R * (beside ? 0.6 : 0.76);
   const words = rings.flatMap(({ r, n, op }, ri) => Array.from({ length: n }, (_, i) => {
     const a = (360 / n) * i + (ri ? 360 / n / 2 : 0);
     const S = SCRIPT_WORDS[(i + ri * 4) % SCRIPT_WORDS.length];
@@ -650,7 +651,7 @@ function scriptMandalaDevice(spec: BannerSpec, F: Frame, id: string, beside: boo
   // Dots between words on the outer ring, circles between rings: the mandala's construction lines.
   const n0 = rings[0].n;
   const dots = Array.from({ length: n0 }, (_, i) => { const a = ((360 / n0) * (i + 0.5) * Math.PI) / 180; return <circle key={i} cx={cx + Math.sin(a) * rings[0].r} cy={cy - Math.cos(a) * rings[0].r} r={fs * 0.09} fill={ink} opacity={0.5} />; });
-  const lines = [R, R * 0.79 + fs * 0.25, (R * 0.79 + disc) / 2 + fs * 0.6].map((r, i) => <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={ink} strokeOpacity={0.3 - i * 0.05} strokeWidth={1.5} />);
+  const lines = (beside ? [R, R * 0.79 + fs * 0.25, (R * 0.79 + disc) / 2 + fs * 0.6] : [R, R - fs * 1.85]).map((r, i) => <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={ink} strokeOpacity={0.3 - i * 0.05} strokeWidth={1.5} />);
   const layer = (
     <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
       <defs>
@@ -722,7 +723,9 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   const centreMark = spec.device === "script-mandala" && layout !== "centered";   // the logomark already sits in the mandala's centre
   const markW = land ? 96 : 124, markSpace = !centreMark && (spec.mark === "top" || spec.mark === "inside") ? (land ? 52 : 72) : 0;
   const editorial = layout === "editorial";
-  const dev = layout === "centered" || editorial ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
+  // Split (LinkedIn): the text column is 56% so a headline holds two lines at full size (type never shrinks to obey the line cap).
+  const SPLIT = 0.56;
+  const dev = layout === "centered" || editorial ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * SPLIT, y: 0, w: F.W * (1 - SPLIT), h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
   const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id, layout !== "centered", format);
   // Editorial: one left column (≥ 1.5·M from the sides), anchored to the bottom of the space the device leaves.
   const edBottom = Math.min(D.open.y + D.open.h, F.H - F.M) - (spec.device === "spectrum" && D.open.y + D.open.h >= F.H - F.M * 2 ? (land ? 44 : 64) : 0);
@@ -730,7 +733,7 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   let open: Rect = editorial ? { x: edLeft, y: edTop, w: edRight - edLeft, h: edBottom - edTop }
     : layout === "centered" ? D.open
     // Split: an editorial column from the top (gradients lighten toward the bottom, so the text stays on the deep part).
-    : layout === "split" ? { x: F.M, y: F.M + markSpace + (markSpace ? 12 : 0), w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace - (markSpace ? 12 : 0) }
+    : layout === "split" ? { x: F.M, y: F.M + markSpace + (markSpace ? 12 : 0), w: F.W * SPLIT - F.M - 16, h: F.H - F.M * 2 - markSpace - (markSpace ? 12 : 0) }
     : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
   const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && spec.device !== "arch-window" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
   const lightInside = layout === "centered" ? D.lightInside : !DARK_BG.has(spec.background);
@@ -747,7 +750,8 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
     const ps = base.p * k, ss = Math.max(base.s * k, land ? 20 : 28);   // the supporting line never drops below its floor, so measure it at the floor
     const cw = ps * charW(pFont, pWeight, spec.primary);
     const plines = balanceLines(spec.primary, Math.max(4, Math.floor(open.w / cw)));
-    const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > 3 ? 99 : plines.length;   // too wide, or more than 3 lines → too big
+    const maxLines = land ? 2 : 3;                                // LinkedIn: the headline is always ≤ 2 lines; Meta ≤ 3
+    const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > maxLines ? 99 : plines.length;   // too wide, or too many lines → too big
     const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
     const markH = spec.mark === "inside" && layout === "centered" ? (spec.logo === "logomark" ? markW * 0.55 : land ? 16 : 20) + base.gap * 0.7 : 0;
     const divH = spec.divider ? dividerW * (55 / 400) + base.gap : 0;
