@@ -370,4 +370,6 @@ export { CampaignBanner, ProductBanner, CommunityBanner, GRID } from "./banners"
 export function HeroGlow({ height = 640 }: { height?: number }) {
   return <div className="sr-hero-glow" style={{ height }} aria-hidden><div className="sr-hero-glow__sun sr-gradient-sun" /></div>;
 }
-export { BANNERS, sizeOf } from "./banner-set";
+export { BANNER_BRIEFS, sizeOfFormat, type BannerEntry } from "./banner-set";
+export { StyledText } from "./StyledText";
+export { Banner, SITUATIONS, BACKGROUNDS, DEVICES, TREATMENTS, shapesFor, type BannerSpec, type Situation } from "./composer";

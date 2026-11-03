@@ -1,6 +1,8 @@
 # Recipe · Meta banner (Instagram / Facebook)
 
 Formats: **1080×1080** (square, 1:1) and **1080×1350** (portrait, 4:5). Export PNG at exactly these pixel sizes.
+> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+
 Read first: `expressions.md` (pick one), `voice.md` §5–6 (facts, budgets), `logo.md` §1 (placement).
 
 ---

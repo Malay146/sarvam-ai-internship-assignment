@@ -1,6 +1,8 @@
 # Recipe · LinkedIn banner (single image post)
 
 Format: **1200×627** (≈1.91:1). Export PNG at exactly this size.
+> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+
 Read first: `expressions.md`, `voice.md` §5–6, `logo.md` §1, and `meta-banner.md` (same layouts, rearranged for landscape).
 
 ---

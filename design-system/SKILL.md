@@ -18,8 +18,9 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 
 | Task | Read |
 |---|---|
-| Meta banner (1080×1080 / 1080×1350) | `expressions.md` → `recipes/meta-banner.md` → `voice.md` → `logo.md` §1 |
-| LinkedIn banner (1200×627) | `expressions.md` → `recipes/linkedin-banner.md` → `voice.md` → `logo.md` §1 |
+| Any banner (Meta / LinkedIn), from a subject or a reference | `recipes/banner-builder.md` (+ `/banners/make`, `.claude/skills/sarvam-banner`) → `voice.md` |
+| Meta banner grid details | `recipes/meta-banner.md` |
+| LinkedIn banner grid details | `recipes/linkedin-banner.md` |
 | Landing page / web section | `recipes/landing-page.md` → `layout.md` → `components.md` → `typography.md` |
 | New component | `components.md` §0–3 → `layout.md` §5 (siblings) → `tokens.md` |
 | Illustration, pattern, gradient art | `imagery.md` → `tokens.md` §2 → `/studio` (`src/lib/shapes.ts`) |
@@ -38,6 +39,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `imagery.md` | Gradient fields, gateways / medallions / flowers, emblems, motifs, dividers, product UI, photography, composition recipes |
 | `logo.md` | Wordmark and logomark rules, clear space, minimum sizes, banner placement, misuse, co-branding |
 | `voice.md` | Personality, headline patterns, CTAs, banned words, the **Indus Cowork fact sheet**, copy budgets |
+| `recipes/banner-builder.md` | The prompt-less builder: spec, devices, treatments, two-text rule, situations, how-to |
 | `recipes/meta-banner.md` | Grid, three layouts, square adaptation, steps |
 | `recipes/linkedin-banner.md` | Landscape grid and layouts, feed legibility |
 | `recipes/landing-page.md` | Section order, per-breakpoint behaviour, quality gates, export |

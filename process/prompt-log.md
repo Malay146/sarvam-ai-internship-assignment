@@ -205,3 +205,19 @@ Entry format:
   - Where it lives (Community): "Your newest colleague lives in Slack." on lavender-dusk with a soft scalloped cloud.
 - Round-1 self-critique → fixes: the cloud was too soft to read as a shape (blur 0.06 → 0.032, centred on the text, stretched to a wide oval on landscape); the LinkedIn launch headline wrapped (text box 0.78 → 0.86 of the arch); the expressions page was previewing the square community banner in a 4:5 frame.
 - Screens: `process/screens/banners-r2/`.
+
+## 2026-11-04 — Banner system rebuilt: prompt-less builder, two-text rule, carved devices, styled type
+- Prompts (verbatim, in order): "I don't like the plans banner so let's improve it. Others are also mediocre. What if I want to generate the images in a way where I will give you a subject and based on it you make it for a launch product, for a campaign, we hit a milestone, or we get a funding round?… check the images. They have text styling also, like text having a gradient, inner shadows… Right now the things we have made feel like the website only." · "they are using their company logo very minimally… the gateway very clearly and properly, with a lot of detailing, inner shadows, layers… clean and sharper" · "Create a prompt or a system like that so whenever I give you a design accordingly, it designs the banner in that way." · "Still didn't like it. Create a separate page for the banners where we can edit… We don't need that mono text and the plans one should not be there… a reusable type of prompt-less banner-type thing to create different types of effects and different types of banners according to the situations." · "the text should be less and there should not be more than two different sections of text… two types of header title styling… follow that" · "Remove these [INTRODUCING pill]" · "Make sure that in each and every format nothing is overlapping… properly structured."
+- Studied text effects in Sarvam posts: gold gradient "$300 Million" + grey-gold label; two-tone indigo "Champions Program"; white lifted "Sarvam 30B"; bold sans "Knowledge Fabric".
+- Built:
+  - `StyledText` (SVG gradient fill + inner shadow + top highlight + lift; white / gold / goldMute / indigo / ink).
+  - Carved layer stacks (nested filled gateways/medallions with radial core→edge bands, cast shadows, crisp rims, lit doorway or cream window).
+  - `composer.tsx`: background × device × shape × treatment × title style × wordmark × ≤2 text, with auto-fit per format.
+  - `/banners/make` builder with a dev-only Save & export API.
+  - `banners/briefs.json` as the single source; `check-banners.mjs` QA; `recipes/banner-builder.md`; `.claude/skills/sarvam-banner`.
+- Iterations:
+  - v3 templates (launch/campaign/milestone/funding) → the campaign "plans" banner was rejected (card ghosting, faint second line, a random gloss flower) and later dropped entirely.
+  - Pills and mono text removed.
+  - Moved from fixed templates to a composable builder.
+  - QA v1: 7/18 situation×format combos failed (text spilling out of openings, overlaps) → added fitting (scale type to the opening's height and width, conservative glyph widths, digits wider, spacing that accounts for the effect padding) → 18/18 + 6/6 saved banners PASS.
+- Current set: launch (carved gateway, sans), connectors milestone (carved medallion, gold 100+), slack story (cloud, serif). Screens: `process/screens/banners-r4/`.

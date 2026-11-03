@@ -455,3 +455,6 @@ a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: 
 .sr-hero-glow::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 70%, var(--color-sf) 100%); }
 .sr-under-nav { position: relative; padding-top: 64px; }
 .sr-under-nav > *:not(.sr-hero-glow) { position: relative; z-index: 1; }
+
+/* Mocks inside banner art are fully opaque (no see-through when cards stack) */
+[data-banner] .sr-mock { background: var(--color-sr-white); backdrop-filter: none; }

@@ -12,9 +12,10 @@ Generated from `design-system/` by `scripts/build-design-md.mjs`. Do not edit by
 7. imagery.md
 8. logo.md
 9. voice.md
-10. recipes/meta-banner.md
-11. recipes/linkedin-banner.md
-12. recipes/landing-page.md
+10. recipes/banner-builder.md
+11. recipes/meta-banner.md
+12. recipes/linkedin-banner.md
+13. recipes/landing-page.md
 
 
 ---
@@ -36,8 +37,9 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 
 | Task | Read |
 |---|---|
-| Meta banner (1080×1080 / 1080×1350) | `expressions.md` → `recipes/meta-banner.md` → `voice.md` → `logo.md` §1 |
-| LinkedIn banner (1200×627) | `expressions.md` → `recipes/linkedin-banner.md` → `voice.md` → `logo.md` §1 |
+| Any banner (Meta / LinkedIn), from a subject or a reference | `recipes/banner-builder.md` (+ `/banners/make`, `.claude/skills/sarvam-banner`) → `voice.md` |
+| Meta banner grid details | `recipes/meta-banner.md` |
+| LinkedIn banner grid details | `recipes/linkedin-banner.md` |
 | Landing page / web section | `recipes/landing-page.md` → `layout.md` → `components.md` → `typography.md` |
 | New component | `components.md` §0–3 → `layout.md` §5 (siblings) → `tokens.md` |
 | Illustration, pattern, gradient art | `imagery.md` → `tokens.md` §2 → `/studio` (`src/lib/shapes.ts`) |
@@ -56,6 +58,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `imagery.md` | Gradient fields, gateways / medallions / flowers, emblems, motifs, dividers, product UI, photography, composition recipes |
 | `logo.md` | Wordmark and logomark rules, clear space, minimum sizes, banner placement, misuse, co-branding |
 | `voice.md` | Personality, headline patterns, CTAs, banned words, the **Indus Cowork fact sheet**, copy budgets |
+| `recipes/banner-builder.md` | The prompt-less builder: spec, devices, treatments, two-text rule, situations, how-to |
 | `recipes/meta-banner.md` | Grid, three layouts, square adaptation, steps |
 | `recipes/linkedin-banner.md` | Landscape grid and layouts, feed legibility |
 | `recipes/landing-page.md` | Section order, per-breakpoint behaviour, quality gates, export |
@@ -1913,10 +1916,89 @@ Use only these claims.
 
 ---
 
+<!-- recipes/banner-builder.md -->
+## Recipe · Banner builder (prompt-less)
+
+Every Sarvam banner is a **composition of five choices + at most two lines of text**. No prompt writing: pick the parts, the builder renders Meta portrait (1080×1350), Meta square (1080×1080) and LinkedIn (1200×627) at once, fits the type to each format, and exports exact PNGs.
+
+- Live tool: **`/banners/make`** · Engine: `src/components/sarvam/composer.tsx` · Saved set: `banners/briefs.json` · Export: `node scripts/export-banners.mjs` · QA: `node scripts/check-banners.mjs situations|set`
+- Text effects: `src/components/sarvam/StyledText.tsx` · Shapes: `/studio` (`src/lib/shapes.ts`)
+
+---
+
+### 1. The spec
+
+```json
+{
+  "background": "saffron-rose",     // one gradient (tokens.md §2, §2.9) or "plain"
+  "device": "gateway-carved",       // the single hero device
+  "shape": "Domed door",            // studio preset for gateway/medallion devices
+  "treatment": "white",             // white | gold | indigo | ink
+  "titleStyle": "sans",             // sans (bold launches/research) | serif (stories, programs, numbers)
+  "mark": "inside",                 // inside the device | top | bottom. Always small (124px / 96px)
+  "primary": "Indus Cowork",        // the headline, or a number
+  "primaryIsNumber": false,
+  "secondary": "An AI teammate that finishes the work",   // optional, the ONLY other text
+  "secondaryPlace": "below"         // above | below
+}
+```
+
+### 2. Rules (enforced by the engine + QA)
+
+1. **Two text sections, maximum:** one primary + one optional secondary. No eyebrows, pills, mono labels, CTAs or URLs on the art (put those in the post caption).
+2. **Two headline styles** (from Sarvam's posts):
+   - **sans:** General Sans 600, tight. For launches, product names and research titles ("Knowledge Fabric for Agents", "Sarvam 30B").
+   - **serif:** Gambetta 400. For stories, programs, statements and numbers ("Champions Program", "$300 Million").
+3. **Text treatments** (StyledText = gradient fill + inner shadow + top highlight + lift):
+   - **white:** emboss on saturated grounds
+   - **gold:** numbers and money
+   - **indigo:** a two-tone deep → periwinkle, on light grounds
+   - **ink:** on light grounds
+4. **One device:**
+
+   | Device | What it is | Best for |
+   |---|---|---|
+   | `gateway-carved` | 4 nested filled gateway layers, cast shadows, crisp rims, lit doorway | Launches |
+   | `medallion-carved` | 4 nested medallion layers, centred | Milestones |
+   | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
+   | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
+   | `cloud` | Soft scalloped glow | Stories, quotes |
+   | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `plain` | Gradient only | Pure type statements |
+
+5. **Wordmark:** the official file, small (124px on Meta, 96px on LinkedIn), black or white by ground. Inside the device above the text, or top/bottom centre. Never the logomark.
+6. **Fit:** type scales down per format until the text fits the device opening (never below 60%). Long words never spill.
+7. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
+
+### 3. Situations (starting presets; change any part)
+
+| Situation | Background | Device | Treatment · style | Text |
+|---|---|---|---|---|
+| **launch** | saffron-rose | gateway-carved | white · sans | Product name + one line |
+| **announcement** | dusk | gateway-echo | white · serif | Statement + one line |
+| **milestone** | night | medallion-carved | gold · serif | Number + label |
+| **funding** | olive | gateway-window | gold · serif | "Announcing …" above + amount |
+| **event** | spring | gloss | indigo · serif | Event name + date/line |
+| **story** | lavender-dusk | cloud | ink · serif | One sentence |
+
+### 4. How to make a banner (for an AI agent or a person)
+
+1. **From a subject:** choose the situation from what happened (launched, crossed a number, raised, hosting, a customer). Write the primary (≤ 6 words, or a number) and at most one secondary (≤ 60 characters) from `voice.md` §5 facts only.
+2. **From a reference design:** identify its device, ground, headline style and text count, then map each to the nearest option above. If it needs something the builder lacks, add it to the engine (new device or shape preset) rather than hand-drawing one banner.
+3. Set the spec in `/banners/make` (or write it into `banners/briefs.json`).
+4. Check all three formats; run `node scripts/check-banners.mjs set`.
+5. **Save & export** (or run `node scripts/export-banners.mjs <id>`). Review the PNGs at 100% and at phone size.
+6. Log the brief, the choices and any changes in `process/prompt-log.md`.
+
+
+---
+
 <!-- recipes/meta-banner.md -->
 ## Recipe · Meta banner (Instagram / Facebook)
 
 Formats: **1080×1080** (square, 1:1) and **1080×1350** (portrait, 4:5). Export PNG at exactly these pixel sizes.
+> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+
 Read first: `expressions.md` (pick one), `voice.md` §5–6 (facts, budgets), `logo.md` §1 (placement).
 
 ---
@@ -2006,6 +2088,8 @@ Reference component: `CommunityBanner`.
 ## Recipe · LinkedIn banner (single image post)
 
 Format: **1200×627** (≈1.91:1). Export PNG at exactly this size.
+> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+
 Read first: `expressions.md`, `voice.md` §5–6, `logo.md` §1, and `meta-banner.md` (same layouts, rearranged for landscape).
 
 ---

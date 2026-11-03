@@ -1,0 +1,221 @@
+// Banner composer: a banner = background + device + text treatment + content. No prompts; every part is a choice.
+// Situations are presets of these choices. Spec: design-system/recipes/banner-builder.md.
+import type { CSSProperties, ReactNode } from "react";
+import {
+  FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath,
+  type GatewayParams, type GlossPalette,
+} from "@/lib/shapes";
+import { StyledText, balanceLines, charW, type TextFill } from "./StyledText";
+import { FORMATS, type BannerFormat } from "./banners";
+
+/* ── Vocabulary ── */
+export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
+export type Device = "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "cloud" | "gloss" | "plain";
+export type Treatment = "white" | "gold" | "indigo" | "ink";
+export type MarkPlace = "inside" | "top" | "bottom";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story";
+export type TitleStyle = "serif" | "sans";
+/** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
+export type BannerSpec = {
+  situation?: Situation;
+  background: Background; device: Device; shape?: string; treatment: Treatment; mark: MarkPlace;
+  primary: string;                 // headline, or a number when primaryIsNumber
+  primaryIsNumber?: boolean;
+  titleStyle: TitleStyle;          // serif = display (stories, programs, numbers) · sans = bold (launches, research)
+  secondary?: string;              // the only other text
+  secondaryPlace?: "above" | "below";
+};
+
+export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
+export const DEVICES: Device[] = ["gateway-carved", "medallion-carved", "gateway-window", "gateway-echo", "cloud", "gloss", "plain"];
+export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
+export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
+export const shapesFor = (d: Device) => (d === "medallion-carved" ? Object.keys(MEDALLION_PRESETS) : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : []);
+
+export const SITUATIONS: Record<Situation, BannerSpec> = {
+  launch: { situation: "launch", background: "saffron-rose", device: "gateway-carved", shape: "Domed door", treatment: "white", mark: "inside", titleStyle: "sans", primary: "Indus Cowork", secondary: "An AI teammate that finishes the work", secondaryPlace: "below" },
+  announcement: { situation: "announcement", background: "dusk", device: "gateway-echo", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Message a teammate like a colleague", secondary: "Indus Cowork, in Slack and Indus Chat", secondaryPlace: "below" },
+  milestone: { situation: "milestone", background: "night", device: "medallion-carved", shape: "Scalloped medallion", treatment: "gold", mark: "bottom", titleStyle: "serif", primary: "100+", primaryIsNumber: true, secondary: "apps your teammates can work in", secondaryPlace: "below" },
+  funding: { situation: "funding", background: "olive", device: "gateway-window", shape: "Framed jharokha", treatment: "gold", mark: "inside", titleStyle: "serif", primary: "$300 Million", primaryIsNumber: true, secondary: "Announcing Series B", secondaryPlace: "above" },
+  event: { situation: "event", background: "spring", device: "gloss", treatment: "indigo", mark: "top", titleStyle: "serif", primary: "Build your first teammate", secondary: "A live Indus Cowork session", secondaryPlace: "below" },
+  story: { situation: "story", background: "lavender-dusk", device: "cloud", treatment: "ink", mark: "top", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
+};
+
+/* ── Carved layer palettes (radial core → edge per band). Brand ramps only. ── */
+type Pal = { core: string; mid: string; edge: string; shadow: string; rim: string };
+const PAL: Record<Background, Pal> = {
+  "saffron-rose": { core: "#a13060", mid: "#c4706e", edge: "#f1c480", shadow: "#611c35", rim: "#ffe8b7" },
+  dusk: { core: "#1c273e", mid: "#4a649c", edge: "#c8bfcc", shadow: "#11115b", rim: "#e8effc" },
+  dawn: { core: "#ab4b0f", mid: "#f57613", edge: "#faac57", shadow: "#682906", rim: "#fff0cf" },
+  "indigo-glow": { core: "#3333cc", mid: "#7c71d0", edge: "#e2b6b7", shadow: "#11115b", rim: "#f9d5e1" },
+  night: { core: "#13121e", mid: "#30344a", edge: "#899bd2", shadow: "#000000", rim: "#d2dff9" },
+  olive: { core: "#486523", mid: "#72842a", edge: "#c2a12d", shadow: "#263d0e", rim: "#ffe8b7" },
+  meadow: { core: "#79af3f", mid: "#a7cf97", edge: "#b6cce1", shadow: "#385418", rim: "#ffffff" },
+  spring: { core: "#98c659", mid: "#d9dfb3", edge: "#f2f6e8", shadow: "#496d21", rim: "#ffffff" },
+  "lavender-dusk": { core: "#5957c4", mid: "#aca1cd", edge: "#f1f4e9", shadow: "#212191", rim: "#ffffff" },
+  plain: { core: "#3333cc", mid: "#a7c0f1", edge: "#e8effc", shadow: "#212191", rim: "#ffffff" },
+};
+const bgClass = (b: Background) => (b === "plain" ? "" : `sr-gradient-${b}`);
+
+type Geom = { d: string; width: number; height: number };
+const place = (d: string, s: number, tx: number, ty: number) => { let i = 0; return d.replace(/-?\d+(\.\d+)?/g, (m) => String(+((i++ % 2 === 0 ? +m * s + tx : +m * s + ty).toFixed(2)))); };
+type Rect = { x: number; y: number; w: number; h: number };
+
+/** Carved stack: nested filled layers with cast shadows and crisp rims; innermost lit or a cream window. */
+function Carved({ id, geom, W, H, cx, anchorY, innerW, step, count, pal, anchor, inner }: {
+  id: string; geom: Geom; W: number; H: number; cx: number; anchorY: number; innerW: number; step: number; count: number; pal: Pal; anchor: "bottom" | "center"; inner: "glow" | "window";
+}) {
+  const k = (s: string) => `${s}-${id}`;
+  const layers = Array.from({ length: count }, (_, i) => count - 1 - i).map((i) => {
+    const w = innerW + i * step, h = (geom.height / geom.width) * w, s = w / geom.width;
+    return { i, w, h, d: place(geom.d, s, cx - w / 2, anchor === "bottom" ? anchorY - h : anchorY - h / 2) };
+  });
+  return (
+    <svg width={W} height={H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+      <defs>
+        {layers.map((L) => (
+          <radialGradient key={L.i} id={k(`g${L.i}`)} gradientUnits="userSpaceOnUse" cx={cx} cy={anchorY} r={Math.max(L.w, L.h) * (anchor === "bottom" ? 0.95 : 0.6)}>
+            <stop offset="0" stopColor={pal.core} /><stop offset="0.6" stopColor={pal.mid} /><stop offset="1" stopColor={pal.edge} />
+          </radialGradient>
+        ))}
+        <radialGradient id={k("lit")} cx="0.5" cy={anchor === "bottom" ? 0.62 : 0.5} r="0.62">
+          <stop offset="0" stopColor={inner === "window" ? "#fffbf3" : "#ffffff"} stopOpacity={inner === "window" ? 1 : 0.2} />
+          <stop offset="1" stopColor={inner === "window" ? "#f2e4c2" : "#ffffff"} stopOpacity={inner === "window" ? 1 : 0} />
+        </radialGradient>
+        <filter id={k("cast")} x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="0" stdDeviation="14" floodColor={pal.shadow} floodOpacity="0.42" />
+          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor={pal.shadow} floodOpacity="0.25" />
+        </filter>
+        <filter id={k("win")} x="-10%" y="-10%" width="120%" height="120%">
+          <feOffset dy="6" in="SourceAlpha" result="o" /><feGaussianBlur in="o" stdDeviation="9" result="b" />
+          <feComposite in="b" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="in" />
+          <feFlood floodColor={pal.shadow} floodOpacity="0.4" /><feComposite in2="in" operator="in" result="t" />
+          <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="t" /></feMerge>
+        </filter>
+      </defs>
+      {layers.map((L) => (
+        <g key={L.i}>
+          <path d={L.d} fill={`url(#${k(`g${L.i}`)})`} filter={`url(#${k("cast")})`} />
+          <path d={L.d} fill="none" stroke={pal.rim} strokeOpacity={0.55} strokeWidth={1.25} />
+          {L.i === 0 && <path d={L.d} fill={`url(#${k("lit")})`} filter={inner === "window" ? `url(#${k("win")})` : undefined} />}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/** Device layer + the opening (where the text block goes). */
+function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: ReactNode; open: Rect; lightInside: boolean } {
+  const F = FORMATS[f], land = f === "landscape";
+  const pal = PAL[spec.background];
+  const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
+  if (spec.device === "gateway-carved" || spec.device === "gateway-window" || spec.device === "gateway-echo") {
+    const window = spec.device === "gateway-window";
+    const base: GatewayParams = GATEWAY_PRESETS[spec.shape ?? (window ? "Framed jharokha" : "Domed door")] ?? GATEWAY_PRESETS["Domed door"];
+    const params: GatewayParams = { ...base, bottom: "flat", notch: 0, frame: 0, aspect: land ? 0.88 : f === "square" ? 1.12 : 1.42 };
+    const g = gatewayPath(params);
+    const innerW = window ? (land ? 700 : 760) : land ? 640 : 680;
+    const step = window ? (land ? 110 : 130) : 150;
+    const innerH = (g.height / g.width) * innerW;
+    const bodyTop = F.H - innerH + innerH * params.shoulder;
+    const open: Rect = { x: (F.W - innerW * 0.8) / 2, y: bodyTop, w: innerW * 0.8, h: F.H - bodyTop - (land ? 24 : 70) };
+    if (spec.device === "gateway-echo") {
+      const layer = (
+        <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+          {[0, 1, 2, 3, 4].map((i) => {
+            const w = innerW + i * 190, h = (g.height / g.width) * w;
+            return <path key={i} d={place(g.d, w / g.width, F.W / 2 - w / 2, F.H + 2 - h)} fill={i === 0 ? "rgb(255 255 255 / 0.08)" : "none"} stroke="#fff" strokeOpacity={0.62 - i * 0.11} strokeWidth={1.5} />;
+          })}
+        </svg>
+      );
+      return { layer, open, lightInside: false };
+    }
+    return { layer: <Carved id={id} geom={g} W={F.W} H={F.H} cx={F.W / 2} anchorY={F.H + 4} innerW={innerW} step={step} count={window ? 3 : 4} pal={pal} anchor="bottom" inner={window ? "window" : "glow"} />, open, lightInside: window };
+  }
+  if (spec.device === "medallion-carved") {
+    const g = medallionPath(MEDALLION_PRESETS[spec.shape ?? "Scalloped medallion"] ?? MEDALLION_PRESETS["Scalloped medallion"]);
+    const innerW = land ? 440 : f === "square" ? 600 : 640, cy = land ? F.H / 2 + 4 : F.H / 2 + 20;
+    const innerH = (g.height / g.width) * innerW;
+    const open: Rect = { x: (F.W - innerW * 0.8) / 2, y: cy - innerH * 0.4, w: innerW * 0.8, h: innerH * 0.8 };
+    return { layer: <Carved id={id} geom={g} W={F.W} H={F.H} cx={F.W / 2} anchorY={cy} innerW={innerW} step={land ? 150 : 170} count={4} pal={pal} anchor="center" inner="glow" />, open, lightInside: false };
+  }
+  if (spec.device === "cloud") {
+    const cloud = cloudSVG(medallionPath(MEDALLION_PRESETS["Scalloped medallion"]), "#f7efed", 0.032);
+    const box: CSSProperties = land ? { left: 110, right: 110, top: -20, bottom: -50 } : f === "portrait" ? { left: -30, right: -30, top: 250, bottom: 70 } : { left: 20, right: 20, top: 120, bottom: 0 };
+    const html = cloud.replace("<svg ", `<svg width="100%" height="100%" ${land ? 'preserveAspectRatio="none" ' : ""}`).replace('preserveAspectRatio="xMidYMid meet"', land ? "" : 'preserveAspectRatio="xMidYMid meet"');
+    return { layer: <div aria-hidden style={{ position: "absolute", ...box }} dangerouslySetInnerHTML={{ __html: html }} />, open: { ...safe, y: safe.y + 60, h: safe.h - 60 }, lightInside: true };
+  }
+  if (spec.device === "gloss") {
+    // A mirrored cluster of glossy studio shapes (Sarvam's waitlist post): below the text on portrait/square, flanking on landscape.
+    const items: [string, GlossPalette, number, number, number][] = [
+      ["m:Scalloped medallion", "periwinkle", 0, 0, 1], ["f:Rosette", "rose", -0.55, 0.42, 0.55], ["f:Chakra flower", "indigo", 0.62, 0.5, 0.48],
+      ["m:Ogee cross", "leaf", -0.2, 0.86, 0.42], ["f:Lotus", "saffron", 0.5, -0.38, 0.36],
+    ];
+    const unit = land ? 120 : 160;
+    const sides = [-1, 1];
+    const cx0 = land ? 200 : F.W / 2 - 230, cy0 = land ? F.H / 2 + 10 : F.H - (f === "portrait" ? 330 : 260);
+    const els = sides.flatMap((side, si) => items.map(([key, palette, dx, dy, s], j) => {
+      const [kind, name] = key.split(":");
+      const geom = kind === "m" ? medallionPath(MEDALLION_PRESETS[name]) : flowerPath(FLOWER_PRESETS[name]);
+      const size = unit * s * 1.2;
+      const cx = (land ? (side < 0 ? cx0 : F.W - cx0) : F.W / 2 + side * 230) + side * dx * unit;
+      const cy = cy0 + dy * unit;
+      const html = glossSVG(geom, palette, `${id}-g${si}${j}`).replace("<svg ", '<svg width="100%" height="100%" ');
+      return <div key={`${si}-${j}`} aria-hidden style={{ position: "absolute", left: cx - size / 2, top: cy - size / 2, width: size, height: size }} dangerouslySetInnerHTML={{ __html: html }} />;
+    }));
+    const open: Rect = land ? { x: 360, y: F.M, w: F.W - 720, h: F.H - F.M * 2 } : { x: F.M, y: F.M + 40, w: safe.w, h: cy0 - unit - F.M - 40 };
+    return { layer: <>{els}</>, open, lightInside: true };
+  }
+  return { layer: null, open: { ...safe, y: safe.y + 40, h: safe.h - 40 }, lightInside: !DARK_BG.has(spec.background) };
+}
+
+function Mark({ tone, width, style }: { tone: "black" | "white"; width: number; style?: CSSProperties }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img data-qa="mark" src={`/brand/sarvam-wordmark-${tone}.svg`} alt="Sarvam" style={{ width, height: "auto", display: "block", ...style }} />;
+}
+
+const SECONDARY_FILL: Record<Treatment, TextFill> = { white: "white", gold: "goldMute", indigo: "indigo", ink: "ink" };
+
+export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
+  const F = FORMATS[format], land = format === "landscape";
+  const { layer, open, lightInside } = renderDevice(spec, format, id);
+  const onLight = lightInside || spec.treatment === "ink" || spec.treatment === "indigo";
+  const markW = land ? 96 : 124;
+  const num = !!spec.primaryIsNumber, sans = spec.titleStyle === "sans";
+  const base = land ? { p: num ? 150 : sans ? 64 : 70, s: num ? 30 : 24, gap: 16 } : format === "square" ? { p: num ? 230 : sans ? 88 : 98, s: num ? 44 : 32, gap: 24 } : { p: num ? 250 : sans ? 96 : 108, s: num ? 48 : 34, gap: 28 };
+  // Fit: shrink type until the block fits the opening (width via wrapping, height via measured lines). Never below 60%.
+  const pFont = sans ? "text" : "display", pWeight = sans ? 600 : 400;
+  const blockH = (k: number) => {
+    const ps = base.p * k, ss = base.s * k;
+    const cw = ps * charW(pFont, pWeight, spec.primary);
+    const plines = balanceLines(spec.primary, Math.max(4, Math.floor(open.w / cw)));
+    const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 ? 99 : plines.length;   // a word wider than the opening → too big
+    const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
+    const markH = spec.mark === "inside" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
+    return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.4 : 0);
+  };
+  let k = 1; while (k > 0.6 && blockH(k) > open.h * 0.92) k -= 0.04;
+  const S = { p: Math.round(base.p * k), s: Math.round(base.s * k), gap: base.gap };
+  const primary = (
+    <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment}
+      font={sans ? "text" : "display"} weight={sans ? 600 : 400} tracking={num ? -0.05 : sans ? -0.035 : -0.04} leading={sans ? 1.06 : 1.04} />
+  );
+  // Secondary: a number gets an elegant serif label; a headline gets a calm sans line.
+  const secondary = spec.secondary && (num
+    ? <StyledText data-qa="text" id={`${id}-s`} text={spec.secondary} width={open.w * 0.9} size={S.s} fill={spec.secondaryPlace === "above" ? SECONDARY_FILL[spec.treatment] : onLight ? "ink" : "white"} tracking={-0.02} leading={1.15} />
+    : <p data-qa="text" style={{ fontFamily: "var(--font-text)", fontSize: S.s * (land ? 1 : 0.94), lineHeight: 1.38, color: onLight ? "var(--color-tx-secondary)" : "rgb(255 255 255 / 0.92)", margin: 0, maxWidth: open.w * 0.92, textWrap: "balance" }}>{spec.secondary}</p>);
+  const markTone = DARK_BG.has(spec.background) ? "white" : "black";
+  return (
+    <div className={bgClass(spec.background)} data-banner={format} style={{ position: "relative", width: F.W, height: F.H, overflow: "hidden", background: spec.background === "plain" ? "var(--color-sf)" : undefined }}>
+      {layer}
+      {spec.mark === "top" && <Mark tone={markTone} width={markW} style={{ position: "absolute", top: F.M, left: (F.W - markW) / 2 }} />}
+      {spec.mark === "bottom" && <Mark tone={markTone} width={markW} style={{ position: "absolute", bottom: land ? 36 : F.M, left: (F.W - markW) / 2 }} />}
+      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: S.gap, textAlign: "center" }}>
+        {spec.mark === "inside" && <Mark tone={onLight ? "black" : "white"} width={markW} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
+        {spec.secondaryPlace === "above" && secondary}
+        {primary}
+        {spec.secondaryPlace !== "above" && secondary}
+      </div>
+    </div>
+  );
+}
