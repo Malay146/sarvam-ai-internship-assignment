@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  rosette?: "circles" | "lobes";   // spectrum device: the corner rosette (circles = the logomark's own construction)
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
 export const EMBLEM_ICONS = {
@@ -46,7 +47,7 @@ export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
 export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Quatrefoil", "Scalloped medallion", "Ogee cross"] as const;
-export const shapesFor = (d: Device) => (d === "spectrum" ? ["Ogee cross", "Scalloped medallion", "Eight-point star", "Quatrefoil"] : d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
+export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
 export const ARCH_SHAPES = ["Mihrab", "Domed door"];
 /** Devices that hold no text: the layout puts text beside them (split on landscape, stacked on portrait). */
 const BESIDE = new Set<Device>(["emblem", "arch-window"]);
@@ -322,35 +323,30 @@ function spectrumAt(t: number) {
   return "#" + h(a).map((v, j) => Math.round(v + (h(b)[j] - v) * u).toString(16).padStart(2, "0")).join("");
 }
 /** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
- *  The top-right corner holds a line medallion (nested true-offset outlines around a lotus line-motif), cropped by
- *  the corner and drawn in the same spectrum, so the art and the strip are one system. */
-function spectrumDevice(spec: BannerSpec, F: Frame, id: string, land: boolean): DeviceOut {
-  const k = (s: string) => `${s}-${id}`;
+ *  The top-right corner holds a rosette built the way Sarvam's logomark is built: ONE element repeated around a centre
+ *  (identical shape, identical 1.5px line, even rotation), each copy one hue of the spectrum, cropped by the corner. */
+function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean): DeviceOut {
   const h = land ? 8 : 12, y = F.H - F.M - h;
-  // Medallion: centred near the top-right corner, sized so the rings reach about half way across the frame.
-  const g = tight(medallionPath({ ...MEDALLION_PRESETS[spec.shape && spec.shape in MEDALLION_PRESETS ? spec.shape : "Ogee cross"], aspect: 1, frame: 0 }));
-  const R = land ? F.H * 0.3 : F.W * 0.3;
-  const cx = F.W - (land ? F.H * 0.22 : F.W * 0.2), cy = land ? F.H * 0.2 : F.W * 0.2;
-  const s = (R * 2) / Math.max(g.width, g.height);
-  const d = fitPath(g, s, cx - (g.width * s) / 2, cy - (g.height * s) / 2);
-  const rings = land ? [0, 0.09, 0.19, 0.31, 0.45] : [0, 0.09, 0.19, 0.31, 0.45, 0.62];   // landscape: one ring fewer, clear of the headline
-  const motif = motifPaths(MOTIF_PRESETS["Lotus"]).join("");
-  const mS = (R * 1.1) / 100;                                  // the motif spans ~55% of the medallion
+  const kind = spec.rosette ?? "circles";
+  const R = land ? F.H * 0.38 : F.W * 0.36;                     // rosette radius (the whole rosette spans 2R)
+  const cx = F.W - (land ? F.H * 0.16 : F.W * 0.14), cy = land ? F.H * 0.16 : F.W * 0.14;
+  const n = 12;
+  const els = Array.from({ length: n }, (_, i) => {
+    // hue by direction, mirror-symmetric: copies facing into the canvas (lower-left) are indigo, copies facing the corner (upper-right) orange
+    const a = (360 / n) * i, c = spectrumAt((1 - Math.cos(((a - 135) * Math.PI) / 180)) / 2);
+    if (kind === "circles") {
+      // the logomark's construction: equal circles whose centres sit on a ring, each passing through the centre
+      const r = R / 2, rad = (a * Math.PI) / 180;
+      return <circle key={i} cx={cx + Math.cos(rad) * r} cy={cy + Math.sin(rad) * r} r={r} stroke={c} />;
+    }
+    // lobes: equal rounded squares set out on a ring and turned to face the centre (the logomark's petals)
+    const sd = R * 0.62, rad = (a * Math.PI) / 180, px = cx + Math.cos(rad) * R * 0.5, py = cy + Math.sin(rad) * R * 0.5;
+    return <rect key={i} x={px - sd / 2} y={py - sd / 2} width={sd} height={sd} rx={sd * 0.3} transform={`rotate(${a + 45} ${px} ${py})`} stroke={c} />;
+  });
   const layer = (
     <>
       <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
-        <defs>
-          <radialGradient id={k("core")} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R}><stop offset="0" stopColor="#e8effc" /><stop offset="0.6" stopColor="#ecdff0" /><stop offset="1" stopColor="#fde3d2" /></radialGradient>
-          <radialGradient id={k("wash")} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R * 1.7}><stop offset="0" stopColor="#e8effc" stopOpacity="0.9" /><stop offset="1" stopColor="#e8effc" stopOpacity="0" /></radialGradient>
-        </defs>
-        {/* a faint periwinkle wash so the corner has depth without a blur on any line */}
-        <circle cx={cx} cy={cy} r={R * 1.7} fill={`url(#${k("wash")})`} />
-        {/* the core: a soft spectrum tint inside the medallion (periwinkle centre → peach edge), crisp-edged */}
-        <path d={d} fill={`url(#${k("core")})`} />
-        {/* dispersion: each ring one solid hue, stepping through the spectrum from the centre out (light through a prism) */}
-        {rings.map((o, i) => <OffsetLine key={o} id={k(`r${i}`)} d={d} off={R * o} lw={1.5} color={spectrumAt(i / (rings.length - 1))} opacity={1 - i * 0.06} />)}
-        <g transform={`translate(${cx} ${cy}) scale(${mS})`} fill="none" stroke="#3333cc" strokeWidth={1.5 / mS} strokeLinejoin="round"
-          style={{ transformBox: "view-box" }} dangerouslySetInnerHTML={{ __html: motif }} />
+        <g fill="none" strokeWidth={1.5} strokeLinejoin="round">{els}</g>
       </svg>
       <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />
     </>

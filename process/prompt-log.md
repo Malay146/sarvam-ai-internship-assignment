@@ -389,3 +389,18 @@ Entry format:
 - Change: each ring is now one solid hue, stepping through the spectrum from indigo (inner) to orange (outer), at near-full opacity (`spectrumAt(t)`). The rings read as light dispersing through a prism, and they match the strip below.
 - Added a crisp spectrum tint inside the core (periwinkle centre → peach edge), and the lotus motif is now in solid indigo.
 - Before / after: `process/screens/banners-simple/spectrum-gradient-before-after.png` (left: before, middle: rings only, right: rings + tinted core ✅). QA PASS, re-exported.
+
+## 2026-11-04 — Spectrum corner rebuilt as a logomark-style rosette
+- Prompt (verbatim): "but still it is not there. The patterns are also not consistent. They look so odd and awkward. Try to make it more proper. Match the Sarvam design sense and all that. Make it proper. It is not looking good."
+- Diagnosis:
+  - The rings were true offsets of the Ogee cross. Each offset rounds the corners more, so the rings drift from sharp (inside) to blobby (outside): inconsistent.
+  - The lotus motif (8 petals) had no relation to the 4-fold cross.
+  - The ring spacing grew unevenly.
+- Looked again at Sarvam's own geometry: the logomark is ONE element (a lobe / circle) repeated around a centre, and the Global Fintech Fest art is flat identical petals.
+- Rebuild: 12 equal circles, centres on a ring, all passing through the centre — the logomark's own construction. Every line is the same 1.5px. Each circle takes one spectrum hue by its direction (mirror-symmetric: indigo toward the canvas, orange toward the corner), so there's no colour seam.
+- Tried three constructions (`process/screens/banners-simple/spectrum-rosette-options.png`):
+  - circles ✅
+  - rounded squares sharing a centre: rejected, it reads as a spiral
+  - petals on a ring: kept as the `rosette: "lobes"` option
+- Fix after looking: on LinkedIn the rosette came close to "Prism" → R 0.38·H, pushed further into the corner. QA PASS, re-exported.
+- Rule added to banner-builder.md §6: ornaments are one identical element repeated by rotation, never offsets of a complex shape.
