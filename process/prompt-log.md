@@ -187,3 +187,12 @@ Entry format:
   - Measured with Chrome DevTools metrics: about 60 style recalcs/s even at idle. → Removed shimmer (background-position), pulse via pseudo-element opacity/scale (not box-shadow), progress via scaleX (not width), spinners rotate a wrapper span, `content-visibility: auto` on off-screen blocks. Emblem area idle recalcs: 60/s → 5/s.
   - Hover jank on /system: a trace showed SVG filters re-rasterizing every frame → shadow moved to a pre-rendered ::after (opacity only), art on its own layer. Raster during hover: 5,848ms → 161ms.
   - New scripts: check-perf.mjs, check-hover.mjs.
+
+## 2026-11-04 — Recipes, SKILL.md, single-file design.md
+- Prompt (verbatim): "yes we should continue now" (+ asked mid-turn: "are this three banners?" → answered: no, these are prototypes; the final banners are Indus-Cowork-only, generated from the recipes, refined in rounds and exported as PNG).
+- Wrote:
+  - `recipes/meta-banner.md`: shared grid (margin 72, wordmark 200×32 at 72, headline 96–104, sub 32, min text 22), the Instagram centre-crop rule, one layout per expression, square adaptation by rearranging, steps, don'ts.
+  - `recipes/linkedin-banner.md`: 1200×627 grid (margin 56, 12 columns, headline 60–72, sub 24, min 16), mobile-feed legibility at 0.3×, landscape layouts.
+  - `recipes/landing-page.md`: 12-section order mapped to components and expressions, per-breakpoint behaviour, quality gates, export.
+  - `SKILL.md`: an entry point with frontmatter, how to use it, a task → files routing table, a file index, non-negotiables.
+  - `scripts/build-design-md.mjs` → `design.md` (all files in one, ~125k characters) for tools that take a single file.
