@@ -141,8 +141,8 @@
       "treatment": "ink",
       "mark": "top",
       "titleStyle": "serif",
-      "primary": "Sarvam Prism",
-      "secondary": "Fast, accurate decisions in 44 ms",
+      "primary": "Fast, accurate decisions",
+      "secondary": "Sarvam Prism, across enterprise workflows",
       "secondaryPlace": "below",
       "situation": "launch",
       "rosette": "lens",
@@ -162,8 +162,8 @@
       "treatment": "ink",
       "mark": "top",
       "titleStyle": "serif",
-      "primary": "Sarvam Prism",
-      "secondary": "Fast, accurate decisions in 44 ms",
+      "primary": "Built on Sarvam 105B",
+      "secondary": "Sarvam Prism, a System One model",
       "secondaryPlace": "below",
       "situation": "launch"
     }
@@ -184,11 +184,12 @@
       "ornament": "lotus",
       "place": "rise",
       "petals": 7,
-      "primary": "Sarvam Prism",
-      "secondary": "Fast, accurate decisions in 44 ms",
+      "primary": "71.8",
+      "secondary": "Highest average score among decision models under 100 ms",
       "divider": "Scroll fan",
       "situation": "launch",
-      "horizon": "bottom"
+      "horizon": "bottom",
+      "primaryIsNumber": true
     }
   }
 ]

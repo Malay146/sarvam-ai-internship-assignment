@@ -15,7 +15,7 @@ export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "nig
 export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "spectrum" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "mission";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission" | "spectrum" | "sunrise";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -71,6 +71,9 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
   capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
+  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
+  spectrum: { situation: "spectrum", background: "plain", device: "spectrum", rosette: "lens", rosetteSolid: true, treatment: "ink", mark: "top", titleStyle: "serif", primary: "Work that runs on schedule", secondary: "Indus Cowork teammates run scheduled tasks", secondaryPlace: "below" },
+  sunrise: { situation: "sunrise", background: "plain", device: "spectrum", ornament: "lotus", place: "rise", petals: 7, horizon: "bottom", divider: "Scroll fan", treatment: "ink", mark: "top", titleStyle: "serif", primary: "Research, built in", secondary: "Indus Cowork searches the web for you", secondaryPlace: "below" },
   mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
 };
 
@@ -598,9 +601,10 @@ function archWindowDevice(spec: BannerSpec, F: Frame, id: string, pal: Pal): Dev
           {[0.035, 0.075].map((o, i) => <OffsetLine key={o} id={k(`o${i}`)} d={d} off={w * o} lw={1.5} color={dark ? "#ffffff" : pal.shadow} opacity={0.5 - i * 0.2} />)}
           <path d={d} fill={u("in")} />
         </svg>
-        <div aria-hidden style={{ position: "absolute", inset: 0, clipPath: `path("${d}")` }}>
+        {/* optional: one frozen product moment seen through the arch (card); without it the arch is a lit, empty doorway */}
+        {spec.card && <div aria-hidden style={{ position: "absolute", inset: 0, clipPath: `path("${d}")` }}>
           <div style={{ position: "absolute", left: x + w / 2 - 190, top: my, width: 380, transform: `scale(${ms})`, transformOrigin: "top center", filter: `drop-shadow(0 18px 30px ${pal.shadow}33)` }}><C freeze={2} /></div>
-        </div>
+        </div>}
         <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
           <defs>
             <clipPath id={k("clip")}><path d={d} /></clipPath>

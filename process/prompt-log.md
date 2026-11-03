@@ -474,3 +474,19 @@ Entry format:
   - every sampled Sun stop mixed ~35% toward white (#f9730c → #f6a96e, #bfc9f1 → #d8d6ee)
 - Bug found by looking: the first export showed no horizon. `in oklab` was placed before the shape, which is invalid CSS, so the browser dropped the gradient silently. Fixed: `radial-gradient(ellipse … at … in oklab, …)`.
 - QA PASS, re-exported.
+
+## 2026-11-04 — One message per banner; every preset on /banners; product arch without the card
+- Prompts (verbatim): "every banner should have different content. Also on the banners page, show each and every variation that you have in the preset so I can look into it. Not like colours and all those. I meant presets." · "Remove the product one. I don't like it." → "I like the design of the idea of the product one though so remove the inner cards only."
+- Different copy for each Prism banner (facts from the X post only):
+  - prism: "Sarvam Prism" / "Fast, accurate decisions in 44 ms"
+  - prism-spectrum: "Fast, accurate decisions" / "Sarvam Prism, across enterprise workflows"
+  - prism-type: "Built on Sarvam 105B" / "Sarvam Prism, a System One model"
+  - prism-rise: "71.8" / "Highest average score among decision models under 100 ms" (keeps the under-100 ms qualifier)
+- New presets so the newer looks are reusable:
+  - `spectrum`: solid lotus corner — "Work that runs on schedule"
+  - `sunrise`: rising lotus + horizon + divider — "Research, built in"
+  - Both use Indus Cowork facts not used elsewhere.
+- /banners now has a **Presets** section: all 14 presets, each shown as its Meta + LinkedIn pair with device and shape (`process/screens/banners-simple/presets-page.png`).
+- Found and fixed: the `product` preset had been dropped by accident in the spectrum-family commit (05ccb5c); restored.
+- Product: the arch window keeps its design; the product card inside is now optional and off, so it's a lit, empty doorway.
+- QA: set + 28 preset renders PASS.
