@@ -1939,10 +1939,10 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | 2 | **Two text sections, max** | One primary (headline or number) + one optional supporting line. No eyebrows, pills, mono, CTAs or URLs on the art |
 | 3 | **One hero device** | One shape (or one cluster). No stacked devices, no decorative extras |
 | 4 | **Never stretch** | Uniform scale only. Medallions are 1:1; gateways change structure per format, never scale |
-| 5 | **Padding** | ≥ 1.5 × margin of clear space on both sides (Meta 108px, LinkedIn 84px). Meta: the shape sits fully inside (≥ 72px top and bottom). LinkedIn may bleed off the top and bottom only |
+| 5 | **Padding** | ≥ 1.5 × margin of clear space on both sides (Meta 108px, LinkedIn 84px). Meta: the shape sits fully inside (≥ 72px top and bottom). LinkedIn may bleed off the top and bottom only. **Exception:** `afterglow` is a light trace, not an object, so it is cropped by the frame on purpose; the text keeps the padding |
 | 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
 | 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Max 3 lines. Supporting line ≥ 28px Meta / 20px LinkedIn |
-| 8 | **Sharp, not soft** | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
+| 8 | **Sharp, not soft** (except `afterglow`, whose soft band is the point; its text stays crisp) | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
 | 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 | 9 | **Logo** | Official files only. Wordmark 124px (Meta) / 96px (LinkedIn), **or** the logomark alone (height 0.55× that), never both. White on dark, black on light, or none. Partner lockups always use the wordmark |
 | 10 | **Seamless grain** | One pre-generated noise image (`public/brand/grain.png`, 1200×1350, overlay), never a repeated tile and never a live SVG filter (too slow to repaint) |
@@ -1989,6 +1989,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
       | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `afterglow` | **Our taste** `[addition]`: one brand shape (Eight-point star, Cusped window…) drawn as a wide band of light that breaks into grain at its edges, around a dark "negative" core that holds the text. A thin indigo / orange fringe splits the band like light through a prism. Big, cropped by the frame, optional tilt ≤ 12° | Launches and numbers that want energy; tech / model releases |
    | `emblem` | One frosted, bevelled medallion with **one Nucleo icon engraved** in it, echo rings on true offsets. Text sits beside it (split on LinkedIn, stacked on Meta). `icon`: shield, plug, check, calendar, search, globe, inbox, megaphone, target, chart, book, sparkle, person | A capability you can name as an object |
    | `arch-window` | The gateway as a **window onto the real product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, light inside, one frozen product mock (`card`) seen through it. Text beside it | A product moment you can see |
    | `script-mandala` | **"Sarvam" in nine Indian scripts**, set in rings around a glowing disc. Meta: the headline sits in the disc. LinkedIn: the logomark sits in the disc and the text sits left (the wordmark is dropped; never both) `[addition]` | India, languages, mission, sovereignty, people |
@@ -2024,7 +2025,6 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | **partnership** | lavender-dusk | medallion-glow (ogee cross) + partner lockup | ink · serif | One sentence |
 | **program** | plain | gloss, split | ink · serif | Program name + one line |
 | **capability** | indigo-glow | emblem (+ icon) | white · serif | Claim + one fact |
-| **product** | dusk | arch-window (+ product mock) | white · serif | What it does + one line |
 | **mission** | olive | script-mandala | white · serif | One line |
 
 **Variations:** the builder shows 6 on-system alternatives for the current copy (different layouts, devices and grounds, contrast-safe). Click one to use it.
@@ -2082,7 +2082,8 @@ The assignment asks for some personal flair. Ours lives in **composition and cra
 2. **Script mandala.** The brand's meaning ("Sarvam" = wholeness, AI for every Indian language) made literal: the name in nine scripts, built like the mandala logomark. Transliterations must be checked by a native reader before publishing.
 3. **Engraved emblems.** Product capabilities become crafted objects (frosted body, bevel, inset groove, engraved Nucleo line icon, echo rings on true offsets). The same material is used in the web components, so banners and page match.
 4. **The gateway as a window onto the product.** Sarvam uses the arch as a mask for photography; we use it to frame the real Indus Cowork UI.
-5. **Precision.** True-offset rings, measured text boxes, fixed type steps, sibling consistency. Nothing is stretched, and nothing is placed by eye.
+5. **Afterglow** (from Malay's references, `process/screens/refs-afterglow/`): a brand shape as a grainy band of light around a dark core, cropped and slightly tilted, with a prism fringe in Sarvam's two hues. It's more energetic than Sarvam's own posts, but uses only their grounds, shapes and type.
+6. **Precision.** True-offset rings, measured text boxes, fixed type steps, sibling consistency. Nothing is stretched, and nothing is placed by eye.
 
 
 ---

@@ -12,10 +12,10 @@ import { BarChart3, BookOpen, CalendarClock, CircleCheck, Globe, Inbox, Megaphon
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
-export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "plain";
+export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "afterglow" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "mission";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  tilt?: number;                   // afterglow only: degrees (0 = upright, the brand default; ≤ 12 either way)
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
 export const EMBLEM_ICONS = {
@@ -41,12 +42,12 @@ export type EmblemIcon = keyof typeof EMBLEM_ICONS;
 export type Layout = "centered" | "split" | "stacked";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
-export const DEVICES: Device[] = ["medallion-glow", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
+export const DEVICES: Device[] = ["medallion-glow", "afterglow", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
 export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
-export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Quatrefoil", "Scalloped medallion", "Ogee cross"] as const;
-export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
+export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Eight-point star", "Quatrefoil", "Scalloped medallion", "Ogee cross"] as const;
+export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" || d === "afterglow" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
 export const ARCH_SHAPES = ["Mihrab", "Domed door"];
 /** Devices that hold no text: the layout puts text beside them (split on landscape, stacked on portrait). */
 const BESIDE = new Set<Device>(["emblem", "arch-window"]);
@@ -61,7 +62,6 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
   capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
-  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", card: "plan", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
   mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
 };
 
@@ -199,6 +199,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
       // Medallions keep their true 1:1 proportions in every format (an "aspect" here would be a vertical stretch).
       case "Cusped window": return medallionPath({ fold: 4, feature: "point", depth: 7, width: 0.28, vertex: "none", vertexDepth: 0, base: "polygon", aspect: 1, frame: 0 });
       case "Quatrefoil": return medallionPath({ ...MEDALLION_PRESETS["Quatrefoil"], aspect: 1, frame: 0 });
+      case "Eight-point star": return medallionPath({ ...MEDALLION_PRESETS["Eight-point star"], aspect: 1, frame: 0 });
       case "Ogee cross": return medallionPath({ ...MEDALLION_PRESETS["Ogee cross"], depth: 10, aspect: 1, frame: 0 });
       default: return medallionPath({ ...MEDALLION_PRESETS["Scalloped medallion"], aspect: 1, frame: 0 });
     }
@@ -267,6 +268,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
     const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: o.w - inset * 2, h: o.h - inset * 2 });
     return { layer, open: shrink(open), lightInside: LIGHT_INSIDE.has(spec.background), fit: (r) => shrink(innerRect(d, cx, cy, r)) };
   }
+  if (spec.device === "afterglow") return afterglowDevice(spec, F, id, tight(textShape(spec.shape ?? "Eight-point star")), land);
   if (spec.device === "emblem") return emblemDevice(spec, F, id, textShape(spec.shape ?? "Scalloped medallion"), pal);
   if (spec.device === "arch-window") return archWindowDevice(spec, F, id, pal);
   if (spec.device === "script-mandala") return scriptMandalaDevice(spec, F, id, beside);
@@ -305,6 +307,63 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
     return { layer: <>{els}</>, open, lightInside: true };
   }
   return { layer: null, open: { ...safe, y: safe.y + 40, h: safe.h - 40 }, lightInside: !DARK_BG.has(spec.background) };
+}
+
+/** Rotate a placed path about (cx, cy). Coordinates come in x,y pairs (M/L/C/Q/Z only). */
+const rotatePath = (d: string, deg: number, cx: number, cy: number) => {
+  const a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
+  return d.replace(/(-?\d+(?:\.\d+)?)[ ,]+(-?\d+(?:\.\d+)?)/g, (_, x, y) => {
+    const dx = +x - cx, dy = +y - cy;
+    return `${+(cx + dx * c - dy * s).toFixed(2)} ${+(cy + dx * s + dy * c).toFixed(2)}`;
+  });
+};
+
+/** Afterglow [addition, "our taste"]: a brand shape drawn as a wide band of light that breaks into grain at its edges,
+ *  around a dark "negative" core where the text sits. The band carries a thin blue | orange fringe: Sarvam's spectrum,
+ *  split as light through a prism. Big and cropped by the frame on purpose (the one device allowed to bleed on Meta). */
+function afterglowDevice(spec: BannerSpec, F: Frame, id: string, g: Geom, land: boolean): DeviceOut {
+  const k = (s: string) => `${s}-${id}`, u = (s: string) => `url(#${k(s)})`;
+  const size = land ? F.H * 1.4 : F.W * 1.08;
+  const s = size / Math.max(g.width, g.height), w = g.width * s, h = g.height * s;
+  const cx = F.W / 2, cy = F.H / 2 + (land ? 0 : F.H * 0.02);
+  const tilt = Math.max(-12, Math.min(12, spec.tilt ?? 0));
+  const d = rotatePath(fitPath(g, s, cx - w / 2, cy - h / 2), tilt, cx, cy);
+  const band = size * 0.085, blur = size * 0.02, fr = size * 0.02;
+  const core = PAL[spec.background].shadow;
+  const layer = (
+    <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
+      <defs>
+        <filter id={k("core")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={size * 0.05} /></filter>
+        <filter id={k("soft")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={blur * 1.4} /></filter>
+        {/* spray: blur, then scatter the falloff with a noise displacement → the grainy "spread" edge of the references */}
+        <filter id={k("spray")} filterUnits="userSpaceOnUse" x={-F.W} y={-F.H} width={F.W * 3} height={F.H * 3}>
+          <feGaussianBlur in="SourceGraphic" stdDeviation={blur} result="b" />
+          <feImage href="/brand/noise-rg.png" x={0} y={0} width={F.W} height={F.H} preserveAspectRatio="none" result="n" />
+          <feDisplacementMap in="b" in2="n" scale={size * 0.03} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id={k("hot")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={blur * 0.45} /></filter>
+      </defs>
+      {/* 1 · the negative: a deep brand tone pooled inside the shape, with smoke falling from the band toward the centre */}
+      <clipPath id={k("in")}><path d={d} /></clipPath>
+      <path d={d} fill={core} opacity={0.86} filter={u("core")} />
+      <g clipPath={u("in")}>
+        <path d={d} fill="none" stroke="#e8effc" strokeWidth={band * 3} strokeLinejoin="round" opacity={0.16} filter={u("core")} />
+      </g>
+      {/* 2 · prism fringe: an indigo edge on one side, an orange edge on the other, peeking past the white band */}
+      <g style={{ mixBlendMode: "screen" }}>
+        <path d={d} fill="none" stroke="#7c71d0" strokeWidth={band * 1.15} strokeLinejoin="round" transform={`translate(${-fr} ${-fr * 0.6})`} filter={u("soft")} opacity={0.9} />
+        <path d={d} fill="none" stroke="#fa9b43" strokeWidth={band * 1.15} strokeLinejoin="round" transform={`translate(${fr} ${fr * 0.6})`} filter={u("soft")} opacity={0.7} />
+      </g>
+      {/* 3 · the band of light, sprayed at its edges, then a hot centre line */}
+      <path d={d} fill="none" stroke="#fffdf8" strokeWidth={band} strokeLinejoin="round" filter={u("spray")} />
+      <path d={d} fill="none" stroke="#ffffff" strokeWidth={band * 0.42} strokeLinejoin="round" filter={u("hot")} opacity={0.9} />
+    </svg>
+  );
+  // Text sits in the dark core: the largest box inside the shape, clear of the band and its glow.
+  const inset = band * 0.5 + blur * 2.2;
+  const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: Math.max(0, o.w - inset * 2), h: Math.max(0, o.h - inset * 2) });
+  const fit = (r: number) => shrink(innerRect(d, cx, cy, r));
+  return { layer, open: fit(textAspectFor(spec, land ? "landscape" : "portrait")), lightInside: false, fit };
 }
 
 /* ── Subject-led devices (banner-builder.md §5) ── */

@@ -338,3 +338,26 @@ Entry format:
 ## 2026-11-04 — Feature preset removed
 - Prompt (verbatim): "remove this feature preset. I don't like it anymore." (screenshot: lavender scalloped cloud behind a product card, split layout)
 - Removed the `feature` situation from the engine, the builder and banner-builder.md §3. A product moment is now the `product` preset (the arch window). The builder's situation list also gains the capability, product and mission presets. QA 22/22 PASS.
+
+## 2026-11-04 — Product preset removed
+- Prompt (verbatim): "remove this product feature from the preset. I don't like it." (screenshot: the Product chip in the builder's situation list)
+- Removed the `product` situation from the engine (`SITUATIONS`, `Situation` type), the builder list and banner-builder.md §3. The `arch-window` device stays available for a product moment, chosen by the method in §5 instead of a preset. Situation QA 20/20 PASS.
+
+## 2026-11-04 — Our taste: the afterglow device (from Malay's references)
+- Prompts (verbatim): "okay great. Now let's add our own taste to this type of banner because that is what the home assignment said. I will give you some of the images. Learn from them and generate one or two banners from them." · [2 reference images: a star drawn as a blurred white band on black, grainy] "this is just the idea. We need to improve it. What I am thinking is the background would have this mass gradient grainy effect but the patterns would be like this negative white-coloured spread type of effect, somewhat like that."
+- Read of the references: one large shape drawn as a thick band of light, edges scattered into grain (a spray, not a clean blur), a dark smoky core inside, cropped by the frame, slightly rotated. Faint lavender fringe on ref 1.
+- Translation into the brand: Sarvam campaign gradients instead of black; Sarvam shapes (Cusped window, Eight-point star) instead of a generic star; the text goes in the dark core. Prism touch: the band's edges split into Sarvam's indigo and orange.
+- Build (`afterglow` device):
+  - core fill in the ground's deep tone, with a clipped "smoke" falloff
+  - indigo / orange fringe copies (screen blend)
+  - a white band blurred, then scattered by an `feDisplacementMap` from a static noise image (`public/brand/noise-rg.png`) — this gives the spray edge
+  - a hot centre line
+  - optional tilt ≤ 12° (`rotatePath`)
+- Rounds (`process/screens/refs-afterglow/`):
+  1. It worked, but the core was flat, the fringe was invisible under the band, and the shape was too contained.
+  2. Added the smoke, outward fringes and a bigger crop. Now too much white: the ground disappeared, and the two fringes mixed to brown.
+  3. Band 0.085 × size, size 1.08 W / 1.4 H, fringes in screen blend. The ground reads again. ✅
+- Finals (both QA PASS, both formats):
+  - `prism-afterglow`: dusk + Cusped window tilted −9°, "Sarvam Prism" sans
+  - `prism-speed`: indigo-glow + Eight-point star tilted 8°, "44 ms" serif number
+- Rules: afterglow is the one device allowed to bleed on Meta and to be soft (rules 5 and 8 exceptions, written in banner-builder.md). Its text keeps the padding and stays crisp. Builder: a Tilt control for this device.

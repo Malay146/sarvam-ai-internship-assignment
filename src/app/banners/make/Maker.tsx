@@ -4,7 +4,7 @@ import { Artboard, BACKGROUNDS, Banner, DEVICES, SITUATIONS, TREATMENTS, shapesF
 import { EMBLEM_ICONS, type EmblemIcon } from "@/components/sarvam/composer";
 import { FORMATS, type BannerFormat } from "@/components/sarvam/banners";
 
-const SIT: [Situation, string][] = [["launch", "Launch"], ["announcement", "Announcement"], ["milestone", "Milestone"], ["funding", "Funding"], ["event", "Event"], ["story", "Story"], ["partnership", "Partnership"], ["program", "Program"], ["capability", "Capability"], ["product", "Product"], ["mission", "Mission"]];
+const SIT: [Situation, string][] = [["launch", "Launch"], ["announcement", "Announcement"], ["milestone", "Milestone"], ["funding", "Funding"], ["event", "Event"], ["story", "Story"], ["partnership", "Partnership"], ["program", "Program"], ["capability", "Capability"], ["mission", "Mission"]];
 const label = (s: string) => s.replace(/-/g, " ");
 
 function Seg<T extends string>({ name, value, options, onChange, swatch }: { name: string; value?: T; options: readonly T[]; onChange: (v: T) => void; swatch?: (v: T) => string }) {
@@ -46,6 +46,7 @@ export default function Maker() {
         <Seg name="Layout" value={spec.layout ?? "centered"} options={["centered", "split", "stacked"] as const} onChange={(v) => set({ layout: v })} />
         <label className="mk-field"><span>Partner (lockup next to the wordmark, optional)</span>
           <input value={spec.partner ?? ""} placeholder="e.g. Supernova" onChange={(e) => set({ partner: e.target.value || undefined })} /></label>
+        {spec.device === "afterglow" && <Seg name="Tilt" value={String(spec.tilt ?? 0)} options={["-9", "0", "9"] as const} onChange={(v) => set({ tilt: +v })} />}
         {spec.device === "emblem" && <Seg name="Emblem object" value={spec.icon ?? "sparkle"} options={Object.keys(EMBLEM_ICONS) as EmblemIcon[]} onChange={(v) => set({ icon: v })} />}
         {((spec.layout ?? "centered") !== "centered" || spec.device === "arch-window") && <Seg name={spec.device === "arch-window" ? "Product through the arch" : "Product card inside the device"} value={spec.card ?? "none"} options={["none", "plan", "research", "review"] as const} onChange={(v) => set({ card: v === "none" ? undefined : v })} />}
         <Seg name="Headline style" value={spec.titleStyle} options={["serif", "sans"] as const} onChange={(v) => set({ titleStyle: v })} />
