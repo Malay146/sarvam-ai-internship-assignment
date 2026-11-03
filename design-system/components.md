@@ -230,7 +230,7 @@ A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 1
 **Crisp, not blurry** `[addition, from review]`: glow shapes use a sharp 1.6px gradient rim, a 2.4px white inner highlight and only a faint 4px halo. The soft, heavily blurred version reads muddy at small sizes.
 
 ### Nav `<Nav overlay links actions>` `[verified behaviour, sarvam.ai Navbar]`
-- **Overlay mode** (any page with a hero): fixed and **transparent at the top**, so the hero glow shows through. After **8px** of scroll a **solid white** surface slides down and fades in (500ms out-quint); it returns to transparent only below **2px** (hysteresis, so no flicker) with a 300ms fade. A hairline sits at the bottom, inset 6%.
+- **Overlay mode** (any page with a hero): fixed and **transparent at the top**, so the hero glow shows through. After **8px** of scroll a **solid white** surface **fades in** (opacity only, 300ms standard ease, no movement); it fades out again only below **2px** (hysteresis, so no flicker). `[addition: Sarvam slides the surface down; we use opacity only, from review]` A hairline sits at the bottom, inset 6%.
 - **Solid mode** (pages without a hero): always white.
 - **Actions:** dark "Log In" + light "Contact Us" (Sarvam default), or a single action (e.g. "Talk to Us" on Indus Cowork). On phones only the last action shows, beside the menu button.
 - **Layout:**

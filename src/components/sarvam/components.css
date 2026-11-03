@@ -229,12 +229,11 @@ a.sr-card { text-decoration: none; color: inherit; }
 /* ── Nav (P1) ── */
 .sr-nav { position: sticky; top: 0; z-index: 50; isolation: isolate; }
 .sr-nav--overlay { position: fixed; left: 0; right: 0; }
-/* Surface: slides down + fades in when solid (500ms out-quint), fades out when it leaves (300ms) — sarvam.ai [verified] */
-.sr-nav__surface { position: absolute; inset: 0; z-index: -1; background: var(--color-sr-white); opacity: 0; transform: translateY(0); transition: opacity var(--duration-moderate) var(--ease-out); }
+/* Surface: opacity only. Fades in when solid, fades out when back at the top. No movement. */
+.sr-nav__surface { position: absolute; inset: 0; z-index: -1; background: var(--color-sr-white); opacity: 0; transition: opacity var(--duration-moderate) var(--ease-standard); will-change: opacity; }
 .sr-nav__surface::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 1px; background: var(--color-st-secondary); }
-.sr-nav[data-solid="true"] .sr-nav__surface { opacity: 1; animation: sr-nav-in var(--duration-slow) var(--ease-out-quint); }
-@keyframes sr-nav-in { from { transform: translateY(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .sr-nav[data-solid="true"] .sr-nav__surface { animation: none; } }
+.sr-nav[data-solid="true"] .sr-nav__surface { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .sr-nav__surface { transition: none; } }
 .sr-nav__action--wide { display: none; }
 @media (min-width: 768px) { .sr-nav__action--wide { display: inline-flex; } }
 .sr-nav__bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: var(--space-4); }
