@@ -316,3 +316,21 @@ Entry format:
 - Cause: WebKit sizes an `aspect-ratio` grid item from its SVG's default 300px width instead of stretching it. Chromium was fine, so the Chromium-only QA missed it.
 - Fix: `.hub-wide__art { width: 100% }`. WebKit (via Playwright) now matches Chromium at 375 / 768 / 1280 / 1504. I scanned seven pages in WebKit for any other collapsed aspect box: none found.
 - Lesson: QA now includes a WebKit pass (`npx playwright install webkit`).
+
+## 2026-11-04 — Banner from a subject: Sarvam Prism (first subject-only run of the method)
+- Prompt (verbatim): "create a banner for this topic. I just got it from an X post about Sarvam. topic: "Today we're releasing Sarvam Prism, a System One model built on Sarvam 105B for fast, accurate decisions across enterprise workflows. It scores 71.8 with a median response time of 44 milliseconds, the highest average score among decision models that respond in under 100 milliseconds.""
+- Facts added to voice.md §5, labelled with their source (X post, not yet on sarvam.ai).
+- Method (§5):
+  - Idea: "Sarvam Prism makes fast, accurate decisions."
+  - Type: a name being launched → lantern-family medallion-glow, sans headline.
+  - The one number goes in the supporting line: "Fast, accurate decisions in 44 ms".
+- Personal touch: a prism splits light into a spectrum, and Sarvam's colour is a blue → orange spectrum. So the ground is **dawn** (orange → blue, unused in the set), and the shape is the faceted Cusped window (reads as a cut gem).
+- Three directions rendered (`process/screens/banners-prism/directions.png`):
+  - A: dawn + Cusped window, name, sans ✅
+  - B: lavender + "44 ms" as the hero number. Rejected: the number without the name doesn't announce a launch.
+  - C: dawn + gateway echo. Rejected: the type floats and the arches compete.
+- Changes after looking:
+  - The wordmark was dropped, because "Sarvam Prism" already carries the brand (as in Sarvam's own Sarvam 30B post).
+  - The Meta shape was too small. Cause: the Cusped window generator box carried empty margin.
+  - Engine fix: `tight()` re-boxes every glow shape to its drawn outline (translation only). This also enlarged the 100+ banner to its intended size.
+- QA: 8/8 set (Prism in both formats) + all situations PASS. PNGs: `banners/png/meta-prism.png`, `banners/png/linkedin-prism.png`.

@@ -1865,6 +1865,11 @@ Use only these claims.
 - Availability: **not generally available yet.** Access via "Talk to Us".
 - Example roles: Sales Outbound, Talent Scout, Paid Media, Product Performance, Chief of Staff, Account Manager, Cluster Health Monitor.
 
+**Sarvam Prism** `[from Sarvam's X post, supplied by Malay, 2026-11-04; not yet on sarvam.ai]`
+- "A System One model built on **Sarvam 105B** for fast, accurate decisions across enterprise workflows."
+- Scores **71.8**, with a **median response time of 44 milliseconds**: "the highest average score among decision models that respond in under 100 milliseconds."
+- Write "Sarvam Prism" exactly. Don't round 71.8 or 44 ms, and don't drop the "under 100 ms" qualifier when claiming "highest".
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.

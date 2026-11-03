@@ -109,5 +109,24 @@
       "secondary": "With data residency in India",
       "secondaryPlace": "below"
     }
+  },
+  {
+    "id": "prism",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "launch",
+      "background": "dawn",
+      "device": "medallion-glow",
+      "shape": "Cusped window",
+      "treatment": "white",
+      "mark": "none",
+      "titleStyle": "sans",
+      "primary": "Sarvam Prism",
+      "secondary": "Fast, accurate decisions in 44 ms",
+      "secondaryPlace": "below"
+    }
   }
 ]

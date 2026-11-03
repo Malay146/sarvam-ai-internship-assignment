@@ -101,6 +101,13 @@ type Geom = { d: string; width: number; height: number };
 const place = (d: string, s: number, tx: number, ty: number) => { let i = 0; return d.replace(/-?\d+(\.\d+)?/g, (m) => String(+((i++ % 2 === 0 ? +m * s + tx : +m * s + ty).toFixed(2)))); };
 type Rect = { x: number; y: number; w: number; h: number };
 
+/** Re-box a shape to its drawn outline: generator boxes can carry empty margin (e.g. Cusped window), which made shapes
+ *  render smaller than the padding rule allows. Translation only, never a scale. */
+const tight = (g: Geom): Geom => {
+  const P = pts(g.d), xs = P.map((p) => p[0]), ys = P.map((p) => p[1]);
+  const x0 = Math.min(...xs), y0 = Math.min(...ys);
+  return { d: place(g.d, 1, -x0, -y0), width: Math.max(...xs) - x0, height: Math.max(...ys) - y0 };
+};
 /** Place a path with uniform scale s (never stretched). */
 const fitPath = (g: Geom, s: number, x: number, y: number) => place(g.d, s, x, y);
 /** Densely sampled boundary of a placed path (M/L/C/Q/Z): every segment, including long straight sides. */
@@ -223,7 +230,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
   }
   if (spec.device === "medallion-carved" || spec.device === "medallion-glow") {
     const name = spec.shape ?? (spec.device === "medallion-glow" ? "Lantern medallion" : "Scalloped medallion");
-    const g = shapeGeom(name, "mirror");
+    const g = tight(shapeGeom(name, "mirror"));   // sized by its real outline, not its generator box
     const glow = spec.device === "medallion-glow";
     // Uniform scale. Glow: one shape that fills the frame; carved: a base shape that leaves room for the rings.
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
