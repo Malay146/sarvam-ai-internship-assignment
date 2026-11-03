@@ -227,7 +227,16 @@ a.sr-card { text-decoration: none; color: inherit; }
 @keyframes sr-unfurl { to { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); } }
 
 /* ── Nav (P1) ── */
-.sr-nav { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--color-sf) 80%, transparent); backdrop-filter: blur(var(--blur-glass)); -webkit-backdrop-filter: blur(var(--blur-glass)); border-bottom: 1px solid color-mix(in srgb, var(--color-st) 60%, transparent); }
+.sr-nav { position: sticky; top: 0; z-index: 50; isolation: isolate; }
+.sr-nav--overlay { position: fixed; left: 0; right: 0; }
+/* Surface: slides down + fades in when solid (500ms out-quint), fades out when it leaves (300ms) — sarvam.ai [verified] */
+.sr-nav__surface { position: absolute; inset: 0; z-index: -1; background: color-mix(in srgb, var(--color-sr-white) 88%, transparent); backdrop-filter: blur(var(--blur-glass)); -webkit-backdrop-filter: blur(var(--blur-glass)); opacity: 0; transform: translateY(0); transition: opacity var(--duration-moderate) var(--ease-out); }
+.sr-nav__surface::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 1px; background: var(--color-st-secondary); }
+.sr-nav[data-solid="true"] .sr-nav__surface { opacity: 1; animation: sr-nav-in var(--duration-slow) var(--ease-out-quint); }
+@keyframes sr-nav-in { from { transform: translateY(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .sr-nav[data-solid="true"] .sr-nav__surface { animation: none; } }
+.sr-nav__action--wide { display: none; }
+@media (min-width: 768px) { .sr-nav__action--wide { display: inline-flex; } }
 .sr-nav__bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: var(--space-4); }
 .sr-nav__logo { display: flex; height: var(--tap-min); align-items: center; }
 .sr-nav__logo img { height: 18px; width: auto; display: block; }
@@ -280,7 +289,7 @@ a.sr-card { text-decoration: none; color: inherit; }
 .sr-mock__status svg { width: 12px; height: 12px; }
 .sr-mock__task { margin: 0; font-size: var(--text-small); line-height: 1.5; color: var(--color-tx-secondary); }
 .sr-mock__progress { height: 4px; border-radius: var(--radius-full); background: var(--color-sf-tertiary); overflow: hidden; }
-.sr-mock__progress span { display: block; height: 100%; border-radius: inherit; background: var(--color-sr-indigo-800); }
+.sr-mock__progress span { display: block; width: 100%; height: 100%; border-radius: inherit; background: var(--color-sr-indigo-800); transform-origin: 0 50%; will-change: transform; }
 .sr-mock__meta { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 11px; letter-spacing: 0.04em; color: var(--color-tx-tertiary); margin-top: calc(-1 * var(--space-2)); }
 .sr-mock__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .sr-mock__steps li { display: grid; grid-template-columns: 18px 1fr auto; gap: var(--space-3); align-items: center; min-height: 34px; font-size: var(--text-small); color: var(--color-tx-secondary); border-top: var(--border-subtle); }
@@ -319,6 +328,9 @@ a.sr-card { text-decoration: none; color: inherit; }
 .sr-mock__btn { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: var(--weight-medium); padding: 6px 12px; border-radius: var(--radius-full); background: var(--surface-button-light); box-shadow: var(--shadow-button-light); color: var(--color-tx); }
 .sr-mock__btn svg { width: 12px; height: 12px; }
 .sr-mock__btn--primary { background: var(--surface-button-dark); box-shadow: var(--shadow-button-inset); color: var(--color-sr-white); }
+/* Spinners rotate on the compositor (transform only, own layer) so they never trigger style recalcs */
+.sr-spin { display: inline-flex; align-items: center; justify-content: center; will-change: transform; }
+.sr-spin > svg { width: 100%; height: 100%; display: block; }
 @media (prefers-reduced-motion: no-preference) { .sr-spin { animation: sr-spin 1.2s linear infinite; } }
 @keyframes sr-spin { to { transform: rotate(360deg); } }
 
@@ -379,7 +391,7 @@ a.sr-card { text-decoration: none; color: inherit; }
 .sr-mock__sources { min-height: 0; }
 .sr-mock__slot { position: relative; height: 50px; padding: 0 !important; border: 0 !important; background: transparent !important; display: block !important; }
 .sr-mock__skeleton { position: absolute; inset: 0; border-radius: var(--radius-lg); border: 1px dashed var(--color-st); background: linear-gradient(90deg, transparent, var(--color-sf-tertiary), transparent) 0 0 / 200% 100%; }
-@media (prefers-reduced-motion: no-preference) { .sr-mock__skeleton { animation: sr-shimmer 1.6s linear infinite; } }
+/* static skeleton: no shimmer (background-position animations repaint every frame) */
 @keyframes sr-shimmer { to { background-position: -200% 0; } }
 .sr-mock__found { position: absolute; inset: 0; display: grid; grid-template-columns: 28px 1fr 18px; gap: var(--space-3); align-items: center; padding: 0 10px; border-radius: var(--radius-lg); border: var(--border-subtle); background: var(--color-sr-white); }
 .sr-mock--research .sr-mock__diff { min-height: 36px; box-sizing: border-box; }
@@ -418,3 +430,19 @@ a.sr-card { text-decoration: none; color: inherit; }
 .sr-card--emblem .sr-card__title { margin-top: var(--space-1); }
 /* Tiny phones only: trim the text inset so descriptions keep 2 lines (no containment on subgrid cards — it collapses their height) */
 @media (max-width: 359px) { .sr-card--emblem > :not(.sr-card__art) { margin-inline: var(--space-3); } }
+
+/* Artboard: a fixed-pixel canvas scaled to its container (banner previews) */
+.sr-artboard { position: relative; width: 100%; overflow: hidden; border-radius: var(--radius-3xl); box-shadow: var(--shadow-ambient-md); }
+.sr-artboard__canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; overflow: hidden; }
+
+/* Performance: animated pieces get their own layer; static artwork is isolated so loops never repaint it */
+.sr-lattice__layer { will-change: transform, opacity; }
+.sr-card__art, .sr-card__glow, .sr-tile, .sr-mesh-panel { contain: paint; }
+.sr-mock { contain: layout paint; }
+
+/* Hover without repaint: the shadow lives on ::after and only its opacity animates;
+   heavy SVG art sits on its own compositor layer so its filters render once. */
+.sr-card__art, .sr-card__glow, .sr-tile { transform: translateZ(0); will-change: transform; }
+a.sr-card { position: relative; transition: border-color var(--duration-normal) var(--ease-standard); }
+a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; box-shadow: var(--shadow-ambient-md); opacity: 0; transition: opacity var(--duration-normal) var(--ease-standard); pointer-events: none; will-change: opacity; }
+@media (hover: hover) { a.sr-card:hover { box-shadow: none; } a.sr-card:hover::after { opacity: 1; } }

@@ -311,4 +311,7 @@ Library: **Motion** (`motion/react`). Tokens in `src/components/sarvam/motion.ts
 3. **Nothing changes size.** Every slot that will hold content exists from the start (skeleton → content in place). Labels that switch have fixed widths. Rows are single-line. Checked by `scripts/check-motion.mjs`, which samples each animated element's size every 250ms for 10s at 375 / 768 / 1440 and must see one value.
 4. **Order:** things appear in reading order (top → bottom, left → right). Nothing arrives before what's above it.
 5. **Off-screen loops pause** (`useInView`). **Reduced motion:** loops hold the finished frame; spinners, shimmers and pulses stop.
-6. **Only transform, opacity and width animate.** Never animate height, top or margins.
+6. **Only transform and opacity animate.** Never animate width, height, top, margins, box-shadow, background-position or filters. Progress bars use `scaleX`. Shimmers are not used.
+7. **Hover never repaints art.** Hover shadows live on a pre-rendered `::after` layer and only its opacity animates. Heavy SVG art (emblems, glow, gloss, grain) sits on its own compositor layer (`transform: translateZ(0)`) so its filters render once. Measured on /system with `scripts/check-hover.mjs`: raster work during hover went from 5,848ms to 161ms (−97%).
+8. **Infinite loops run on wrappers, not SVGs.** Spinners rotate a `<span>` around the icon; pulses are opacity/scale on a pseudo-element. Off-screen sections use `content-visibility: auto` so their animations cost nothing.
+9. **Performance QA:** `scripts/check-perf.mjs` (style/layout work per second while loops run) and `scripts/check-hover.mjs` (paint + raster during hover). Note: headless fps always reads 60, so measure the work, not the fps.

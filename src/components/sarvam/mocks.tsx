@@ -13,7 +13,7 @@ function StepIcon({ state }: { state: StepState }) {
     <span className="sr-mock__icon">
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={state} initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={T.state}>
-          {state === "done" ? <CircleCheck strokeWidth={S} /> : state === "active" ? <LoaderCircle strokeWidth={S} className="sr-spin" /> : <Circle strokeWidth={S} />}
+          {state === "done" ? <CircleCheck strokeWidth={S} /> : state === "active" ? <span className="sr-spin"><LoaderCircle strokeWidth={S} /></span> : <Circle strokeWidth={S} />}
         </motion.span>
       </AnimatePresence>
     </span>
@@ -34,11 +34,11 @@ export function MockPlan() {
         <span className="sr-mock__avatar"><UserRound strokeWidth={S} /></span>
         <div className="sr-mock__who"><b>Sales Outbound</b><span>Go-to-market teammate</span></div>
         <span className={`sr-mock__status${finished ? " sr-mock__status--ready" : ""}`}>
-          {finished ? <><Check strokeWidth={2} />Ready</> : <><LoaderCircle strokeWidth={S} className="sr-spin" />Working</>}
+          {finished ? <><Check strokeWidth={2} />Ready</> : <><span className="sr-spin"><LoaderCircle strokeWidth={S} /></span>Working</>}
         </span>
       </div>
       <p className="sr-mock__task">Work the new inbound list before EOD and draft outreach.</p>
-      <div className="sr-mock__progress"><motion.span animate={{ width: `${(done / 4) * 100}%` }} transition={T.bar} /></div>
+      <div className="sr-mock__progress"><motion.span initial={false} animate={{ scaleX: done / 4 }} transition={T.bar} /></div>
       <div className="sr-mock__meta"><span>To-do · {done} of 4</span><span>{finished ? "Done" : `${(4 - done) * 4} min left`}</span></div>
       <ol className="sr-mock__steps">
         {PLAN_STEPS.map((s, i) => {
@@ -70,7 +70,7 @@ export function MockResearch() {
             ? QUERY.split("").map((ch, i) => <motion.span key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03, duration: 0.01 }}>{ch}</motion.span>)
             : QUERY}
         </span>
-        {phase < 4 ? <LoaderCircle strokeWidth={S} className="sr-spin" /> : <Check strokeWidth={2} className="sr-mock__used" />}
+        {phase < 4 ? <span className="sr-spin"><LoaderCircle strokeWidth={S} /></span> : <Check strokeWidth={2} className="sr-mock__used" />}
       </div>
       {/* Three fixed slots: a skeleton until the source is found, then the source fades in place. No height change. */}
       <ul className="sr-mock__sources">
@@ -82,7 +82,7 @@ export function MockResearch() {
               <motion.span className="sr-mock__found" initial={false} animate={{ opacity: found ? 1 : 0, y: found ? 0 : 6 }} transition={{ ...T.enter, delay: found ? STAGGER : 0 }}>
                 <span className="sr-mock__fav"><Globe strokeWidth={S} /></span>
                 <span className="sr-mock__src"><b>{title}</b><code>{domain}</code></span>
-                <span className="sr-mock__icon">{used ? <Check strokeWidth={2} className="sr-mock__used" /> : <LoaderCircle strokeWidth={S} className="sr-spin sr-mock__reading" />}</span>
+                <span className="sr-mock__icon">{used ? <Check strokeWidth={2} className="sr-mock__used" /> : <span className="sr-spin sr-mock__reading"><LoaderCircle strokeWidth={S} /></span>}</span>
               </motion.span>
             </li>
           );

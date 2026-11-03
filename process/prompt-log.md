@@ -178,3 +178,12 @@ Entry format:
 - New renders in /studio: **gloss** (polished 3D-look shapes, from Startup Program / Fintech Fest) and **soft cloud** (from customer stories).
 - `expressions.md`: Campaign / Product / Community, each with surfaces, hero device, type, wordmark and energy, plus a consistency contract and an on-system test.
 - Review site: /system is now a hub (emblem cards, file index); tokens moved to /system/tokens; new /system/expressions with a live sample per expression; shared system nav. QA: both new pages PASS at all 10 widths.
+
+## 2026-11-03 — Overlay nav, banner artboards, performance fixes
+- Prompts (verbatim): "Sarvam Navbar is something like this. Its background is invisible when scrolling down and then it is visible." · [expressions screenshot] "This is not proper at all. There is no symmetry, no proper hierarchy. The aspect ratio is not there. Fix it." · "Also the animation is not properly working. It is too janky and laggy." · "By animation I meant the hover animations on the systems page."
+- Nav: read Sarvam's Navbar bundle. Fixed overlay header; a white surface slides down + fades in after 8px of scroll, back below 2px (hysteresis), 500ms out-quint in / 300ms out; hairline inset 6%; Log In (dark) + Contact Us (light); an always-solid mode for pages without a hero. Rebuilt our Nav the same way (`overlay` prop, NavFrame client component).
+- Expressions samples: fluid `cqw` sizing rendered the Product sample at the wrong scale and nothing shared a grid. → New `Artboard` (a fixed-pixel canvas scaled to fit) + `CampaignBanner` / `ProductBanner` / `CommunityBanner` designed at 1080×1350 on one grid (margin 72, wordmark 200×32 at 72 from the top, headline 88–104, sub 32). These double as banner prototypes.
+- Performance:
+  - Measured with Chrome DevTools metrics: about 60 style recalcs/s even at idle. → Removed shimmer (background-position), pulse via pseudo-element opacity/scale (not box-shadow), progress via scaleX (not width), spinners rotate a wrapper span, `content-visibility: auto` on off-screen blocks. Emblem area idle recalcs: 60/s → 5/s.
+  - Hover jank on /system: a trace showed SVG filters re-rasterizing every frame → shadow moved to a pre-rendered ::after (opacity only), art on its own layer. Raster during hover: 5,848ms → 161ms.
+  - New scripts: check-perf.mjs, check-hover.mjs.

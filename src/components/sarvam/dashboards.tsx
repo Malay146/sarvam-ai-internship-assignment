@@ -125,7 +125,7 @@ export function CoworkDashboard() {
                 const st = stepState(i);
                 return (
                   <li key={s} data-state={st}>
-                    <span className="db-steps__icon">{st === "done" ? <CircleCheck strokeWidth={S} /> : st === "active" ? <LoaderCircle strokeWidth={S} className="sr-spin" /> : <span className="db-dot" />}</span>
+                    <span className="db-steps__icon">{st === "done" ? <CircleCheck strokeWidth={S} /> : st === "active" ? <span className="sr-spin"><LoaderCircle strokeWidth={S} /></span> : <span className="db-dot" />}</span>
                     <span>{s}</span>
                   </li>
                 );
@@ -149,7 +149,7 @@ export function CoworkDashboard() {
                 {msgs.map((m) => (
                   <li key={m.id} className={`db-msg db-msg--${m.from}`}>
                     {m.from === "mate" && <span className="db-msg__who"><UserRound strokeWidth={S} /></span>}
-                    <span className="db-msg__text">{m.pending ? <><LoaderCircle strokeWidth={S} className="sr-spin" />{m.text}</> : m.text}</span>
+                    <span className="db-msg__text">{m.pending ? <><span className="sr-spin"><LoaderCircle strokeWidth={S} /></span>{m.text}</> : m.text}</span>
                   </li>
                 ))}
               </ul>
@@ -236,7 +236,7 @@ export function ScheduleDashboard() {
                 <span role="cell" className="db-row__who"><span><b>{j.label}</b><small>{last ? last.text : j.mate}</small></span></span>
                 <span role="cell" className="db-row__status"><StatusPill s={j.on ? j.status : "scheduled"} /></span>
                 <span role="cell" className="db-row__actions">
-                  <button className="db-icon-btn db-icon-btn--ghost" onClick={() => runNow(j)} disabled={j.status === "working" || !j.on} aria-label={`Run ${j.label} now`}>{j.status === "working" ? <LoaderCircle strokeWidth={S} className="sr-spin" /> : <Play strokeWidth={S} />}</button>
+                  <button className="db-icon-btn db-icon-btn--ghost" onClick={() => runNow(j)} disabled={j.status === "working" || !j.on} aria-label={`Run ${j.label} now`}>{j.status === "working" ? <span className="sr-spin"><LoaderCircle strokeWidth={S} /></span> : <Play strokeWidth={S} />}</button>
                   <button role="switch" aria-checked={j.on} aria-label={`${j.label} ${j.on ? "on" : "off"}`} className="db-switch" onClick={() => setJobs((js) => js.map((x) => (x.id === j.id ? { ...x, on: !x.on } : x)))}><span /></button>
                 </span>
               </div>

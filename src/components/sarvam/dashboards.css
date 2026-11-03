@@ -203,8 +203,11 @@
 .db-status--waiting .db-status__dot, .db-status__dot--waiting { background: var(--color-sr-orange-800); box-shadow: 0 0 0 3px var(--color-sr-orange-100); }
 .db-status--done .db-status__dot, .db-status__dot--done { background: var(--color-sr-green-600); }
 .db-status--scheduled .db-status__dot, .db-status__dot--scheduled { background: var(--color-sr-grey-400); }
-@media (prefers-reduced-motion: no-preference) { .db-status--working .db-status__dot, .db-status__dot--working { animation: db-pulse 1.6s var(--ease-standard) infinite; } }
-@keyframes db-pulse { 50% { box-shadow: 0 0 0 5px var(--color-sr-indigo-50); } }
+/* Pulse = opacity on a pseudo-element (compositor), not an animated box-shadow (repaints) */
+.db-status--working .db-status__dot, .db-status__dot--working { position: relative; }
+.db-status--working .db-status__dot::after, .db-status__dot--working::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; background: var(--color-sr-indigo-200); opacity: 0; will-change: opacity, transform; }
+@media (prefers-reduced-motion: no-preference) { .db-status--working .db-status__dot::after, .db-status__dot--working::after { animation: db-pulse 1.6s var(--ease-standard) infinite; } }
+@keyframes db-pulse { 0% { opacity: 0.6; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.4); } }
 
 /* Cowork: sidebar (swipe row on phone) + one detail view */
 .db[data-dashboard="cowork"] .db-body { grid-template-columns: 1fr; }

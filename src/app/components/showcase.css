@@ -24,3 +24,6 @@
 .cs-gateways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); align-items: end; }
 @media (min-width: 1024px) { .cs-gateways { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .cs-emblem-banner { max-width: 880px; width: 100%; margin-inline: auto; border-radius: var(--radius-3xl); overflow: hidden; box-shadow: var(--shadow-ambient-md); }
+
+/* Off-screen blocks skip rendering (and their animations) until scrolled near */
+.cs-block { content-visibility: auto; contain-intrinsic-size: auto 900px; }
