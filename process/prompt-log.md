@@ -250,3 +250,15 @@ Entry format:
   - Round 2: Knowledge Fabric, Supernova and Startup Program read as the same family. Screens: `process/screens/reference-match.png` → `reference-match-r2.png`.
 - 4 · Variations: `variationsOf(spec)` → 6 on-system alternatives for the current copy (contrast-safe treatments), clickable gallery in /banners/make. The carved-night option looked blocky as a thumbnail → replaced with a night glow.
 - 5 · Final six (`banners/briefs.json`, all QA PASS): launch (saffron onion-lantern glow, sans), connectors milestone (night scalloped glow, gold 100+), early access (white, gloss cluster, split → stacked on Meta). Screens: `process/screens/banners-final/`.
+
+## 2026-11-04 — Banner hard rules: two formats, no blobs, sharper, padding, fixed type steps
+- Prompts (verbatim): "still we need to set the rules for the banners because I'm not feeling it. Remove these white blobs in the centre. Also have two sets of aspect ratios only: one for LinkedIn and one for Meta… clear and sharper things" · "There is no padding at all."
+- Changes:
+  - Two formats only (Meta 1080×1350, LinkedIn 1200×627; square removed from the builder, QA and set).
+  - Cloud device removed (story/partnership → lavender medallion-glow).
+  - Gloss highlight shrunk to a crisp specular (≤ 26% of the width, 45% opacity).
+  - Glow sharpened (blur 6.5% → 3.5%, narrower band) + a 1.5px edge line on every shape.
+  - Fixed type steps (100/86/74/64/55/48%) instead of continuous shrink.
+  - Padding rule: ≥ 1.5·M clear on both sides; Meta shapes fully inside; LinkedIn bleeds vertically only.
+- `banner-builder.md` §0: 11 hard rules table. The partnership copy was shortened to fit its shape (QA fail → copy fix, not smaller type).
+- QA: 18/18 situations × 2 formats + 6/6 set PASS.

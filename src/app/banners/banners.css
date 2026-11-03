@@ -22,7 +22,7 @@
 .mk-out pre { margin: 0; max-height: 220px; overflow: auto; font: 12px/1.5 var(--font-code); background: var(--color-sf-secondary); padding: var(--space-3); border-radius: var(--radius-lg); }
 .mk-cmd { font: 12px var(--font-code); }
 .mk-stage { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
-@media (min-width: 768px) { .mk-stage { grid-template-columns: 1fr 1fr; } .mk-frame--landscape { grid-column: 1 / -1; } }
+@media (min-width: 768px) { .mk-stage { grid-template-columns: 0.72fr 1.28fr; align-items: start; } }
 .mk-frame { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .mk-check { display: flex; gap: var(--space-2); align-items: center; font-size: var(--text-small); color: var(--color-tx-secondary); min-height: 32px; }
 .mk-swatch { width: 52px; height: 36px; padding: 0 !important; position: relative; box-shadow: inset 0 0 0 1px rgb(30 32 51 / 0.1); }

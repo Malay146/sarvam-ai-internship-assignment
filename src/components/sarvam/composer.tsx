@@ -11,7 +11,7 @@ import { FORMATS, type BannerFormat } from "./banners";
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
-export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "cloud" | "gloss" | "plain";
+export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
 export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "feature";
@@ -32,7 +32,7 @@ export type BannerSpec = {
 export type Layout = "centered" | "split" | "stacked";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
-export const DEVICES: Device[] = ["medallion-glow", "gateway-carved", "medallion-carved", "gateway-window", "gateway-echo", "cloud", "gloss", "plain"];
+export const DEVICES: Device[] = ["medallion-glow", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
 export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
@@ -45,8 +45,8 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   milestone: { situation: "milestone", background: "night", device: "medallion-glow", shape: "Scalloped medallion", treatment: "gold", mark: "bottom", titleStyle: "serif", primary: "100+", primaryIsNumber: true, secondary: "apps your teammates can work in", secondaryPlace: "below" },
   funding: { situation: "funding", background: "olive", device: "medallion-glow", shape: "Onion lantern", treatment: "gold", mark: "inside", titleStyle: "serif", primary: "$300 Million", primaryIsNumber: true, secondary: "Announcing Series B", secondaryPlace: "above" },
   event: { situation: "event", background: "spring", device: "gloss", treatment: "indigo", mark: "top", titleStyle: "serif", primary: "Build your first teammate", secondary: "A live Indus Cowork session", secondaryPlace: "below" },
-  story: { situation: "story", background: "lavender-dusk", device: "cloud", treatment: "ink", mark: "top", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
-  partnership: { situation: "partnership", background: "lavender-dusk", device: "cloud", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "How a team ships faster with Indus Cowork" },
+  story: { situation: "story", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
+  partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
   feature: { situation: "feature", layout: "split", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", card: "plan", treatment: "indigo", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
 };
@@ -206,7 +206,9 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
     const glow = spec.device === "medallion-glow";
     // Uniform scale. Glow: one shape that fills the frame; carved: a base shape that leaves room for the rings.
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
-    const s = glow ? (land ? Math.max((F.W * 0.86) / g.width, (F.H * 1.08) / g.height) : Math.min((F.W * 1.04) / g.width, (F.H * 1.04) / g.height))
+    // Padding rule: ≥ 1.5·M clear on both sides always; on portrait the shape sits fully inside (≥ M top and bottom); landscape may bleed vertically only.
+    const sideMax = (F.W - F.M * 3) / g.width;
+    const s = glow ? (land ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.06) / g.height)) : Math.min(sideMax, (F.H - F.M * 2) / g.height))
                    : (land ? Math.min((F.W * 0.5) / g.width, (F.H * 0.86) / g.height) : Math.min((F.W * 0.66) / g.width, (F.H * 0.62) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;
@@ -219,37 +221,23 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
         <defs>
           <linearGradient id={k("in")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={G.top} /><stop offset="1" stopColor={G.bottom} /></linearGradient>
           <clipPath id={k("clip")}><path d={d} /></clipPath>
-          <filter id={k("soft")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={edge * 0.065} /></filter>
+          <filter id={k("soft")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={edge * 0.035} /></filter>
           <filter id={k("rim")} x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation={edge * 0.005} /></filter>
           <filter id={k("out")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={edge * 0.035} /></filter>
         </defs>
-        <path d={d} fill="none" stroke={G.glow} strokeOpacity={0.25} strokeWidth={edge * 0.04} filter={`url(#${k("out")})`} />
+        <path d={d} fill="none" stroke={G.glow} strokeOpacity={0.18} strokeWidth={edge * 0.025} filter={`url(#${k("out")})`} />
         <path d={d} fill={`url(#${k("in")})`} />
         <g clipPath={`url(#${k("clip")})`}>
-          <path d={d} fill="none" stroke={G.glow} strokeWidth={edge * 0.17} strokeOpacity={0.82} filter={`url(#${k("soft")})`} />
-          <path d={d} fill="none" stroke={G.glow} strokeWidth={edge * 0.016} strokeOpacity={0.85} filter={`url(#${k("rim")})`} />
+          <path d={d} fill="none" stroke={G.glow} strokeWidth={edge * 0.1} strokeOpacity={0.85} filter={`url(#${k("soft")})`} />
+          <path d={d} fill="none" stroke={G.glow} strokeWidth={edge * 0.012} strokeOpacity={0.9} filter={`url(#${k("rim")})`} />
         </g>
+        {/* crisp 1.5px edge line: the silhouette always reads sharp */}
+        <path d={d} fill="none" stroke={G.glow} strokeOpacity={0.9} strokeWidth={1.5} />
       </svg>
     );
     // Keep the text clear of the glow band: shrink the opening by the glow depth.
-    const inset = edge * 0.045;
+    const inset = edge * 0.03;
     return { layer, open: { x: open.x + inset, y: open.y + inset, w: open.w - inset * 2, h: open.h - inset * 2 }, lightInside: LIGHT_INSIDE.has(spec.background) };
-  }
-  if (spec.device === "cloud") {
-    // A soft cloud = the scalloped medallion at TRUE proportions, blurred. Never stretched; only its size changes.
-    const g = textShape(spec.shape && (TEXT_SHAPES as readonly string[]).includes(spec.shape) ? spec.shape : "Scalloped medallion");
-    const s = land ? (F.H * 1.12) / g.height : Math.min((F.W * 1.0) / g.width, (F.H * (f === "square" ? 0.86 : 0.8)) / g.height);
-    const w = g.width * s, h = g.height * s, cx = F.W / 2, cy = spec.mark === "top" ? F.H / 2 + (land ? 18 : 30) : F.H / 2;
-    const d = fitPath(g, s, cx - w / 2, cy - h / 2);
-    const blur = Math.min(w, h) * 0.045;
-    const layer = (
-      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
-        <filter id={`cloud-${id}`} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={blur} /></filter>
-        <path d={d} fill="#f7efed" filter={`url(#cloud-${id})`} />
-      </svg>
-    );
-    const r = innerRect(d, cx, cy, textAspect), inset = blur * 0.45;
-    return { layer, open: { x: r.x + inset, y: r.y + inset, w: r.w - inset * 2, h: r.h - inset * 2 }, lightInside: true };
   }
   if (spec.device === "gloss") {
     // A mirrored cluster of glossy studio shapes (Sarvam's waitlist post): below the text on portrait/square, flanking on landscape.
@@ -351,7 +339,9 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
     const markH = spec.mark === "inside" && layout === "centered" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
     return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.4 : 0);
   };
-  let k = 1; while (k > 0.42 && blockH(k) > open.h * 0.92) k -= 0.03;
+  // Fixed steps (100 / 86 / 74 / 64 / 55 / 48 % of the base): the largest that fits. Same hierarchy on every banner.
+  const STEPS = [1, 0.86, 0.74, 0.64, 0.55, 0.48];
+  const k = STEPS.find((s) => blockH(s) <= open.h * 0.92) ?? STEPS[STEPS.length - 1];
   const S = { p: Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
   const primary = (
     <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment} align={align}
@@ -396,7 +386,7 @@ export function variationsOf(spec: BannerSpec): BannerSpec[] {
     v({ background: "saffron-rose", device: "medallion-glow", shape: "Onion lantern", titleStyle: num ? "serif" : "sans" }),
     v({ background: "olive", device: "medallion-glow", shape: "Scalloped medallion" }),
     v({ background: "dusk", device: "gateway-echo", shape: "Mihrab", titleStyle: "serif" }),
-    v({ background: "lavender-dusk", device: "cloud", mark: "top", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
+    v({ background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
     v({ background: "night", device: "medallion-glow", shape: "Quatrefoil", mark: "bottom", titleStyle: "serif" }),
     v({ background: "plain", device: "gloss", layout: "split", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
   ];

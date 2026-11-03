@@ -1,11 +1,27 @@
 # Recipe · Banner builder (prompt-less)
 
-Every Sarvam banner is a **composition of five choices + at most two lines of text**. No prompt writing: pick the parts, the builder renders Meta portrait (1080×1350), Meta square (1080×1080) and LinkedIn (1200×627) at once, fits the type to each format, and exports exact PNGs.
+Every Sarvam banner is a **composition of a few choices + at most two lines of text**. No prompt writing: pick the parts, the builder renders Meta (1080×1350) and LinkedIn (1200×627) at once, fits the type to each format, and exports exact PNGs.
 
 - Live tool: **`/banners/make`** · Engine: `src/components/sarvam/composer.tsx` · Saved set: `banners/briefs.json` · Export: `node scripts/export-banners.mjs` · QA: `node scripts/check-banners.mjs situations|set`
 - Text effects: `src/components/sarvam/StyledText.tsx` · Shapes: `/studio` (`src/lib/shapes.ts`)
 
 ---
+
+## 0. Hard rules (non-negotiable; the engine and `check-banners.mjs` enforce them)
+
+| # | Rule | Value |
+|---|---|---|
+| 1 | **Two formats only** | Meta **1080×1350** (4:5) · LinkedIn **1200×627** (1.91:1). The same banner is rearranged for each, never cropped |
+| 2 | **Two text sections, max** | One primary (headline or number) + one optional supporting line. No eyebrows, pills, mono, CTAs or URLs on the art |
+| 3 | **One hero device** | One shape (or one cluster). No stacked devices, no decorative extras |
+| 4 | **Never stretch** | Uniform scale only. Medallions are 1:1; gateways change structure per format, never scale |
+| 5 | **Padding** | ≥ 1.5 × margin of clear space on both sides (Meta 108px, LinkedIn 84px). Meta: the shape sits fully inside (≥ 72px top and bottom). LinkedIn may bleed off the top and bottom only |
+| 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
+| 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Max 3 lines. Supporting line ≥ 28px Meta / 20px LinkedIn |
+| 8 | **Sharp, not soft** | Every shape has a 1.5px edge line. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device, gloss highlight ≤ 26% of the shape width |
+| 9 | **Wordmark** | Official file, 124px (Meta) / 96px (LinkedIn), white on dark, black on light, or none |
+| 10 | **Seamless grain** | One generated noise layer per banner, never a repeated tile |
+| 11 | **QA** | `node scripts/check-banners.mjs situations` and `set` must PASS before export |
 
 ## 1. The spec
 
@@ -47,8 +63,7 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
    | `medallion-carved` | 4 nested medallion layers, centred | Milestones |
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
-   | `cloud` | Soft scalloped glow | Stories, quotes |
-   | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+      | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
    | `plain` | Gradient only | Pure type statements |
 
 5. **Wordmark:** the official file, small (124px on Meta, 96px on LinkedIn), black or white by ground. Inside the device above the text, or top/bottom centre. Never the logomark.
@@ -58,7 +73,7 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
 ### Layouts (rearrange per format, never shrink)
-| Layout | Landscape | Portrait / square |
+| Layout | LinkedIn | Meta |
 |---|---|---|
 | `centered` | text inside the device | same |
 | `split` | text left (left-aligned), device right 53% | becomes **stacked** |
@@ -77,8 +92,8 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
 | **milestone** | night | medallion-glow (scalloped) | gold · serif | Number + label |
 | **funding** | olive | medallion-glow (onion lantern) | gold · serif | "Announcing …" above + amount |
 | **event** | spring | gloss | indigo · serif | Event name + date/line |
-| **story** | lavender-dusk | cloud | ink · serif | One sentence |
-| **partnership** | lavender-dusk | cloud + partner lockup | ink · serif | One sentence |
+| **story** | lavender-dusk | medallion-glow (scalloped) | ink · serif | One sentence |
+| **partnership** | lavender-dusk | medallion-glow (ogee cross) + partner lockup | ink · serif | One sentence |
 | **program** | plain | gloss, split | ink · serif | Program name + one line |
 | **feature** | lavender-dusk | medallion-glow, split + product card | indigo · serif | Claim + one line |
 

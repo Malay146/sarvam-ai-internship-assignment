@@ -21,7 +21,7 @@
   {
     "id": "connectors",
     "formats": {
-      "meta": "square",
+      "meta": "portrait",
       "linkedin": "landscape"
     },
     "spec": {

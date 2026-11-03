@@ -21,7 +21,7 @@ export default function Maker() {
   const [id, setId] = useState("my-banner");
   const [status, setStatus] = useState("");
   const set = (p: Partial<BannerSpec>) => setSpec((s) => ({ ...s, ...p }));
-  const metaFormat: BannerFormat = spec.primaryIsNumber ? "square" : "portrait";
+  const metaFormat: BannerFormat = "portrait";   // two formats only: Meta 1080×1350, LinkedIn 1200×627
   const save = async () => {
     setStatus("Saving and exporting…");
     const r = await fetch("/api/banners", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id, formats: { meta: metaFormat, linkedin: "landscape" }, spec }) });
@@ -65,7 +65,7 @@ export default function Maker() {
             ))}
           </div>
         </div>
-        {(["portrait", "square", "landscape"] as BannerFormat[]).map((f) => (
+        {(["portrait", "landscape"] as BannerFormat[]).map((f) => (
           <figure key={f} className={`mk-frame mk-frame--${f}`}>
             <Artboard width={FORMATS[f].W} height={FORMATS[f].H} label={f}><Banner spec={spec} format={f} id={`mk-${f}`} /></Artboard>
             <figcaption className="sr-meta">{f} · {FORMATS[f].W}×{FORMATS[f].H}</figcaption>

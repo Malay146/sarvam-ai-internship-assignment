@@ -9,7 +9,7 @@ const mode = process.argv[2] ?? "situations";
 const base = "http://localhost:3000";
 const SIT_SRC = readFileSync("src/components/sarvam/composer.tsx", "utf8");
 const SIT = [...SIT_SRC.slice(SIT_SRC.indexOf("export const SITUATIONS")).matchAll(/^  ([a-z]+): \{ situation:/gm)].map((m) => m[1]);
-const FMT = { portrait: [1080, 1350, 72], square: [1080, 1080, 72], landscape: [1200, 627, 56] };
+const FMT = { portrait: [1080, 1350, 72], landscape: [1200, 627, 56] };   // two formats only
 const jobs = [];
 if (mode === "set") for (const e of JSON.parse(readFileSync("banners/briefs.json", "utf8"))) for (const f of Object.values(e.formats)) jobs.push([e.id, f, e.spec]);
 const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 1400 }, reducedMotion: "reduce" });

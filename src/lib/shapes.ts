@@ -375,8 +375,8 @@ export function glossSVG(geom: { d: string; width: number; height: number }, pal
   const W = geom.width + pad * 2, H = geom.height + pad * 2;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${f(W)} ${f(H)}">
   <defs>
-    <radialGradient id="${id("body")}" cx="0.45" cy="0.42" r="0.62"><stop offset="0" stop-color="${P.centre}"/><stop offset="0.55" stop-color="${P.mid}"/><stop offset="1" stop-color="${P.edge}"/></radialGradient>
-    <radialGradient id="${id("hi")}" cx="0.3" cy="0.22" r="0.4"><stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="${id("body")}" cx="0.45" cy="0.42" r="0.62"><stop offset="0" stop-color="${P.mid}"/><stop offset="0.6" stop-color="${P.mid}"/><stop offset="1" stop-color="${P.edge}"/></radialGradient>
+    <radialGradient id="${id("hi")}" cx="0.3" cy="0.22" r="0.4"><stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.12"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
     <linearGradient id="${id("rim")}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.15"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.45"/></linearGradient>
     <clipPath id="${id("clip")}"><path d="${geom.d}"/></clipPath>
     <filter id="${id("drop")}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="${P.shade}" flood-opacity="0.22"/></filter>
@@ -388,8 +388,8 @@ export function glossSVG(geom: { d: string; width: number; height: number }, pal
     </filter>
   </defs>
   <g filter="url(#${id("drop")})"><path d="${geom.d}" fill="url(#${id("body")})" filter="url(#${id("inner")})"/></g>
-  <g clip-path="url(#${id("clip")})"><ellipse cx="${f(geom.width * 0.32)}" cy="${f(geom.height * 0.22)}" rx="${f(geom.width * 0.42)}" ry="${f(geom.height * 0.3)}" fill="url(#${id("hi")})"/></g>
-  <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="1"/>
+  <g clip-path="url(#${id("clip")})"><ellipse cx="${f(geom.width * 0.3)}" cy="${f(geom.height * 0.2)}" rx="${f(geom.width * 0.26)}" ry="${f(geom.height * 0.16)}" fill="url(#${id("hi")})"/></g>
+  <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="1.2"/>
 </svg>`;
 }
 
