@@ -465,3 +465,12 @@ Entry format:
 - Build: `horizon` reuses the /system hero's `--gradient-sun` disc (1622 × 872 proportions, widened 1.35× like the hero), mirrored, with its centre on the bottom edge, so the arc reaches about half the frame.
 - After looking: the spectrum strip sank into the orange and its orange end vanished, so a bottom horizon now replaces the strip.
 - Dividers moved above the headline everywhere, as a rule in banner-builder.md. QA PASS, prism-rise and prism-spectrum re-exported.
+
+## 2026-11-04 — Horizon: flatter, smoother, calmer
+- Prompt (verbatim): "but less curvy, with very well-blended colours, and less saturated"
+- Replaced the hero Sun disc with a dedicated horizon:
+  - a radial ellipse ~2.6× the frame width (an almost flat arc), 55% of the frame tall
+  - interpolated in OKLab with 7 stops
+  - every sampled Sun stop mixed ~35% toward white (#f9730c → #f6a96e, #bfc9f1 → #d8d6ee)
+- Bug found by looking: the first export showed no horizon. `in oklab` was placed before the shape, which is invalid CSS, so the browser dropped the gradient silently. Fixed: `radial-gradient(ellipse … at … in oklab, …)`.
+- QA PASS, re-exported.

@@ -499,13 +499,15 @@ function SpectrumDivider({ name, width, id, dark }: { name: string; width: numbe
   );
 }
 
-/** Horizon: the /system hero's Sun disc (tokens --gradient-sun), entering from one edge so its arc reaches about half the
- *  frame. The disc keeps the hero's proportions (1622 × 872, widened 1.35× like the hero); bottom = mirrored, a sunrise. */
+/** Horizon: a soft band of the Sun gradient rising from one edge to about half the frame.
+ *  Flat (a wide ellipse, ~2.6× the frame width, so the arc is almost a line), blended in OKLab with few stops, and calmer
+ *  than the hero: each Sun stop [sampled] is mixed ~35% toward white. Bottom = a sunrise; top = mirrored. */
+const HORIZON_STOPS = "#f6a96e 0%, #f3b98a 22%, #e9c8b8 40%, #d8d6ee 58%, #e3e9fb 74%, rgb(239 244 254 / 0.6) 86%, rgb(239 244 254 / 0) 100%";
 function Horizon({ W, H, edge }: { W: number; H: number; edge: "top" | "bottom" }) {
-  const dh = H, dw = (dh * 1622) / 872;                      // visible arc ≈ half the disc height = H / 2
+  const h = H * 0.55, at = edge === "bottom" ? "50% 100%" : "50% 0%";
   return (
-    <div aria-hidden style={{ position: "absolute", left: (W - dw) / 2, top: (edge === "top" ? 0 : H) - dh / 2, width: dw, height: dh,
-      backgroundImage: "var(--gradient-sun)", transform: `scaleX(1.35)${edge === "bottom" ? " scaleY(-1)" : ""}`, pointerEvents: "none" }} />
+    <div aria-hidden style={{ position: "absolute", left: 0, right: 0, height: h, [edge]: 0, pointerEvents: "none",
+      background: `radial-gradient(ellipse ${Math.round((W * 2.6) / 2)}px ${Math.round(h)}px at ${at} in oklab, ${HORIZON_STOPS})` }} />
   );
 }
 
