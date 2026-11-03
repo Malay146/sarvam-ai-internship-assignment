@@ -334,7 +334,7 @@ function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean):
   const kind = spec.rosette ?? "circles";
   const R = land ? F.H * 0.38 : F.W * 0.36;                     // rosette radius (the whole rosette spans 2R)
   const cx = F.W - (land ? F.H * 0.16 : F.W * 0.14), cy = land ? F.H * 0.16 : F.W * 0.14;
-  const ROSETTE_N: Record<Rosette, number> = { circles: 12, lobes: 12, lens: 12, orbits: 6, rings: 6 };
+  const ROSETTE_N: Record<Rosette, number> = { circles: 12, lobes: 12, lens: 8, orbits: 6, rings: 6 };
   const n = ROSETTE_N[kind];
   const els = Array.from({ length: n }, (_, i) => {
     // hue by direction, mirror-symmetric: copies facing into the canvas (lower-left) are indigo, copies facing the corner (upper-right) orange
@@ -348,7 +348,8 @@ function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean):
       }
       case "lens": {
         // vesica petals: equal lenses from the centre outward (a lotus drawn with two arcs each)
-        const L = R, w = R * 0.26, d = `M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`;
+        // bigger than the line rosettes (the lotus is the hero of the corner); 8 broad petals
+        const L = R * (land ? 1.22 : 1.32), w = L * 0.36, d = `M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`;
         if (!spec.rosetteSolid) return <path key={i} d={d} transform={`translate(${cx} ${cy}) rotate(${a})`} stroke={c} />;
         // solid: each petal filled base → tip, from a pale tint of its hue to the full hue; a canvas-coloured edge keeps overlaps crisp
         return (

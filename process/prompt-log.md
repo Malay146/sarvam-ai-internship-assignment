@@ -425,3 +425,7 @@ Entry format:
 - The rosette switched to **lens** (12 vesica petals, a lotus).
 - Then made solid (`rosetteSolid`): each petal is filled base → tip, from a 70% white tint of its spectrum hue to the full hue, so the lotus shows the whole spectrum (indigo petals facing the canvas, orange toward the corner). A 2.5px (Meta) / 2px (LinkedIn) canvas-coloured edge keeps the overlapping petals crisp at the centre. No blur, no stroke colour.
 - QA PASS, re-exported. The builder has a Petals line / solid control.
+
+## 2026-11-04 — Lotus: bigger, fewer, broader petals
+- Prompts (verbatim): "make it bigger in size and have a little bit fewer petals in number." → "Make the petal thicker."
+- Lens rosette: 12 → 8 petals; length ×1.32 (Meta) / ×1.22 (LinkedIn); petal width 0.26 R → 0.36 × length. It stays clear of the headline in both formats. QA PASS, re-exported.
