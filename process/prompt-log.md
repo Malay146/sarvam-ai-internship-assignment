@@ -519,3 +519,11 @@ Entry format:
 - Prompts (verbatim): "show me the portrait version of this." · "Imported. Keep the Sarvam logo out of the pattern." · "Like at the top" · "If possible try to make the title a two-liner." · "Don't change the pattern. The pattern was good."
 - Added a Meta portrait to `your-yes`. The logomark moved out of the shape to the top centre. The title is forced to two lines ("Nothing ships / without your yes"). The shape stays the Ogee cross. (While Malay was replying I briefly tested Quatrefoil and Scalloped; both were reverted.)
 - Open: on portrait the Ogee cross's core is narrow, so the two-line title sets at 63px, under the 96px Meta minimum (QA flags it). LinkedIn passes at full size.
+
+## 2026-11-04 — your-yes portrait: bigger title, same shape
+- Prompts (verbatim): "increase the text size of the title in the portrait one. It looks kind of smaller." → "Why increase the pattern size? Increase the text size."
+- First I grew the shape (side points to the frame edge) and tried wider text boxes. Malay rejected that: the pattern should stay, and only the text should grow. Both were reverted.
+- New `titleSize` option: it sets the headline size directly, and the text box widens around it.
+  - 96px: "w" and "s" landed on the gold glow band, lowering the contrast.
+  - Settled at **88px** (from 63px): every glyph sits on the green core.
+- QA flags 88 < 96 (Meta minimum) for this banner. That's accepted as a by-eye exception, the most the shape allows.

@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  titleSize?: { portrait?: number; landscape?: number };   // set the headline size directly (px); the text box widens to hold it, centred
   whole?: boolean;                 // medallion-glow: keep the whole shape in frame on LinkedIn too (no vertical bleed)
   divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
   horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
@@ -775,7 +776,13 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
     if (best === -1) open = first;
   }
   const k = best === -1 ? STEPS[STEPS.length - 1] : STEPS[best];
-  const S = { p: Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
+  const forced = spec.titleSize?.[format === "landscape" ? "landscape" : "portrait"];
+  const S = { p: forced ?? Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
+  if (forced) {
+    // widen the text box (centred) to the widest forced line at this size, so the title isn't re-wrapped smaller
+    const need = Math.max(...spec.primary.split("\n").map((l) => l.length)) * forced * charW(pFont, pWeight, spec.primary) * 1.04;
+    if (need > open.w) open = { ...open, x: open.x - (need - open.w) / 2, w: need };
+  }
   const primary = (
     <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment} align={align}
       font={sans ? "text" : "display"} weight={sans ? 600 : 400} tracking={num ? -0.05 : sans ? -0.035 : -0.04} leading={sans ? 1.06 : 1.04} />

@@ -72,7 +72,10 @@
       "titleStyle": "serif",
       "primary": "Nothing ships\nwithout your yes",
       "secondary": "Every task waits for your approval",
-      "secondaryPlace": "below"
+      "secondaryPlace": "below",
+      "titleSize": {
+        "portrait": 88
+      }
     }
   },
   {
