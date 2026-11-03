@@ -1,7 +1,7 @@
 import { BookOpen, CalendarClock, Globe, Library, Plug, ShieldCheck, Sparkles } from "@/components/icons";
 import {
   Button, ButtonRow, CardGrid, Checklist, Chip, CtaCard, Eyebrow, Faq, FeatureRow, Footer, IconTile,
-  CoworkDashboard, EmblemArt, EmblemCard, FactCard, SYSTEM_NAV, FeatureBento, ScheduleDashboard, TileCard, GatewayFrame, GlowCard, MockChecklist, MockPlan, MockResearch, MockReview, Motif, Nav, SectionHeader, Steps, Timeline, TrustBand,
+  CoworkDashboard, EmblemArt, EmblemCard, FactCard, SYSTEM_NAV, FeatureBento, ScheduleDashboard, TileCard, GatewayFrame, GlowCard, MockChecklist, MockPlan, MockResearch, MockReview, Motif, Nav, SectionHeader, Steps, Timeline, TrustBand, HeroGlow,
 } from "@/components/sarvam";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import "./showcase.css";
@@ -23,8 +23,9 @@ function Block({ id, name, note, children }: { id: string; name: string; note: s
 export default function ComponentsPage() {
   return (
     <>
-      <Nav links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
-      <main className="cs-page">
+      <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
+      <main className="cs-page sr-under-nav">
+        <HeroGlow />
         <header className="sr-container cs-intro">
           <Motif />
           <Eyebrow>Sarvam design system</Eyebrow>

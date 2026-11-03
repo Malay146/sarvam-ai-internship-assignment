@@ -230,7 +230,7 @@ a.sr-card { text-decoration: none; color: inherit; }
 .sr-nav { position: sticky; top: 0; z-index: 50; isolation: isolate; }
 .sr-nav--overlay { position: fixed; left: 0; right: 0; }
 /* Surface: slides down + fades in when solid (500ms out-quint), fades out when it leaves (300ms) — sarvam.ai [verified] */
-.sr-nav__surface { position: absolute; inset: 0; z-index: -1; background: color-mix(in srgb, var(--color-sr-white) 88%, transparent); backdrop-filter: blur(var(--blur-glass)); -webkit-backdrop-filter: blur(var(--blur-glass)); opacity: 0; transform: translateY(0); transition: opacity var(--duration-moderate) var(--ease-out); }
+.sr-nav__surface { position: absolute; inset: 0; z-index: -1; background: var(--color-sr-white); opacity: 0; transform: translateY(0); transition: opacity var(--duration-moderate) var(--ease-out); }
 .sr-nav__surface::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 1px; background: var(--color-st-secondary); }
 .sr-nav[data-solid="true"] .sr-nav__surface { opacity: 1; animation: sr-nav-in var(--duration-slow) var(--ease-out-quint); }
 @keyframes sr-nav-in { from { transform: translateY(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -446,3 +446,10 @@ a.sr-card { text-decoration: none; color: inherit; }
 a.sr-card { position: relative; transition: border-color var(--duration-normal) var(--ease-standard); }
 a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; box-shadow: var(--shadow-ambient-md); opacity: 0; transition: opacity var(--duration-normal) var(--ease-standard); pointer-events: none; will-change: opacity; }
 @media (hover: hover) { a.sr-card:hover { box-shadow: none; } a.sr-card:hover::after { opacity: 1; } }
+
+/* Hero glow behind the overlay nav: the Sun's lower arc + a fade into the page */
+.sr-hero-glow { position: absolute; top: 0; left: 0; right: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.sr-hero-glow__sun { position: absolute; left: 50%; top: 0; width: min(1622px, 190vw); aspect-ratio: 1622 / 872; transform: translate(-50%, -62%); }
+.sr-hero-glow::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, var(--color-sf) 100%); }
+.sr-under-nav { position: relative; padding-top: 64px; }
+.sr-under-nav > *:not(.sr-hero-glow) { position: relative; z-index: 1; }

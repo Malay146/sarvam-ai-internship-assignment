@@ -229,11 +229,15 @@ A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 1
 
 **Crisp, not blurry** `[addition, from review]`: glow shapes use a sharp 1.6px gradient rim, a 2.4px white inner highlight and only a faint 4px halo. The soft, heavily blurred version reads muddy at small sizes.
 
-### Nav `<Nav cta>`
-- Sticky, 64 high, `sf` 80% + 24px backdrop blur, hairline bottom border.
-- phone and tablet: wordmark · CTA · menu button (44px) opening a full-screen sheet of 56px rows in the display font.
-- ≥1024: wordmark · 4 links (40px pills, grey hover) · CTA.
-- Official wordmark SVG only, black on light, 18px tall.
+### Nav `<Nav overlay links actions>` `[verified behaviour, sarvam.ai Navbar]`
+- **Overlay mode** (any page with a hero): fixed and **transparent at the top**, so the hero glow shows through. After **8px** of scroll a **solid white** surface slides down and fades in (500ms out-quint); it returns to transparent only below **2px** (hysteresis, so no flicker) with a 300ms fade. A hairline sits at the bottom, inset 6%.
+- **Solid mode** (pages without a hero): always white.
+- **Actions:** dark "Log In" + light "Contact Us" (Sarvam default), or a single action (e.g. "Talk to Us" on Indus Cowork). On phones only the last action shows, beside the menu button.
+- **Layout:**
+  - phone and tablet: wordmark · action · 44px menu button opening a full-screen sheet of 56px rows in the display font
+  - ≥1024: wordmark · links (40px pills, grey hover) · actions
+- **Height:** 64. Pages using overlay add `sr-under-nav` (64px offset) and usually a `<HeroGlow />` (the Sun arc) behind the top.
+- **QA:** `scripts/check-nav.mjs` checks transparent → solid → transparent at 0 / 400 / 0px.
 
 ### Footer `<Footer>`
 - Wordmark + "AI for all from India".

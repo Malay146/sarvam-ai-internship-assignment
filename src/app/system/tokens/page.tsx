@@ -95,7 +95,7 @@ export default function SystemPage() {
 
   return (
     <>
-    <Nav links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
+    <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
     <main className="sys-page">
       <header className="sys-hero">
         <div className="sys-heroSun sr-gradient-sun" aria-hidden />

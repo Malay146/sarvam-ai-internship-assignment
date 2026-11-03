@@ -1,4 +1,4 @@
-import { EmblemArt, EmblemCard, Eyebrow, Footer, Motif, Nav, SYSTEM_NAV } from "@/components/sarvam";
+import { EmblemArt, EmblemCard, Eyebrow, Footer, Motif, Nav, SYSTEM_NAV, HeroGlow } from "@/components/sarvam";
 import { BookOpen, Sparkles, Library, Plug } from "@/components/icons";
 import "./hub.css";
 
@@ -27,8 +27,9 @@ const DOCS = [
 export default function SystemHub() {
   return (
     <>
-      <Nav links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
-      <main className="hub">
+      <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
+      <main className="hub sr-under-nav">
+        <HeroGlow />
         <header className="sr-container hub-intro">
           <Motif />
           <Eyebrow>Sarvam AI · design system</Eyebrow>
