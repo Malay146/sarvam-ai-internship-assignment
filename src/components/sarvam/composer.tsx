@@ -31,7 +31,8 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
-  divider?: string;                // a /studio divider preset between headline and supporting line, drawn in the spectrum
+  divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
+  horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
   ornament?: Ornament;             // spectrum device: one SOLID shape in the spectrum (supersedes the line rosettes)
   place?: "corner" | "rise" | "center" | "small";   // where the ornament sits; the text takes the space it leaves
   petals?: number;                 // lotus / petal: petal count (corner/center: full flower; rise: an upward fan)
@@ -474,7 +475,8 @@ function ornamentDevice(spec: BannerSpec, F: Frame, id: string, land: boolean, s
         <defs><clipPath id={k("clip")}><rect x={0} y={0} width={F.W} height={stripY} /></clipPath></defs>
         <g clipPath={`url(#${k("clip")})`}>{els}</g>
       </svg>
-      <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: stripY, height: stripH, background: SPECTRUM }} />
+      {/* a bottom horizon replaces the strip (the horizon is the colour moment; a strip on it would sink) */}
+      {spec.horizon !== "bottom" && <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: stripY, height: stripH, background: SPECTRUM }} />}
     </>
   );
   const centred = !land && (place === "rise" || place === "center");
@@ -494,6 +496,16 @@ function SpectrumDivider({ name, width, id, dark }: { name: string; width: numbe
       </linearGradient></defs>
       <g dangerouslySetInnerHTML={{ __html: html }} />
     </svg>
+  );
+}
+
+/** Horizon: the /system hero's Sun disc (tokens --gradient-sun), entering from one edge so its arc reaches about half the
+ *  frame. The disc keeps the hero's proportions (1622 × 872, widened 1.35× like the hero); bottom = mirrored, a sunrise. */
+function Horizon({ W, H, edge }: { W: number; H: number; edge: "top" | "bottom" }) {
+  const dh = H, dw = (dh * 1622) / 872;                      // visible arc ≈ half the disc height = H / 2
+  return (
+    <div aria-hidden style={{ position: "absolute", left: (W - dw) / 2, top: (edge === "top" ? 0 : H) - dh / 2, width: dw, height: dh,
+      backgroundImage: "var(--gradient-sun)", transform: `scaleX(1.35)${edge === "bottom" ? " scaleY(-1)" : ""}`, pointerEvents: "none" }} />
   );
 }
 
@@ -763,6 +775,7 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   const markTone = DARK_BG.has(spec.background) ? "white" : "black";
   return (
     <div data-banner={format} style={{ position: "relative", width: F.W, height: F.H, overflow: "hidden", background: spec.background === "plain" ? "var(--color-sf)" : `var(--gradient-${spec.background})` }}>
+      {spec.horizon && <Horizon W={F.W} H={F.H} edge={spec.horizon} />}
       {layer}
       {/* Seamless grain: one pre-generated noise image (1200×1350, decoded once, no live filter) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -774,9 +787,9 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
       <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? D.textJustify ?? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
         {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
+        {spec.divider && <SpectrumDivider name={spec.divider} width={dividerW} id={id} dark={DARK_BG.has(spec.background)} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
-        {spec.divider && <SpectrumDivider name={spec.divider} width={dividerW} id={id} dark={DARK_BG.has(spec.background)} />}
         {spec.secondaryPlace !== "above" && secondary}
       </div>
     </div>

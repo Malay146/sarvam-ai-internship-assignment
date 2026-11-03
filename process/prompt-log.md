@@ -458,3 +458,10 @@ Entry format:
 ## 2026-11-04 — Spectrum family trimmed
 - Prompt (verbatim): "remove prism, bloom, fam approval, fam, slack, fam ally." (read as prism-bloom, fam-approval, fam-slack, fam-early)
 - Removed those four briefs and their PNGs. Spectrum banners left: `prism-spectrum` (corner lotus) and `prism-rise` (rising fan). The engine options (ornaments, placements, dividers) stay available.
+
+## 2026-11-04 — Prism rise: sunrise horizon; dividers above the title
+- Prompts (verbatim): "in Prism Rise have a horizon gradient wherever it looks best, either from top to bottom or bottom to top, only halfway through, wherever you think is best." · "Also the dividers should always be above the text content like they should be above the title."
+- Choice: **bottom**. The lotus already rises from the bottom edge, so the Sun gradient entering from below reads as a sunrise behind it. The text stays on the calm upper half.
+- Build: `horizon` reuses the /system hero's `--gradient-sun` disc (1622 × 872 proportions, widened 1.35× like the hero), mirrored, with its centre on the bottom edge, so the arc reaches about half the frame.
+- After looking: the spectrum strip sank into the orange and its orange end vanished, so a bottom horizon now replaces the strip.
+- Dividers moved above the headline everywhere, as a rule in banner-builder.md. QA PASS, prism-rise and prism-spectrum re-exported.

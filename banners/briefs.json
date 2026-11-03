@@ -187,7 +187,8 @@
       "primary": "Sarvam Prism",
       "secondary": "Fast, accurate decisions in 44 ms",
       "divider": "Scroll fan",
-      "situation": "launch"
+      "situation": "launch",
+      "horizon": "bottom"
     }
   }
 ]
