@@ -543,3 +543,4 @@ Entry format:
 - New `markOnLinkedIn` option: LinkedIn puts the logomark inside the star above the title; Meta keeps it above the star.
 - With the logo inside, the title shrank (79 → 68px). I first patched it with a forced size, a forced line break and an upward nudge (the new `titleSize` and `textShift` options, plus a taller box for forced sizes).
 - Malay's better fix: grow the star on LinkedIn only (new `landScale`, 1.12 → 1.4 × frame height). The opening grows, and the logo + two-line title + line fit at full size with no overrides, so the patches were removed from this banner. QA PASS.
+- Follow-up (verbatim): "go back to the original size of the pattern." → `landScale` removed, so the star is back to 1.12 × the frame height. The title is pinned at 79px (`titleSize`) and the block is nudged up 28px (`textShift`), so the logo, the two-line title and the line all sit inside the star. QA PASS, re-exported.
