@@ -44,3 +44,10 @@ next-env.d.ts
 /references/brand-css/*.html
 /references/brand-css/*.js
 /references/brand-css/*.css
+
+# Sarvam's own images (logos, brand images, site screenshots, social posts): kept locally as research,
+# not republished. What we took from them is in references/brand-findings.md and references/social/README.md.
+/references/brand/
+/references/site/
+/references/social/*
+!/references/social/README.md
