@@ -367,6 +367,6 @@ export { EmblemArt, EmblemCard } from "./Emblem";
 export { CampaignBanner, ProductBanner, CommunityBanner, GRID } from "./banners";
 
 /** Hero glow: our Sun arc hanging from the top of the page (tokens.md §2.4), full-bleed, behind the overlay nav. */
-export function HeroGlow({ height = 520 }: { height?: number }) {
+export function HeroGlow({ height = 640 }: { height?: number }) {
   return <div className="sr-hero-glow" style={{ height }} aria-hidden><div className="sr-hero-glow__sun sr-gradient-sun" /></div>;
 }

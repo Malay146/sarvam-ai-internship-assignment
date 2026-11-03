@@ -10,7 +10,7 @@
 .sys-hero {
   position: relative;
   overflow: hidden;
-  padding-top: var(--space-hero-top);
+  padding-top: var(--space-16);
   padding-bottom: var(--space-16);
 }
 .sys-heroSun {
