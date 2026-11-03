@@ -408,3 +408,14 @@ Entry format:
 ## 2026-11-04 — Rosette stroke thicker
 - Prompt (verbatim): "great, loved it, but with a somewhat thicker pattern, thicker stroke"
 - Rosette line 1.5px → 3px (Meta) / 2.5px (LinkedIn): about 2× the old weight, so it holds at phone size (~375px wide: 3px reads as ~1px). QA PASS, re-exported.
+
+## 2026-11-04 — Rosette set: more patterns, thicker stroke
+- Prompt (verbatim): "a different set of patterns and thicker strokes"
+- Stroke 3 → 4.5px (Meta) / 2.5 → 3.5px (LinkedIn), with round caps.
+- New rosettes, all following the one-element-by-rotation rule:
+  - **lens:** 12 vesica petals, a lotus
+  - **orbits:** 6 ellipses turned 30°
+  - **rings:** 6 concentric circles; the hue steps outward
+  - Joining the existing circles and lobes.
+- Tried and dropped **arches** (Mihrab gateway repeated by rotation). Even after moving them onto an inner ring, the gateway's long straight sides read as boxy door frames, not a rosette.
+- Sheet: `process/screens/banners-simple/rosette-set-thick.png`. The prism-spectrum banner stays on circles. QA PASS, re-exported. The builder's "Corner rosette" control lists all five.

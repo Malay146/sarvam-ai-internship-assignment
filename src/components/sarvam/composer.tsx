@@ -31,7 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
-  rosette?: "circles" | "lobes";   // spectrum device: the corner rosette (circles = the logomark's own construction)
+  rosette?: "circles" | "lobes" | "lens" | "orbits" | "rings";   // spectrum device: the corner rosette (circles = the logomark's own construction)
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
 export const EMBLEM_ICONS = {
@@ -324,29 +324,47 @@ function spectrumAt(t: number) {
 }
 /** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
  *  The top-right corner holds a rosette built the way Sarvam's logomark is built: ONE element repeated around a centre
- *  (identical shape, identical line: 3px Meta / 2.5px LinkedIn, even rotation), each copy one hue of the spectrum, cropped by the corner. */
+ *  (identical shape, identical line: 4.5px Meta / 3.5px LinkedIn, even rotation), each copy one hue of the spectrum, cropped by the corner. */
+type Rosette = NonNullable<BannerSpec["rosette"]>;
 function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean): DeviceOut {
   const h = land ? 8 : 12, y = F.H - F.M - h;
   const kind = spec.rosette ?? "circles";
   const R = land ? F.H * 0.38 : F.W * 0.36;                     // rosette radius (the whole rosette spans 2R)
   const cx = F.W - (land ? F.H * 0.16 : F.W * 0.14), cy = land ? F.H * 0.16 : F.W * 0.14;
-  const n = 12;
+  const ROSETTE_N: Record<Rosette, number> = { circles: 12, lobes: 12, lens: 12, orbits: 6, rings: 6 };
+  const n = ROSETTE_N[kind];
   const els = Array.from({ length: n }, (_, i) => {
     // hue by direction, mirror-symmetric: copies facing into the canvas (lower-left) are indigo, copies facing the corner (upper-right) orange
-    const a = (360 / n) * i, c = spectrumAt((1 - Math.cos(((a - 135) * Math.PI) / 180)) / 2);
-    if (kind === "circles") {
-      // the logomark's construction: equal circles whose centres sit on a ring, each passing through the centre
-      const r = R / 2, rad = (a * Math.PI) / 180;
-      return <circle key={i} cx={cx + Math.cos(rad) * r} cy={cy + Math.sin(rad) * r} r={r} stroke={c} />;
+    const a = (360 / n) * i, rad = (a * Math.PI) / 180;
+    const c = spectrumAt(kind === "rings" ? i / (n - 1) : (1 - Math.cos(((a - 135) * Math.PI) / 180)) / 2);
+    switch (kind) {
+      case "circles": {
+        // the logomark's construction: equal circles whose centres sit on a ring, each passing through the centre
+        const r = R / 2;
+        return <circle key={i} cx={cx + Math.cos(rad) * r} cy={cy + Math.sin(rad) * r} r={r} stroke={c} />;
+      }
+      case "lens": {
+        // vesica petals: equal lenses from the centre outward (a lotus drawn with two arcs each)
+        const L = R, w = R * 0.26;
+        return <path key={i} d={`M0 0 Q${w} ${-L / 2} 0 ${-L} Q${-w} ${-L / 2} 0 0 Z`} transform={`translate(${cx} ${cy}) rotate(${a})`} stroke={c} />;
+      }
+      case "orbits":
+        // equal ellipses sharing the centre, each turned by 180/n: a calm spirograph
+        return <ellipse key={i} cx={cx} cy={cy} rx={R} ry={R * 0.36} transform={`rotate(${(180 / n) * i} ${cx} ${cy})`} stroke={c} />;
+      case "rings":
+        // concentric circles at an even step, hue stepping outward through the spectrum
+        return <circle key={i} cx={cx} cy={cy} r={R * (0.28 + (0.72 * i) / (n - 1))} stroke={c} />;
+      default: {
+        // lobes: equal rounded squares set out on a ring and turned to face the centre (the logomark's petals)
+        const sd = R * 0.62, px = cx + Math.cos(rad) * R * 0.5, py = cy + Math.sin(rad) * R * 0.5;
+        return <rect key={i} x={px - sd / 2} y={py - sd / 2} width={sd} height={sd} rx={sd * 0.3} transform={`rotate(${a + 45} ${px} ${py})`} stroke={c} />;
+      }
     }
-    // lobes: equal rounded squares set out on a ring and turned to face the centre (the logomark's petals)
-    const sd = R * 0.62, rad = (a * Math.PI) / 180, px = cx + Math.cos(rad) * R * 0.5, py = cy + Math.sin(rad) * R * 0.5;
-    return <rect key={i} x={px - sd / 2} y={py - sd / 2} width={sd} height={sd} rx={sd * 0.3} transform={`rotate(${a + 45} ${px} ${py})`} stroke={c} />;
   });
   const layer = (
     <>
       <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
-        <g fill="none" strokeWidth={land ? 2.5 : 3} strokeLinejoin="round">{els}</g>
+        <g fill="none" strokeWidth={land ? 3.5 : 4.5} strokeLinejoin="round" strokeLinecap="round">{els}</g>
       </svg>
       <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />
     </>
