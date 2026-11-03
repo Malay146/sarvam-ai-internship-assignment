@@ -448,7 +448,9 @@ a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: 
 
 /* Hero glow behind the overlay nav: the Sun's lower arc + a fade into the page */
 .sr-hero-glow { position: absolute; top: 0; left: 0; right: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-.sr-hero-glow__sun { position: absolute; left: 50%; top: 0; width: min(1622px, 190vw); aspect-ratio: 1622 / 872; transform: translate(-50%, -62%); }
+/* A wide horizon: the Sun disc stretched horizontally so the arc spans (almost) the full width */
+.sr-hero-glow__sun { position: absolute; left: 50%; top: 0; width: 210vw; aspect-ratio: 1622 / 872; transform: translate(-50%, -60%) scaleX(1.1); transform-origin: 50% 0; }
+@media (min-width: 768px) { .sr-hero-glow__sun { width: max(1400px, 118vw); transform: translate(-50%, -64%) scaleX(1.35); } }
 .sr-hero-glow::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, var(--color-sf) 100%); }
 .sr-under-nav { position: relative; padding-top: 64px; }
 .sr-under-nav > *:not(.sr-hero-glow) { position: relative; z-index: 1; }

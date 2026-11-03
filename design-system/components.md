@@ -236,7 +236,7 @@ A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 1
 - **Layout:**
   - phone and tablet: wordmark · action · 44px menu button opening a full-screen sheet of 56px rows in the display font
   - ≥1024: wordmark · links (40px pills, grey hover) · actions
-- **Height:** 64. Pages using overlay add `sr-under-nav` (64px offset) and usually a `<HeroGlow />` (the Sun arc) behind the top.
+- **Height:** 64. Pages using overlay add `sr-under-nav` (64px offset) and usually a `<HeroGlow />` behind the top: a wide **horizon**, i.e. the Sun disc stretched horizontally so the orange arc spans most of the width, with the periwinkle halo to the edges (phone: 210vw × 1.1; ≥768: max(1400px, 118vw) × 1.35), fading into `sf`.
 - **QA:** `scripts/check-nav.mjs` checks transparent → solid → transparent at 0 / 400 / 0px.
 
 ### Footer `<Footer>`
