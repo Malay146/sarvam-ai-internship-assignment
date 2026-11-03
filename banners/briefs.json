@@ -128,46 +128,5 @@
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below"
     }
-  },
-  {
-    "id": "prism-afterglow",
-    "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
-    },
-    "spec": {
-      "situation": "launch",
-      "background": "dusk",
-      "device": "afterglow",
-      "shape": "Cusped window",
-      "tilt": -9,
-      "treatment": "white",
-      "mark": "none",
-      "titleStyle": "sans",
-      "primary": "Sarvam Prism",
-      "secondary": "Fast, accurate decisions in 44 ms",
-      "secondaryPlace": "below"
-    }
-  },
-  {
-    "id": "prism-speed",
-    "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
-    },
-    "spec": {
-      "situation": "milestone",
-      "background": "indigo-glow",
-      "device": "afterglow",
-      "shape": "Eight-point star",
-      "tilt": 8,
-      "treatment": "white",
-      "mark": "none",
-      "titleStyle": "serif",
-      "primary": "44 ms",
-      "primaryIsNumber": true,
-      "secondary": "Sarvam Prism, median response time",
-      "secondaryPlace": "below"
-    }
   }
 ]
