@@ -552,3 +552,9 @@ Entry format:
   2. Every task leaves a trail (capability preset, saved as brief `final-trail`)
   3. Indus Cowork early access with the partner lockup (program preset, saved as brief `final-early-access`)
 - All six pass check-banners.
+
+## 2026-11-04 — Repo published
+- Prompts (verbatim): "is a reference folder needed for the assignment?" → "okay do the necessary changes and then create a repo, make it public, and push the code."
+- Sarvam's own images (`references/brand/`, `references/site/`, `references/social/*.png`, 51 MB) are now git-ignored and purged from every commit (`git filter-branch`), so the public repo never contains them. They stay on disk as research. `brand-findings.md`, the social README and the extracted CSS text stay public as provenance.
+- The rewrite also deleted the local copies; they were restored from the `backup/pre-public` branch.
+- `main` fast-forwarded to `design-system`. Public repo: https://github.com/Malay146/sarvam-ai-internship-assignment (default branch `main`).
