@@ -39,19 +39,22 @@
     }
   },
   {
-    "id": "slack",
+    "id": "early-access",
     "formats": {
       "meta": "portrait",
       "linkedin": "landscape"
     },
     "spec": {
-      "situation": "story",
-      "background": "lavender-dusk",
-      "device": "cloud",
+      "situation": "program",
+      "layout": "split",
+      "background": "plain",
+      "device": "gloss",
       "treatment": "ink",
-      "mark": "top",
+      "mark": "inside",
       "titleStyle": "serif",
-      "primary": "Your newest colleague lives in Slack."
+      "primary": "Indus Cowork early access",
+      "secondary": "Talk to us about your team's workflows",
+      "secondaryPlace": "below"
     }
   }
 ]

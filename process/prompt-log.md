@@ -238,3 +238,15 @@ Entry format:
 - Prompt (verbatim): "In this type of pattern the text would be perfectly inside that background pattern. Why is it stretched in landscape and not in square or another format? Fix it. It should not ever stretch."
 - Cause: the cloud was drawn with `preserveAspectRatio="none"` into a wide box on landscape. A second, quieter stretch: the medallion "aspect" option scales the shape vertically.
 - Fix: the cloud is now the scalloped medallion at true proportions (blurred) with a measured text box inside it; medallion text shapes always use aspect 1; shapes are enlarged so text keeps room; headlines are capped at 3 lines (type shrinks instead of a 4th break). Rule written into banner-builder.md §2.6. QA 18/18 + 6/6.
+
+## 2026-11-04 — Banner builder: layouts, slots, reference match, variations, final six
+- Prompts (verbatim): "so tell me, can you just make these preset banners only or anything?… we need a lot of improvements… what should we do next for this banner thing?" → plan of 5 steps → "wait it will take 1hours and 2 hours why?" → "the do all 5 i guess"
+- 1 · Layouts: centered / split / stacked, rearranged per format (split on portrait/square → stacked; stacked on landscape → split). Devices now render into a sub-area (frame-based renderDevice); text left-aligned in split.
+- 2 · Slots: partner lockup (`sarvam · PARTNER`, partner at wordmark height in indigo) and a product card floating over the device (~62% of the device width). Wordmark option "none" (Sarvam 30B has none). New situations: partnership, program, feature. QA now reads all situations from the source: 27/27 PASS.
+  - Fixes found by looking: the gloss cluster was mirrored for full canvases (cut off or tiny in sub-areas) → one centred cluster; the card was sized to the text box (tiny) → sized to the device area.
+- 3 · Reference match (`scripts/reference-match.mjs`): rebuilt Knowledge Fabric, Sarvam 30B, Supernova and Startup Program with builder options only.
+  - Round 1 gaps: everything too timid (shapes and type ~½ of Sarvam's scale), a narrow landscape lantern, a thin carved stack, a tiny partner name.
+  - Fixes: type base +40–45%, a wide landscape lantern (structural aspect 0.74), glow fills ~86% of the width and bleeds, carved bands 10% of the shape, partner at wordmark height.
+  - Round 2: Knowledge Fabric, Supernova and Startup Program read as the same family. Screens: `process/screens/reference-match.png` → `reference-match-r2.png`.
+- 4 · Variations: `variationsOf(spec)` → 6 on-system alternatives for the current copy (contrast-safe treatments), clickable gallery in /banners/make. The carved-night option looked blocky as a thumbnail → replaced with a night glow.
+- 5 · Final six (`banners/briefs.json`, all QA PASS): launch (saffron onion-lantern glow, sans), connectors milestone (night scalloped glow, gold 100+), early access (white, gloss cluster, split → stacked on Meta). Screens: `process/screens/banners-final/`.

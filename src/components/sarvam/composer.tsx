@@ -6,14 +6,15 @@ import {
   type GatewayParams, type GlossPalette,
 } from "@/lib/shapes";
 import { StyledText, balanceLines, charW, type TextFill } from "./StyledText";
+import { MockPlan, MockResearch, MockReview } from "./mocks";
 import { FORMATS, type BannerFormat } from "./banners";
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
 export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "cloud" | "gloss" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
-export type MarkPlace = "inside" | "top" | "bottom";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story";
+export type MarkPlace = "inside" | "top" | "bottom" | "none";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "feature";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -24,7 +25,11 @@ export type BannerSpec = {
   titleStyle: TitleStyle;          // serif = display (stories, programs, numbers) · sans = bold (launches, research)
   secondary?: string;              // the only other text
   secondaryPlace?: "above" | "below";
+  layout?: Layout;                 // centred (text inside the device) · split · stacked. Rearranges per format.
+  partner?: string;                // partner lockup: "sarvam · PARTNER" (replaces the plain wordmark)
+  card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only)
 };
+export type Layout = "centered" | "split" | "stacked";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
 export const DEVICES: Device[] = ["medallion-glow", "gateway-carved", "medallion-carved", "gateway-window", "gateway-echo", "cloud", "gloss", "plain"];
@@ -41,6 +46,9 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   funding: { situation: "funding", background: "olive", device: "medallion-glow", shape: "Onion lantern", treatment: "gold", mark: "inside", titleStyle: "serif", primary: "$300 Million", primaryIsNumber: true, secondary: "Announcing Series B", secondaryPlace: "above" },
   event: { situation: "event", background: "spring", device: "gloss", treatment: "indigo", mark: "top", titleStyle: "serif", primary: "Build your first teammate", secondary: "A live Indus Cowork session", secondaryPlace: "below" },
   story: { situation: "story", background: "lavender-dusk", device: "cloud", treatment: "ink", mark: "top", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
+  partnership: { situation: "partnership", background: "lavender-dusk", device: "cloud", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "How a team ships faster with Indus Cowork" },
+  program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
+  feature: { situation: "feature", layout: "split", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", card: "plan", treatment: "indigo", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
 };
 
 /* ── Carved layer palettes (radial core → edge per band). Brand ramps only. ── */
@@ -120,7 +128,7 @@ function Carved({ id, d, W, H, cx, cy, step, count, pal, inner }: {
   const k = (s: string) => `${s}-${id}`;
   const rings = Array.from({ length: count }, (_, i) => count - 1 - i);
   return (
-    <svg width={W} height={H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+    <svg width={W} height={H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
       <defs>
         {rings.map((i) => (
           <radialGradient key={i} id={k(`g${i}`)} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={Math.max(W, H) * (0.42 + i * 0.07)}>
@@ -151,15 +159,16 @@ function Carved({ id, d, W, H, cx, cy, step, count, pal, inner }: {
 }
 
 /** Device layer + the opening (where the text block goes). */
-function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: ReactNode; open: Rect; lightInside: boolean } {
-  const F = FORMATS[f], land = f === "landscape";
+type Frame = { W: number; H: number; M: number };
+function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNode; open: Rect; lightInside: boolean } {
+  const r0 = F.W / F.H, f: BannerFormat = r0 > 1.3 ? "landscape" : r0 > 0.85 ? "square" : "portrait", land = f === "landscape";
   const pal = PAL[spec.background];
   const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
   /** Text-holding shapes, proportioned for the format (aspect = h/w): tall-ish on portrait, square on square, tall + cropped on landscape. */
   const textShape = (name: string): Geom => {
     const a = land ? 1.12 : f === "square" ? 1.0 : 1.16;
     switch (name) {
-      case "Onion lantern": return gatewayPath({ aspect: a * 1.08, top: "ogee", bottom: "mirror", shoulder: 0.3, lobes: 0, lobeDepth: 0, waist: 0, notch: 0, crown: 5, dome: 1, frame: 0 });
+      case "Onion lantern": return gatewayPath({ aspect: land ? 0.74 : a * 1.08, top: "ogee", bottom: "mirror", shoulder: land ? 0.34 : 0.3, lobes: 0, lobeDepth: 0, waist: 0, notch: 0, crown: 5, dome: 1, frame: 0 });
       // Medallions keep their true 1:1 proportions in every format (an "aspect" here would be a vertical stretch).
       case "Cusped window": return medallionPath({ fold: 4, feature: "point", depth: 7, width: 0.28, vertex: "none", vertexDepth: 0, base: "polygon", aspect: 1, frame: 0 });
       case "Quatrefoil": return medallionPath({ ...MEDALLION_PRESETS["Quatrefoil"], aspect: 1, frame: 0 });
@@ -183,7 +192,7 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     const open = innerRect(d, F.W / 2, y + h * (land ? 0.6 : 0.64), textAspect);
     if (spec.device === "gateway-echo") {
       const layer = (
-        <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
           {[4, 3, 2, 1, 0].map((i) => <path key={i} d={d} fill={i === 0 ? "rgb(255 255 255 / 0.08)" : "none"} stroke="#fff" strokeOpacity={0.62 - i * 0.11} strokeWidth={i === 0 ? 1.5 : 1.5} transform={`translate(${F.W / 2} ${F.H}) scale(${1 + i * (land ? 0.2 : 0.22)}) translate(${-F.W / 2} ${-F.H})`} vectorEffect="non-scaling-stroke" />)}
         </svg>
       );
@@ -197,16 +206,16 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     const glow = spec.device === "medallion-glow";
     // Uniform scale. Glow: one shape that fills the frame; carved: a base shape that leaves room for the rings.
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
-    const s = glow ? (land ? (F.H * 1.12) / g.height : Math.min((F.W * 1.0) / g.width, (F.H * 1.0) / g.height))
-                   : (land ? (F.H * 0.66) / g.height : Math.min((F.W * 0.6) / g.width, (F.H * 0.6) / g.height));
+    const s = glow ? (land ? Math.max((F.W * 0.86) / g.width, (F.H * 1.08) / g.height) : Math.min((F.W * 1.04) / g.width, (F.H * 1.04) / g.height))
+                   : (land ? Math.min((F.W * 0.5) / g.width, (F.H * 0.86) / g.height) : Math.min((F.W * 0.66) / g.width, (F.H * 0.62) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;
     const d = fitPath(g, s, cx - w / 2, cy - h / 2);
     const open = innerRect(d, cx, cy, textAspect);
-    if (!glow) return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={cx} cy={cy} step={Math.min(w, h) * 0.05} count={4} pal={pal} inner="glow" />, open, lightInside: false };
+    if (!glow) return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={cx} cy={cy} step={Math.min(w, h) * 0.1} count={4} pal={pal} inner="glow" />, open, lightInside: false };
     const G = GLOW[spec.background], k = (sfx: string) => `${sfx}-${id}`, edge = Math.min(w, h);
     const layer = (
-      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
         <defs>
           <linearGradient id={k("in")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={G.top} /><stop offset="1" stopColor={G.bottom} /></linearGradient>
           <clipPath id={k("clip")}><path d={d} /></clipPath>
@@ -234,7 +243,7 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     const d = fitPath(g, s, cx - w / 2, cy - h / 2);
     const blur = Math.min(w, h) * 0.045;
     const layer = (
-      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
         <filter id={`cloud-${id}`} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={blur} /></filter>
         <path d={d} fill="#f7efed" filter={`url(#cloud-${id})`} />
       </svg>
@@ -248,6 +257,19 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
       ["m:Scalloped medallion", "periwinkle", 0, 0, 1], ["f:Rosette", "rose", -0.55, 0.42, 0.55], ["f:Chakra flower", "indigo", 0.62, 0.5, 0.48],
       ["m:Ogee cross", "leaf", -0.2, 0.86, 0.42], ["f:Lotus", "saffron", 0.5, -0.38, 0.36],
     ];
+    const single = (spec.layout ?? "centered") !== "centered";
+    if (single) {
+      // One cluster centred in the device area (Sarvam's Startup Program), largest shape at the back.
+      const u = Math.min(F.W, F.H) * 0.42, cxs = F.W / 2, cys = F.H / 2;
+      const one = items.map(([key, palette, dx, dy, s], j) => {
+        const [kind, name] = key.split(":");
+        const geom = kind === "m" ? medallionPath(MEDALLION_PRESETS[name]) : flowerPath(FLOWER_PRESETS[name]);
+        const size = u * s * 1.5, cx = cxs + dx * u, cy = cys + dy * u;
+        const html = glossSVG(geom, palette, `${id}-c${j}`).replace("<svg ", '<svg width="100%" height="100%" ');
+        return <div key={j} aria-hidden style={{ position: "absolute", left: cx - size / 2, top: cy - size / 2, width: size, height: size }} dangerouslySetInnerHTML={{ __html: html }} />;
+      });
+      return { layer: <>{one}</>, open: { x: F.W * 0.2, y: F.H * 0.2, w: F.W * 0.6, h: F.H * 0.6 }, lightInside: true };
+    }
     const unit = land ? 130 : 200;
     const sides = [-1, 1];
     const cx0 = land ? 200 : F.W / 2 - 230, cy0 = land ? F.H / 2 + 10 : F.H * (f === "portrait" ? 0.7 : 0.72);
@@ -268,18 +290,56 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
 
 function Mark({ tone, width, style }: { tone: "black" | "white"; width: number; style?: CSSProperties }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img data-qa="mark" src={`/brand/sarvam-wordmark-${tone}.svg`} alt="Sarvam" style={{ width, height: "auto", display: "block", ...style }} />;
+  return <img src={`/brand/sarvam-wordmark-${tone}.svg`} alt="Sarvam" style={{ width, height: "auto", display: "block", ...style }} />;
+}
+
+/** Wordmark, or the partner lockup "sarvam · PARTNER" (logo.md §4: wordmark only, centred dot, matched weight). */
+function Lockup({ tone, width, partner, style }: { tone: "black" | "white"; width: number; partner?: string; style?: CSSProperties }) {
+  const color = tone === "white" ? "#ffffff" : "#141414";
+  return (
+    <div data-qa="mark" style={{ display: "flex", alignItems: "center", gap: width * 0.12, ...style }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`/brand/sarvam-wordmark-${tone}.svg`} alt="Sarvam" style={{ width, height: "auto", display: "block" }} />
+      {partner && <>
+        <span style={{ width: width * 0.04, height: width * 0.04, borderRadius: "50%", background: color, opacity: 0.8 }} />
+        <span style={{ fontFamily: "var(--font-text)", fontWeight: 700, fontSize: width * 0.2, letterSpacing: "0.04em", textTransform: "uppercase", color: tone === "white" ? "#ffffff" : "var(--color-sr-indigo-700)", lineHeight: 1 }}>{partner}</span>
+      </>}
+    </div>
+  );
+}
+
+/** Product moment inside the device opening, scaled to fit (never stretched). */
+function CardSlot({ kind, area }: { kind: "plan" | "research" | "review"; area: { w: number; h: number } }) {
+  const C = kind === "research" ? MockResearch : kind === "review" ? MockReview : MockPlan;
+  // Floats over the shape: ~62% of the area width, never taller than 78% of it (uniform scale).
+  const s = Math.min((area.w * 0.62) / 380, (area.h * 0.78) / 340);
+  return (
+    <div style={{ position: "absolute", left: area.w / 2 - 190, top: area.h / 2 - 170, width: 380, transform: `scale(${s})`, transformOrigin: "center", filter: "drop-shadow(0 18px 32px rgb(17 17 91 / 0.22))" }}>
+      <C freeze={2} />
+    </div>
+  );
 }
 
 const SECONDARY_FILL: Record<Treatment, TextFill> = { white: "white", gold: "goldMute", indigo: "indigo", ink: "ink" };
 
 export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
   const F = FORMATS[format], land = format === "landscape";
-  const { layer, open, lightInside } = renderDevice(spec, format, id);
+  // Layout rearranges per format: split needs width (portrait/square → stacked); stacked needs height (landscape → split).
+  const req = spec.layout ?? "centered";
+  const layout: Layout = req === "split" && !land ? "stacked" : req === "stacked" && land ? "split" : req;
+  const markW = land ? 96 : 124, markSpace = spec.mark === "top" || spec.mark === "inside" ? (land ? 52 : 72) : 0;
+  const dev = layout === "centered" ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
+  const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id);
+  const open: Rect = layout === "centered" ? D.open
+    : layout === "split" ? { x: F.M, y: F.M + markSpace, w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace }
+    : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
+  const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
+  const lightInside = layout === "centered" ? D.lightInside : !DARK_BG.has(spec.background);
+  const align: "center" | "left" = layout === "split" ? "left" : "center";
   const onLight = lightInside || spec.treatment === "ink" || spec.treatment === "indigo";
-  const markW = land ? 96 : 124;
   const num = !!spec.primaryIsNumber, sans = spec.titleStyle === "sans";
-  const base = land ? { p: num ? 150 : sans ? 64 : 70, s: num ? 30 : 24, gap: 16 } : format === "square" ? { p: num ? 230 : sans ? 88 : 98, s: num ? 44 : 32, gap: 24 } : { p: num ? 250 : sans ? 96 : 108, s: num ? 48 : 34, gap: 28 };
+  // Headlines dominate, as in Sarvam's posts (~15–18% of the frame height per line); the fit loop shrinks them only when needed.
+  const base = land ? { p: num ? 170 : sans ? 92 : 100, s: num ? 32 : 26, gap: layout === "split" ? 22 : 18 } : format === "square" ? { p: num ? 250 : sans ? 116 : 124, s: num ? 46 : 34, gap: 26 } : { p: num ? 270 : sans ? 124 : 132, s: num ? 50 : 36, gap: 30 };
   // Fit: shrink type until the block fits the opening (width via wrapping, height via measured lines). Never below 60%.
   const pFont = sans ? "text" : "display", pWeight = sans ? 600 : 400;
   const blockH = (k: number) => {
@@ -288,19 +348,19 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
     const plines = balanceLines(spec.primary, Math.max(4, Math.floor(open.w / cw)));
     const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > 3 ? 99 : plines.length;   // too wide, or more than 3 lines → too big
     const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
-    const markH = spec.mark === "inside" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
+    const markH = spec.mark === "inside" && layout === "centered" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
     return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.4 : 0);
   };
   let k = 1; while (k > 0.42 && blockH(k) > open.h * 0.92) k -= 0.03;
   const S = { p: Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
   const primary = (
-    <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment}
+    <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment} align={align}
       font={sans ? "text" : "display"} weight={sans ? 600 : 400} tracking={num ? -0.05 : sans ? -0.035 : -0.04} leading={sans ? 1.06 : 1.04} />
   );
   // Secondary: a number gets an elegant serif label; a headline gets a calm sans line.
   const secondary = spec.secondary && (num
-    ? <StyledText data-qa="text" id={`${id}-s`} text={spec.secondary} width={open.w * 0.9} size={S.s} fill={onLight ? (spec.secondaryPlace === "above" ? SECONDARY_FILL[spec.treatment] : "ink") : "white"} tracking={-0.02} leading={1.15} />
-    : <p data-qa="text" style={{ fontFamily: "var(--font-text)", fontSize: S.s * (land ? 1 : 0.94), lineHeight: 1.38, color: onLight ? "var(--color-tx-secondary)" : "rgb(255 255 255 / 0.92)", margin: 0, maxWidth: open.w * 0.92, textWrap: "balance" }}>{spec.secondary}</p>);
+    ? <StyledText data-qa="text" id={`${id}-s`} text={spec.secondary} width={open.w * 0.9} align={align} size={S.s} fill={onLight ? (spec.secondaryPlace === "above" ? SECONDARY_FILL[spec.treatment] : "ink") : "white"} tracking={-0.02} leading={1.15} />
+    : <p data-qa="text" style={{ fontFamily: "var(--font-text)", fontSize: S.s * (land ? 1 : 0.94), lineHeight: 1.38, color: onLight ? "var(--color-tx-secondary)" : "rgb(255 255 255 / 0.92)", margin: 0, maxWidth: open.w * 0.92, textWrap: "balance", textAlign: align }}>{spec.secondary}</p>);
   const markTone = DARK_BG.has(spec.background) ? "white" : "black";
   return (
     <div data-banner={format} style={{ position: "relative", width: F.W, height: F.H, overflow: "hidden", background: spec.background === "plain" ? "var(--color-sf)" : `var(--gradient-${spec.background})` }}>
@@ -310,14 +370,34 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
         <filter id={`grain-${id}`}><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="noStitch" /><feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0.2 0" /></filter>
         <rect width={F.W} height={F.H} filter={`url(#grain-${id})`} />
       </svg>
-      {spec.mark === "top" && <Mark tone={markTone} width={markW} style={{ position: "absolute", top: F.M, left: (F.W - markW) / 2 }} />}
-      {spec.mark === "bottom" && <Mark tone={markTone} width={markW} style={{ position: "absolute", bottom: land ? 36 : F.M, left: (F.W - markW) / 2 }} />}
-      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: S.gap, textAlign: "center" }}>
-        {spec.mark === "inside" && <Mark tone={onLight ? "black" : "white"} width={markW} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
+      {(spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
+        <Lockup tone={layout === "centered" ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
+          style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
+      )}
+      {spec.mark === "bottom" && <Lockup tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
+      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: "center", gap: S.gap, textAlign: align }}>
+        {spec.mark === "inside" && layout === "centered" && <Lockup tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
         {spec.secondaryPlace !== "above" && secondary}
       </div>
     </div>
   );
+}
+
+/** Six on-system alternatives for the same copy: different layouts, devices and grounds, with contrast-safe treatments. */
+export function variationsOf(spec: BannerSpec): BannerSpec[] {
+  const num = !!spec.primaryIsNumber;
+  const dark = (bg: Background, light: Treatment = "white"): Treatment => (DARK_BG.has(bg) ? (num ? "gold" : light) : num ? "indigo" : "ink");
+  const base = { primary: spec.primary, primaryIsNumber: spec.primaryIsNumber, secondary: spec.secondary, secondaryPlace: spec.secondaryPlace, partner: spec.partner, card: spec.card };
+  const v = (o: Partial<BannerSpec> & { background: Background; device: Device }): BannerSpec =>
+    ({ ...base, layout: "centered", mark: "inside", titleStyle: spec.titleStyle, treatment: dark(o.background), ...o } as BannerSpec);
+  return [
+    v({ background: "saffron-rose", device: "medallion-glow", shape: "Onion lantern", titleStyle: num ? "serif" : "sans" }),
+    v({ background: "olive", device: "medallion-glow", shape: "Scalloped medallion" }),
+    v({ background: "dusk", device: "gateway-echo", shape: "Mihrab", titleStyle: "serif" }),
+    v({ background: "lavender-dusk", device: "cloud", mark: "top", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
+    v({ background: "night", device: "medallion-glow", shape: "Quatrefoil", mark: "bottom", titleStyle: "serif" }),
+    v({ background: "plain", device: "gloss", layout: "split", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
+  ];
 }

@@ -1935,7 +1935,10 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
   "shape": "Domed door",            // studio preset for gateway/medallion devices
   "treatment": "white",             // white | gold | indigo | ink
   "titleStyle": "sans",             // sans (bold launches/research) | serif (stories, programs, numbers)
-  "mark": "inside",                 // inside the device | top | bottom. Always small (124px / 96px)
+  "mark": "inside",                 // inside | top | bottom | none. Always small (124px / 96px)
+  "layout": "centered",             // centered (text inside the device) | split | stacked. Rearranges per format
+  "partner": "Supernova",           // optional partner lockup: sarvam · PARTNER
+  "card": "plan",                   // optional product moment inside the device (split / stacked)
   "primary": "Indus Cowork",        // the headline, or a number
   "primaryIsNumber": false,
   "secondary": "An AI teammate that finishes the work",   // optional, the ONLY other text
@@ -1973,6 +1976,17 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
 8. **Grain is one seamless generated layer** per banner (tiled grain shows seams when scaled).
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
+#### Layouts (rearrange per format, never shrink)
+| Layout | Landscape | Portrait / square |
+|---|---|---|
+| `centered` | text inside the device | same |
+| `split` | text left (left-aligned), device right 53% | becomes **stacked** |
+| `stacked` | becomes **split** | text top 44%, device bottom 56% |
+
+#### Slots (not text sections)
+- **Partner lockup:** `sarvam · PARTNER` with the partner in bold caps at wordmark height (indigo on light, white on dark).
+- **Product card:** a frozen product moment floating over the device in split/stacked layouts, ~62% of the device width.
+
 ### 3. Situations (starting presets; change any part)
 
 | Situation | Background | Device | Treatment · style | Text |
@@ -1983,6 +1997,13 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
 | **funding** | olive | medallion-glow (onion lantern) | gold · serif | "Announcing …" above + amount |
 | **event** | spring | gloss | indigo · serif | Event name + date/line |
 | **story** | lavender-dusk | cloud | ink · serif | One sentence |
+| **partnership** | lavender-dusk | cloud + partner lockup | ink · serif | One sentence |
+| **program** | plain | gloss, split | ink · serif | Program name + one line |
+| **feature** | lavender-dusk | medallion-glow, split + product card | indigo · serif | Claim + one line |
+
+**Variations:** the builder shows 6 on-system alternatives for the current copy (different layouts, devices and grounds, contrast-safe). Click one to use it.
+
+**Reference match** (`scripts/reference-match.mjs`, `process/screens/reference-match-r2.png`): four real Sarvam posts (Knowledge Fabric, Sarvam 30B, Supernova, Startup Program) rebuilt using only builder options, side by side with the originals. The gaps found in round 1 (scale too timid, a narrow landscape lantern, a thin carved stack, a tiny partner name) were fixed in the engine.
 
 ### 4. How to make a banner (for an AI agent or a person)
 
