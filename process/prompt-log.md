@@ -221,3 +221,15 @@ Entry format:
   - Moved from fixed templates to a composable builder.
   - QA v1: 7/18 situation×format combos failed (text spilling out of openings, overlaps) → added fitting (scale type to the opening's height and width, conservative glyph widths, digits wider, spacing that accounts for the effect padding) → 18/18 + 6/6 saved banners PASS.
 - Current set: launch (carved gateway, sans), connectors milestone (carved medallion, gold 100+), slack story (cloud, serif). Screens: `process/screens/banners-r4/`.
+
+## 2026-11-04 — Banners r5: one shape, true geometry, measured text boxes, seamless grain
+- Prompts (verbatim, in order): "Here there are too many gateway patterns… There is only one and it stands out way cooler… They are using those medallion patterns… see the inner gradient shadow type of thing on the pattern." · "this pattern is not properly structured or aligned… perfect in every single possible way." · "in the landscape one I can see a grid-type pattern. It should not be there." · "the Meta banners feel stretched vertically." · "in some formats… it is overlapping with the gateway. In square format… not properly aligned. The size is too small… properly hierarchically structured."
+- Studied Knowledge Fabric + DiarBench: ONE large shape, bleeding, filled with a deeper ground tone, lit by a contrasting glow from the edge inward; bold centred text.
+- Built `medallion-glow` (now the default for launch / milestone / funding) with 5 curated text-holding shapes (onion lantern, cusped window, quatrefoil, scalloped medallion, ogee cross).
+- Root-cause fixes:
+  1. Shapes were stretched non-uniformly → uniform scale only; proportions set per format via generator params.
+  2. Carved rings were scaled copies (uneven spacing at points vs flats) → true offsets (shape + 2·offset stroke, round joins), step = 5% of shape size.
+  3. Grid lines = seams of the 240px grain tile under scaling → one generated, seamless grain layer per banner.
+  4. Text overlapping gateway walls while QA passed → the text-box finder only saw segment endpoints; long straight sides had no points. → Dense outline sampling of every M/L/C/Q/Z segment; gateways proportioned per format and sized by width.
+  5. Tiny text: number-specific text-box aspect; a legible floor for supporting lines; softer, wider inner glow; larger, closer gloss clusters; light supporting lines on dark grounds.
+- QA: 18/18 situation×format + 6/6 saved PASS. Screens: process/screens/banners-r5/.

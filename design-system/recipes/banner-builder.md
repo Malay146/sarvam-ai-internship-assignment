@@ -39,6 +39,7 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
 
    | Device | What it is | Best for |
    |---|---|---|
+   | `medallion-glow` | **One** large text-holding shape (onion lantern, cusped window, quatrefoil, scalloped medallion, ogee cross), filled with a deeper tone of the ground and lit by a contrasting glow from its edge inward (Sarvam's Knowledge Fabric / DiarBench) | Launches, milestones, funding (default) |
    | `gateway-carved` | 4 nested filled gateway layers, cast shadows, crisp rims, lit doorway | Launches |
    | `medallion-carved` | 4 nested medallion layers, centred | Milestones |
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
@@ -48,17 +49,19 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
    | `plain` | Gradient only | Pure type statements |
 
 5. **Wordmark:** the official file, small (124px on Meta, 96px on LinkedIn), black or white by ground. Inside the device above the text, or top/bottom centre. Never the logomark.
-6. **Fit:** type scales down per format until the text fits the device opening (never below 60%). Long words never spill.
-7. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
+6. **Geometry is never stretched.** Shapes scale uniformly; their proportions are a design parameter set per format (taller on portrait, square on square, wide or cropped on landscape). Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
+7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn).
+8. **Grain is one seamless generated layer** per banner (tiled grain shows seams when scaled).
+9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
 ## 3. Situations (starting presets; change any part)
 
 | Situation | Background | Device | Treatment · style | Text |
 |---|---|---|---|---|
-| **launch** | saffron-rose | gateway-carved | white · sans | Product name + one line |
+| **launch** | saffron-rose | medallion-glow (onion lantern) | white · sans | Product name + one line |
 | **announcement** | dusk | gateway-echo | white · serif | Statement + one line |
-| **milestone** | night | medallion-carved | gold · serif | Number + label |
-| **funding** | olive | gateway-window | gold · serif | "Announcing …" above + amount |
+| **milestone** | night | medallion-glow (scalloped) | gold · serif | Number + label |
+| **funding** | olive | medallion-glow (onion lantern) | gold · serif | "Announcing …" above + amount |
 | **event** | spring | gloss | indigo · serif | Event name + date/line |
 | **story** | lavender-dusk | cloud | ink · serif | One sentence |
 

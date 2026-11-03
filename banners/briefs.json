@@ -1,8 +1,57 @@
 [
-  { "id": "launch", "formats": { "meta": "portrait", "linkedin": "landscape" },
-    "spec": { "situation": "launch", "background": "saffron-rose", "device": "gateway-carved", "shape": "Domed door", "treatment": "white", "mark": "inside", "titleStyle": "sans", "primary": "Indus Cowork", "secondary": "An AI teammate that finishes the work", "secondaryPlace": "below" } },
-  { "id": "connectors", "formats": { "meta": "square", "linkedin": "landscape" },
-    "spec": { "situation": "milestone", "background": "night", "device": "medallion-carved", "shape": "Scalloped medallion", "treatment": "gold", "mark": "bottom", "titleStyle": "serif", "primary": "100+", "primaryIsNumber": true, "secondary": "apps your teammates can work in", "secondaryPlace": "below" } },
-  { "id": "slack", "formats": { "meta": "portrait", "linkedin": "landscape" },
-    "spec": { "situation": "story", "background": "lavender-dusk", "device": "cloud", "treatment": "ink", "mark": "top", "titleStyle": "serif", "primary": "Your newest colleague lives in Slack." } }
+  {
+    "id": "launch",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "launch",
+      "background": "saffron-rose",
+      "device": "medallion-glow",
+      "shape": "Onion lantern",
+      "treatment": "white",
+      "mark": "inside",
+      "titleStyle": "sans",
+      "primary": "Indus Cowork",
+      "secondary": "An AI teammate that finishes the work",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "connectors",
+    "formats": {
+      "meta": "square",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "milestone",
+      "background": "night",
+      "device": "medallion-glow",
+      "shape": "Scalloped medallion",
+      "treatment": "gold",
+      "mark": "bottom",
+      "titleStyle": "serif",
+      "primary": "100+",
+      "primaryIsNumber": true,
+      "secondary": "apps your teammates can work in",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "slack",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "story",
+      "background": "lavender-dusk",
+      "device": "cloud",
+      "treatment": "ink",
+      "mark": "top",
+      "titleStyle": "serif",
+      "primary": "Your newest colleague lives in Slack."
+    }
+  }
 ]
