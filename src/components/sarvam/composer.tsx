@@ -324,7 +324,7 @@ function spectrumAt(t: number) {
 }
 /** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
  *  The top-right corner holds a rosette built the way Sarvam's logomark is built: ONE element repeated around a centre
- *  (identical shape, identical 1.5px line, even rotation), each copy one hue of the spectrum, cropped by the corner. */
+ *  (identical shape, identical line: 3px Meta / 2.5px LinkedIn, even rotation), each copy one hue of the spectrum, cropped by the corner. */
 function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean): DeviceOut {
   const h = land ? 8 : 12, y = F.H - F.M - h;
   const kind = spec.rosette ?? "circles";
@@ -346,7 +346,7 @@ function spectrumDevice(spec: BannerSpec, F: Frame, _id: string, land: boolean):
   const layer = (
     <>
       <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
-        <g fill="none" strokeWidth={1.5} strokeLinejoin="round">{els}</g>
+        <g fill="none" strokeWidth={land ? 2.5 : 3} strokeLinejoin="round">{els}</g>
       </svg>
       <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />
     </>

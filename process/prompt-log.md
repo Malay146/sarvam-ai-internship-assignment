@@ -404,3 +404,7 @@ Entry format:
   - petals on a ring: kept as the `rosette: "lobes"` option
 - Fix after looking: on LinkedIn the rosette came close to "Prism" → R 0.38·H, pushed further into the corner. QA PASS, re-exported.
 - Rule added to banner-builder.md §6: ornaments are one identical element repeated by rotation, never offsets of a complex shape.
+
+## 2026-11-04 — Rosette stroke thicker
+- Prompt (verbatim): "great, loved it, but with a somewhat thicker pattern, thicker stroke"
+- Rosette line 1.5px → 3px (Meta) / 2.5px (LinkedIn): about 2× the old weight, so it holds at phone size (~375px wide: 3px reads as ~1px). QA PASS, re-exported.
