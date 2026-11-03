@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { Artboard, BACKGROUNDS, Banner, DEVICES, SITUATIONS, TREATMENTS, shapesFor, variationsOf, type BannerSpec, type Situation } from "@/components/sarvam";
 import { FORMATS, type BannerFormat } from "@/components/sarvam/banners";
 
@@ -20,6 +20,10 @@ export default function Maker() {
   const [spec, setSpec] = useState<BannerSpec>(SITUATIONS.launch);
   const [id, setId] = useState("my-banner");
   const [status, setStatus] = useState("");
+  const [showVars, setShowVars] = useState(false);
+  // Controls update instantly; previews and variations follow in a deferred (interruptible) render.
+  const view = useDeferredValue(spec);
+  const vars = useMemo(() => (showVars ? variationsOf(view) : []), [showVars, view]);
   const set = (p: Partial<BannerSpec>) => setSpec((s) => ({ ...s, ...p }));
   const metaFormat: BannerFormat = "portrait";   // two formats only: Meta 1080×1350, LinkedIn 1200×627
   const save = async () => {
@@ -47,7 +51,8 @@ export default function Maker() {
         <Seg name="Device" value={spec.device} options={DEVICES} onChange={(v) => set({ device: v, shape: shapesFor(v)[0] === undefined ? undefined : shapesFor(v).includes(spec.shape ?? "") ? spec.shape : shapesFor(v)[0] })} />
         {shapesFor(spec.device).length > 0 && <Seg name="Shape" value={spec.shape} options={shapesFor(spec.device)} onChange={(v) => set({ shape: v })} />}
         <Seg name="Text treatment" value={spec.treatment} options={TREATMENTS} onChange={(v) => set({ treatment: v })} />
-        <Seg name="Wordmark" value={spec.mark} options={["inside", "top", "bottom", "none"] as const} onChange={(v) => set({ mark: v })} />
+        <Seg name="Logo" value={spec.logo ?? "wordmark"} options={["wordmark", "logomark"] as const} onChange={(v) => set({ logo: v })} />
+        <Seg name="Logo position" value={spec.mark} options={["inside", "top", "bottom", "none"] as const} onChange={(v) => set({ mark: v })} />
         <div className="mk-out">
           <label className="mk-field"><span>Save as</span><input value={id} onChange={(e) => setId(e.target.value)} /></label>
           <button className="sr-button sr-button--primary" onClick={save}>Save & export PNGs</button>
@@ -56,18 +61,19 @@ export default function Maker() {
       </aside>
       <section className="mk-stage">
         <div className="mk-vars">
-          <div className="mk-vars__head"><p className="sr-eyebrow">Variations of this copy</p><span className="sr-meta">Click one to use it</span></div>
-          <div className="mk-vars__grid">
-            {variationsOf(spec).map((v, i) => (
+          <div className="mk-vars__head"><p className="sr-eyebrow">Variations of this copy</p>
+            <button className="sr-button sr-button--secondary" onClick={() => setShowVars((s) => !s)}>{showVars ? "Hide variations" : "Show 6 variations"}</button></div>
+          {showVars && <div className="mk-vars__grid">
+            {vars.map((v, i) => (
               <button key={i} className="mk-var" onClick={() => setSpec({ ...v, situation: spec.situation })} aria-label={`Use variation ${i + 1}`}>
                 <Artboard width={FORMATS.landscape.W} height={FORMATS.landscape.H}><Banner spec={v} format="landscape" id={`var-${i}`} /></Artboard>
               </button>
             ))}
-          </div>
+          </div>}
         </div>
         {(["portrait", "landscape"] as BannerFormat[]).map((f) => (
           <figure key={f} className={`mk-frame mk-frame--${f}`}>
-            <Artboard width={FORMATS[f].W} height={FORMATS[f].H} label={f}><Banner spec={spec} format={f} id={`mk-${f}`} /></Artboard>
+            <Artboard width={FORMATS[f].W} height={FORMATS[f].H} label={f}><Banner spec={view} format={f} id={`mk-${f}`} /></Artboard>
             <figcaption className="sr-meta">{f} · {FORMATS[f].W}×{FORMATS[f].H}</figcaption>
           </figure>
         ))}

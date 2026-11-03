@@ -16,7 +16,7 @@ How to use the Sarvam wordmark and logomark. All rules are `[verified]` from sar
 3. **Use the official SVG file** as an `<img>`. Never type "sarvam" in a font to imitate it.
 4. **No effects:** no gradient, shadow, glow, outline, accent colour, rotation, stretch, or change of case or weight.
 5. **Clear space = the wordmark's own "r"** on every side.
-6. **Banners and pages use the wordmark.** The logomark is for places where the brand is already established (app icons, avatars, product UI).
+6. **Pages use the wordmark; banners use the wordmark by default.** The logomark is for places where the brand is already established (app icons, avatars, product UI). `[addition]` A social banner posted from Sarvam's own account is such a place, so a banner may carry the logomark **alone** (0.55× the wordmark height) on a calm milestone or statement post. Never with the wordmark, never in a partner lockup.
 
 ---
 

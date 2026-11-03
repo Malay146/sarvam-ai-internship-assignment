@@ -1680,7 +1680,7 @@ How to use the Sarvam wordmark and logomark. All rules are `[verified]` from sar
 3. **Use the official SVG file** as an `<img>`. Never type "sarvam" in a font to imitate it.
 4. **No effects:** no gradient, shadow, glow, outline, accent colour, rotation, stretch, or change of case or weight.
 5. **Clear space = the wordmark's own "r"** on every side.
-6. **Banners and pages use the wordmark.** The logomark is for places where the brand is already established (app icons, avatars, product UI).
+6. **Pages use the wordmark; banners use the wordmark by default.** The logomark is for places where the brand is already established (app icons, avatars, product UI). `[addition]` A social banner posted from Sarvam's own account is such a place, so a banner may carry the logomark **alone** (0.55× the wordmark height) on a calm milestone or statement post. Never with the wordmark, never in a partner lockup.
 
 ---
 
@@ -1919,7 +1919,7 @@ Use only these claims.
 <!-- recipes/banner-builder.md -->
 ## Recipe · Banner builder (prompt-less)
 
-Every Sarvam banner is a **composition of a few choices + at most two lines of text**. No prompt writing: pick the parts, the builder renders Meta (1080×1350) and LinkedIn (1200×627) at once, fits the type to each format, and exports exact PNGs.
+Every Sarvam banner is a **composition of a few choices + at most two lines of text**. **Usual workflow:** give the AI a subject only; it makes the choices below, writes the spec into `banners/briefs.json`, runs QA and exports (`.claude/skills/sarvam-banner`). The builder is the same engine with a UI, for manual tweaks: pick the parts, the builder renders Meta (1080×1350) and LinkedIn (1200×627) at once, fits the type to each format, and exports exact PNGs.
 
 - Live tool: **`/banners/make`** · Engine: `src/components/sarvam/composer.tsx` · Saved set: `banners/briefs.json` · Export: `node scripts/export-banners.mjs` · QA: `node scripts/check-banners.mjs situations|set`
 - Text effects: `src/components/sarvam/StyledText.tsx` · Shapes: `/studio` (`src/lib/shapes.ts`)
@@ -1937,9 +1937,10 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | 5 | **Padding** | ≥ 1.5 × margin of clear space on both sides (Meta 108px, LinkedIn 84px). Meta: the shape sits fully inside (≥ 72px top and bottom). LinkedIn may bleed off the top and bottom only |
 | 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
 | 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Max 3 lines. Supporting line ≥ 28px Meta / 20px LinkedIn |
-| 8 | **Sharp, not soft** | Every shape has a 1.5px edge line. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device, gloss highlight ≤ 26% of the shape width |
-| 9 | **Wordmark** | Official file, 124px (Meta) / 96px (LinkedIn), white on dark, black on light, or none |
-| 10 | **Seamless grain** | One generated noise layer per banner, never a repeated tile |
+| 8 | **Sharp, not soft** | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
+| 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
+| 9 | **Logo** | Official files only. Wordmark 124px (Meta) / 96px (LinkedIn), **or** the logomark alone (height 0.55× that), never both. White on dark, black on light, or none. Partner lockups always use the wordmark |
+| 10 | **Seamless grain** | One pre-generated noise image (`public/brand/grain.png`, 1200×1350, overlay), never a repeated tile and never a live SVG filter (too slow to repaint) |
 | 11 | **QA** | `node scripts/check-banners.mjs situations` and `set` must PASS before export |
 
 ### 1. The spec
@@ -1985,10 +1986,10 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
       | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
    | `plain` | Gradient only | Pure type statements |
 
-5. **Wordmark:** the official file, small (124px on Meta, 96px on LinkedIn), black or white by ground. Inside the device above the text, or top/bottom centre. Never the logomark.
+5. **Logo (`logo`: `wordmark` | `logomark`):** the official files only, black or white by ground. Wordmark small (124px Meta, 96px LinkedIn); the logomark (the mandala "pattern logo") at 0.55× that height, for milestones and statements where the brand is already clear. Inside the device above the text, or top/bottom centre. Never both; partner lockups always use the wordmark.
 6. **Geometry is never stretched.** Every shape (medallions, the cloud, gloss) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
-7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines.
-8. **Grain is one seamless generated layer** per banner (tiled grain shows seams when scaled).
+7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. If the type only fits small, the engine also tries taller boxes inside the same shape and keeps the one where the type sits largest. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines.
+8. **Grain is one seamless pre-generated image** (tiled grain shows seams when scaled; a live feTurbulence filter cost ~30 ms of raster per change in the builder).
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
 #### Layouts (rearrange per format, never shrink)

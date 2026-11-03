@@ -362,34 +362,31 @@ export function glowSVG(geom: { d: string; width: number; height: number }, pale
 // From Sarvam's social art (Startup Program, Fintech Fest): radial body light centre → coloured edge,
 // a top-left highlight, a tinted inner shadow, a rim light and a soft coloured drop shadow. Brand ramps only.
 export const GLOSS_PALETTES = {
-  periwinkle: { centre: "#e8effc", mid: "#a7c0f1", edge: "#e380a8", shade: "#4250d5" },
-  indigo: { centre: "#a7c0f1", mid: "#556adc", edge: "#3333cc", shade: "#11115b" },
-  leaf: { centre: "#f4f0c8", mid: "#acd587", edge: "#6ea335", shade: "#385418" },
-  saffron: { centre: "#fddcce", mid: "#f59970", edge: "#e96c2f", shade: "#a5460f" },
-  rose: { centre: "#fceaf0", mid: "#efabc5", edge: "#d4508e", shade: "#871f4b" },
+  // top → bottom fill, the inner-edge hue (inner shadow), and the centre light. Brand ramps only.
+  periwinkle: { top: "#e8effc", bottom: "#81a0e9", edge: "#e380a8", light: "#ffffff" },
+  indigo: { top: "#6a88e2", bottom: "#3333cc", edge: "#212191", light: "#a7c0f1" },
+  leaf: { top: "#6ea335", bottom: "#fff0cf", edge: "#496d21", light: "#e3f1d8" },
+  saffron: { top: "#ee7944", bottom: "#ffcb79", edge: "#a5460f", light: "#fff0cf" },
+  rose: { top: "#f9d5e1", bottom: "#d4508e", edge: "#9d2055", light: "#fceaf0" },
 } as const;
 export type GlossPalette = keyof typeof GLOSS_PALETTES;
 
+/** Mesh shape (Sarvam's Startup Program / Kaze art): a crisp flat silhouette filled with a two-tone gradient,
+ *  an inner shadow in a contrasting hue along the edge, and a soft centre light. No drop shadow, no highlight blob. */
 export function glossSVG(geom: { d: string; width: number; height: number }, palette: GlossPalette, uid = "gs"): string {
-  const P = GLOSS_PALETTES[palette], id = (k: string) => `${k}-${uid}`, pad = 10;
-  const W = geom.width + pad * 2, H = geom.height + pad * 2;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${f(W)} ${f(H)}">
+  const P = GLOSS_PALETTES[palette], id = (k: string) => `${k}-${uid}`, pad = 2, e = Math.min(geom.width, geom.height);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${f(geom.width + pad * 2)} ${f(geom.height + pad * 2)}">
   <defs>
-    <radialGradient id="${id("body")}" cx="0.45" cy="0.42" r="0.62"><stop offset="0" stop-color="${P.mid}"/><stop offset="0.6" stop-color="${P.mid}"/><stop offset="1" stop-color="${P.edge}"/></radialGradient>
-    <radialGradient id="${id("hi")}" cx="0.3" cy="0.22" r="0.4"><stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.12"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-    <linearGradient id="${id("rim")}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.15"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.45"/></linearGradient>
+    <linearGradient id="${id("fill")}" x1="0" y1="0" x2="0.15" y2="1"><stop offset="0" stop-color="${P.top}"/><stop offset="1" stop-color="${P.bottom}"/></linearGradient>
+    <radialGradient id="${id("light")}" cx="0.5" cy="0.45" r="0.42"><stop offset="0" stop-color="${P.light}" stop-opacity="0.55"/><stop offset="1" stop-color="${P.light}" stop-opacity="0"/></radialGradient>
     <clipPath id="${id("clip")}"><path d="${geom.d}"/></clipPath>
-    <filter id="${id("drop")}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="${P.shade}" flood-opacity="0.22"/></filter>
-    <filter id="${id("inner")}" x="-10%" y="-10%" width="120%" height="120%">
-      <feOffset dx="-2" dy="-3" in="SourceAlpha" result="o"/><feGaussianBlur in="o" stdDeviation="3" result="b"/>
-      <feComposite in="b" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="inner"/>
-      <feFlood flood-color="${P.shade}" flood-opacity="0.35"/><feComposite in2="inner" operator="in" result="t"/>
-      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="t"/></feMerge>
-    </filter>
+    <filter id="${id("edge")}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${f(e * 0.07)}"/></filter>
   </defs>
-  <g filter="url(#${id("drop")})"><path d="${geom.d}" fill="url(#${id("body")})" filter="url(#${id("inner")})"/></g>
-  <g clip-path="url(#${id("clip")})"><ellipse cx="${f(geom.width * 0.3)}" cy="${f(geom.height * 0.2)}" rx="${f(geom.width * 0.26)}" ry="${f(geom.height * 0.16)}" fill="url(#${id("hi")})"/></g>
-  <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="1.2"/>
+  <path d="${geom.d}" fill="url(#${id("fill")})"/>
+  <g clip-path="url(#${id("clip")})">
+    <ellipse cx="${f(geom.width / 2)}" cy="${f(geom.height * 0.45)}" rx="${f(geom.width * 0.42)}" ry="${f(geom.height * 0.38)}" fill="url(#${id("light")})"/>
+    <path d="${geom.d}" fill="none" stroke="${P.edge}" stroke-opacity="0.55" stroke-width="${f(e * 0.2)}" filter="url(#${id("edge")})"/>
+  </g>
 </svg>`;
 }
 

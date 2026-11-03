@@ -2,8 +2,7 @@
   {
     "id": "launch",
     "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
+      "meta": "portrait"
     },
     "spec": {
       "situation": "launch",
@@ -21,8 +20,7 @@
   {
     "id": "connectors",
     "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
+      "meta": "portrait"
     },
     "spec": {
       "situation": "milestone",
@@ -30,7 +28,8 @@
       "device": "medallion-glow",
       "shape": "Scalloped medallion",
       "treatment": "gold",
-      "mark": "bottom",
+      "mark": "inside",
+      "logo": "logomark",
       "titleStyle": "serif",
       "primary": "100+",
       "primaryIsNumber": true,
@@ -41,8 +40,7 @@
   {
     "id": "early-access",
     "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
+      "meta": "portrait"
     },
     "spec": {
       "situation": "program",
@@ -54,6 +52,61 @@
       "titleStyle": "serif",
       "primary": "Indus Cowork early access",
       "secondary": "Talk to us about your team's workflows",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "your-yes",
+    "formats": {
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "announcement",
+      "background": "olive",
+      "device": "medallion-glow",
+      "shape": "Ogee cross",
+      "treatment": "white",
+      "mark": "inside",
+      "logo": "logomark",
+      "titleStyle": "serif",
+      "primary": "Nothing ships without your yes",
+      "secondary": "Every task waits for your approval",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "slack",
+    "formats": {
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "announcement",
+      "background": "dusk",
+      "device": "gateway-echo",
+      "shape": "Mihrab",
+      "treatment": "white",
+      "mark": "inside",
+      "titleStyle": "serif",
+      "primary": "Message a teammate like a colleague",
+      "secondary": "Indus Cowork, in Slack and Indus Chat",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "sovereign",
+    "formats": {
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "launch",
+      "background": "indigo-glow",
+      "device": "medallion-glow",
+      "shape": "Quatrefoil",
+      "treatment": "white",
+      "mark": "inside",
+      "titleStyle": "sans",
+      "primary": "Built on Sarvam's own models",
+      "secondary": "With data residency in India",
       "secondaryPlace": "below"
     }
   }

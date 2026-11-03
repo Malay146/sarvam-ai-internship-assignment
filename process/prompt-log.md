@@ -262,3 +262,26 @@ Entry format:
   - Padding rule: ≥ 1.5·M clear on both sides; Meta shapes fully inside; LinkedIn bleeds vertically only.
 - `banner-builder.md` §0: 11 hard rules table. The partnership copy was shortened to fit its shape (QA fail → copy fix, not smaller type).
 - QA: 18/18 situations × 2 formats + 6/6 set PASS.
+
+## 2026-11-04 — Mesh gloss, six distinct banners, the logomark, builder speed
+- Prompts (verbatim): "Check the references. Improve the mesh gradient properly. Have some inner shadows type of thing. Improve these things." · "Have different contents on each banner and use the Sarvam logo on some of the banners where it looks appropriate and proper." · "I mean sarvam logo, i meant their pattern logo." · "Improve the performance also. When I am switching the presets and all those things, it is too slow. Find the issues, fix them, and it should be quicker." · "Also mostly, I will not be using these presets or the banner builder. I will tell you that this is the subject and you need to create it accordingly. But it's nice to have a banner builder though."
+- Gloss device is now a mesh: two-tone fill + a clipped inner edge shadow in a contrasting hue + a soft centre light. No drop shadow, no highlight blob (`GLOSS_PALETTES` in `src/lib/shapes.ts`).
+- Six banners, six messages (all from voice.md §5):
+  - Meta: launch, 100+ connectors, early access
+  - LinkedIn: approvals ("Nothing ships without your yes"), Slack, sovereign models
+- "Pattern logo" = the official mandala logomark. It's a new `logo: "logomark"` option, rendered alone at 0.55× the wordmark height, on the connectors and approvals banners. logo.md rule 6 gets a labelled [addition]: banners from Sarvam's own account may use the logomark alone.
+- QA fail → fix:
+  - Landscape approvals and sovereign: the supporting line spilled out of the opening.
+    - The fit now measures the supporting line at its 20px floor and counts the logomark's real height.
+    - It also tries taller text boxes inside the shape.
+    - Shapes were swapped to ones with a taller core (Ogee cross, Quatrefoil). The type was not shrunk.
+  - The Meta PNGs carried the red Next.js "1 Issue" badge in the corner, caused by `searchParams` read outside Suspense on `/banners/render`. The route is now wrapped in Suspense, and the export hides `nextjs-portal`.
+- Builder speed, before → after (`scripts/check-builder-speed.mjs`, `check-builder-raster.mjs`):
+  - preset switch → painted frame: median 49 ms → 20 ms
+  - per switch: raster 30 → 18 ms; script 41 → 17 ms
+  - Causes:
+    - a full-canvas live feTurbulence grain on 8 banners → one pre-generated grain PNG
+    - every banner re-rendering on every keystroke → `memo` by spec value plus `useDeferredValue` previews
+    - 6 variations always rendered → shown on demand
+- Workflow note: the default path is now subject → Claude decides everything → QA → PNGs (`.claude/skills/sarvam-banner`). The builder stays as an optional manual tool.
+- QA: 6/6 set + 18/18 situations PASS. Screen: `process/screens/banners-r6/set.png`.

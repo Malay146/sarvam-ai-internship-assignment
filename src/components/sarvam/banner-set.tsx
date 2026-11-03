@@ -3,6 +3,6 @@ import briefs from "../../../banners/briefs.json";
 import { FORMATS, type BannerFormat } from "./banners";
 import type { BannerSpec } from "./composer";
 
-export type BannerEntry = { id: string; formats: { meta: BannerFormat; linkedin: BannerFormat }; spec: BannerSpec };
+export type BannerEntry = { id: string; formats: { meta?: BannerFormat; linkedin?: BannerFormat }; spec: BannerSpec };
 export const BANNER_BRIEFS = briefs as BannerEntry[];
 export const sizeOfFormat = (f: BannerFormat) => FORMATS[f];

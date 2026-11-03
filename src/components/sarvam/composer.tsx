@@ -1,6 +1,6 @@
 // Banner composer: a banner = background + device + text treatment + content. No prompts; every part is a choice.
 // Situations are presets of these choices. Spec: design-system/recipes/banner-builder.md.
-import type { CSSProperties, ReactNode } from "react";
+import { memo, type CSSProperties, type ReactNode } from "react";
 import {
   FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath,
   type GatewayParams, type GlossPalette,
@@ -27,6 +27,7 @@ export type BannerSpec = {
   secondaryPlace?: "above" | "below";
   layout?: Layout;                 // centred (text inside the device) · split · stacked. Rearranges per format.
   partner?: string;                // partner lockup: "sarvam · PARTNER" (replaces the plain wordmark)
+  logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only)
 };
 export type Layout = "centered" | "split" | "stacked";
@@ -160,7 +161,13 @@ function Carved({ id, d, W, H, cx, cy, step, count, pal, inner }: {
 
 /** Device layer + the opening (where the text block goes). */
 type Frame = { W: number; H: number; M: number };
-function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNode; open: Rect; lightInside: boolean } {
+/** fit(r): the opening at text-box aspect r (w/h). Lets the layout try a taller box when a 3-part stack (mark, headline, line) needs height. */
+type DeviceOut = { layer: ReactNode; open: Rect; lightInside: boolean; fit?: (r: number) => Rect };
+function textAspectFor(spec: BannerSpec, f: BannerFormat) {
+  const land = f === "landscape";
+  return spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
+}
+function renderDevice(spec: BannerSpec, F: Frame, id: string): DeviceOut {
   const r0 = F.W / F.H, f: BannerFormat = r0 > 1.3 ? "landscape" : r0 > 0.85 ? "square" : "portrait", land = f === "landscape";
   const pal = PAL[spec.background];
   const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
@@ -177,7 +184,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
     }
   };
   const shapeGeom = (name: string, gatewayBottom: "flat" | "mirror") => ((TEXT_SHAPES as readonly string[]).includes(name) ? textShape(name) : name in MEDALLION_PRESETS ? medallionPath(MEDALLION_PRESETS[name]) : gatewayPath({ ...(GATEWAY_PRESETS[name] ?? GATEWAY_PRESETS["Domed door"]), bottom: gatewayBottom, notch: 0, frame: 0 }));
-  const textAspect = spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
+  const textAspect = textAspectFor(spec, f);
 
   if (spec.device === "gateway-carved" || spec.device === "gateway-window" || spec.device === "gateway-echo") {
     const window = spec.device === "gateway-window";
@@ -196,9 +203,9 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
           {[4, 3, 2, 1, 0].map((i) => <path key={i} d={d} fill={i === 0 ? "rgb(255 255 255 / 0.08)" : "none"} stroke="#fff" strokeOpacity={0.62 - i * 0.11} strokeWidth={i === 0 ? 1.5 : 1.5} transform={`translate(${F.W / 2} ${F.H}) scale(${1 + i * (land ? 0.2 : 0.22)}) translate(${-F.W / 2} ${-F.H})`} vectorEffect="non-scaling-stroke" />)}
         </svg>
       );
-      return { layer, open, lightInside: false };
+      return { layer, open, lightInside: false, fit: (r) => innerRect(d, F.W / 2, y + h * (land ? 0.6 : 0.64), r) };
     }
-    return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={F.W / 2} cy={F.H} step={Math.min(w, h) * 0.05} count={window ? 3 : 4} pal={pal} inner={window ? "window" : "glow"} />, open, lightInside: window };
+    return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={F.W / 2} cy={F.H} step={Math.min(w, h) * 0.05} count={window ? 3 : 4} pal={pal} inner={window ? "window" : "glow"} />, open, lightInside: window, fit: (r) => innerRect(d, F.W / 2, y + h * (land ? 0.6 : 0.64), r) };
   }
   if (spec.device === "medallion-carved" || spec.device === "medallion-glow") {
     const name = spec.shape ?? (spec.device === "medallion-glow" ? "Lantern medallion" : "Scalloped medallion");
@@ -208,13 +215,13 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
     // Padding rule: ≥ 1.5·M clear on both sides always; on portrait the shape sits fully inside (≥ M top and bottom); landscape may bleed vertically only.
     const sideMax = (F.W - F.M * 3) / g.width;
-    const s = glow ? (land ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.06) / g.height)) : Math.min(sideMax, (F.H - F.M * 2) / g.height))
+    const s = glow ? (land ? Math.min(sideMax, Math.max((F.W * 0.78) / g.width, (F.H * 1.22) / g.height)) : Math.min(sideMax, (F.H - F.M * 2) / g.height))
                    : (land ? Math.min((F.W * 0.5) / g.width, (F.H * 0.86) / g.height) : Math.min((F.W * 0.66) / g.width, (F.H * 0.62) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;
     const d = fitPath(g, s, cx - w / 2, cy - h / 2);
     const open = innerRect(d, cx, cy, textAspect);
-    if (!glow) return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={cx} cy={cy} step={Math.min(w, h) * 0.1} count={4} pal={pal} inner="glow" />, open, lightInside: false };
+    if (!glow) return { layer: <Carved id={id} d={d} W={F.W} H={F.H} cx={cx} cy={cy} step={Math.min(w, h) * 0.1} count={4} pal={pal} inner="glow" />, open, lightInside: false, fit: (r) => innerRect(d, cx, cy, r) };
     const G = GLOW[spec.background], k = (sfx: string) => `${sfx}-${id}`, edge = Math.min(w, h);
     const layer = (
       <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
@@ -237,7 +244,8 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): { layer: ReactNod
     );
     // Keep the text clear of the glow band: shrink the opening by the glow depth.
     const inset = edge * 0.03;
-    return { layer, open: { x: open.x + inset, y: open.y + inset, w: open.w - inset * 2, h: open.h - inset * 2 }, lightInside: LIGHT_INSIDE.has(spec.background) };
+    const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: o.w - inset * 2, h: o.h - inset * 2 });
+    return { layer, open: shrink(open), lightInside: LIGHT_INSIDE.has(spec.background), fit: (r) => shrink(innerRect(d, cx, cy, r)) };
   }
   if (spec.device === "gloss") {
     // A mirrored cluster of glossy studio shapes (Sarvam's waitlist post): below the text on portrait/square, flanking on landscape.
@@ -282,8 +290,13 @@ function Mark({ tone, width, style }: { tone: "black" | "white"; width: number; 
 }
 
 /** Wordmark, or the partner lockup "sarvam · PARTNER" (logo.md §4: wordmark only, centred dot, matched weight). */
-function Lockup({ tone, width, partner, style }: { tone: "black" | "white"; width: number; partner?: string; style?: CSSProperties }) {
+function Lockup({ tone, width, partner, logomark, style }: { tone: "black" | "white"; width: number; partner?: string; logomark?: boolean; style?: CSSProperties }) {
   const color = tone === "white" ? "#ffffff" : "#141414";
+  if (logomark && !partner) {
+    // Official logomark, alone. Height ≈ 0.55 × the wordmark width rule, so its presence matches.
+    // eslint-disable-next-line @next/next/no-img-element
+    return <div data-qa="mark" style={{ display: "flex", ...style }}><img src={`/brand/sarvam-logomark-${tone}.svg`} alt="Sarvam" style={{ height: width * 0.55, width: "auto", display: "block" }} /></div>;
+  }
   return (
     <div data-qa="mark" style={{ display: "flex", alignItems: "center", gap: width * 0.12, ...style }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -310,7 +323,7 @@ function CardSlot({ kind, area }: { kind: "plan" | "research" | "review"; area: 
 
 const SECONDARY_FILL: Record<Treatment, TextFill> = { white: "white", gold: "goldMute", indigo: "indigo", ink: "ink" };
 
-export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
+function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
   const F = FORMATS[format], land = format === "landscape";
   // Layout rearranges per format: split needs width (portrait/square → stacked); stacked needs height (landscape → split).
   const req = spec.layout ?? "centered";
@@ -318,7 +331,7 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
   const markW = land ? 96 : 124, markSpace = spec.mark === "top" || spec.mark === "inside" ? (land ? 52 : 72) : 0;
   const dev = layout === "centered" ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
   const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id);
-  const open: Rect = layout === "centered" ? D.open
+  let open: Rect = layout === "centered" ? D.open
     : layout === "split" ? { x: F.M, y: F.M + markSpace, w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace }
     : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
   const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
@@ -331,17 +344,30 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
   // Fit: shrink type until the block fits the opening (width via wrapping, height via measured lines). Never below 60%.
   const pFont = sans ? "text" : "display", pWeight = sans ? 600 : 400;
   const blockH = (k: number) => {
-    const ps = base.p * k, ss = base.s * k;
+    const ps = base.p * k, ss = Math.max(base.s * k, land ? 20 : 28);   // the supporting line never drops below its floor, so measure it at the floor
     const cw = ps * charW(pFont, pWeight, spec.primary);
     const plines = balanceLines(spec.primary, Math.max(4, Math.floor(open.w / cw)));
     const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > 3 ? 99 : plines.length;   // too wide, or more than 3 lines → too big
     const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
-    const markH = spec.mark === "inside" && layout === "centered" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
-    return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.4 : 0);
+    const markH = spec.mark === "inside" && layout === "centered" ? (spec.logo === "logomark" ? markW * 0.55 : land ? 16 : 20) + base.gap * 0.7 : 0;
+    return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.45 : 0);
   };
   // Fixed steps (100 / 86 / 74 / 64 / 55 / 48 % of the base): the largest that fits. Same hierarchy on every banner.
   const STEPS = [1, 0.86, 0.74, 0.64, 0.55, 0.48];
-  const k = STEPS.find((s) => blockH(s) <= open.h * 0.92) ?? STEPS[STEPS.length - 1];
+  const stepFor = () => STEPS.findIndex((s) => blockH(s) <= open.h * 0.92);
+  let best = stepFor();
+  // The default box is wide (one or two lines read best). If the stack only fits small or not at all,
+  // try taller boxes inside the same shape and keep the one that lets the type sit largest.
+  if (layout === "centered" && D.fit && best !== 0) {
+    const first = open, base0 = textAspectFor(spec, format);
+    for (const r of [0.85, 0.72, 0.6].map((m) => base0 * m)) {
+      const prev = open; open = D.fit(r);
+      const i = stepFor();
+      if (i !== -1 && (best === -1 || i < best)) best = i; else open = prev;
+    }
+    if (best === -1) open = first;
+  }
+  const k = best === -1 ? STEPS[STEPS.length - 1] : STEPS[best];
   const S = { p: Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
   const primary = (
     <StyledText data-qa="text" id={`${id}-p`} text={spec.primary} width={open.w} size={S.p} fill={spec.treatment} align={align}
@@ -355,18 +381,16 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
   return (
     <div data-banner={format} style={{ position: "relative", width: F.W, height: F.H, overflow: "hidden", background: spec.background === "plain" ? "var(--color-sf)" : `var(--gradient-${spec.background})` }}>
       {layer}
-      {/* Seamless grain: one generated noise layer over the whole canvas (a repeated tile shows seams when scaled) */}
-      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, mixBlendMode: "overlay", pointerEvents: "none" }} aria-hidden>
-        <filter id={`grain-${id}`}><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="noStitch" /><feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0.2 0" /></filter>
-        <rect width={F.W} height={F.H} filter={`url(#grain-${id})`} />
-      </svg>
+      {/* Seamless grain: one pre-generated noise image (1200×1350, decoded once, no live filter) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
       {(spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
-        <Lockup tone={layout === "centered" ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
+        <Lockup logomark={spec.logo === "logomark"} tone={layout === "centered" ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
           style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
-      {spec.mark === "bottom" && <Lockup tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
+      {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
       <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: "center", gap: S.gap, textAlign: align }}>
-        {spec.mark === "inside" && layout === "centered" && <Lockup tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
+        {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
         {spec.secondaryPlace !== "above" && secondary}
@@ -391,3 +415,6 @@ export function variationsOf(spec: BannerSpec): BannerSpec[] {
     v({ background: "plain", device: "gloss", layout: "split", titleStyle: "serif", treatment: num ? "indigo" : "ink" }),
   ];
 }
+
+/** Memoised: a banner re-renders only when its spec (by value), format or id changes. */
+export const Banner = memo(BannerImpl, (a, b) => a.format === b.format && a.id === b.id && JSON.stringify(a.spec) === JSON.stringify(b.spec));
