@@ -369,3 +369,16 @@ Entry format:
   - The card used LinkedIn sizes on Meta. The device guessed its format from the stacked area's shape (1080×756 looks landscape), so the real format is now passed in.
   - The LinkedIn card's unit and label overflowed; I tightened the sizes and shortened the label to "Median response".
 - Candidates `prism-spectrum`, `prism-type`, `prism-card`: QA PASS in both formats. Screen: `process/screens/banners-simple/three-options.png`.
+
+## 2026-11-04 — Spectrum banner gets a corner medallion; result card removed
+- Prompt (verbatim): "remove the Prism card. What we can do in the Prism Spectrum is that, on the top-right corner, we can have our patterns designed in a way that looks beautiful, somewhat like that Medioline or other things. Find a way to make it look good there because it looks too simple and plain. We need to add things there."
+- Removed: the `prism-card` banner, its PNGs and the `result-card` device.
+- Spectrum device: the top-right corner now holds a line medallion:
+  - six nested true-offset outlines (five on LinkedIn) around the Lotus line-motif from /studio
+  - all strokes in the same spectrum gradient as the strip, with indigo at the inner lower-left and orange toward the frame corner
+  - a faint periwinkle wash behind it; no blur on any line
+- Tried Scalloped medallion, Eight-point star and Ogee cross (`process/screens/banners-simple/spectrum-corner-shapes.png`). Ogee cross is the default: it reads most like Sarvam's gateway.
+- Fixes after looking:
+  - At first the gradient barely reached orange, so it's now aimed at the frame corner.
+  - On LinkedIn the outer ring crossed "Prism", so landscape uses one ring fewer and the medallion sits further into the corner.
+- QA PASS in both formats.

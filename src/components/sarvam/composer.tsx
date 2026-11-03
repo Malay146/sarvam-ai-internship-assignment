@@ -2,7 +2,7 @@
 // Situations are presets of these choices. Spec: design-system/recipes/banner-builder.md.
 import { memo, type CSSProperties, type ReactNode } from "react";
 import {
-  FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath,
+  FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, MOTIF_PRESETS, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath, motifPaths,
   type GatewayParams, type GlossPalette,
 } from "@/lib/shapes";
 import { StyledText, balanceLines, charW, type TextFill } from "./StyledText";
@@ -12,7 +12,7 @@ import { BarChart3, BookOpen, CalendarClock, CircleCheck, Globe, Inbox, Megaphon
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
-export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "spectrum" | "result-card" | "plain";
+export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "spectrum" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
 export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission";
@@ -31,7 +31,6 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
-  stats?: { value: string; label: string }[];   // result-card device: 1–3 verified results ("44 ms" / "median response")
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
 export const EMBLEM_ICONS = {
@@ -42,15 +41,15 @@ export type EmblemIcon = keyof typeof EMBLEM_ICONS;
 export type Layout = "centered" | "split" | "stacked" | "editorial";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
-export const DEVICES: Device[] = ["medallion-glow", "spectrum", "result-card", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
+export const DEVICES: Device[] = ["medallion-glow", "spectrum", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
 export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
 export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Quatrefoil", "Scalloped medallion", "Ogee cross"] as const;
-export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
+export const shapesFor = (d: Device) => (d === "spectrum" ? ["Ogee cross", "Scalloped medallion", "Eight-point star", "Quatrefoil"] : d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
 export const ARCH_SHAPES = ["Mihrab", "Domed door"];
 /** Devices that hold no text: the layout puts text beside them (split on landscape, stacked on portrait). */
-const BESIDE = new Set<Device>(["emblem", "arch-window", "result-card"]);
+const BESIDE = new Set<Device>(["emblem", "arch-window"]);
 /** Devices that use the editorial layout: text set left, anchored low, wordmark top-left. */
 const EDITORIAL = new Set<Device>(["spectrum"]);
 
@@ -190,7 +189,7 @@ function textAspectFor(spec: BannerSpec, f: BannerFormat) {
   const land = f === "landscape";
   return spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
 }
-function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, format?: BannerFormat): DeviceOut {
+function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, _format?: BannerFormat): DeviceOut {
   const r0 = F.W / F.H, f: BannerFormat = r0 > 1.3 ? "landscape" : r0 > 0.85 ? "square" : "portrait", land = f === "landscape";
   const pal = PAL[spec.background];
   const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
@@ -270,8 +269,7 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, fo
     const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: o.w - inset * 2, h: o.h - inset * 2 });
     return { layer, open: shrink(open), lightInside: LIGHT_INSIDE.has(spec.background), fit: (r) => shrink(innerRect(d, cx, cy, r)) };
   }
-  if (spec.device === "spectrum") return spectrumDevice(F, land);
-  if (spec.device === "result-card") return resultCardDevice(spec, F, format ? format === "landscape" : land);
+  if (spec.device === "spectrum") return spectrumDevice(spec, F, id, land);
   if (spec.device === "emblem") return emblemDevice(spec, F, id, textShape(spec.shape ?? "Scalloped medallion"), pal);
   if (spec.device === "arch-window") return archWindowDevice(spec, F, id, pal);
   if (spec.device === "script-mandala") return scriptMandalaDevice(spec, F, id, beside);
@@ -316,35 +314,41 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, fo
 
 /** Sarvam's spectrum, end to end: indigo → lilac → peach → orange [sampled: indigo glow + sun gradients]. */
 const SPECTRUM = "linear-gradient(90deg in oklab, #3333cc 0%, #7c71d0 26%, #c2abcc 48%, #fabea3 70%, #fa9b43 86%, #e6651b 100%)";
-/** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism. */
-function spectrumDevice(F: Frame, land: boolean): DeviceOut {
+/** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism.
+ *  The top-right corner holds a line medallion (nested true-offset outlines around a lotus line-motif), cropped by
+ *  the corner and drawn in the same spectrum, so the art and the strip are one system. */
+function spectrumDevice(spec: BannerSpec, F: Frame, id: string, land: boolean): DeviceOut {
+  const k = (s: string) => `${s}-${id}`;
   const h = land ? 8 : 12, y = F.H - F.M - h;
-  return { layer: <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />, open: { x: 0, y: 0, w: F.W, h: y }, lightInside: true };
-}
-
-/** Result card: one crisp product-style card holding 1–3 verified results. The evidence is the picture. */
-function resultCardDevice(spec: BannerSpec, F: Frame, land: boolean): DeviceOut {
-  const stats = (spec.stats ?? [{ value: spec.primary, label: spec.secondary ?? "" }]).slice(0, 3);
-  const w = Math.min(F.W - F.M * (land ? 1.5 : 3), land ? 580 : 820);
-  const vs = (land ? 76 : 124) * (stats.length > 2 ? 0.72 : 1), ls = land ? 18 : 26, pad = land ? 28 : 48;
-  const split = (v: string) => v.match(/^([\d.,$₹+%]+)\s*([A-Za-z]+)$/);
-  const card = (
-    <div aria-hidden style={{ position: "absolute", left: (F.W - w) / 2, top: "50%", transform: "translateY(-50%)", width: w, background: "var(--color-sr-white)", borderRadius: land ? 24 : 32,
-      border: "1px solid rgb(20 20 20 / 0.08)", boxShadow: "0 1px 2px rgb(17 17 91 / 0.06), 0 24px 48px -12px rgb(17 17 91 / 0.18)", display: "grid", gridTemplateColumns: `repeat(${stats.length}, 1fr)` }}>
-      {stats.map((s, i) => {
-        const m = split(s.value);
-        return (
-          <div key={i} style={{ padding: pad, borderLeft: i ? "1px solid rgb(20 20 20 / 0.08)" : "none", display: "flex", flexDirection: "column", gap: land ? 8 : 12 }}>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: vs, lineHeight: 0.95, letterSpacing: "-0.045em", color: "var(--color-tx)", fontVariantNumeric: "lining-nums tabular-nums", display: "flex", alignItems: "flex-start" }}>
-              {m ? <>{m[1]}<span style={{ fontSize: vs * 0.3, letterSpacing: "0", marginLeft: vs * 0.05, marginTop: vs * 0.08 }}>{m[2]}</span></> : s.value}
-            </div>
-            <div style={{ fontFamily: "var(--font-text)", fontSize: ls, lineHeight: 1.3, color: "var(--color-tx-tertiary)" }}>{s.label}</div>
-          </div>
-        );
-      })}
-    </div>
+  // Medallion: centred near the top-right corner, sized so the rings reach about half way across the frame.
+  const g = tight(medallionPath({ ...MEDALLION_PRESETS[spec.shape && spec.shape in MEDALLION_PRESETS ? spec.shape : "Ogee cross"], aspect: 1, frame: 0 }));
+  const R = land ? F.H * 0.3 : F.W * 0.3;
+  const cx = F.W - (land ? F.H * 0.22 : F.W * 0.2), cy = land ? F.H * 0.2 : F.W * 0.2;
+  const s = (R * 2) / Math.max(g.width, g.height);
+  const d = fitPath(g, s, cx - (g.width * s) / 2, cy - (g.height * s) / 2);
+  const rings = land ? [0, 0.09, 0.19, 0.31, 0.45] : [0, 0.09, 0.19, 0.31, 0.45, 0.62];   // landscape: one ring fewer, clear of the headline
+  const motif = motifPaths(MOTIF_PRESETS["Lotus"]).join("");
+  const mS = (R * 1.1) / 100;                                  // the motif spans ~55% of the medallion
+  const layer = (
+    <>
+      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <defs>
+          {/* spectrum stroke: indigo at the lower-left of the medallion → orange at its upper-right */}
+          <linearGradient id={k("sp")} gradientUnits="userSpaceOnUse" x1={cx - R * 1.6} y1={cy + R * 1.6} x2={F.W} y2={0}>
+            <stop offset="0" stopColor="#3333cc" /><stop offset="0.3" stopColor="#7c71d0" /><stop offset="0.5" stopColor="#c2abcc" /><stop offset="0.68" stopColor="#fa9b43" /><stop offset="1" stopColor="#e6651b" />
+          </linearGradient>
+          <radialGradient id={k("wash")} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R * 1.7}><stop offset="0" stopColor="#e8effc" stopOpacity="0.9" /><stop offset="1" stopColor="#e8effc" stopOpacity="0" /></radialGradient>
+        </defs>
+        {/* a faint periwinkle wash so the corner has depth without a blur on any line */}
+        <circle cx={cx} cy={cy} r={R * 1.7} fill={`url(#${k("wash")})`} />
+        {rings.map((o, i) => <OffsetLine key={o} id={k(`r${i}`)} d={d} off={R * o} lw={i === 0 ? 1.75 : 1.25} color={`url(#${k("sp")})`} opacity={1 - i * 0.13} />)}
+        <g transform={`translate(${cx} ${cy}) scale(${mS})`} fill="none" stroke={`url(#${k("sp")})`} strokeWidth={1.5 / mS} strokeLinejoin="round"
+          style={{ transformBox: "view-box" }} dangerouslySetInnerHTML={{ __html: motif }} />
+      </svg>
+      <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />
+    </>
   );
-  return { layer: card, open: { x: 0, y: 0, w: F.W, h: F.H }, lightInside: true };
+  return { layer, open: { x: 0, y: 0, w: F.W, h: y }, lightInside: true };
 }
 
 /* ── Subject-led devices (banner-builder.md §5) ── */

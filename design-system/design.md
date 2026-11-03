@@ -1989,6 +1989,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
       | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `spectrum` | **Our taste** `[addition]`: a calm off-white canvas, one thin hard-edged strip of the brand spectrum (indigo → orange) near the bottom, and a **line medallion** in the top-right corner (nested true-offset outlines around a lotus line-motif) drawn in the same spectrum and cropped by the corner. Text is set left and low (`editorial` layout). `shape`: Ogee cross (default), Scalloped medallion, Eight-point star, Quatrefoil | Model launches and announcements that should feel calm and precise |
    | `emblem` | One frosted, bevelled medallion with **one Nucleo icon engraved** in it, echo rings on true offsets. Text sits beside it (split on LinkedIn, stacked on Meta). `icon`: shield, plug, check, calendar, search, globe, inbox, megaphone, target, chart, book, sparkle, person | A capability you can name as an object |
    | `arch-window` | The gateway as a **window onto the real product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, light inside, one frozen product mock (`card`) seen through it. Text beside it | A product moment you can see |
    | `script-mandala` | **"Sarvam" in nine Indian scripts**, set in rings around a glowing disc. Meta: the headline sits in the disc. LinkedIn: the logomark sits in the disc and the text sits left (the wordmark is dropped; never both) `[addition]` | India, languages, mission, sovereignty, people |
@@ -2004,6 +2005,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | Layout | LinkedIn | Meta |
 |---|---|---|
 | `centered` | text inside the device | same |
+| `editorial` | one left column (≥ 1.5·M from the sides) anchored low, wordmark top-left aligned to the column, type base ×1.3 | same |
 | `split` | text left (left-aligned), device right 53% | becomes **stacked** |
 | `stacked` | becomes **split** | text top 44%, device bottom 56% |
 

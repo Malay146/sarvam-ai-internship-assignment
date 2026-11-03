@@ -144,7 +144,8 @@
       "primary": "Sarvam Prism",
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below",
-      "situation": "launch"
+      "situation": "launch",
+      "shape": "Ogee cross"
     }
   },
   {
@@ -163,34 +164,6 @@
       "primary": "Sarvam Prism",
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below",
-      "situation": "launch"
-    }
-  },
-  {
-    "id": "prism-card",
-    "formats": {
-      "meta": "portrait",
-      "linkedin": "landscape"
-    },
-    "spec": {
-      "background": "lavender-dusk",
-      "device": "result-card",
-      "treatment": "ink",
-      "mark": "top",
-      "titleStyle": "serif",
-      "primary": "Sarvam Prism",
-      "secondary": "A System One model built on Sarvam 105B",
-      "secondaryPlace": "below",
-      "stats": [
-        {
-          "value": "71.8",
-          "label": "Average score"
-        },
-        {
-          "value": "44 ms",
-          "label": "Median response"
-        }
-      ],
       "situation": "launch"
     }
   }
