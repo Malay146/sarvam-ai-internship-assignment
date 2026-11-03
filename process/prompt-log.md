@@ -454,3 +454,7 @@ Entry format:
   - Dropped: dark, tone-on-tone, number, launch, quote, event, three teasers, star, ogee.
 - Lesson: "do all of it" still means distinct. Build variety in composition, not repeats of one layout.
 - QA PASS for the whole set. Sheet: `process/screens/banners-simple/spectrum-family.png`.
+
+## 2026-11-04 — Spectrum family trimmed
+- Prompt (verbatim): "remove prism, bloom, fam approval, fam, slack, fam ally." (read as prism-bloom, fam-approval, fam-slack, fam-early)
+- Removed those four briefs and their PNGs. Spectrum banners left: `prism-spectrum` (corner lotus) and `prism-rise` (rising fan). The engine options (ornaments, placements, dividers) stay available.
