@@ -528,3 +528,7 @@ Entry format:
   - Settled at **88px** (from 63px): every glyph sits on the green core.
 - QA flags 88 < 96 (Meta minimum) for this banner. That's accepted as a by-eye exception, the most the shape allows.
 - Follow-up (verbatim): "Increase the size of the description text size in portrait by a bit." → new `lineSize` option; the portrait supporting line is now 32px (was 28px). It stays on one line inside the green core.
+
+## 2026-11-04 — Program preset gets the partner lockup
+- Prompt (verbatim): [program preset screenshot] "Have that partner thing in this."
+- `program` now uses `partner: "Partner"`, giving the `sarvam · PARTNER` lockup (wordmark only, per logo.md) top-left on LinkedIn and top-centre on Meta. "Partner" is a placeholder for the real partner name. QA PASS in both formats.
