@@ -12,7 +12,7 @@ import { BarChart3, BookOpen, CalendarClock, CircleCheck, Globe, Inbox, Megaphon
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
-export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "plain";
+export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "spectrum" | "result-card" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
 export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission";
@@ -31,6 +31,7 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
+  stats?: { value: string; label: string }[];   // result-card device: 1–3 verified results ("44 ms" / "median response")
 };
 /** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
 export const EMBLEM_ICONS = {
@@ -38,10 +39,10 @@ export const EMBLEM_ICONS = {
   megaphone: Megaphone, target: Target, chart: BarChart3, book: BookOpen, sparkle: Sparkles, person: UserRound,
 } as const;
 export type EmblemIcon = keyof typeof EMBLEM_ICONS;
-export type Layout = "centered" | "split" | "stacked";
+export type Layout = "centered" | "split" | "stacked" | "editorial";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
-export const DEVICES: Device[] = ["medallion-glow", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
+export const DEVICES: Device[] = ["medallion-glow", "spectrum", "result-card", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
 export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
@@ -49,7 +50,9 @@ export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Quatrefoil", "Sca
 export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
 export const ARCH_SHAPES = ["Mihrab", "Domed door"];
 /** Devices that hold no text: the layout puts text beside them (split on landscape, stacked on portrait). */
-const BESIDE = new Set<Device>(["emblem", "arch-window"]);
+const BESIDE = new Set<Device>(["emblem", "arch-window", "result-card"]);
+/** Devices that use the editorial layout: text set left, anchored low, wordmark top-left. */
+const EDITORIAL = new Set<Device>(["spectrum"]);
 
 export const SITUATIONS: Record<Situation, BannerSpec> = {
   launch: { situation: "launch", background: "saffron-rose", device: "medallion-glow", shape: "Onion lantern", treatment: "white", mark: "inside", titleStyle: "sans", primary: "Indus Cowork", secondary: "An AI teammate that finishes the work", secondaryPlace: "below" },
@@ -187,7 +190,7 @@ function textAspectFor(spec: BannerSpec, f: BannerFormat) {
   const land = f === "landscape";
   return spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
 }
-function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): DeviceOut {
+function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false, format?: BannerFormat): DeviceOut {
   const r0 = F.W / F.H, f: BannerFormat = r0 > 1.3 ? "landscape" : r0 > 0.85 ? "square" : "portrait", land = f === "landscape";
   const pal = PAL[spec.background];
   const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
@@ -267,6 +270,8 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
     const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: o.w - inset * 2, h: o.h - inset * 2 });
     return { layer, open: shrink(open), lightInside: LIGHT_INSIDE.has(spec.background), fit: (r) => shrink(innerRect(d, cx, cy, r)) };
   }
+  if (spec.device === "spectrum") return spectrumDevice(F, land);
+  if (spec.device === "result-card") return resultCardDevice(spec, F, format ? format === "landscape" : land);
   if (spec.device === "emblem") return emblemDevice(spec, F, id, textShape(spec.shape ?? "Scalloped medallion"), pal);
   if (spec.device === "arch-window") return archWindowDevice(spec, F, id, pal);
   if (spec.device === "script-mandala") return scriptMandalaDevice(spec, F, id, beside);
@@ -305,6 +310,41 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): D
     return { layer: <>{els}</>, open, lightInside: true };
   }
   return { layer: null, open: { ...safe, y: safe.y + 40, h: safe.h - 40 }, lightInside: !DARK_BG.has(spec.background) };
+}
+
+/* ── Simple devices: one move each (banner-builder.md §7) ── */
+
+/** Sarvam's spectrum, end to end: indigo → lilac → peach → orange [sampled: indigo glow + sun gradients]. */
+const SPECTRUM = "linear-gradient(90deg in oklab, #3333cc 0%, #7c71d0 26%, #c2abcc 48%, #fabea3 70%, #fa9b43 86%, #e6651b 100%)";
+/** Spectrum line: one thin, hard-edged strip of the brand spectrum across a calm canvas, like light through a prism. */
+function spectrumDevice(F: Frame, land: boolean): DeviceOut {
+  const h = land ? 8 : 12, y = F.H - F.M - h;
+  return { layer: <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: y, height: h, background: SPECTRUM }} />, open: { x: 0, y: 0, w: F.W, h: y }, lightInside: true };
+}
+
+/** Result card: one crisp product-style card holding 1–3 verified results. The evidence is the picture. */
+function resultCardDevice(spec: BannerSpec, F: Frame, land: boolean): DeviceOut {
+  const stats = (spec.stats ?? [{ value: spec.primary, label: spec.secondary ?? "" }]).slice(0, 3);
+  const w = Math.min(F.W - F.M * (land ? 1.5 : 3), land ? 580 : 820);
+  const vs = (land ? 76 : 124) * (stats.length > 2 ? 0.72 : 1), ls = land ? 18 : 26, pad = land ? 28 : 48;
+  const split = (v: string) => v.match(/^([\d.,$₹+%]+)\s*([A-Za-z]+)$/);
+  const card = (
+    <div aria-hidden style={{ position: "absolute", left: (F.W - w) / 2, top: "50%", transform: "translateY(-50%)", width: w, background: "var(--color-sr-white)", borderRadius: land ? 24 : 32,
+      border: "1px solid rgb(20 20 20 / 0.08)", boxShadow: "0 1px 2px rgb(17 17 91 / 0.06), 0 24px 48px -12px rgb(17 17 91 / 0.18)", display: "grid", gridTemplateColumns: `repeat(${stats.length}, 1fr)` }}>
+      {stats.map((s, i) => {
+        const m = split(s.value);
+        return (
+          <div key={i} style={{ padding: pad, borderLeft: i ? "1px solid rgb(20 20 20 / 0.08)" : "none", display: "flex", flexDirection: "column", gap: land ? 8 : 12 }}>
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: vs, lineHeight: 0.95, letterSpacing: "-0.045em", color: "var(--color-tx)", fontVariantNumeric: "lining-nums tabular-nums", display: "flex", alignItems: "flex-start" }}>
+              {m ? <>{m[1]}<span style={{ fontSize: vs * 0.3, letterSpacing: "0", marginLeft: vs * 0.05, marginTop: vs * 0.08 }}>{m[2]}</span></> : s.value}
+            </div>
+            <div style={{ fontFamily: "var(--font-text)", fontSize: ls, lineHeight: 1.3, color: "var(--color-tx-tertiary)" }}>{s.label}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+  return { layer: card, open: { x: 0, y: 0, w: F.W, h: F.H }, lightInside: true };
 }
 
 /* ── Subject-led devices (banner-builder.md §5) ── */
@@ -509,24 +549,29 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   const F = FORMATS[format], land = format === "landscape";
   // Layout rearranges per format: split needs width (portrait/square → stacked); stacked needs height (landscape → split).
   // Text-free devices sit beside the text; the script mandala holds the text on portrait and sits beside it on landscape.
-  const req: Layout = BESIDE.has(spec.device) ? "split" : spec.device === "script-mandala" ? (land ? "split" : "centered") : spec.layout ?? "centered";
+  const req: Layout = EDITORIAL.has(spec.device) ? "editorial" : BESIDE.has(spec.device) ? "split" : spec.device === "script-mandala" ? (land ? "split" : "centered") : spec.layout ?? "centered";
   const layout: Layout = req === "split" && !land ? "stacked" : req === "stacked" && land ? "split" : req;
   const centreMark = spec.device === "script-mandala" && layout !== "centered";   // the logomark already sits in the mandala's centre
   const markW = land ? 96 : 124, markSpace = !centreMark && (spec.mark === "top" || spec.mark === "inside") ? (land ? 52 : 72) : 0;
-  const dev = layout === "centered" ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
-  const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id, layout !== "centered");
-  let open: Rect = layout === "centered" ? D.open
+  const editorial = layout === "editorial";
+  const dev = layout === "centered" || editorial ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
+  const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id, layout !== "centered", format);
+  // Editorial: one left column (≥ 1.5·M from the sides), anchored to the bottom of the space the device leaves.
+  const edBottom = Math.min(D.open.y + D.open.h, F.H - F.M) - (spec.device === "spectrum" ? (land ? 44 : 64) : 0);
+  let open: Rect = editorial ? { x: F.M * 1.5, y: F.M + markSpace + 24, w: F.W - F.M * 3, h: edBottom - (F.M + markSpace + 24) }
+    : layout === "centered" ? D.open
     // Split: an editorial column from the top (gradients lighten toward the bottom, so the text stays on the deep part).
     : layout === "split" ? { x: F.M, y: F.M + markSpace + (markSpace ? 12 : 0), w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace - (markSpace ? 12 : 0) }
     : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
   const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && spec.device !== "arch-window" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
   const lightInside = layout === "centered" ? D.lightInside : !DARK_BG.has(spec.background);
-  const align: "center" | "left" = layout === "split" ? "left" : "center";
+  const align: "center" | "left" = layout === "split" || editorial ? "left" : "center";
   const onLight = lightInside || spec.treatment === "ink" || spec.treatment === "indigo";
   const num = !!spec.primaryIsNumber, sans = spec.titleStyle === "sans";
   // Headlines dominate, as in Sarvam's posts (~15–18% of the frame height per line); the fit loop shrinks them only when needed.
   const base = land ? { p: num ? 170 : sans ? 92 : 100, s: num ? 32 : 26, gap: layout === "split" ? 22 : 18 } : format === "square" ? { p: num ? 250 : sans ? 116 : 124, s: num ? 46 : 34, gap: 26 } : { p: num ? 270 : sans ? 124 : 132, s: num ? 50 : 36, gap: 30 };
   // Fit: shrink type until the block fits the opening (width via wrapping, height via measured lines). Never below 60%.
+  if (editorial) { base.p = Math.round(base.p * 1.3); base.s = Math.round(base.s * 1.1); }
   const pFont = sans ? "text" : "display", pWeight = sans ? 600 : 400;
   const blockH = (k: number) => {
     const ps = base.p * k, ss = Math.max(base.s * k, land ? 20 : 28);   // the supporting line never drops below its floor, so measure it at the floor
@@ -570,11 +615,11 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
       {!centreMark && (spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
-        <Lockup logomark={spec.logo === "logomark"} tone={layout === "centered" ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
-          style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
+        <Lockup logomark={spec.logo === "logomark"} tone={layout === "centered" || editorial ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
+          style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
-      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
+      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
         {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}

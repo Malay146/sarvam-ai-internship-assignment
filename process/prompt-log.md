@@ -357,3 +357,15 @@ Entry format:
   - All of it was applied to three Prism candidates (`process/screens/rejected-precision/three-options.png`).
 - Removed before commit; the engine is back to the previous state.
 - Lesson: "do all the things" stacked several touches on each banner. Each one was sharp, but together they made the art busier, not simpler. The next proposal should be one move, not a toolkit.
+
+## 2026-11-04 — Simpler direction: spectrum line, type hero, result card
+- Prompt (verbatim): "try all three and suggest many other variations or ideas according to this design style only and to what we feel is the Sarvam design sense."
+- One move per banner:
+  1. `spectrum` device: an off-white canvas with one 12px (Meta) / 8px (LinkedIn) hard-edged strip of the brand spectrum, full bleed near the bottom.
+  2. `editorial` layout on a plain gradient: the type is the hero (base ×1.3), set left and anchored low, wordmark top-left.
+  3. `result-card` device: one white product-style card (radius 32/24, hairline divider) with the verified results 71.8 / 44 ms, the unit small and top-aligned.
+- Fixes after looking:
+  - The wordmark sat at 72px while the text column sat at 108px; it now aligns to the column.
+  - The card used LinkedIn sizes on Meta. The device guessed its format from the stacked area's shape (1080×756 looks landscape), so the real format is now passed in.
+  - The LinkedIn card's unit and label overflowed; I tightened the sizes and shortened the label to "Median response".
+- Candidates `prism-spectrum`, `prism-type`, `prism-card`: QA PASS in both formats. Screen: `process/screens/banners-simple/three-options.png`.
