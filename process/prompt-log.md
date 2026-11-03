@@ -233,3 +233,8 @@ Entry format:
   4. Text overlapping gateway walls while QA passed → the text-box finder only saw segment endpoints; long straight sides had no points. → Dense outline sampling of every M/L/C/Q/Z segment; gateways proportioned per format and sized by width.
   5. Tiny text: number-specific text-box aspect; a legible floor for supporting lines; softer, wider inner glow; larger, closer gloss clusters; light supporting lines on dark grounds.
 - QA: 18/18 situation×format + 6/6 saved PASS. Screens: process/screens/banners-r5/.
+
+## 2026-11-04 — No shape is ever stretched
+- Prompt (verbatim): "In this type of pattern the text would be perfectly inside that background pattern. Why is it stretched in landscape and not in square or another format? Fix it. It should not ever stretch."
+- Cause: the cloud was drawn with `preserveAspectRatio="none"` into a wide box on landscape. A second, quieter stretch: the medallion "aspect" option scales the shape vertically.
+- Fix: the cloud is now the scalloped medallion at true proportions (blurred) with a measured text box inside it; medallion text shapes always use aspect 1; shapes are enlarged so text keeps room; headlines are capped at 3 lines (type shrinks instead of a 4th break). Rule written into banner-builder.md §2.6. QA 18/18 + 6/6.

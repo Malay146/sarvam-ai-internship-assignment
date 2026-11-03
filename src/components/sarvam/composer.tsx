@@ -160,10 +160,11 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     const a = land ? 1.12 : f === "square" ? 1.0 : 1.16;
     switch (name) {
       case "Onion lantern": return gatewayPath({ aspect: a * 1.08, top: "ogee", bottom: "mirror", shoulder: 0.3, lobes: 0, lobeDepth: 0, waist: 0, notch: 0, crown: 5, dome: 1, frame: 0 });
-      case "Cusped window": return medallionPath({ fold: 4, feature: "point", depth: 7, width: 0.28, vertex: "none", vertexDepth: 0, base: "polygon", aspect: a, frame: 0 });
-      case "Quatrefoil": return medallionPath({ ...MEDALLION_PRESETS["Quatrefoil"], aspect: a, frame: 0 });
-      case "Ogee cross": return medallionPath({ ...MEDALLION_PRESETS["Ogee cross"], depth: 10, aspect: a, frame: 0 });
-      default: return medallionPath({ ...MEDALLION_PRESETS["Scalloped medallion"], aspect: a, frame: 0 });
+      // Medallions keep their true 1:1 proportions in every format (an "aspect" here would be a vertical stretch).
+      case "Cusped window": return medallionPath({ fold: 4, feature: "point", depth: 7, width: 0.28, vertex: "none", vertexDepth: 0, base: "polygon", aspect: 1, frame: 0 });
+      case "Quatrefoil": return medallionPath({ ...MEDALLION_PRESETS["Quatrefoil"], aspect: 1, frame: 0 });
+      case "Ogee cross": return medallionPath({ ...MEDALLION_PRESETS["Ogee cross"], depth: 10, aspect: 1, frame: 0 });
+      default: return medallionPath({ ...MEDALLION_PRESETS["Scalloped medallion"], aspect: 1, frame: 0 });
     }
   };
   const shapeGeom = (name: string, gatewayBottom: "flat" | "mirror") => ((TEXT_SHAPES as readonly string[]).includes(name) ? textShape(name) : name in MEDALLION_PRESETS ? medallionPath(MEDALLION_PRESETS[name]) : gatewayPath({ ...(GATEWAY_PRESETS[name] ?? GATEWAY_PRESETS["Domed door"]), bottom: gatewayBottom, notch: 0, frame: 0 }));
@@ -196,7 +197,7 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     const glow = spec.device === "medallion-glow";
     // Uniform scale. Glow: one shape that fills the frame; carved: a base shape that leaves room for the rings.
     // Glow: one shape that fills the frame (bleeds on landscape). Carved: a base that leaves room for 4 even rings.
-    const s = glow ? (land ? (F.H * 1.12) / g.height : Math.min((F.W * 0.9) / g.width, (F.H * 0.94) / g.height))
+    const s = glow ? (land ? (F.H * 1.12) / g.height : Math.min((F.W * 1.0) / g.width, (F.H * 1.0) / g.height))
                    : (land ? (F.H * 0.66) / g.height : Math.min((F.W * 0.6) / g.width, (F.H * 0.6) / g.height));
     const w = g.width * s, h = g.height * s;
     const cx = F.W / 2, cy = F.H / 2;
@@ -226,10 +227,20 @@ function renderDevice(spec: BannerSpec, f: BannerFormat, id: string): { layer: R
     return { layer, open: { x: open.x + inset, y: open.y + inset, w: open.w - inset * 2, h: open.h - inset * 2 }, lightInside: LIGHT_INSIDE.has(spec.background) };
   }
   if (spec.device === "cloud") {
-    const cloud = cloudSVG(medallionPath(MEDALLION_PRESETS["Scalloped medallion"]), "#f7efed", 0.032);
-    const box: CSSProperties = land ? { left: 110, right: 110, top: -20, bottom: -50 } : f === "portrait" ? { left: -30, right: -30, top: 250, bottom: 70 } : { left: 20, right: 20, top: 120, bottom: 0 };
-    const html = cloud.replace("<svg ", `<svg width="100%" height="100%" ${land ? 'preserveAspectRatio="none" ' : ""}`).replace('preserveAspectRatio="xMidYMid meet"', land ? "" : 'preserveAspectRatio="xMidYMid meet"');
-    return { layer: <div aria-hidden style={{ position: "absolute", ...box }} dangerouslySetInnerHTML={{ __html: html }} />, open: { ...safe, y: safe.y + 60, h: safe.h - 60 }, lightInside: true };
+    // A soft cloud = the scalloped medallion at TRUE proportions, blurred. Never stretched; only its size changes.
+    const g = textShape(spec.shape && (TEXT_SHAPES as readonly string[]).includes(spec.shape) ? spec.shape : "Scalloped medallion");
+    const s = land ? (F.H * 1.12) / g.height : Math.min((F.W * 1.0) / g.width, (F.H * (f === "square" ? 0.86 : 0.8)) / g.height);
+    const w = g.width * s, h = g.height * s, cx = F.W / 2, cy = spec.mark === "top" ? F.H / 2 + (land ? 18 : 30) : F.H / 2;
+    const d = fitPath(g, s, cx - w / 2, cy - h / 2);
+    const blur = Math.min(w, h) * 0.045;
+    const layer = (
+      <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <filter id={`cloud-${id}`} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={blur} /></filter>
+        <path d={d} fill="#f7efed" filter={`url(#cloud-${id})`} />
+      </svg>
+    );
+    const r = innerRect(d, cx, cy, textAspect), inset = blur * 0.45;
+    return { layer, open: { x: r.x + inset, y: r.y + inset, w: r.w - inset * 2, h: r.h - inset * 2 }, lightInside: true };
   }
   if (spec.device === "gloss") {
     // A mirrored cluster of glossy studio shapes (Sarvam's waitlist post): below the text on portrait/square, flanking on landscape.
@@ -275,7 +286,7 @@ export function Banner({ spec, format, id }: { spec: BannerSpec; format: BannerF
     const ps = base.p * k, ss = base.s * k;
     const cw = ps * charW(pFont, pWeight, spec.primary);
     const plines = balanceLines(spec.primary, Math.max(4, Math.floor(open.w / cw)));
-    const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 ? 99 : plines.length;   // a word wider than the opening → too big
+    const pl = Math.max(...plines.map((l) => l.length)) * cw > open.w * 0.98 || plines.length > 3 ? 99 : plines.length;   // too wide, or more than 3 lines → too big
     const sl = spec.secondary ? balanceLines(spec.secondary, Math.max(6, Math.floor((open.w * 0.9) / (ss * charW(num ? "display" : "text", 400, spec.secondary))))).length : 0;
     const markH = spec.mark === "inside" ? (land ? 16 : 20) + base.gap * 0.7 : 0;
     return markH + pl * ps * 1.2 + (sl ? base.gap + sl * ss * 1.4 : 0);

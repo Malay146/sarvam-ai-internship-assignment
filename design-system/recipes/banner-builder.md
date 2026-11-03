@@ -49,8 +49,8 @@ Every Sarvam banner is a **composition of five choices + at most two lines of te
    | `plain` | Gradient only | Pure type statements |
 
 5. **Wordmark:** the official file, small (124px on Meta, 96px on LinkedIn), black or white by ground. Inside the device above the text, or top/bottom centre. Never the logomark.
-6. **Geometry is never stretched.** Shapes scale uniformly; their proportions are a design parameter set per format (taller on portrait, square on square, wide or cropped on landscape). Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
-7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn).
+6. **Geometry is never stretched.** Every shape (medallions, the cloud, gloss) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
+7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines.
 8. **Grain is one seamless generated layer** per banner (tiled grain shows seams when scaled).
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
