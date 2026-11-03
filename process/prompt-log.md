@@ -285,3 +285,28 @@ Entry format:
     - 6 variations always rendered → shown on demand
 - Workflow note: the default path is now subject → Claude decides everything → QA → PNGs (`.claude/skills/sarvam-banner`). The builder stays as an optional manual tool.
 - QA: 6/6 set + 18/18 situations PASS. Screen: `process/screens/banners-r6/set.png`.
+
+## 2026-11-04 — Subject-led parts, the method, our taste; nav + overview
+- Prompts (verbatim): "also just want to know: if I gave you the subject, you are not going to make the same type of banners… You are going for a very new approach, right?" · "the thing is, add two or three more parts but I need somewhat of an approach or type of thing based on the subject I gave you. Also in the home assignment… add our own taste also… but it should feel like server AI." · "Also in the navbar have the banner option, and in Overview also have its own card so I can just navigate easily."
+- Method (`banner-builder.md` §5): subject → one-sentence idea → idea type → part.
+  - Each type has its own part:
+    - name → lantern
+    - number → medallion
+    - capability → emblem
+    - product moment → arch window
+    - India / mission → script mandala
+    - statement → gateway echo
+    - community → gloss
+  - Plus a set-variety rule, and read briefs.json before choosing.
+- Three new parts (composer.tsx):
+  - `emblem`: frosted bevelled medallion, engraved Nucleo icon, echo rings on true offsets.
+  - `arch-window`: a recessed gateway arch with the real product mock seen through it (CSS clip-path).
+  - `script-mandala` [addition]: "Sarvam" in nine Indian scripts in rings around a glow disc; on LinkedIn the logomark sits in the centre. Fonts: Noto Sans per script, subset with `text=` (src/app/banners/layout.tsx). The transliterations need a native-reader check.
+- Our taste (§6): one idea, one object; script mandala; engraved emblems; the gateway as a window onto the product; precision.
+- Fixes found by looking:
+  - Mandala centre logomark missing on LinkedIn (the device area is ~square, so the format guess was wrong) → explicit `beside` flag.
+  - Emblem too small on Meta → 0.56 of the area.
+  - LinkedIn split text sat on the light bottom of the gradient → the text column is now top-aligned.
+- New situations: capability, product, mission. QA: 24/24 situations × formats + 6/6 set PASS. Builder switch median still ~20 ms.
+- Nav: "Banners" link added. /system: the Studio and Banner builder cards now sit as equal siblings (stacked below 1024). check-layout PASS at 10 widths, check-nav PASS.
+- Screens: `process/screens/banners-r7/`, `process/screens/system-tools-row.png`.

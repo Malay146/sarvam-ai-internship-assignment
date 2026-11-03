@@ -227,7 +227,7 @@ export function CtaCard({ title, cta }: { title: string; cta: ReactNode }) {
 const NAV = ["Products", "Developers", "Resources", "Company"].map((label) => ({ label, href: "#" }));
 export const SYSTEM_NAV = [
   { label: "Overview", href: "/system" }, { label: "Tokens", href: "/system/tokens" }, { label: "Components", href: "/components" },
-  { label: "Expressions", href: "/system/expressions" }, { label: "Studio", href: "/studio" },
+  { label: "Expressions", href: "/system/expressions" }, { label: "Studio", href: "/studio" }, { label: "Banners", href: "/banners" },
 ];
 type NavAction = { label: string; href?: string; variant?: "primary" | "secondary" };
 const NAV_ACTIONS: NavAction[] = [{ label: "Log In", variant: "primary" }, { label: "Contact Us", variant: "secondary" }];

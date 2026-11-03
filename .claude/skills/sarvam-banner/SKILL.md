@@ -9,6 +9,8 @@ Follow `design-system/recipes/banner-builder.md`; it is the source of truth.
 
 **The usual input is a subject only** (e.g. "Indus Cowork now in Slack"). Make every choice yourself: situation, copy, ground, device, shape, headline style, logo. Then render, QA, review the PNGs and present them. Don't ask Malay to open the builder or pick presets; `/banners/make` is an optional manual tool.
 
+Use the method in `design-system/recipes/banner-builder.md` §5: **find the one idea → name its type → the part follows** (name → lantern, number → medallion, capability → emblem + icon, product moment → arch window + mock, India/mission → script mandala, statement → gateway echo, community → gloss). Read `banners/briefs.json` first so the new banner doesn't repeat the last ones. Our taste (§6): one idea, one object, crafted.
+
 When you choose:
 - **Vary within a set.** Each banner in a set gets a different message, ground and shape, and the set uses both headline styles.
 - **Logo:** use the wordmark by default. Use the **logomark** (the mandala "pattern logo") where the brand is already obvious and the art is calm: milestones, statements, or a dark or saturated ground. Never use both, and partner lockups always use the wordmark.

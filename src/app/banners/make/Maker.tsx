@@ -1,6 +1,7 @@
 "use client";
 import { useDeferredValue, useMemo, useState } from "react";
 import { Artboard, BACKGROUNDS, Banner, DEVICES, SITUATIONS, TREATMENTS, shapesFor, variationsOf, type BannerSpec, type Situation } from "@/components/sarvam";
+import { EMBLEM_ICONS, type EmblemIcon } from "@/components/sarvam/composer";
 import { FORMATS, type BannerFormat } from "@/components/sarvam/banners";
 
 const SIT: [Situation, string][] = [["launch", "Launch"], ["announcement", "Announcement"], ["milestone", "Milestone"], ["funding", "Funding"], ["event", "Event"], ["story", "Story"], ["partnership", "Partnership"], ["program", "Program"], ["feature", "Feature"]];
@@ -45,7 +46,8 @@ export default function Maker() {
         <Seg name="Layout" value={spec.layout ?? "centered"} options={["centered", "split", "stacked"] as const} onChange={(v) => set({ layout: v })} />
         <label className="mk-field"><span>Partner (lockup next to the wordmark, optional)</span>
           <input value={spec.partner ?? ""} placeholder="e.g. Supernova" onChange={(e) => set({ partner: e.target.value || undefined })} /></label>
-        {(spec.layout ?? "centered") !== "centered" && <Seg name="Product card inside the device" value={spec.card ?? "none"} options={["none", "plan", "research", "review"] as const} onChange={(v) => set({ card: v === "none" ? undefined : v })} />}
+        {spec.device === "emblem" && <Seg name="Emblem object" value={spec.icon ?? "sparkle"} options={Object.keys(EMBLEM_ICONS) as EmblemIcon[]} onChange={(v) => set({ icon: v })} />}
+        {((spec.layout ?? "centered") !== "centered" || spec.device === "arch-window") && <Seg name={spec.device === "arch-window" ? "Product through the arch" : "Product card inside the device"} value={spec.card ?? "none"} options={["none", "plan", "research", "review"] as const} onChange={(v) => set({ card: v === "none" ? undefined : v })} />}
         <Seg name="Headline style" value={spec.titleStyle} options={["serif", "sans"] as const} onChange={(v) => set({ titleStyle: v })} />
         <Seg name="Background" value={spec.background} options={BACKGROUNDS} onChange={(v) => set({ background: v })} swatch={(v) => (v === "plain" ? "mk-plain" : `sr-gradient-${v}`)} />
         <Seg name="Device" value={spec.device} options={DEVICES} onChange={(v) => set({ device: v, shape: shapesFor(v)[0] === undefined ? undefined : shapesFor(v).includes(spec.shape ?? "") ? spec.shape : shapesFor(v)[0] })} />

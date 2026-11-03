@@ -65,6 +65,9 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
       | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `emblem` | One frosted, bevelled medallion with **one Nucleo icon engraved** in it, echo rings on true offsets. Text sits beside it (split on LinkedIn, stacked on Meta). `icon`: shield, plug, check, calendar, search, globe, inbox, megaphone, target, chart, book, sparkle, person | A capability you can name as an object |
+   | `arch-window` | The gateway as a **window onto the real product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, light inside, one frozen product mock (`card`) seen through it. Text beside it | A product moment you can see |
+   | `script-mandala` | **"Sarvam" in nine Indian scripts**, set in rings around a glowing disc. Meta: the headline sits in the disc. LinkedIn: the logomark sits in the disc and the text sits left (the wordmark is dropped; never both) `[addition]` | India, languages, mission, sovereignty, people |
    | `plain` | Gradient only | Pure type statements |
 
 5. **Logo (`logo`: `wordmark` | `logomark`):** the official files only, black or white by ground. Wordmark small (124px Meta, 96px LinkedIn); the logomark (the mandala "pattern logo") at 0.55× that height, for milestones and statements where the brand is already clear. Inside the device above the text, or top/bottom centre. Never both; partner lockups always use the wordmark.
@@ -110,3 +113,47 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 4. Check all three formats; run `node scripts/check-banners.mjs set`.
 5. **Save & export** (or run `node scripts/export-banners.mjs <id>`). Review the PNGs at 100% and at phone size.
 6. Log the brief, the choices and any changes in `process/prompt-log.md`.
+
+## 5. From subject to banner: the method (the usual workflow)
+
+Malay gives a **subject only**. The AI makes every decision below, in order. The banner should look like *this subject*, not like the last banner.
+
+**Step 1 · Find the one idea.** Write one sentence: "What changes for the reader?" That sentence becomes the headline (≤ 6 words, or a number), and one supporting fact from `voice.md` §5 becomes the second line. If you can't write it, ask for the missing fact; never invent one.
+
+**Step 2 · Name the idea type, and the part follows from it:**
+
+| The idea is… | Part (device) | Why | Ground (mood) | Headline |
+|---|---|---|---|---|
+| A **name** being launched | `medallion-glow` (Onion lantern) | The name *is* the hero, lit from the edge | warm: saffron-rose, dawn | sans |
+| A **number** (scale, milestone, funding) | `medallion-glow` (Scalloped) | The number *is* the object | deep: night, olive | serif number, gold |
+| A **capability** you can name as one object (security, approvals, connectors, scheduling, research) | `emblem` + the icon for that object | An object is faster to read than a sentence | trust: indigo-glow, dusk, night | serif |
+| A **product moment** you can see (plans, research, review) | `arch-window` + the matching mock | Show, don't claim; the gateway is the threshold into the product | dusk, indigo-glow | serif |
+| **India, languages, mission, sovereignty** | `script-mandala` | Sarvam = wholeness: every script, one whole | olive, dusk, saffron-rose | serif |
+| A **statement** or **where it's available** | `gateway-echo` | Thresholds opening outward | dusk | serif |
+| **Community** (event, program, cohort) | `gloss` | Many shapes, one family | spring, plain | serif |
+| A **partner** | `medallion-glow` + partner lockup | Two names, matched weight | lavender-dusk | serif |
+
+**Step 3 · Vary within the set.** Across a set: different idea types where possible, no ground or shape used twice, and both headline styles appear. Before choosing, read `banners/briefs.json` so a new banner doesn't repeat the last one.
+
+**Step 4 · Logo.** Wordmark by default. Use the logomark alone for calm milestones and statements, and the mandala centre on LinkedIn script-mandala banners.
+
+**Step 5 · Render, QA, look.** Run `check-banners.mjs set`, export, then **look** at both PNGs at 100% and at phone size. On a QA fail, change the shape or shorten the supporting line; never shrink below the type steps.
+
+**Step 6 · Log** the subject, the one-sentence idea, the idea type and the choices in `process/prompt-log.md`.
+
+### Worked examples
+| Subject | Idea | Type → part | Result |
+|---|---|---|---|
+| "Indus Cowork has audit logs" | Every task leaves a trail | capability → `emblem` (shield), indigo-glow | `process/screens/banners-r7/` |
+| "It plans before it acts" | It plans the work before it starts | product moment → `arch-window` (plan mock), dusk | same |
+| "Sarvam's mission" | AI for all from India | mission → `script-mandala`, olive | same |
+
+## 6. Our taste (personal flair, within the brand) `[addition]`
+
+The assignment asks for some personal flair. Ours lives in **composition and craft, never in new colours or fonts**:
+
+1. **One idea, one object.** Each banner says one thing and shows one thing. It's quieter than Sarvam's own posts: no stacked effects, no decorative extras.
+2. **Script mandala.** The brand's meaning ("Sarvam" = wholeness, AI for every Indian language) made literal: the name in nine scripts, built like the mandala logomark. Transliterations must be checked by a native reader before publishing.
+3. **Engraved emblems.** Product capabilities become crafted objects (frosted body, bevel, inset groove, engraved Nucleo line icon, echo rings on true offsets). The same material is used in the web components, so banners and page match.
+4. **The gateway as a window onto the product.** Sarvam uses the arch as a mask for photography; we use it to frame the real Indus Cowork UI.
+5. **Precision.** True-offset rings, measured text boxes, fixed type steps, sibling consistency. Nothing is stretched, and nothing is placed by eye.

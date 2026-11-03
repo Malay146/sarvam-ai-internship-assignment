@@ -49,3 +49,11 @@
 .ex-community__cloud svg { width: 118%; height: auto; }
 .ex-community h3 { font-family: var(--font-display); font-weight: var(--weight-regular); font-size: 7.4cqw; line-height: 1.12; letter-spacing: var(--tracking-statement); color: var(--color-tx); margin: 0; max-width: 13ch; }
 .ex-community p { margin: 3cqw 0 0; font-size: 3.4cqw; color: var(--color-tx-secondary); }
+
+/* Tools row: Studio + Banner builder as equal siblings (stacked on phone and tablet, side by side from 1024). */
+.hub-tools { display: grid; grid-template-columns: 1fr; gap: var(--space-grid); }
+@media (min-width: 1024px) {
+  .hub-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub-tools .hub-wide { grid-template-columns: 1fr; align-items: stretch; padding: var(--space-2) var(--space-2) var(--space-6); }
+  .hub-tools .hub-wide__text { padding: 0 var(--space-4); }
+}

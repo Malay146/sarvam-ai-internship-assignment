@@ -8,13 +8,14 @@ import {
 import { StyledText, balanceLines, charW, type TextFill } from "./StyledText";
 import { MockPlan, MockResearch, MockReview } from "./mocks";
 import { FORMATS, type BannerFormat } from "./banners";
+import { BarChart3, BookOpen, CalendarClock, CircleCheck, Globe, Inbox, Megaphone, Plug, Search, ShieldCheck, Sparkles, Target, UserRound } from "@/components/icons";
 
 /* ── Vocabulary ── */
 export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "night" | "olive" | "meadow" | "spring" | "lavender-dusk" | "plain";
-export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "plain";
+export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "feature";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "feature" | "capability" | "product" | "mission";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -28,17 +29,27 @@ export type BannerSpec = {
   layout?: Layout;                 // centred (text inside the device) · split · stacked. Rearranges per format.
   partner?: string;                // partner lockup: "sarvam · PARTNER" (replaces the plain wordmark)
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
-  card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only)
+  card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
+  icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
 };
+/** Emblem icons: Nucleo Core outline only (components.md §3). One object per idea. */
+export const EMBLEM_ICONS = {
+  shield: ShieldCheck, plug: Plug, check: CircleCheck, calendar: CalendarClock, search: Search, globe: Globe, inbox: Inbox,
+  megaphone: Megaphone, target: Target, chart: BarChart3, book: BookOpen, sparkle: Sparkles, person: UserRound,
+} as const;
+export type EmblemIcon = keyof typeof EMBLEM_ICONS;
 export type Layout = "centered" | "split" | "stacked";
 
 export const BACKGROUNDS: Background[] = ["saffron-rose", "dusk", "dawn", "indigo-glow", "night", "olive", "meadow", "spring", "lavender-dusk", "plain"];
-export const DEVICES: Device[] = ["medallion-glow", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
+export const DEVICES: Device[] = ["medallion-glow", "emblem", "arch-window", "script-mandala", "gateway-echo", "gateway-carved", "medallion-carved", "gloss", "plain"];
 export const TREATMENTS: Treatment[] = ["white", "gold", "indigo", "ink"];
 export const DARK_BG = new Set<Background>(["saffron-rose", "dusk", "indigo-glow", "night", "olive"]);
 /** Shapes curated for holding text (generator params; proportions are set per format, never stretched). */
 export const TEXT_SHAPES = ["Onion lantern", "Cusped window", "Quatrefoil", "Scalloped medallion", "Ogee cross"] as const;
-export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : []);
+export const shapesFor = (d: Device) => (d === "medallion-glow" || d === "medallion-carved" || d === "emblem" ? [...TEXT_SHAPES] : d.startsWith("gateway") ? Object.keys(GATEWAY_PRESETS) : d === "arch-window" ? ARCH_SHAPES : []);
+export const ARCH_SHAPES = ["Mihrab", "Domed door"];
+/** Devices that hold no text: the layout puts text beside them (split on landscape, stacked on portrait). */
+const BESIDE = new Set<Device>(["emblem", "arch-window"]);
 
 export const SITUATIONS: Record<Situation, BannerSpec> = {
   launch: { situation: "launch", background: "saffron-rose", device: "medallion-glow", shape: "Onion lantern", treatment: "white", mark: "inside", titleStyle: "sans", primary: "Indus Cowork", secondary: "An AI teammate that finishes the work", secondaryPlace: "below" },
@@ -49,6 +60,9 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   story: { situation: "story", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Your newest colleague lives in Slack." },
   partnership: { situation: "partnership", background: "lavender-dusk", device: "medallion-glow", shape: "Ogee cross", treatment: "ink", mark: "inside", partner: "Partner", titleStyle: "serif", primary: "Shipping faster with Indus Cowork" },
   program: { situation: "program", layout: "split", background: "plain", device: "gloss", treatment: "ink", mark: "inside", titleStyle: "serif", primary: "Indus Cowork early access", secondary: "Talk to us about your team's workflows", secondaryPlace: "below" },
+  capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
+  product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", card: "plan", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
+  mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
   feature: { situation: "feature", layout: "split", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", card: "plan", treatment: "indigo", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
 };
 
@@ -167,7 +181,7 @@ function textAspectFor(spec: BannerSpec, f: BannerFormat) {
   const land = f === "landscape";
   return spec.primaryIsNumber ? (land ? 1.5 : 1.05) : land ? 2.2 : f === "square" ? 1.15 : 0.95;
 }
-function renderDevice(spec: BannerSpec, F: Frame, id: string): DeviceOut {
+function renderDevice(spec: BannerSpec, F: Frame, id: string, beside = false): DeviceOut {
   const r0 = F.W / F.H, f: BannerFormat = r0 > 1.3 ? "landscape" : r0 > 0.85 ? "square" : "portrait", land = f === "landscape";
   const pal = PAL[spec.background];
   const safe: Rect = { x: F.M, y: F.M, w: F.W - F.M * 2, h: F.H - F.M * 2 };
@@ -247,6 +261,9 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): DeviceOut {
     const shrink = (o: Rect): Rect => ({ x: o.x + inset, y: o.y + inset, w: o.w - inset * 2, h: o.h - inset * 2 });
     return { layer, open: shrink(open), lightInside: LIGHT_INSIDE.has(spec.background), fit: (r) => shrink(innerRect(d, cx, cy, r)) };
   }
+  if (spec.device === "emblem") return emblemDevice(spec, F, id, textShape(spec.shape ?? "Scalloped medallion"), pal);
+  if (spec.device === "arch-window") return archWindowDevice(spec, F, id, pal);
+  if (spec.device === "script-mandala") return scriptMandalaDevice(spec, F, id, beside);
   if (spec.device === "gloss") {
     // A mirrored cluster of glossy studio shapes (Sarvam's waitlist post): below the text on portrait/square, flanking on landscape.
     const items: [string, GlossPalette, number, number, number][] = [
@@ -282,6 +299,165 @@ function renderDevice(spec: BannerSpec, F: Frame, id: string): DeviceOut {
     return { layer: <>{els}</>, open, lightInside: true };
   }
   return { layer: null, open: { ...safe, y: safe.y + 40, h: safe.h - 40 }, lightInside: !DARK_BG.has(spec.background) };
+}
+
+/* ── Subject-led devices (banner-builder.md §5) ── */
+
+/** Mask for a ring line on the TRUE offset of a shape: a thin band at distance `off` outside the outline (even on points and curves). */
+function OffsetLine({ id, d, off, lw, color, opacity }: { id: string; d: string; off: number; lw: number; color: string; opacity: number }) {
+  return (
+    <>
+      <mask id={id} maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="8000" height="8000">
+        <path d={d} fill="none" stroke="#fff" strokeWidth={2 * off + lw} strokeLinejoin="round" />
+        <path d={d} fill="none" stroke="#000" strokeWidth={Math.max(0, 2 * off - lw)} strokeLinejoin="round" />
+        <path d={d} fill="#000" />
+      </mask>
+      <rect x="-4000" y="-4000" width="8000" height="8000" fill={color} opacity={opacity} mask={`url(#${id})`} />
+    </>
+  );
+}
+
+/** Emblem: the subject as ONE object. A frosted, bevelled medallion with the icon engraved into it, and echo rings on
+ *  true offsets (the mandala idea: layers building toward a whole). Same materials as the /components emblem cards. */
+function emblemDevice(spec: BannerSpec, F: Frame, id: string, g: Geom, pal: Pal): DeviceOut {
+  const k = (s: string) => `${s}-${id}`, u = (s: string) => `url(#${k(s)})`;
+  const dark = DARK_BG.has(spec.background);
+  const size = Math.min(F.W, F.H) * 0.56, s = size / Math.max(g.width, g.height);
+  const w = g.width * s, h = g.height * s, cx = F.W / 2, cy = F.H / 2;
+  const d = fitPath(g, s, cx - w / 2, cy - h / 2);
+  const ring = dark ? "#ffffff" : pal.shadow;
+  const Icon = EMBLEM_ICONS[spec.icon ?? "sparkle"];
+  const ic = size * 0.36;
+  const layer = (
+    <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
+      <defs>
+        <linearGradient id={k("body")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffffff" stopOpacity="0.98" /><stop offset="0.6" stopColor="#ffffff" stopOpacity="0.9" /><stop offset="1" stopColor={pal.rim} stopOpacity="0.82" /></linearGradient>
+        <radialGradient id={k("sheen")} cx="0.36" cy="0.22" r="0.6"><stop offset="0" stopColor="#ffffff" stopOpacity="0.95" /><stop offset="1" stopColor="#ffffff" stopOpacity="0" /></radialGradient>
+        <radialGradient id={k("halo")} cx="0.5" cy="0.5" r="0.5"><stop offset="0" stopColor={dark ? pal.rim : "#ffffff"} stopOpacity="0.4" /><stop offset="1" stopColor={dark ? pal.rim : "#ffffff"} stopOpacity="0" /></radialGradient>
+        <clipPath id={k("clip")}><path d={d} /></clipPath>
+        <filter id={k("float")} x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy={size * 0.05} stdDeviation={size * 0.05} floodColor={pal.shadow} floodOpacity="0.32" />
+          <feDropShadow dx="0" dy={size * 0.008} stdDeviation={size * 0.006} floodColor={pal.shadow} floodOpacity="0.28" />
+        </filter>
+        <filter id={k("bevel")} x="-10%" y="-10%" width="120%" height="120%">
+          <feOffset dy={size * 0.012} in="SourceAlpha" result="dn" /><feComposite in="SourceAlpha" in2="dn" operator="out" result="topEdge" />
+          <feGaussianBlur in="topEdge" stdDeviation={size * 0.003} result="topB" /><feFlood floodColor="#ffffff" /><feComposite in2="topB" operator="in" result="hi" />
+          <feOffset dy={-size * 0.02} in="SourceAlpha" result="up" /><feComposite in="SourceAlpha" in2="up" operator="out" result="botEdge" />
+          <feGaussianBlur in="botEdge" stdDeviation={size * 0.014} result="botB" /><feFlood floodColor={pal.shadow} floodOpacity="0.4" /><feComposite in2="botB" operator="in" result="lo" />
+          <feComposite in="lo" in2="SourceAlpha" operator="in" result="loIn" />
+          <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="loIn" /><feMergeNode in="hi" /></feMerge>
+        </filter>
+        <mask id={k("frame")} maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="8000" height="8000"><path d={d} fill="#fff" /><path d={d} fill="none" stroke="#000" strokeWidth={size * 0.06} strokeLinejoin="round" /></mask>
+      </defs>
+      <circle cx={cx} cy={cy} r={size * 0.95} fill={u("halo")} />
+      {[0.08, 0.17, 0.27, 0.38].map((o, i) => <OffsetLine key={o} id={k(`r${i}`)} d={d} off={size * o} lw={1.5} color={ring} opacity={0.55 - i * 0.12} />)}
+      <g filter={u("float")}><path d={d} fill={u("body")} filter={u("bevel")} /></g>
+      <g clipPath={u("clip")}><ellipse cx={cx - w * 0.12} cy={cy - h * 0.32} rx={w * 0.45} ry={h * 0.32} fill={u("sheen")} opacity="0.7" /></g>
+      {/* inset frame: a tinted groove just inside the edge, then the crisp rim */}
+      <path d={d} fill="none" stroke={pal.shadow} strokeOpacity="0.2" strokeWidth={size * 0.064} strokeLinejoin="round" mask={u("frame")} />
+      <path d={d} fill="none" stroke="#ffffff" strokeWidth={1.5} />
+      {/* engraved icon: white highlight just below, then the ink line */}
+      <Icon x={cx - ic / 2} y={cy - ic / 2 + size * 0.006} width={ic} height={ic} color="#ffffff" strokeWidth={1.5} opacity={0.95} />
+      <Icon x={cx - ic / 2} y={cy - ic / 2} width={ic} height={ic} color={pal.core} strokeWidth={1.5} />
+    </svg>
+  );
+  return { layer, open: { x: 0, y: 0, w: F.W, h: F.H }, lightInside: false };
+}
+
+/** Arch window: the gateway as a window onto the real product (brand-findings: "gateway as mask/frame").
+ *  A recessed arch with a light interior and one frozen product moment seen through it. */
+function archWindowDevice(spec: BannerSpec, F: Frame, id: string, pal: Pal): DeviceOut {
+  const k = (s: string) => `${s}-${id}`, u = (s: string) => `url(#${k(s)})`;
+  const preset = GATEWAY_PRESETS[spec.shape ?? "Mihrab"] ?? GATEWAY_PRESETS["Mihrab"];
+  const g = gatewayPath({ ...preset, aspect: 1.25, bottom: "flat", notch: 0, frame: 0, waist: 0 });
+  // Standing on the bottom edge, like a doorway; clear of the frame sides by ≥ 1.5·M.
+  const s = Math.min((F.W - F.M * 3) / g.width, (F.H * 0.9) / g.height), w = g.width * s, h = g.height * s;
+  const x = (F.W - w) / 2, y = F.H - h + 2;
+  const d = fitPath(g, s, x, y);
+  const C = spec.card === "research" ? MockResearch : spec.card === "review" ? MockReview : MockPlan;
+  const ms = (w * 0.8) / 380;                                   // the mock fills 80% of the arch width (uniform scale)
+  const my = y + h * 0.3;
+  const dark = DARK_BG.has(spec.background);
+  return {
+    layer: (
+      <>
+        <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
+          <defs>
+            <linearGradient id={k("in")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset="0.55" stopColor={pal.rim} /><stop offset="1" stopColor={pal.edge} /></linearGradient>
+          </defs>
+          {[0.035, 0.075].map((o, i) => <OffsetLine key={o} id={k(`o${i}`)} d={d} off={w * o} lw={1.5} color={dark ? "#ffffff" : pal.shadow} opacity={0.5 - i * 0.2} />)}
+          <path d={d} fill={u("in")} />
+        </svg>
+        <div aria-hidden style={{ position: "absolute", inset: 0, clipPath: `path("${d}")` }}>
+          <div style={{ position: "absolute", left: x + w / 2 - 190, top: my, width: 380, transform: `scale(${ms})`, transformOrigin: "top center", filter: `drop-shadow(0 18px 30px ${pal.shadow}33)` }}><C freeze={2} /></div>
+        </div>
+        <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
+          <defs>
+            <clipPath id={k("clip")}><path d={d} /></clipPath>
+            <filter id={k("soft")} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation={w * 0.018} /></filter>
+          </defs>
+          {/* recess: a soft inner shadow along the arch edge, then the crisp rim */}
+          <g clipPath={u("clip")}><path d={d} fill="none" stroke={pal.shadow} strokeOpacity="0.35" strokeWidth={w * 0.05} filter={u("soft")} /></g>
+          <path d={d} fill="none" stroke="#ffffff" strokeWidth={1.5} />
+        </svg>
+      </>
+    ),
+    open: { x: 0, y: 0, w: F.W, h: F.H }, lightInside: false,
+  };
+}
+
+/** "Sarvam" (wholeness) in nine Indian scripts, set in rings like a mandala. [addition] Transliterations: have a native
+ *  reader check each script before publishing. Fonts: Noto Sans per script (src/app/banners/layout.tsx). */
+export const SCRIPT_WORDS: { word: string; font: string }[] = [
+  { word: "सर्वम्", font: "Noto Sans Devanagari" }, { word: "সর্বম্", font: "Noto Sans Bengali" }, { word: "சர்வம்", font: "Noto Sans Tamil" },
+  { word: "సర్వం", font: "Noto Sans Telugu" }, { word: "ಸರ್ವಂ", font: "Noto Sans Kannada" }, { word: "സർവം", font: "Noto Sans Malayalam" },
+  { word: "સર્વમ્", font: "Noto Sans Gujarati" }, { word: "ਸਰਵਮ", font: "Noto Sans Gurmukhi" }, { word: "ସର୍ବମ୍", font: "Noto Sans Oriya" },
+];
+
+/** Script mandala: rings of "Sarvam" in every script around a glowing centre. Portrait: the headline sits in the centre.
+ *  Landscape (split): the centre holds the logomark, the text sits left. */
+function scriptMandalaDevice(spec: BannerSpec, F: Frame, id: string, beside: boolean): DeviceOut {
+  const k = (s: string) => `${s}-${id}`, u = (s: string) => `url(#${k(s)})`;
+  const G = GLOW[spec.background], dark = DARK_BG.has(spec.background);
+  const R = beside ? Math.min(F.W * 0.5 - F.M * 0.5, F.H * 0.62) : (F.W - F.M * 3) / 2;
+  const cx = F.W / 2, cy = F.H / 2;
+  const fs = R * 0.075, ink = dark ? "#ffffff" : PAL[spec.background].shadow;
+  const rings = [
+    { r: R - fs * 0.9, n: 18, op: 0.42 },
+    { r: R * 0.79 - fs * 0.6, n: 13, op: 0.62 },
+  ];
+  const disc = R * 0.6;
+  const words = rings.flatMap(({ r, n, op }, ri) => Array.from({ length: n }, (_, i) => {
+    const a = (360 / n) * i + (ri ? 360 / n / 2 : 0);
+    const S = SCRIPT_WORDS[(i + ri * 4) % SCRIPT_WORDS.length];
+    return <text key={`${ri}-${i}`} transform={`rotate(${a} ${cx} ${cy}) translate(${cx} ${cy - r})`} textAnchor="middle" dominantBaseline="central"
+      style={{ fontFamily: `"${S.font}", var(--font-text)`, fontSize: fs, fontWeight: 500 }} fill={ink} opacity={op}>{S.word}</text>;
+  }));
+  // Dots between words on the outer ring, circles between rings: the mandala's construction lines.
+  const n0 = rings[0].n;
+  const dots = Array.from({ length: n0 }, (_, i) => { const a = ((360 / n0) * (i + 0.5) * Math.PI) / 180; return <circle key={i} cx={cx + Math.sin(a) * rings[0].r} cy={cy - Math.cos(a) * rings[0].r} r={fs * 0.09} fill={ink} opacity={0.5} />; });
+  const lines = [R, R * 0.79 + fs * 0.25, (R * 0.79 + disc) / 2 + fs * 0.6].map((r, i) => <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={ink} strokeOpacity={0.3 - i * 0.05} strokeWidth={1.5} />);
+  const layer = (
+    <svg width={F.W} height={F.H} style={{ position: "absolute", inset: 0, overflow: "visible" }} aria-hidden>
+      <defs>
+        <radialGradient id={k("disc")} cx="0.5" cy="0.45" r="0.6"><stop offset="0" stopColor={G.top} /><stop offset="1" stopColor={G.bottom} /></radialGradient>
+        <clipPath id={k("clip")}><circle cx={cx} cy={cy} r={disc} /></clipPath>
+        <filter id={k("soft")} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation={disc * 0.06} /></filter>
+      </defs>
+      {lines}{words}{dots}
+      <circle cx={cx} cy={cy} r={disc} fill={u("disc")} />
+      <g clipPath={u("clip")}><circle cx={cx} cy={cy} r={disc} fill="none" stroke={G.glow} strokeOpacity={0.85} strokeWidth={disc * 0.16} filter={u("soft")} /></g>
+      <circle cx={cx} cy={cy} r={disc} fill="none" stroke={G.glow} strokeOpacity={0.9} strokeWidth={1.5} />
+    </svg>
+  );
+  // Text box: the largest rectangle inside the disc, inset from its glow band.
+  const fit = (r: number): Rect => { const rr = disc * 0.86, hh = (2 * rr) / Math.sqrt(1 + r * r), ww = hh * r; return { x: cx - ww / 2, y: cy - hh / 2, w: ww, h: hh }; };
+  const r0 = textAspectFor(spec, "portrait");
+  const centre = beside
+    // eslint-disable-next-line @next/next/no-img-element
+    ? <img data-qa="mark" src={`/brand/sarvam-logomark-${LIGHT_INSIDE.has(spec.background) ? "black" : "white"}.svg`} alt="Sarvam" style={{ position: "absolute", left: cx - disc * 0.45, top: cy - disc * 0.45, width: disc * 0.9, height: disc * 0.9 }} />
+    : null;
+  return { layer: <>{layer}{centre}</>, open: fit(r0), lightInside: LIGHT_INSIDE.has(spec.background), fit };
 }
 
 function Mark({ tone, width, style }: { tone: "black" | "white"; width: number; style?: CSSProperties }) {
@@ -326,15 +502,18 @@ const SECONDARY_FILL: Record<Treatment, TextFill> = { white: "white", gold: "gol
 function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerFormat; id: string }) {
   const F = FORMATS[format], land = format === "landscape";
   // Layout rearranges per format: split needs width (portrait/square → stacked); stacked needs height (landscape → split).
-  const req = spec.layout ?? "centered";
+  // Text-free devices sit beside the text; the script mandala holds the text on portrait and sits beside it on landscape.
+  const req: Layout = BESIDE.has(spec.device) ? "split" : spec.device === "script-mandala" ? (land ? "split" : "centered") : spec.layout ?? "centered";
   const layout: Layout = req === "split" && !land ? "stacked" : req === "stacked" && land ? "split" : req;
-  const markW = land ? 96 : 124, markSpace = spec.mark === "top" || spec.mark === "inside" ? (land ? 52 : 72) : 0;
+  const centreMark = spec.device === "script-mandala" && layout !== "centered";   // the logomark already sits in the mandala's centre
+  const markW = land ? 96 : 124, markSpace = !centreMark && (spec.mark === "top" || spec.mark === "inside") ? (land ? 52 : 72) : 0;
   const dev = layout === "centered" ? { x: 0, y: 0, w: F.W, h: F.H } : layout === "split" ? { x: F.W * 0.47, y: 0, w: F.W * 0.53, h: F.H } : { x: 0, y: F.H * 0.44, w: F.W, h: F.H * 0.56 };
-  const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id);
+  const D = renderDevice(spec, { W: dev.w, H: dev.h, M: F.M }, id, layout !== "centered");
   let open: Rect = layout === "centered" ? D.open
-    : layout === "split" ? { x: F.M, y: F.M + markSpace, w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace }
+    // Split: an editorial column from the top (gradients lighten toward the bottom, so the text stays on the deep part).
+    : layout === "split" ? { x: F.M, y: F.M + markSpace + (markSpace ? 12 : 0), w: F.W * 0.47 - F.M - 16, h: F.H - F.M * 2 - markSpace - (markSpace ? 12 : 0) }
     : { x: F.M, y: F.M + markSpace, w: F.W - F.M * 2, h: F.H * 0.44 - F.M - markSpace - 8 };
-  const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
+  const layer = <div style={{ position: "absolute", left: dev.x, top: dev.y, width: dev.w, height: dev.h }}>{D.layer}{spec.card && layout !== "centered" && spec.device !== "arch-window" && <CardSlot kind={spec.card} area={{ w: dev.w, h: dev.h }} />}</div>;
   const lightInside = layout === "centered" ? D.lightInside : !DARK_BG.has(spec.background);
   const align: "center" | "left" = layout === "split" ? "left" : "center";
   const onLight = lightInside || spec.treatment === "ink" || spec.treatment === "indigo";
@@ -384,12 +563,12 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
       {/* Seamless grain: one pre-generated noise image (1200×1350, decoded once, no live filter) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
-      {(spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
+      {!centreMark && (spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
         <Lockup logomark={spec.logo === "logomark"} tone={layout === "centered" ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
           style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
-      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: "center", gap: S.gap, textAlign: align }}>
+      <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
         {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
