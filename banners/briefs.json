@@ -129,12 +129,15 @@
       "device": "medallion-glow",
       "shape": "Eight-point star",
       "treatment": "white",
-      "mark": "none",
+      "mark": "top",
       "titleStyle": "sans",
       "primary": "Sarvam Prism",
       "secondary": "Fast, accurate decisions in 44 ms",
       "secondaryPlace": "below",
-      "whole": true
+      "whole": true,
+      "logo": "logomark",
+      "logoTone": "white",
+      "logoLeftOnLinkedIn": true
     }
   },
   {

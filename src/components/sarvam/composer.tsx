@@ -33,6 +33,8 @@ export type BannerSpec = {
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
   titleSize?: { portrait?: number; landscape?: number };
   lineSize?: { portrait?: number; landscape?: number };    // set the supporting line size directly (px)   // set the headline size directly (px); the text box widens to hold it, centred
+  logoTone?: "white" | "black";   // override the logo colour (e.g. white on a gradient whose top is dark)
+  logoLeftOnLinkedIn?: boolean;    // top logo sits top-left on LinkedIn (when the shape fills the top centre)
   whole?: boolean;                 // medallion-glow: keep the whole shape in frame on LinkedIn too (no vertical bleed)
   divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
   horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
@@ -802,8 +804,8 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
       {!centreMark && (spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
-        <Lockup logomark={spec.logo === "logomark"} tone={layout === "centered" || editorial ? markTone : onLight ? "black" : "white"} width={markW} partner={spec.partner}
-          style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
+        <Lockup logomark={spec.logo === "logomark"} tone={spec.logoTone ?? (layout === "centered" || editorial ? markTone : onLight ? "black" : "white")} width={markW} partner={spec.partner}
+          style={{ position: "absolute", top: F.M, ...(align === "left" || (land && spec.logoLeftOnLinkedIn) ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
       {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
       <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? D.textJustify ?? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>

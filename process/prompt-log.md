@@ -532,3 +532,8 @@ Entry format:
 ## 2026-11-04 — Program preset gets the partner lockup
 - Prompt (verbatim): [program preset screenshot] "Have that partner thing in this."
 - `program` now uses `partner: "Partner"`, giving the `sarvam · PARTNER` lockup (wordmark only, per logo.md) top-left on LinkedIn and top-centre on Meta. "Partner" is a placeholder for the real partner name. QA PASS in both formats.
+
+## 2026-11-04 — Prism: logomark above the star
+- Prompt (verbatim): [meta-prism screenshot] "In these have that Sarvam spiral logo out of the pattern on top. Don't change anything else in both landscape and portrait."
+- `prism` now has the logomark at the top, outside the star. Nothing else changed.
+- After looking: the logo rendered black (the dawn ground counts as light) → new `logoTone: "white"`. On LinkedIn the star fills the top centre, so a centred logo landed inside the pattern → new `logoLeftOnLinkedIn`, which puts it top-left at the margin. QA PASS, re-exported.
