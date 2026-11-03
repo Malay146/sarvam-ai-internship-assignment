@@ -1,0 +1,26 @@
+/* Showcase-only styles for /components (not part of the component library). Prefix cs- */
+.cs-page { padding-bottom: var(--space-section); }
+.cs-intro { padding-top: var(--space-16); padding-bottom: var(--space-8); display: flex; flex-direction: column; gap: var(--space-4); }
+.cs-intro .sr-motif { margin: 0 0 var(--space-2); filter: brightness(0.75); }
+.cs-intro code { font-family: var(--font-code); font-size: 0.9em; background: var(--color-sf-tertiary); padding: 2px 6px; border-radius: var(--radius-sm); }
+.cs-block { padding-top: var(--space-16); display: flex; flex-direction: column; gap: var(--space-8); }
+@media (min-width: 768px) { .cs-block { padding-top: var(--space-24); } }
+.cs-label { display: flex; flex-direction: column; gap: var(--space-1); padding-top: var(--space-4); border-top: var(--border-default); }
+.cs-label code { font-family: var(--font-code); font-size: var(--text-small); color: var(--color-tx); }
+.cs-row { display: flex; flex-direction: column; gap: var(--space-6); }
+.cs-dark { background: var(--color-sr-black); border-radius: var(--radius-card); padding: var(--space-8); }
+.cs-contrast { display: grid; gap: var(--space-8); }
+@media (min-width: 768px) { .cs-contrast { grid-template-columns: 1fr 1fr; } }
+.cs-contrast__col { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-card); border: var(--border-default); border-radius: var(--radius-card); background: var(--color-sr-white); }
+.cs-contrast__tiles { display: flex; gap: var(--space-3); }
+.cs-contrast__tiles .sr-icon-tile svg { width: 20px; height: 20px; }
+.cs-mesh-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+@media (min-width: 768px) { .cs-mesh-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.cs-mesh { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.cs-mesh > div { aspect-ratio: 4 / 3; border-radius: var(--radius-card); border: var(--border-subtle); }
+.cs-narrow { max-width: 720px; }
+.cs-checks { display: grid; gap: var(--space-8); }
+@media (min-width: 768px) { .cs-checks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cs-gateways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); align-items: end; }
+@media (min-width: 1024px) { .cs-gateways { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.cs-emblem-banner { max-width: 880px; width: 100%; margin-inline: auto; border-radius: var(--radius-3xl); overflow: hidden; box-shadow: var(--shadow-ambient-md); }

@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw third-party site source dumps (kept locally; extracted findings are committed)
+/references/brand-css/*.html
+/references/brand-css/*.js
+/references/brand-css/*.css

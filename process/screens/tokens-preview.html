@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../design-system/tokens.css">
+<style>
+body{margin:0;padding:32px;background:var(--color-sf);font-family:system-ui;color:var(--color-tx)}
+h2{font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--color-tx-tertiary);margin:24px 0 8px}
+.row{display:flex;gap:16px}.g{flex:1}.g div{height:260px;border-radius:var(--radius-card)}.g img{width:100%;height:260px;object-fit:cover;border-radius:var(--radius-card)}
+.g p{font-size:12px;margin:6px 0}
+.ramp{display:flex;margin-bottom:4px}.ramp span{flex:1;height:36px;font-size:9px;display:flex;align-items:end;padding:2px}
+</style></head><body>
+<h2>Gradients — ours (top) vs official source (bottom)</h2>
+<div class="row">
+<div class="g"><div style="background:var(--gradient-dusk)"></div><p>--gradient-dusk</p><img src="../../references/brand/images/brand-img-01.png"><p>brand-img-01</p></div>
+<div class="g"><div style="background:var(--gradient-dawn)"></div><p>--gradient-dawn</p><img src="../../references/brand/og-home.png"><p>og-home</p></div>
+<div class="g"><div style="background:var(--gradient-indigo-glow)"></div><p>--gradient-indigo-glow</p><img src="../../references/brand/images/brand-img-06.png"><p>brand-img-06</p></div>
+<div class="g"><div style="background:var(--gradient-sun),var(--color-sf);background-size:100% 180%;background-position:center bottom"></div><p>--gradient-sun</p><img style="background:#fcfcfc;object-fit:contain" src="../../references/site/hero-gradient-1622.webp"><p>hero-gradient</p></div>
+</div>
+<h2>Ramps</h2><div id="r"></div>
+<script>
+for(const r of ["indigo","orange","yellow","pink","red","green","grey"]){const d=document.createElement("div");d.className="ramp";
+for(const k of [50,100,200,300,400,500,600,700,800,900,950]){const s=document.createElement("span");s.style.background=`var(--color-sr-${r}-${k})`;s.textContent=r+" "+k;s.style.color=k>=500?"#fff":"#000";d.appendChild(s)}r_=document.getElementById("r").appendChild(d)}
+</script></body></html>

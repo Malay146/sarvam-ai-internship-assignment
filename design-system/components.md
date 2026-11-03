@@ -1,0 +1,314 @@
+# Components
+
+The building blocks of Sarvam pages, as React components with exact anatomy, tokens, states and responsive behaviour. Implemented in `src/components/sarvam/` (`index.tsx` + `components.css`) and shown live at **`/components`**. Layout rules come from [`layout.md`](layout.md), type roles from [`typography.md`](typography.md), and values from [`tokens.css`](tokens.css).
+
+**Source labels:** `[verified]` read from sarvam.ai markup or CSS · `[observed]` seen on sarvam.ai · `[addition]` our own rule.
+
+---
+
+## Rules for AI (read first)
+
+1. **Use the components; don't restyle them.** Compose pages from the components below. If something is missing, build it from the same tokens and add it here.
+2. **Quiet surfaces, generous space.** White or `sf` surfaces, 1px `st` borders, radius 16 (cards) or 24 (panels), and plenty of padding. Colour lives in gradient panels and accents, never in borders or text blocks.
+3. **Line icons only** (§3). Never use filled, duotone or emoji icons.
+4. **Every symbol is visible.** An icon or symbol must reach **≥ 3:1** against what it sits on. No same-tone icon on a same-tone tile (§3.2).
+5. **Siblings are identical** (`layout.md` §5): mark sets with `data-siblings`, items with `data-sibling`, slots with `data-line`, and run `node scripts/check-layout.mjs <url>`.
+6. **Gradients carry grain and sit behind content, never on it.** Use the surface classes (§2), never a hand-written gradient.
+7. **Primary action = "Talk to Us"** for Indus Cowork (not generally available). One primary button per view; everything else is secondary or ghost.
+
+---
+
+## 0. Principle: clearer than sarvam.ai `[addition]`
+
+Sarvam's components are the **brand reference, not the template**. We keep the DNA (tokens, type, surfaces, gateway, voice) and make every component calmer and clearer. Each block must have **one focal point, one accent and one action**.
+
+| sarvam.ai today `[observed]` | Ours |
+|---|---|
+| Icons sometimes the same tone as their tile (2.6–3.0:1) | Same hue, accessible shade (≥ 5:1) |
+| Sibling cards with uneven heights and line counts | Equal size, aligned rows, equal line counts, machine-checked |
+| Section headers switch between centred and left on mobile | One alignment rule per role |
+| Feature rows alternate sides | Visual always right; text always in the same place |
+| White glass button on a light gradient end | Dark primary pill (readable) |
+| Small text links in the mobile footer | 44px rows on touch screens |
+| Cards stack icon + mono eyebrow + title + body + CTA + checklist | Card = icon, label, title, one sentence. Checklists only in feature rows |
+| Several accents per section (indigo eyebrow, orange icon, green check) | One tone per block, repeated for every element inside it |
+
+Applying the rule to new components: (1) list what's noisy or unclear in Sarvam's version, (2) remove until only the focal point, the supporting line and the action remain, (3) add space before adding decoration.
+
+---
+
+## 1. Spacing feel `[addition]`
+
+A calm, Apple-like rhythm built on Sarvam's verified section spacing (96 / 176):
+
+| Space | Phone | Tablet | Desktop |
+|---|---|---|---|
+| Between sections | 96 | 176 | 176 |
+| Section header → content | 40 | 56 | 56 |
+| Card padding | 24 | 32 | 32 |
+| Feature-row text padding | 8 + 16 | 24 | 40 |
+| Gap between cards | 32 | 40 | 48 |
+| Inside a card: icon → eyebrow | 24 | 24 | 24 |
+| Inside a card: eyebrow → title → body | 12 | 12 | 12 |
+
+Rule of thumb: **if two elements are related, 12–16px; if they're different groups, 32px+; if they're different sections, 96px+.**
+
+---
+
+## 2. Surfaces `[verified]`
+
+Recipes read from sarvam.ai markup. All of them are classes in `tokens.css`.
+
+| Surface | Class / token | Recipe | Use |
+|---|---|---|---|
+| Page | `--color-sf` | `#fcfcfc` | Background |
+| Card | `.sr-card` | white, `1px st`, radius 16 | Cards, lists |
+| **Tint panel** | `.sr-tint-indigo / -orange / -green` | 135° tint gradient + grain | Behind product UI in feature rows (Indus Cowork) |
+| **Mesh glow** | `.sr-mesh .sr-mesh--indigo / --sunset / --green / --marigold / --indigo-deep` | 3 layers: deep radial bottom-left → mid radial bottom → pale wash rising; white base; grain | Feature cards on the homepage (Sarvam's `cw-glow` triads) |
+| Light card mesh | `--mesh-card-light` | indigo-200 wash from the top, indigo-100 pools at the bottom corners, indigo-50 → sf base | Highlighted card, quiet hero |
+| Dark orb | `--mesh-orb-indigo`, `--mesh-orb-maroon` | radial deep-colour orb | Dark feature cards |
+| Night | `.sr-gradient-night` | `#13121e → #a5bbfc 116.55%` + grain | Closing CTA card |
+| Trust band | `--color-sr-indigo-950` | flat `#11115b` | "Sovereign by default" |
+| Haze | `.sr-haze` | transparent → periwinkle | Product hero background |
+
+**Grain:** Sarvam overlays a 64px noise tile with `mix-blend-mode: soft-light` at 50% opacity on gradients `[verified]`. We use our SVG noise token (`--texture-grain`, `overlay`), which looks equivalent and needs no image file.
+
+**Inner shadows and bevels** `[verified]`:
+
+| Token | Recipe | Use |
+|---|---|---|
+| `--shadow-button-inset` | `inset 0 1px 0 #fff6, inset 0 -2px 0 #0003` | Dark primary button bevel |
+| `--shadow-button-light` | `inset 0 0 0 1px rgb(30 32 51 / .14)` | Light button / chip outline |
+| `--shadow-glass` | `inset 0 1px 0 #fff9, inset 0 -1px 0 #ffffff2e, 0 6px 24px #0000001f` | Glass button or tile on dark |
+| `--shadow-well` | `inset 0 1px 4px sr-grey-100` | Recessed note inside a mock card |
+| `--shadow-inner-soft` | `inset 0 0 6px #00000014` | Panel edge |
+| Coloured chip edge | `inset 0 -0.5px 1px <colour>-200` | Tinted chips |
+| `.sr-spotlight` | 80px white 16% radial following the cursor | Dark cards (hover devices only) |
+
+---
+
+## 3. Icons
+
+### 3.1 Style `[verified]` + library `[addition]`
+- **Line icons only.** sarvam.ai's UI icons are 24×24, `fill="none"`, `stroke="currentColor"`, mostly `stroke-width="1.5"` (114 icons sampled; the only filled SVGs are logos and social marks).
+- **Library: Nucleo Core, outline, 24px. One library only, for everything.** Licensed (Nucleo Pro). Components live in `src/components/icons/nucleo/` (copied from the local Nucleo install, never imported from it). They are wrapped in `src/components/icons/index.tsx` with our defaults: **stroke 1.5, round caps and joins** (`corners="round"`).
+- To add an icon: find it with the Nucleo MCP (`family: core, fill: outline, size: 24px`), copy the component into `icons/nucleo/`, and export it from `icons/index.tsx` under a semantic name. Never mix in icons from another set.
+- Semantic mapping in use:
+  - arrows (right, up, up-right), check, chevron-down
+  - circle-dashed (pending), circle-check (done), spinner-loader (working)
+  - menu-bars, globe, sparkle, magnifier, user, xmark, media-play, clock
+  - chart-bar-trend-up, suitcase, heartbeat, inbox-arrow-down, megaphone, target
+  - book-open, calendar-clock, books, plug, shield-check
+- Sizes: 20px inside a 40px tile; 18px inline with 16px text; 22–24px for nav and controls. **Never scale the stroke**: keep 1.5 at every size.
+- Checkmarks in lists use stroke 2 so they don't look faint next to body text.
+- Colour: `currentColor` (or the `color` prop inside SVG art), inheriting from the text or tile.
+
+### 3.2 Contrast fix `[addition]`
+Sarvam sometimes sets a symbol in the same tone as its background (e.g. an indigo-500 icon on an indigo-100 tile is 2.9:1). WCAG 1.4.11 asks for **≥ 3:1** for meaningful graphics. Our tiles keep the same hue but use the accessible shade:
+
+| Tile | Background | Icon | Ratio |
+|---|---|---|---|
+| `indigo` | `sr-indigo-100` | `sr-indigo-800` | 7.3 |
+| `orange` | `sr-orange-100` | `sr-orange-900` | 5.3 |
+| `green` | `sr-green-100` | `sr-green-700` | 5.1 |
+| `neutral` | `sf-tertiary` | `tx` | 14+ |
+| `dark` | white 10% on dark | white | 15+ |
+
+Never use: indigo-500 on indigo-100 (2.9), orange-800 on orange-100 (3.0), green-600 on green-100 (2.6), yellow-600 on yellow-100 (2.1).
+
+---
+
+## 4. Component reference
+
+Each entry lists anatomy → tokens → states → behaviour per tier.
+
+### Button `<Button variant size display arrow>`
+- **Anatomy:** pill · label · optional trailing arrow icon (18px).
+- **Variants:**
+  - `primary`: `--surface-button-dark` (`#3a3f5c → #1e2033`) + `--shadow-button-inset`, white text `[verified]`.
+  - `secondary`: `--surface-button-light` (`#fff → #f0f1f5`) + `--shadow-button-light` `[verified]`.
+  - `ghost`: text only.
+  - `on-dark`: white 12% + `--shadow-glass` + blur. Use it only on the **dark** part of a surface.
+- **Size:** `md` min-height 44 `[verified min-h-[44px]]`, padding 24; `lg` 52, padding 32. Font: text 500 16; `display` swaps to the display font for hero CTAs `[verified: homepage CTAs use Season Mix]`.
+- **States:**
+  - hover: primary lightens; secondary gains `shadow-ambient-sm`; the arrow nudges 2px.
+  - press: `scale(.97)` at 150ms `[verified]`.
+  - focus: 2px indigo-600 ring, offset 2.
+  - disabled: 40% opacity `[verified]`.
+- **Motion:** 350ms `cubic-bezier(.2,0,0,1)` `[verified]`.
+- **Tiers:** phone: side by side if both fit in the container, otherwise stacked full-width with the primary first. The size never shrinks below `md`.
+
+### Chip `<Chip tone>`
+Min-height 32, radius full, text 14. Neutral: white + light bevel. Tinted: 50 background, 800/900 text, coloured inset edge `[verified pattern]`. Used for tabs inside mockups, tags and statuses. Not tappable on its own; if one is, wrap it to 44px.
+
+### IconTile `<IconTile icon tone>`
+40×40, radius 8, icon 20 at stroke 1.5. Tones per §3.2. Aligned to the top of its text block.
+
+### Eyebrow `<Eyebrow mono tone>`
+- Text: General Sans 500 12, uppercase, 1.6px tracking, `tx-tertiary`.
+- `mono`: DM Mono 12, uppercase, 0.13em tracking, tabular figures.
+- `tone="accent"` (indigo) marks a product section; `tone="warm"` (`tx-accent`) is for a highlight section like "Skills" `[observed]`.
+
+### SectionHeader `<SectionHeader variant eyebrow title lead aside large>`
+- `chapter`: eyebrow → H2 → lead. **Left-aligned on phone, centred from 768**, H2 max 20ch.
+- `split`: H2 (often `large` = h2-lg) left; lead and/or CTA right in a `1.2fr / 1fr` grid aligned to the bottom from 768 `[verified CSS]`; stacked on phone.
+- Bottom margin `--space-section-head`.
+
+### Card · CardGrid `<CardGrid cards columns name>`
+- **Anatomy:** IconTile → mono eyebrow → h4 title (1 line) → body (2 lines) → optional foot.
+- **Surface:** white, 1px `st`, radius 16, padding `--space-card`. Linked cards gain a `grey-400` border and `shadow-ambient-md` on hover.
+- **Tiers:**
+  - phone: 1 column, stacked.
+  - tablet: 1 column of **horizontal** cards (icon left, text right).
+  - ≥1024: 3 (or 2) columns using **subgrid**, so icon, eyebrow, title and body rows align across cards.
+- **Copy budget:** titles ≤ 15 characters (1 line at every tier); bodies 54–58 characters (2 lines; 3 at 1024) `[measured]`.
+
+### MeshPanel + MockChecklist `<MeshPanel tone><MockChecklist …/></MeshPanel>`
+- **Panel:** radius 24, tint gradient + grain + soft inner edge, padding 32/24 on phone and 48 from tablet, min-height 260 / 340.
+- **Mock card:** white 92% with blur, radius 12, `shadow-ambient-lg` + hairline, padding 20, max width 360.
+- **Mock rows:** 14px with an 18px stroke icon. Done = indigo check; active = empty circle; pending = grey.
+- **Note well:** `--shadow-well`.
+- **Rule:** the mock shows **real, readable product states** (text ≥ 12px), never lorem ipsum or blurry screenshots.
+
+### FeatureRow `<FeatureRow tone title body cta checklist visual>`
+- **Anatomy:** white card (radius 24, padding 16) holding a tint panel + text block (h3 → body → CTA → 3-item checklist).
+- **Tiers:**
+  - phone: **panel on top**, text below `[observed]`.
+  - tablet: 50/50, text left, panel right.
+  - ≥1024: 5fr / 7fr.
+  - The panel is **always on the right**: no alternating `[addition]`.
+- **Sequence:** indigo → orange → green. Checklist icons use the tone's accessible shade.
+- **Copy budget:** titles ≤ 22 characters (1 line); bodies about 61 characters, equal rendered width ±3% (2 lines at every tier); text slots capped at 36ch so line counts stay stable on wide screens `[measured]`.
+
+### Steps `<Steps steps>`
+- Number circle: white with a 1px `st` border, mono, tabular figures. 40px on phone, 48px from 768 `[verified]`.
+- phone: vertical, circle left, connecting line down.
+- ≥768: 3 columns, circle on top, line across, subgrid rows.
+- Titles 1 line; bodies 2 lines.
+
+### Timeline `<Timeline events>`
+- Indigo dot with `--ring-dot`, mono time, item-title, small body.
+- phone: vertical with a connecting line.
+- 768–1279: 2 columns.
+- ≥1280: one horizontal row of 5 with a line through the dots.
+- Bodies about 52–56 characters, capped at 34ch (2 lines at every tier) `[measured]`.
+
+### TrustBand `<TrustBand title lead points>`
+- `sr-indigo-950` panel `[verified]`, radius 24, inverse text (headings `tx-inverse`, body white 75% `[verified]`).
+- Points separated by white-10% dividers.
+- Points: 1 column on phone → 2 columns from 768; title column left from 1024 (4fr / 8fr).
+
+### Faq `<Faq items>`
+Native `<details>`: works without JavaScript and is accessible. Each question row has a min-height of 44, item-title type and a chevron that rotates 180° (300ms, emphasized ease). The answer is body text with 40px right padding. The first item opens by default. Hairline dividers.
+
+### CtaCard `<CtaCard title cta>` (animated)
+- Night gradient + grain, radius 24, centred.
+- Display-2 white headline (max 14ch) in the dark top zone, a thin-stroke symbol in the middle, a **dark primary** pill at the bottom.
+- White glass buttons are not allowed here: the bottom of the gradient is light (`#a5bbfc`), and white on it is about 1.9:1.
+- **Ring lattice:** a half rosette of thin 20%-white circles (5 + 7) centred on the bottom edge, nudged slightly below it. When the card scrolls into view, the two layers grow up from the bottom (1.8s, out-quint, 220ms apart). The symbol (an 8-petal lotus from the Flower generator) unfurls from scale 0.3 and −180° with the blur clearing, and the headline and button rise 32px. All motion is off under reduced motion.
+- Sarvam's version enlarges its logomark for this background. We built our own lattice because `logo.md` forbids cropping or recreating the logomark.
+- Height 420 / 380 / 440.
+
+### Product mocks `<MockPlan />` `<MockResearch />` `<MockReview />`
+Three distinct moments of a teammate's work, so feature panels never repeat the same card:
+1. **Plan**: teammate header with a "Working" status, the task, a progress bar (2 of 4), and steps with states and mono times.
+2. **Research**: a live query field (well shadow), the sources being read (favicon tile, title, mono domain, used/reading state), and a diff note ("2 new steps added to the plan").
+3. **Review**: a draft with highlighted, footnoted claims, "Pass 3", checks, and an approval gate ("Waiting for your yes", Request changes / Approve).
+
+Sizes: max width 380, text 13–14, mono 11. Each mock's accent follows its panel's tone (indigo → orange → green). Spinners stop under reduced motion.
+
+### FeatureBento `<FeatureBento items>`
+A denser alternative to three FeatureRows: one wide tile (text + visual side by side) and two equal tiles below (subgrid rows). Phone: stacked. Same tones, same mocks.
+
+### TileCard `<TileCard svg title desc>`
+A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 16/20; inner top highlight + 1px hairline) beside a feature-title and one line. Stacked until 1280, then 3 across. Used for options like Sarvam Cloud / Private Cloud (VPC) / On-Premises `[verified copy, evened out to equal length]`.
+
+### GlowCard · FactCard
+- **GlowCard:** a card whose header is a crisp glow shape on its tint (lavender / rose / leaf), then eyebrow, h4 and body. Header 16:10, **rendered at that aspect (never cropped)**; the shape fills 66% of the header height so siblings match; the header is inset 8px on three sides; text is inset 24px left, right and bottom.
+- **FactCard:** one verified fact set large in light display type ("100+", "Your yes", "India"), with a label and one line. Never an invented number.
+
+**Crisp, not blurry** `[addition, from review]`: glow shapes use a sharp 1.6px gradient rim, a 2.4px white inner highlight and only a faint 4px halo. The soft, heavily blurred version reads muddy at small sizes.
+
+### Nav `<Nav cta>`
+- Sticky, 64 high, `sf` 80% + 24px backdrop blur, hairline bottom border.
+- phone and tablet: wordmark · CTA · menu button (44px) opening a full-screen sheet of 56px rows in the display font.
+- ≥1024: wordmark · 4 links (40px pills, grey hover) · CTA.
+- Official wordmark SVG only, black on light, 18px tall.
+
+### Footer `<Footer>`
+- Wordmark + "AI for all from India".
+- Link columns: 2 on phone → 4 from 768, beside the brand column from 1024.
+- Links are 44px tall on touch screens and 36 from 1024.
+- Legal line + Bengaluru address `[verified]`.
+- Faint grain over the flat surface (`--texture-grain` tile scaled to 360px for a coarser speck, 35% opacity, behind content). Ties the footer to the grained gradients above it. `[considered addition]`
+
+### Motif `<Motif>`
+The official Sarvam line motif (`/brand/motif.svg`) sits above a hero eyebrow `[observed on /indus-cowork]`. Never recolour it into the spectrum.
+
+---
+
+### Dashboards `<CoworkDashboard />` `<ScheduleDashboard />` (working)
+Calm, information-dense product views that **work**. They sit on a tint stage (`.db-frame` + `sr-tint-*`), like Sarvam's hero mockup over its haze.
+- **Cowork (teammates):** sidebar "Your teammates" (name, role, a status dot; a swipe row on phone) + one detail view (name + status, the task in display type, steps, the result table, approval, message box).
+  - **Run now** walks the steps, then waits for your yes.
+  - **Approve** updates the "need your yes" count.
+  - **Messages** get a reply.
+- **Schedule (today):** a quiet day timeline + one list (time, task, last result, status, a run icon, an on/off switch) + "Needs your yes" with approve/decline and the latest activity.
+- **Status:** a small dot + plain text (indigo working, orange needs your yes, green done, grey scheduled). No colourful pills.
+- **Rules:** no KPI-box walls, one accent, hairline separators instead of boxes. Fixed heights per breakpoint; the detail stage scrolls inside, so the page never moves. Text rows are single-line with ellipsis. Tap targets are 44px on touch screens.
+
+### EmblemArt · EmblemCard `<EmblemArt shape icon surface />`
+Our richest illustration, built only from our assets (`imagery.md` §2.4):
+1. **Ground:** a named Sarvam gradient at its real direction (tint-indigo 135°, tint-green, dawn, indigo glow, dusk), a gentle centre light and grain.
+2. **Echo rings:** the emblem's own gateway, medallion or lotus outline repeated at 1.5 / 2.1 / 2.8 / 3.6×, each embossed (a soft glow, a light line, a darker groove 1px below) and fading outward.
+3. **Emblem:** a frosted white body (97 → 74% white), a top-edge highlight, a tinted bottom inner shadow, two drop shadows (8px and 1.5px), an inner sheen, an inset frame line (our generator's frame), and a crisp gradient rim.
+4. **Icon:** engraved. A white line 0.8px below, then the stroke icon in the surface's accessible shade.
+
+Same emblem box (104 of 200) in every card, so siblings match. No decorative extras (e.g. no tiny diamond accents), from review.
+
+## Do / Don't
+
+| Do | Don't |
+|---|---|
+| Use one primary "Talk to Us" per view | Put two dark buttons side by side |
+| Use line icons at 1.5 stroke | Use filled or duotone icons, or emoji |
+| Use dark accessible shades for icons on tints | Put indigo-500 on indigo-100 |
+| Put product UI on a tint panel inside a white mock card | Put text directly on a tint or mesh |
+| Keep the visual on the right of feature rows | Alternate left/right (it breaks scanning on tablet) |
+| Use 44px tap targets, including footer links on phones | Use 28px text links on touch screens |
+| Use the night gradient with a dark CTA | Put a white glass button on the light end of a gradient |
+
+---
+
+## Considered additions
+
+1. **Icon contrast rule** (§3.2), fixing same-tone symbols.
+2. **Non-alternating feature rows**; tablet horizontal cards; no orphan cards.
+3. **Copy budgets per component**, verified by `scripts/check-layout.mjs` at 10 widths.
+4. **44px footer links on touch screens** (Sarvam's are smaller).
+5. **Nucleo Core (outline, 24px) as the only icon library**, chosen to match Sarvam's 24/1.5 stroke style. Licensed Nucleo Pro; wrapped with our defaults.
+6. **Spacing feel table** (§1): an explicit rhythm on top of the verified section spacing.
+
+
+---
+
+## 5. Motion `[addition, built on verified tokens]`
+
+Library: **Motion** (`motion/react`). Tokens in `src/components/sarvam/motion.ts` mirror `tokens.css`, so CSS and JS motion feel identical.
+
+| Token | Value | Use |
+|---|---|---|
+| `T.enter` | 500ms, out-quint | Items arriving |
+| `T.state` | 300ms, emphasized | A state change (icon, label, colour) |
+| `T.bar` | 700ms, out-quint | Progress and width changes |
+| `T.exit` | 200ms, standard | Leaving |
+| `rise` | opacity 0 → 1, y 8 → 0 | The only entrance motion |
+| `STAGGER` | 60ms | Between siblings |
+
+**Rules**
+1. **Loops only, and only in product mocks** (Plan / Research / Review). Each loop is 6–9s and **rests ≥ 2s on the finished state**. Built with one hook, `useLoop(durations)`.
+2. **Dashboards are calm:** no loops, only 200–300ms fades on state change. They respond to the user; they don't perform.
+3. **Nothing changes size.** Every slot that will hold content exists from the start (skeleton → content in place). Labels that switch have fixed widths. Rows are single-line. Checked by `scripts/check-motion.mjs`, which samples each animated element's size every 250ms for 10s at 375 / 768 / 1440 and must see one value.
+4. **Order:** things appear in reading order (top → bottom, left → right). Nothing arrives before what's above it.
+5. **Off-screen loops pause** (`useInView`). **Reduced motion:** loops hold the finished frame; spinners, shimmers and pulses stop.
+6. **Only transform, opacity and width animate.** Never animate height, top or margins.
