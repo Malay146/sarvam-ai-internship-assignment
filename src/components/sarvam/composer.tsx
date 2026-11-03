@@ -15,7 +15,7 @@ export type Background = "saffron-rose" | "dusk" | "dawn" | "indigo-glow" | "nig
 export type Device = "medallion-glow" | "gateway-carved" | "medallion-carved" | "gateway-window" | "gateway-echo" | "gloss" | "emblem" | "arch-window" | "script-mandala" | "plain";
 export type Treatment = "white" | "gold" | "indigo" | "ink";
 export type MarkPlace = "inside" | "top" | "bottom" | "none";
-export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "feature" | "capability" | "product" | "mission";
+export type Situation = "launch" | "announcement" | "milestone" | "funding" | "event" | "story" | "partnership" | "program" | "capability" | "product" | "mission";
 export type TitleStyle = "serif" | "sans";
 /** Max two text sections: one primary (headline or big number) + one optional secondary line above or below. */
 export type BannerSpec = {
@@ -63,7 +63,6 @@ export const SITUATIONS: Record<Situation, BannerSpec> = {
   capability: { situation: "capability", background: "indigo-glow", device: "emblem", shape: "Scalloped medallion", icon: "shield", treatment: "white", mark: "inside", titleStyle: "serif", primary: "Every task leaves a trail", secondary: "Audit logs, SSO and role-based access", secondaryPlace: "below" },
   product: { situation: "product", background: "dusk", device: "arch-window", shape: "Mihrab", card: "plan", treatment: "white", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
   mission: { situation: "mission", background: "olive", device: "script-mandala", treatment: "white", mark: "inside", titleStyle: "serif", primary: "AI for all from India" },
-  feature: { situation: "feature", layout: "split", background: "lavender-dusk", device: "medallion-glow", shape: "Scalloped medallion", card: "plan", treatment: "indigo", mark: "inside", titleStyle: "serif", primary: "It plans the work before it starts", secondary: "Every request becomes a to-do list", secondaryPlace: "below" },
 };
 
 /* ── Carved layer palettes (radial core → edge per band). Brand ramps only. ── */

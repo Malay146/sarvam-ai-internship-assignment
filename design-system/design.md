@@ -2023,7 +2023,9 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | **story** | lavender-dusk | medallion-glow (scalloped) | ink · serif | One sentence |
 | **partnership** | lavender-dusk | medallion-glow (ogee cross) + partner lockup | ink · serif | One sentence |
 | **program** | plain | gloss, split | ink · serif | Program name + one line |
-| **feature** | lavender-dusk | medallion-glow, split + product card | indigo · serif | Claim + one line |
+| **capability** | indigo-glow | emblem (+ icon) | white · serif | Claim + one fact |
+| **product** | dusk | arch-window (+ product mock) | white · serif | What it does + one line |
+| **mission** | olive | script-mandala | white · serif | One line |
 
 **Variations:** the builder shows 6 on-system alternatives for the current copy (different layouts, devices and grounds, contrast-safe). Click one to use it.
 

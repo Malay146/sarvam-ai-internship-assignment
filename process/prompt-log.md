@@ -334,3 +334,7 @@ Entry format:
   - The Meta shape was too small. Cause: the Cusped window generator box carried empty margin.
   - Engine fix: `tight()` re-boxes every glow shape to its drawn outline (translation only). This also enlarged the 100+ banner to its intended size.
 - QA: 8/8 set (Prism in both formats) + all situations PASS. PNGs: `banners/png/meta-prism.png`, `banners/png/linkedin-prism.png`.
+
+## 2026-11-04 — Feature preset removed
+- Prompt (verbatim): "remove this feature preset. I don't like it anymore." (screenshot: lavender scalloped cloud behind a product card, split layout)
+- Removed the `feature` situation from the engine, the builder and banner-builder.md §3. A product moment is now the `product` preset (the arch window). The builder's situation list also gains the capability, product and mission presets. QA 22/22 PASS.
