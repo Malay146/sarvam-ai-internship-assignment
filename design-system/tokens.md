@@ -250,11 +250,11 @@ Sarvam's social feed uses a wider palette than the website: earthy and floral, b
 | `--gradient-saffron-rose` | saffron `#f1c480` → rose `#c4706e` → magenta `#a13060` | Sarvam 30B | model launches |
 | `--gradient-lavender-dusk` | cream `#f1f4e9` → lavender `#c6bdd3` → violet `#5957c4` | Supernova customer story | stories, partnerships |
 | `--gradient-spring` | cream `#f2f6e8` → pistachio `#d9dfb3` → leaf `#98c659` | Equal customer story | stories, growth |
-| `--color-cloud` | `#f7efed` warm white | soft-cloud glow | text ground on gradients |
+| `--color-cloud` | `#f7efed` warm white | soft-cloud glow | **retired for banners** (the cloud device was removed: soft white blobs); kept for web glows only |
 
 Rules:
 - One campaign gradient per banner. Grain always. OKLab blending (§2.5).
-- Text sits in the gradient's calm zone or on a soft cloud. Dark text on the pale ends; white only on olive, saffron-rose (middle down) and the violet end of lavender-dusk.
+- Text sits in the gradient's calm zone or inside a hero shape. Dark text on the pale ends; white only on olive, saffron-rose (middle down) and the violet end of lavender-dusk.
 - Blue and orange together remains the **website** rule. Campaign art may use one family when the subject calls for it, because Sarvam's own posts do.
 
 ## 3. Spacing

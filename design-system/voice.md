@@ -121,12 +121,10 @@ Use only these claims.
 
 ## 7. Formats
 
-**Banner (Meta / LinkedIn):** eyebrow (product name) → headline (one idea) → optional subhead (one fact from §5) → CTA line or URL → wordmark. Example:
+**Banner (Meta / LinkedIn):** headline (one idea) → optional supporting line (one fact from §5). **Two text sections, nothing else on the art**: the product name, CTA and URL go in the post caption. Example:
 
-> INDUS COWORK
-> **Hire a teammate that finishes the work.**
-> Plans, researches and checks its own work, then waits for your yes.
-> Talk to Us · sarvam.ai
+> **Every task leaves a trail**
+> Audit logs, SSO and role-based access
 
 **LinkedIn post caption** `[addition]`: 2–4 short lines, the first line restating the headline, one fact, one CTA. No hashtag walls (≤ 3).
 

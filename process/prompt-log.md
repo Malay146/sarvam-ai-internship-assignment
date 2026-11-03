@@ -576,3 +576,18 @@ Entry format:
 - `expressions.md` §2 was rewritten to match what the engine does: engine device names, the final-set banner and presets per expression, and the cloud removed.
 - QA: check-layout PASS at 10 widths; no overflow in Chromium or WebKit at 375 / 768 / 1440. On tablet the swatches were oversized, so they're capped at 112px.
 - Screens: `process/screens/expressions/`.
+
+## 2026-11-04 — Docs and skills synced with the engine
+- Prompt (verbatim): "are all the files and skill files updated?"
+- An audit found stale banner guidance written before the engine. Fixed:
+  - `meta-banner.md` and `linkedin-banner.md` were rewritten as per-format grids: margins, clear space, logo sizes, type bases, minimums and line caps, how each layout rearranges, and the final set. Gone: square, eyebrows, mono, cloud, and the old template components.
+  - typography.md §5, logo.md banner placement and voice.md §7 (banner = two text sections, nothing else) now match the engine.
+  - tokens.md: `--color-cloud` marked as retired for banners.
+  - banner-builder.md:
+    - the spec lists every option, including the per-banner fine-tuning fields
+    - the presets table includes product, spectrum and sunrise
+    - the method has a "calm launch" row
+    - a §3b final-set table
+    - rule order fixed; no "cloud"
+  - sarvam-banner skill: all presets, expressions, the 96 / 72px and 2-line rules, the fine-tuning fields, how to add new facts, and `banners/final/`.
+  - SKILL.md routing descriptions and the CLAUDE.md checklist (banners done, repo public) are updated. design.md rebuilt.

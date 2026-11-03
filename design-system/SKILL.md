@@ -39,9 +39,9 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `imagery.md` | Gradient fields, gateways / medallions / flowers, emblems, motifs, dividers, product UI, photography, composition recipes |
 | `logo.md` | Wordmark and logomark rules, clear space, minimum sizes, banner placement, misuse, co-branding |
 | `voice.md` | Personality, headline patterns, CTAs, banned words, the **Indus Cowork fact sheet**, copy budgets |
-| `recipes/banner-builder.md` | The prompt-less builder: spec, devices, treatments, two-text rule, situations, how-to |
-| `recipes/meta-banner.md` | Grid, three layouts, square adaptation, steps |
-| `recipes/linkedin-banner.md` | Landscape grid and layouts, feed legibility |
+| `recipes/banner-builder.md` | The banner engine: hard rules, spec, devices, presets, subject → banner method, our taste, the final set |
+| `recipes/meta-banner.md` | Portrait grid (1080×1350), layouts on Meta, the final Meta set |
+| `recipes/linkedin-banner.md` | Landscape grid (1200×627), how each layout rearranges, the final LinkedIn set |
 | `recipes/landing-page.md` | Section order, per-breakpoint behaviour, quality gates, export |
 
 ## Non-negotiables (summary)

@@ -207,21 +207,22 @@ Type doesn't just shrink. These are the changes at each breakpoint (breakpoint v
 
 ## 5. Banner type (fixed px) `[addition]`
 
-Banners are fixed-size images, so they use **fixed px values, not fluid tokens**. The ratios follow the web scale: display ≈ 2.5–3× the subhead, and the eyebrow sits at the bottom of the hierarchy. The exact layouts are in `recipes/`.
+Banners are fixed-size images, so they use **fixed px values, not fluid tokens**. The engine (`recipes/banner-builder.md`) applies these; QA enforces the minimums.
 
-| Role | Meta square 1080×1080 | Meta portrait 1080×1350 | LinkedIn 1200×627 |
-|---|---|---|---|
-| Display headline (display font, 300–400, lh 1.05, tracking −0.04em) | 96–112 | 104–120 | 60–72 |
-| Subhead (text font, 400, lh 1.4) | 32–36 | 34–38 | 22–26 |
-| Eyebrow (text font, 500, UPPERCASE, tracking 4px) | 20 | 22 | 15 |
-| Footnote / CTA line (text font, 500) | 24 | 26 | 18 |
-| Mono label (code font, UPPERCASE) | 18 | 20 | 14 |
-| Max headline lines | 3 | 4 | 2 |
+| Role | Meta 1080×1350 | LinkedIn 1200×627 |
+|---|---|---|
+| Headline, sans (Matter 600; names, launches) | base 124 | base 92 |
+| Headline, serif (Season Mix 400; statements, stories) | base 132 | base 100 |
+| Number (serif, gold or indigo) | base 270 | base 170 |
+| Steps | 100 / 86 / 74 / 64 / 55 / 48 % of the base: the largest that fits | same |
+| Headline minimum · max lines | **96px · 3 lines** | **72px · 2 lines** |
+| Supporting line (Matter 400) | ≥ 28px | ≥ 20px |
+| Anything else (eyebrow, mono, CTA, URL) | **none on the art**; it goes in the caption | none |
 
 Rules:
-- The headline is the hero of the banner: one idea, ≤ 8 words. On imagery it's light (300) `[observed]`; on flat surfaces it's regular (400).
-- Minimum text size on any banner is **14px at LinkedIn scale and 18px at Meta scale**. Anything smaller is unreadable in a feed.
-- Respect the text zones of the gradient (`tokens.md` §2). Headlines never sit on the Sun's orange core.
+- Two text sections at most. Sentence case. One idea per headline.
+- If a headline doesn't fit at the minimum, make room (wider column, bigger opening) or shorten the copy; never shrink it.
+- Headlines never sit on a shape's glow band or a gradient's orange core.
 
 ---
 

@@ -19,10 +19,10 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
 | 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Headline max **3 lines on Meta, 2 lines on LinkedIn** (every layout), and never set below **96px on Meta / 72px on LinkedIn**: if it won't fit, make room (wider text column, bigger opening) or shorten the copy, never shrink the type (QA fails otherwise). `titleSize: { portrait, landscape }` sets the headline size directly when the fit is too cautious; the text box widens around it, so check by eye that the title clears the shape's edge glow. Supporting line ≥ 28px Meta / 20px LinkedIn |
 | 8 | **Sharp, not soft** | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
-| 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 | 9 | **Logo** | Official files only. Wordmark 124px (Meta) / 96px (LinkedIn), **or** the logomark alone (height 0.55× that), never both. White on dark, black on light, or none. Partner lockups always use the wordmark |
 | 10 | **Seamless grain** | One pre-generated noise image (`public/brand/grain.png`, 1200×1350, overlay), never a repeated tile and never a live SVG filter (too slow to repaint) |
 | 11 | **QA** | `node scripts/check-banners.mjs situations` and `set` must PASS before export |
+| 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 
 ## 1. The spec
 
@@ -40,9 +40,21 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
   "primary": "Indus Cowork",        // the headline, or a number
   "primaryIsNumber": false,
   "secondary": "An AI teammate that finishes the work",   // optional, the ONLY other text
-  "secondaryPlace": "below"         // above | below
+  "secondaryPlace": "below",        // above | below
+  "logo": "wordmark"                // wordmark | logomark (never both)
 }
 ```
+
+**Device options:** `icon` (emblem) · `rosette`, `rosetteSolid` (spectrum corner) · `ornament`, `place`, `petals`, `ornamentTone`, `divider`, `horizon` (spectrum family) · `whole` (medallion-glow stays whole on LinkedIn) · `landScale` (its height on LinkedIn).
+
+**Per-banner fine-tuning** (use only after looking; each takes `{ portrait?, landscape? }` where it is a size):
+| Field | Does |
+|---|---|
+| `markOnLinkedIn` | a different logo place on LinkedIn (e.g. `inside` the shape while Meta has it on `top`) |
+| `logoTone` | force `white` / `black` when the ground is mixed |
+| `titleSize` · `lineSize` | set the headline / supporting line size directly (px); the text box widens around it |
+| `textShift` | nudge the whole text block vertically (px, negative = up) |
+| `primary` with `\n` | force the headline's line break |
 
 ## 2. Rules (enforced by the engine + QA)
 
@@ -64,17 +76,17 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
    | `medallion-carved` | 4 nested medallion layers, centred | Milestones |
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
-      | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
    | `spectrum` | **Our taste** `[addition]`: a calm off-white canvas, one thin hard-edged strip of the brand spectrum (indigo → orange) near the bottom, and a **rosette** in the top-right corner, cropped by the corner. It is built the way Sarvam's logomark is built: **one element repeated around a centre** `rosette`: **circles** (default: 12 equal circles through one centre, the logomark's construction), **lens** (8 broad vesica petals, a lotus about 1.3× the size of the line rosettes, petal width 0.36 × length; `rosetteSolid: true` fills each petal with a gradient from a pale tint of its hue at the centre to the full hue at the tip, with a 2.5px canvas-coloured edge between petals), **orbits** (6 equal ellipses turned by 30°), **rings** (6 concentric circles, the hue stepping outward), **lobes** (12 rounded petals). Every copy is the same line (4.5px Meta, 3.5px LinkedIn), and each one takes a hue of the spectrum by its direction: indigo toward the canvas, orange toward the corner. Text is set left and low (`editorial` layout). | Model launches and announcements that should feel calm and precise |
    | `spectrum` + `ornament` | The spectrum family's **solid** shapes: `lotus` (`petals`), `quatrefoil`, `star`, `ogee`, `arch`, each filled with the spectrum (lotus petals: pale base → full hue; solids: a spectrum fill + a pale centre). `place`: **corner** (lotus cropped by the corner; solids whole in the top-right), **rise** (stands on the strip: an upward fan or the arch; on LinkedIn it moves right and the text goes left), **center** (a centred bloom above centred text; on LinkedIn the bloom goes right), **small**. `ornamentTone: "white"` for tone-on-tone. Optional `divider`: a /studio divider preset **always above the headline** (the first thing in the text block), drawn in the spectrum. Optional `horizon: "bottom" | "top"`: a soft band of the Sun gradient rising from that edge to about half the frame: a flat ellipse (~2.6× the frame width), blended in OKLab with few stops, each Sun stop mixed ~35% toward white (bottom = a sunrise behind a rising lotus). A bottom horizon replaces the spectrum strip | One family, a different shape per subject |
    | `emblem` | One frosted, bevelled medallion with **one Nucleo icon engraved** in it, echo rings on true offsets. Text sits beside it (split on LinkedIn, stacked on Meta). `icon`: shield, plug, check, calendar, search, globe, inbox, megaphone, target, chart, book, sparkle, person | A capability you can name as an object |
-   | `arch-window` | The gateway as a **window onto the real product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, light inside, one frozen product mock (`card`) seen through it. Text beside it | A product moment you can see |
+   | `arch-window` | The gateway as a **window onto the product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, lit inside; an optional frozen product mock (`card`) seen through it (off by default). Text beside it | A product moment you can see |
    | `script-mandala` | **"Sarvam" in nine Indian scripts**, set in rings around a glowing disc. Meta: the headline sits in the disc. LinkedIn: the logomark sits in the disc and the text sits left (the wordmark is dropped; never both) `[addition]` | India, languages, mission, sovereignty, people |
    | `plain` | Gradient only | Pure type statements |
 
 5. **Logo (`logo`: `wordmark` | `logomark`):** the official files only, black or white by ground. Wordmark small (124px Meta, 96px LinkedIn); the logomark (the mandala "pattern logo") at 0.55× that height, for milestones and statements where the brand is already clear. Inside the device above the text, or top/bottom centre. Never both; partner lockups always use the wordmark.
-6. **Geometry is never stretched.** Every shape (medallions, the cloud, gloss) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
-7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. If the type only fits small, the engine also tries taller boxes inside the same shape and keeps the one where the type sits largest. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines.
+6. **Geometry is never stretched.** Every shape (medallions, gloss, ornaments) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
+7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. If the type only fits small, the engine also tries taller boxes inside the same shape and keeps the one where the type sits largest. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines on Meta or 2 on LinkedIn, and never drops below 96 / 72px.
 8. **Grain is one seamless pre-generated image** (tiled grain shows seams when scaled; a live feTurbulence filter cost ~30 ms of raster per change in the builder).
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
@@ -101,20 +113,33 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | **event** | spring | gloss | indigo · serif | Event name + date/line |
 | **story** | lavender-dusk | medallion-glow (scalloped) | ink · serif | One sentence |
 | **partnership** | lavender-dusk | medallion-glow (ogee cross) + partner lockup | ink · serif | One sentence |
-| **program** | plain | gloss, split | ink · serif | Program name + one line |
+| **program** | plain | gloss, split + `sarvam · PARTNER` | ink · serif | Program name + one line |
 | **capability** | indigo-glow | emblem (+ icon) | white · serif | Claim + one fact |
+| **product** | dusk | arch-window (empty, lit doorway) | white · serif | What it does + one line |
+| **spectrum** | plain | spectrum + solid lotus rosette in the corner | ink · serif | Statement + one line |
+| **sunrise** | plain | spectrum + rising lotus + bottom horizon + divider | ink · serif | Short claim + one line |
 | **mission** | olive | script-mandala | white · serif | One line |
 
 **Variations:** the builder shows 6 on-system alternatives for the current copy (different layouts, devices and grounds, contrast-safe). Click one to use it.
 
 **Reference match** (`scripts/reference-match.mjs`, `process/screens/reference-match-r2.png`): four real Sarvam posts (Knowledge Fabric, Sarvam 30B, Supernova, Startup Program) rebuilt using only builder options, side by side with the originals. The gaps found in round 1 (scale too timid, a narrow landscape lantern, a thin carved stack, a tiny partner name) were fixed in the engine.
 
+## 3b. The final set (`banners/final/`, the submission)
+
+| # | Brief id | Subject | Expression | Device |
+|---|---|---|---|---|
+| 1 | `prism` | Sarvam Prism launch | Campaign | `medallion-glow` · Eight-point star · dawn · logomark |
+| 2 | `final-trail` | Every task leaves a trail | Product | `emblem` · shield · indigo glow |
+| 3 | `final-early-access` | Indus Cowork early access | Community | `gloss` · split · `sarvam · PARTNER` |
+
+Each brief renders the Meta (1080×1350) and the LinkedIn (1200×627) banner. Every preset is shown on `/banners` and, by expression, on `/system/expressions`.
+
 ## 4. How to make a banner (for an AI agent or a person)
 
 1. **From a subject:** choose the situation from what happened (launched, crossed a number, raised, hosting, a customer). Write the primary (≤ 6 words, or a number) and at most one secondary (≤ 60 characters) from `voice.md` §5 facts only.
 2. **From a reference design:** identify its device, ground, headline style and text count, then map each to the nearest option above. If it needs something the builder lacks, add it to the engine (new device or shape preset) rather than hand-drawing one banner.
 3. Set the spec in `/banners/make` (or write it into `banners/briefs.json`).
-4. Check all three formats; run `node scripts/check-banners.mjs set`.
+4. Check both formats; run `node scripts/check-banners.mjs set`.
 5. **Save & export** (or run `node scripts/export-banners.mjs <id>`). Review the PNGs at 100% and at phone size.
 6. Log the brief, the choices and any changes in `process/prompt-log.md`.
 
@@ -135,6 +160,7 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 | **India, languages, mission, sovereignty** | `script-mandala` | Sarvam = wholeness: every script, one whole | olive, dusk, saffron-rose | serif |
 | A **statement** or **where it's available** | `gateway-echo` | Thresholds opening outward | dusk | serif |
 | **Community** (event, program, cohort) | `gloss` | Many shapes, one family | spring, plain | serif |
+| A **calm launch or claim** that should feel precise, not loud | `spectrum` (corner lotus) or `spectrum` + `ornament` (rising lotus, horizon) | The brand spectrum as one thin line and one flower | plain | serif |
 | A **partner** | `medallion-glow` + partner lockup | Two names, matched weight | lavender-dusk | serif |
 
 **Step 3 · Vary within the set.** Across a set: different idea types where possible, no ground or shape used twice, and both headline styles appear. Before choosing, read `banners/briefs.json` so a new banner doesn't repeat the last one.
@@ -149,7 +175,8 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 | Subject | Idea | Type → part | Result |
 |---|---|---|---|
 | "Indus Cowork has audit logs" | Every task leaves a trail | capability → `emblem` (shield), indigo-glow | `process/screens/banners-r7/` |
-| "It plans before it acts" | It plans the work before it starts | product moment → `arch-window` (plan mock), dusk | same |
+| "It plans before it acts" | It plans the work first | product moment → `arch-window`, dusk | same |
+| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `banners/final/` |
 | "Sarvam's mission" | AI for all from India | mission → `script-mandala`, olive | same |
 
 ## 6. Our taste (personal flair, within the brand) `[addition]`

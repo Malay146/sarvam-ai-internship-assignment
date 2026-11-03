@@ -38,11 +38,12 @@ The minimum clear space equals the width of the wordmark's "r" on the left and r
 | Footer / small print | 96px |
 
 ### Placement on banners `[addition]`
-| Format | Position | Width |
-|---|---|---|
-| Meta 1080×1080 | Bottom-left or top-left, 72px from the edges | 180–200px |
-| Meta 1080×1350 | Bottom-left, 72px from the edges | 200px |
-| LinkedIn 1200×627 | Top-left or bottom-left, 56px from the edges | 150–170px |
+| Format | Wordmark | Logomark (alone) | Where |
+|---|---|---|---|
+| Meta 1080×1350 | 124px wide | ≈ 68px tall | inside the hero shape above the text, or top-centre at 72px |
+| LinkedIn 1200×627 | 96px wide | ≈ 53px tall | inside the shape, top-centre, or top-left at 56px in split layouts |
+
+White on dark grounds, black on light. A partner lockup always uses the wordmark. Never both marks on one banner.
 
 The wordmark is a signature, not the headline: always smaller than the headline's cap height × 6.
 

@@ -58,9 +58,9 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `imagery.md` | Gradient fields, gateways / medallions / flowers, emblems, motifs, dividers, product UI, photography, composition recipes |
 | `logo.md` | Wordmark and logomark rules, clear space, minimum sizes, banner placement, misuse, co-branding |
 | `voice.md` | Personality, headline patterns, CTAs, banned words, the **Indus Cowork fact sheet**, copy budgets |
-| `recipes/banner-builder.md` | The prompt-less builder: spec, devices, treatments, two-text rule, situations, how-to |
-| `recipes/meta-banner.md` | Grid, three layouts, square adaptation, steps |
-| `recipes/linkedin-banner.md` | Landscape grid and layouts, feed legibility |
+| `recipes/banner-builder.md` | The banner engine: hard rules, spec, devices, presets, subject → banner method, our taste, the final set |
+| `recipes/meta-banner.md` | Portrait grid (1080×1350), layouts on Meta, the final Meta set |
+| `recipes/linkedin-banner.md` | Landscape grid (1200×627), how each layout rearranges, the final LinkedIn set |
 | `recipes/landing-page.md` | Section order, per-breakpoint behaviour, quality gates, export |
 
 ### Non-negotiables (summary)
@@ -434,11 +434,11 @@ Sarvam's social feed uses a wider palette than the website: earthy and floral, b
 | `--gradient-saffron-rose` | saffron `#f1c480` → rose `#c4706e` → magenta `#a13060` | Sarvam 30B | model launches |
 | `--gradient-lavender-dusk` | cream `#f1f4e9` → lavender `#c6bdd3` → violet `#5957c4` | Supernova customer story | stories, partnerships |
 | `--gradient-spring` | cream `#f2f6e8` → pistachio `#d9dfb3` → leaf `#98c659` | Equal customer story | stories, growth |
-| `--color-cloud` | `#f7efed` warm white | soft-cloud glow | text ground on gradients |
+| `--color-cloud` | `#f7efed` warm white | soft-cloud glow | **retired for banners** (the cloud device was removed: soft white blobs); kept for web glows only |
 
 Rules:
 - One campaign gradient per banner. Grain always. OKLab blending (§2.5).
-- Text sits in the gradient's calm zone or on a soft cloud. Dark text on the pale ends; white only on olive, saffron-rose (middle down) and the violet end of lavender-dusk.
+- Text sits in the gradient's calm zone or inside a hero shape. Dark text on the pale ends; white only on olive, saffron-rose (middle down) and the violet end of lavender-dusk.
 - Blue and orange together remains the **website** rule. Campaign art may use one family when the subject calls for it, because Sarvam's own posts do.
 
 ### 3. Spacing
@@ -801,21 +801,22 @@ Type doesn't just shrink. These are the changes at each breakpoint (breakpoint v
 
 ### 5. Banner type (fixed px) `[addition]`
 
-Banners are fixed-size images, so they use **fixed px values, not fluid tokens**. The ratios follow the web scale: display ≈ 2.5–3× the subhead, and the eyebrow sits at the bottom of the hierarchy. The exact layouts are in `recipes/`.
+Banners are fixed-size images, so they use **fixed px values, not fluid tokens**. The engine (`recipes/banner-builder.md`) applies these; QA enforces the minimums.
 
-| Role | Meta square 1080×1080 | Meta portrait 1080×1350 | LinkedIn 1200×627 |
-|---|---|---|---|
-| Display headline (display font, 300–400, lh 1.05, tracking −0.04em) | 96–112 | 104–120 | 60–72 |
-| Subhead (text font, 400, lh 1.4) | 32–36 | 34–38 | 22–26 |
-| Eyebrow (text font, 500, UPPERCASE, tracking 4px) | 20 | 22 | 15 |
-| Footnote / CTA line (text font, 500) | 24 | 26 | 18 |
-| Mono label (code font, UPPERCASE) | 18 | 20 | 14 |
-| Max headline lines | 3 | 4 | 2 |
+| Role | Meta 1080×1350 | LinkedIn 1200×627 |
+|---|---|---|
+| Headline, sans (Matter 600; names, launches) | base 124 | base 92 |
+| Headline, serif (Season Mix 400; statements, stories) | base 132 | base 100 |
+| Number (serif, gold or indigo) | base 270 | base 170 |
+| Steps | 100 / 86 / 74 / 64 / 55 / 48 % of the base: the largest that fits | same |
+| Headline minimum · max lines | **96px · 3 lines** | **72px · 2 lines** |
+| Supporting line (Matter 400) | ≥ 28px | ≥ 20px |
+| Anything else (eyebrow, mono, CTA, URL) | **none on the art**; it goes in the caption | none |
 
 Rules:
-- The headline is the hero of the banner: one idea, ≤ 8 words. On imagery it's light (300) `[observed]`; on flat surfaces it's regular (400).
-- Minimum text size on any banner is **14px at LinkedIn scale and 18px at Meta scale**. Anything smaller is unreadable in a feed.
-- Respect the text zones of the gradient (`tokens.md` §2). Headlines never sit on the Sun's orange core.
+- Two text sections at most. Sentence case. One idea per headline.
+- If a headline doesn't fit at the minimum, make room (wider column, bigger opening) or shorten the copy; never shrink it.
+- Headlines never sit on a shape's glow band or a gradient's orange core.
 
 ---
 
@@ -1711,11 +1712,12 @@ The minimum clear space equals the width of the wordmark's "r" on the left and r
 | Footer / small print | 96px |
 
 #### Placement on banners `[addition]`
-| Format | Position | Width |
-|---|---|---|
-| Meta 1080×1080 | Bottom-left or top-left, 72px from the edges | 180–200px |
-| Meta 1080×1350 | Bottom-left, 72px from the edges | 200px |
-| LinkedIn 1200×627 | Top-left or bottom-left, 56px from the edges | 150–170px |
+| Format | Wordmark | Logomark (alone) | Where |
+|---|---|---|---|
+| Meta 1080×1350 | 124px wide | ≈ 68px tall | inside the hero shape above the text, or top-centre at 72px |
+| LinkedIn 1200×627 | 96px wide | ≈ 53px tall | inside the shape, top-centre, or top-left at 56px in split layouts |
+
+White on dark grounds, black on light. A partner lockup always uses the wordmark. Never both marks on one banner.
 
 The wordmark is a signature, not the headline: always smaller than the headline's cap height × 6.
 
@@ -1903,12 +1905,10 @@ Use only these claims.
 
 ### 7. Formats
 
-**Banner (Meta / LinkedIn):** eyebrow (product name) → headline (one idea) → optional subhead (one fact from §5) → CTA line or URL → wordmark. Example:
+**Banner (Meta / LinkedIn):** headline (one idea) → optional supporting line (one fact from §5). **Two text sections, nothing else on the art**: the product name, CTA and URL go in the post caption. Example:
 
-> INDUS COWORK
-> **Hire a teammate that finishes the work.**
-> Plans, researches and checks its own work, then waits for your yes.
-> Talk to Us · sarvam.ai
+> **Every task leaves a trail**
+> Audit logs, SSO and role-based access
 
 **LinkedIn post caption** `[addition]`: 2–4 short lines, the first line restating the headline, one fact, one CTA. No hashtag walls (≤ 3).
 
@@ -1952,10 +1952,10 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | 6 | **Text lives inside the shape** | In the largest rectangle inside the shape's measured outline, inset from the glow |
 | 7 | **Fixed type steps** | Headline = the largest of 100 / 86 / 74 / 64 / 55 / 48 % of the format base that fits (base Meta: sans 124, serif 132, number 270 · LinkedIn: sans 92, serif 100, number 170). Headline max **3 lines on Meta, 2 lines on LinkedIn** (every layout), and never set below **96px on Meta / 72px on LinkedIn**: if it won't fit, make room (wider text column, bigger opening) or shorten the copy, never shrink the type (QA fails otherwise). `titleSize: { portrait, landscape }` sets the headline size directly when the fit is too cautious; the text box widens around it, so check by eye that the title clears the shape's edge glow. Supporting line ≥ 28px Meta / 20px LinkedIn |
 | 8 | **Sharp, not soft** | Every shape has a crisp edge. Inner glow blur ≤ 3.5% of the shape size. No white blobs, no cloud device. Mesh shapes (gloss device): a two-tone fill + an inner shadow in a contrasting hue + a soft centre light; **no drop shadows, no highlight blobs** |
-| 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 | 9 | **Logo** | Official files only. Wordmark 124px (Meta) / 96px (LinkedIn), **or** the logomark alone (height 0.55× that), never both. White on dark, black on light, or none. Partner lockups always use the wordmark |
 | 10 | **Seamless grain** | One pre-generated noise image (`public/brand/grain.png`, 1200×1350, overlay), never a repeated tile and never a live SVG filter (too slow to repaint) |
 | 11 | **QA** | `node scripts/check-banners.mjs situations` and `set` must PASS before export |
+| 12 | **One message per banner** | Every banner in a set says something different; facts only from `voice.md` §5 |
 
 ### 1. The spec
 
@@ -1973,9 +1973,21 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
   "primary": "Indus Cowork",        // the headline, or a number
   "primaryIsNumber": false,
   "secondary": "An AI teammate that finishes the work",   // optional, the ONLY other text
-  "secondaryPlace": "below"         // above | below
+  "secondaryPlace": "below",        // above | below
+  "logo": "wordmark"                // wordmark | logomark (never both)
 }
 ```
+
+**Device options:** `icon` (emblem) · `rosette`, `rosetteSolid` (spectrum corner) · `ornament`, `place`, `petals`, `ornamentTone`, `divider`, `horizon` (spectrum family) · `whole` (medallion-glow stays whole on LinkedIn) · `landScale` (its height on LinkedIn).
+
+**Per-banner fine-tuning** (use only after looking; each takes `{ portrait?, landscape? }` where it is a size):
+| Field | Does |
+|---|---|
+| `markOnLinkedIn` | a different logo place on LinkedIn (e.g. `inside` the shape while Meta has it on `top`) |
+| `logoTone` | force `white` / `black` when the ground is mixed |
+| `titleSize` · `lineSize` | set the headline / supporting line size directly (px); the text box widens around it |
+| `textShift` | nudge the whole text block vertically (px, negative = up) |
+| `primary` with `\n` | force the headline's line break |
 
 ### 2. Rules (enforced by the engine + QA)
 
@@ -1997,17 +2009,17 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
    | `medallion-carved` | 4 nested medallion layers, centred | Milestones |
    | `gateway-window` | 3 carved layers opening onto warm cream light | Funding, big announcements |
    | `gateway-echo` | 5 thin outline gateways rising from the bottom | Announcements |
-      | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
+   | `gloss` | Mirrored cluster of glossy studio shapes | Events, programs, community |
    | `spectrum` | **Our taste** `[addition]`: a calm off-white canvas, one thin hard-edged strip of the brand spectrum (indigo → orange) near the bottom, and a **rosette** in the top-right corner, cropped by the corner. It is built the way Sarvam's logomark is built: **one element repeated around a centre** `rosette`: **circles** (default: 12 equal circles through one centre, the logomark's construction), **lens** (8 broad vesica petals, a lotus about 1.3× the size of the line rosettes, petal width 0.36 × length; `rosetteSolid: true` fills each petal with a gradient from a pale tint of its hue at the centre to the full hue at the tip, with a 2.5px canvas-coloured edge between petals), **orbits** (6 equal ellipses turned by 30°), **rings** (6 concentric circles, the hue stepping outward), **lobes** (12 rounded petals). Every copy is the same line (4.5px Meta, 3.5px LinkedIn), and each one takes a hue of the spectrum by its direction: indigo toward the canvas, orange toward the corner. Text is set left and low (`editorial` layout). | Model launches and announcements that should feel calm and precise |
    | `spectrum` + `ornament` | The spectrum family's **solid** shapes: `lotus` (`petals`), `quatrefoil`, `star`, `ogee`, `arch`, each filled with the spectrum (lotus petals: pale base → full hue; solids: a spectrum fill + a pale centre). `place`: **corner** (lotus cropped by the corner; solids whole in the top-right), **rise** (stands on the strip: an upward fan or the arch; on LinkedIn it moves right and the text goes left), **center** (a centred bloom above centred text; on LinkedIn the bloom goes right), **small**. `ornamentTone: "white"` for tone-on-tone. Optional `divider`: a /studio divider preset **always above the headline** (the first thing in the text block), drawn in the spectrum. Optional `horizon: "bottom" | "top"`: a soft band of the Sun gradient rising from that edge to about half the frame: a flat ellipse (~2.6× the frame width), blended in OKLab with few stops, each Sun stop mixed ~35% toward white (bottom = a sunrise behind a rising lotus). A bottom horizon replaces the spectrum strip | One family, a different shape per subject |
    | `emblem` | One frosted, bevelled medallion with **one Nucleo icon engraved** in it, echo rings on true offsets. Text sits beside it (split on LinkedIn, stacked on Meta). `icon`: shield, plug, check, calendar, search, globe, inbox, megaphone, target, chart, book, sparkle, person | A capability you can name as an object |
-   | `arch-window` | The gateway as a **window onto the real product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, light inside, one frozen product mock (`card`) seen through it. Text beside it | A product moment you can see |
+   | `arch-window` | The gateway as a **window onto the product**: a recessed arch (Mihrab / Domed door) standing on the bottom edge, lit inside; an optional frozen product mock (`card`) seen through it (off by default). Text beside it | A product moment you can see |
    | `script-mandala` | **"Sarvam" in nine Indian scripts**, set in rings around a glowing disc. Meta: the headline sits in the disc. LinkedIn: the logomark sits in the disc and the text sits left (the wordmark is dropped; never both) `[addition]` | India, languages, mission, sovereignty, people |
    | `plain` | Gradient only | Pure type statements |
 
 5. **Logo (`logo`: `wordmark` | `logomark`):** the official files only, black or white by ground. Wordmark small (124px Meta, 96px LinkedIn); the logomark (the mandala "pattern logo") at 0.55× that height, for milestones and statements where the brand is already clear. Inside the device above the text, or top/bottom centre. Never both; partner lockups always use the wordmark.
-6. **Geometry is never stretched.** Every shape (medallions, the cloud, gloss) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
-7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. If the type only fits small, the engine also tries taller boxes inside the same shape and keeps the one where the type sits largest. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines.
+6. **Geometry is never stretched.** Every shape (medallions, gloss, ornaments) keeps its true proportions in every format and only changes size. Gateways rebuild their arch per format through the generator (a structural parameter, not a scale). No `preserveAspectRatio="none"`, no non-uniform scale, anywhere. Carved rings are true offsets (each ring grows the shape by the same distance everywhere), spaced at 5% of the shape size.
+7. **The text box is measured, not guessed:** the largest centred rectangle inside the shape's densely sampled outline (including long straight sides), inset from any glow band. If the type only fits small, the engine also tries taller boxes inside the same shape and keeps the one where the type sits largest. Type scales down until it fits that box in width and height; supporting lines have a legible floor (28px Meta, 20px LinkedIn); a headline never breaks into more than 3 lines on Meta or 2 on LinkedIn, and never drops below 96 / 72px.
 8. **Grain is one seamless pre-generated image** (tiled grain shows seams when scaled; a live feTurbulence filter cost ~30 ms of raster per change in the builder).
 9. **QA must pass:** no text outside the opening or the safe margin, no overlaps, ≤ 2 text sections.
 
@@ -2034,20 +2046,33 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | **event** | spring | gloss | indigo · serif | Event name + date/line |
 | **story** | lavender-dusk | medallion-glow (scalloped) | ink · serif | One sentence |
 | **partnership** | lavender-dusk | medallion-glow (ogee cross) + partner lockup | ink · serif | One sentence |
-| **program** | plain | gloss, split | ink · serif | Program name + one line |
+| **program** | plain | gloss, split + `sarvam · PARTNER` | ink · serif | Program name + one line |
 | **capability** | indigo-glow | emblem (+ icon) | white · serif | Claim + one fact |
+| **product** | dusk | arch-window (empty, lit doorway) | white · serif | What it does + one line |
+| **spectrum** | plain | spectrum + solid lotus rosette in the corner | ink · serif | Statement + one line |
+| **sunrise** | plain | spectrum + rising lotus + bottom horizon + divider | ink · serif | Short claim + one line |
 | **mission** | olive | script-mandala | white · serif | One line |
 
 **Variations:** the builder shows 6 on-system alternatives for the current copy (different layouts, devices and grounds, contrast-safe). Click one to use it.
 
 **Reference match** (`scripts/reference-match.mjs`, `process/screens/reference-match-r2.png`): four real Sarvam posts (Knowledge Fabric, Sarvam 30B, Supernova, Startup Program) rebuilt using only builder options, side by side with the originals. The gaps found in round 1 (scale too timid, a narrow landscape lantern, a thin carved stack, a tiny partner name) were fixed in the engine.
 
+### 3b. The final set (`banners/final/`, the submission)
+
+| # | Brief id | Subject | Expression | Device |
+|---|---|---|---|---|
+| 1 | `prism` | Sarvam Prism launch | Campaign | `medallion-glow` · Eight-point star · dawn · logomark |
+| 2 | `final-trail` | Every task leaves a trail | Product | `emblem` · shield · indigo glow |
+| 3 | `final-early-access` | Indus Cowork early access | Community | `gloss` · split · `sarvam · PARTNER` |
+
+Each brief renders the Meta (1080×1350) and the LinkedIn (1200×627) banner. Every preset is shown on `/banners` and, by expression, on `/system/expressions`.
+
 ### 4. How to make a banner (for an AI agent or a person)
 
 1. **From a subject:** choose the situation from what happened (launched, crossed a number, raised, hosting, a customer). Write the primary (≤ 6 words, or a number) and at most one secondary (≤ 60 characters) from `voice.md` §5 facts only.
 2. **From a reference design:** identify its device, ground, headline style and text count, then map each to the nearest option above. If it needs something the builder lacks, add it to the engine (new device or shape preset) rather than hand-drawing one banner.
 3. Set the spec in `/banners/make` (or write it into `banners/briefs.json`).
-4. Check all three formats; run `node scripts/check-banners.mjs set`.
+4. Check both formats; run `node scripts/check-banners.mjs set`.
 5. **Save & export** (or run `node scripts/export-banners.mjs <id>`). Review the PNGs at 100% and at phone size.
 6. Log the brief, the choices and any changes in `process/prompt-log.md`.
 
@@ -2068,6 +2093,7 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 | **India, languages, mission, sovereignty** | `script-mandala` | Sarvam = wholeness: every script, one whole | olive, dusk, saffron-rose | serif |
 | A **statement** or **where it's available** | `gateway-echo` | Thresholds opening outward | dusk | serif |
 | **Community** (event, program, cohort) | `gloss` | Many shapes, one family | spring, plain | serif |
+| A **calm launch or claim** that should feel precise, not loud | `spectrum` (corner lotus) or `spectrum` + `ornament` (rising lotus, horizon) | The brand spectrum as one thin line and one flower | plain | serif |
 | A **partner** | `medallion-glow` + partner lockup | Two names, matched weight | lavender-dusk | serif |
 
 **Step 3 · Vary within the set.** Across a set: different idea types where possible, no ground or shape used twice, and both headline styles appear. Before choosing, read `banners/briefs.json` so a new banner doesn't repeat the last one.
@@ -2082,7 +2108,8 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 | Subject | Idea | Type → part | Result |
 |---|---|---|---|
 | "Indus Cowork has audit logs" | Every task leaves a trail | capability → `emblem` (shield), indigo-glow | `process/screens/banners-r7/` |
-| "It plans before it acts" | It plans the work before it starts | product moment → `arch-window` (plan mock), dusk | same |
+| "It plans before it acts" | It plans the work first | product moment → `arch-window`, dusk | same |
+| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `banners/final/` |
 | "Sarvam's mission" | AI for all from India | mission → `script-mandala`, olive | same |
 
 ### 6. Our taste (personal flair, within the brand) `[addition]`
@@ -2103,90 +2130,48 @@ The assignment asks for some personal flair. Ours lives in **composition and cra
 <!-- recipes/meta-banner.md -->
 ## Recipe · Meta banner (Instagram / Facebook)
 
-Format: **1080×1350** (portrait, 4:5) only. Export PNG at exactly this size. (Square was dropped so every Meta banner shares one grid.)
-> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+Format: **1080×1350** (portrait, 4:5) only. Export PNG at exactly this size. Square (1080×1080) was dropped so every Meta banner shares one grid.
 
-Read first: `expressions.md` (pick one), `voice.md` §5–6 (facts, budgets), `logo.md` §1 (placement).
+> **How banners are made:** with the banner engine (`recipes/banner-builder.md`). Give the AI a subject; it writes a spec into `banners/briefs.json`, runs QA and exports. This file only records the **portrait grid** the engine follows, so a person or another tool can check the output.
 
----
-
-### 1. The grid (both formats)
-
-```
-┌──────────────────────────────── 1080 ────────────────────────────────┐
-│ ← 72 →                                                        ← 72 → │
-│        [wordmark 200×32]   ← top 72 (centre or left per expression)  │
-│                                                                       │
-│        ─ ─ ─ ─ ─ ─  BODY ZONE (hero device + headline)  ─ ─ ─ ─ ─ ─   │
-│                                                                       │
-│        [optional CTA chip / URL line]   ← bottom 72                   │
-└───────────────────────────────────────────────────────────────────────┘
-```
-
-| | Square 1080×1080 | Portrait 1080×1350 |
-|---|---|---|
-| Outer margin | 72 (6.7%) | 72 |
-| Wordmark | 200×32, top 72, centre (Campaign/Community) or left 72 (Product) | same |
-| Safe zone for text | 936 × 936 | 936 × 1206 |
-| Display headline | 96–104px, Season Mix 400, lh 1.06, tracking −0.04em | 96–104px |
-| Product/model name headline | Matter 500, 88–96px | same |
-| Sub-line | 32px Matter 400, lh 1.35, 28px below the headline | 32px |
-| Eyebrow (Product) | DM Mono 22px, 0.13em, uppercase, `--color-accent` | same |
-| Max headline lines | 3 | 4 |
-| Min text size anywhere | 22px | 22px |
-| Corner radius of inner panels | 40 | 40 |
-
-**Instagram crops:** the feed shows 4:5 in full. The profile grid crops to the centre 1:1 (1080×1080 inside 1080×1350) → keep the headline inside the **middle 1080×1080** of a portrait banner. The wordmark may sit outside it.
+Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `expressions.md` (pick one), `voice.md` §5–6 (facts, budgets).
 
 ---
 
-### 2. Layouts (one per expression)
+### 1. The grid
 
-#### A · Campaign: "Nested gateways"
-1. Background: one campaign gradient with grain (`.sr-gradient-saffron-rose`, `-dusk`, `-olive`, `-indigo-glow`).
-2. Hero device: **5 nested Domed-door gateway outlines** rising from the bottom edge (widths 620 / 800 / 980 / 1160 / 1340, the first one filled white 7%), stroke white 55% → 15%, 1.6px.
-3. Wordmark: white, top-centre.
-4. Headline + sub: centred inside the innermost arch, starting 170px below its crown. White.
-5. Nothing else.
-Reference component: `CampaignBanner` (`src/components/sarvam/banners.tsx`).
-
-#### B · Product: "Claim + product UI"
-1. Background: `--color-sf`.
-2. Wordmark: black, top-left (72, 72).
-3. Eyebrow (product name) at y=196, headline below it, left-aligned, max 820 wide.
-4. Hero device: a **tint panel** (`.sr-tint-indigo` / `-orange` / `-green`) from y=500 to the bottom margin, radius 40, holding **one real product mock** (MockPlan / MockResearch / MockReview) scaled ×1.6, centred.
-Reference component: `ProductBanner`.
-
-#### C · Community: "Soft cloud"
-1. Background: `.sr-gradient-lavender-dusk`, `-spring` or `-meadow`.
-2. Hero device: a **soft cloud** (`cloudSVG` of the Scalloped medallion, `--color-cloud`) centred, about 1200 wide.
-3. Wordmark: black, top-centre. For partners: `sarvam · PARTNER` lockup at the same spot.
-4. Headline (Season Mix 400, tracking −0.03em) + sub, centred on the cloud.
-Reference component: `CommunityBanner`.
-
-#### Square (1080×1080) adaptation, rearranged, not cropped
-| Layout | Change from portrait |
+| | 1080×1350 |
 |---|---|
-| Campaign | Arch widths ×0.85; the headline moves up so its centre sits at y=600; sub ≤ 1 line |
-| Product | Headline max 2 lines; the panel starts at y=440; mock scale ×1.35 |
-| Community | Cloud ~1000 wide, centred at y=560; the headline stays centred |
+| Outer margin (M) | 72 |
+| Clear space beside the hero shape | ≥ 1.5·M = 108 on both sides; the shape sits fully inside the frame (≥ 72 top and bottom) |
+| Wordmark | 124px wide; inside the shape above the text, or top-centre at y = 72 |
+| Logomark (instead of the wordmark) | 0.55 × 124 ≈ 68px tall; never with the wordmark |
+| Text sections | **2 max**: one headline (or number) + one supporting line |
+| Headline base | sans 124 · serif 132 · number 270; fixed steps 100 / 86 / 74 / 64 / 55 / 48 % |
+| Headline minimum | **96px** (QA fails below). Max **3 lines** |
+| Supporting line | ≥ 28px, Matter 400 (a number's label is set in the serif) |
+| Instagram profile grid | Crops to the centre 1:1 (1080×1080 inside 1350): keep the headline in the middle 1080 |
 
----
+### 2. Layouts on portrait
 
-### 3. Steps (for an AI tool)
+| Layout | What happens on Meta |
+|---|---|
+| `centered` | Text inside the hero shape's measured opening (the default) |
+| `split` | Becomes **stacked**: text in the top 44%, the device in the bottom 56% |
+| `editorial` | One left column (≥ 108 from the sides) anchored low; wordmark top-left on the column |
 
-1. Pick the **expression** from the content type (`expressions.md` §1).
-2. Write copy to budget: headline ≤ 8 words / 40 characters; sub ≤ 70 characters; facts only from `voice.md` §5.
-3. Build the composition at real pixel size on the grid above, using tokens and components only.
-4. Check: wordmark official file + clear space; text contrast (`tokens.md` §1.6); one hero device; grain on the gradient.
-5. Export with `node scripts/export-banners.mjs` (Playwright, exact size, deviceScaleFactor 1).
-6. Open the PNG at 100% and at phone size (~375 wide). The headline must read at both.
+### 3. The final Meta set (`banners/final/`)
+
+| # | Banner | Expression | Device |
+|---|---|---|---|
+| 1 | Sarvam Prism | Campaign | `medallion-glow` · Eight-point star · dawn · logomark above the star |
+| 2 | Every task leaves a trail | Product | `emblem` · shield · indigo glow · stacked |
+| 3 | Indus Cowork early access | Community | `gloss` · stacked · `sarvam · PARTNER` |
 
 ### Don't
-- Put more than one headline or more than one hero device on a banner.
-- Put text on the transition band of a gradient.
-- Shrink a desktop page section into a banner.
-- Use "Sign up", "Try free" or invented numbers.
+- Put more than two text sections, an eyebrow, a pill, mono text, a CTA or a URL on the art (they go in the caption).
+- Shrink the headline to make it fit: make room or shorten the copy.
+- Crop or stretch a shape; use more than one hero device.
 
 
 ---
@@ -2194,10 +2179,11 @@ Reference component: `CommunityBanner`.
 <!-- recipes/linkedin-banner.md -->
 ## Recipe · LinkedIn banner (single image post)
 
-Format: **1200×627** (≈1.91:1). Export PNG at exactly this size.
-> **Use the builder:** compositions are now made with the prompt-less builder (`recipes/banner-builder.md`, `/banners/make`). This file keeps the per-format grid rules the builder follows.
+Format: **1200×627** (≈ 1.91:1). Export PNG at exactly this size.
 
-Read first: `expressions.md`, `voice.md` §5–6, `logo.md` §1, and `meta-banner.md` (same layouts, rearranged for landscape).
+> **How banners are made:** with the banner engine (`recipes/banner-builder.md`). The same spec renders Meta and LinkedIn; the engine **rearranges** it for landscape rather than cropping the Meta art. This file records the **landscape grid**.
+
+Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners in portrait).
 
 ---
 
@@ -2205,48 +2191,37 @@ Read first: `expressions.md`, `voice.md` §5–6, `logo.md` §1, and `meta-banne
 
 | | 1200×627 |
 |---|---|
-| Outer margin | 56 (≈9% of the short side) |
-| Wordmark | 160×26, top 56. Left 56 (split layouts) or centred (symmetric layouts) |
-| Columns | 12 columns, gutter 24, inside the margins |
-| Split layout | text in cols 1–6 (≤ 520 wide), hero device in cols 7–12 |
-| Display headline | 60–72px Season Mix 400, lh 1.06, tracking −0.04em |
-| Product/model name | Matter 500, 60–64px |
-| Sub-line | 24px Matter 400, lh 1.4, 20px below the headline |
-| Eyebrow | DM Mono 16px, 0.13em, uppercase |
-| Max headline lines | 2 (3 only in split layouts) |
-| Min text size | 16px |
-| Inner panel radius | 28 |
+| Outer margin (M) | 56 |
+| Clear space beside the hero shape | ≥ 1.5·M = 84 on both sides; the shape **may bleed off the top and bottom** only |
+| Wordmark | 96px wide; inside the shape, top-centre, or top-left at the margin in split layouts |
+| Logomark | 0.55 × 96 ≈ 53px tall; never with the wordmark |
+| Text sections | **2 max** |
+| Headline base | sans 92 · serif 100 · number 170; the same fixed steps as Meta |
+| Headline minimum | **72px** (QA fails below). Max **2 lines**, in every layout |
+| Supporting line | ≥ 20px |
+| Feed preview | Shown at ~360px wide on phones (≈ 0.3×): a 72px headline reads like ~22px, so never go smaller |
 
-**Feed preview:** LinkedIn shows the full image on desktop and at about 360px wide on mobile (≈0.3×). At that scale a 64px headline reads like 19px, so headlines stay ≥ 60px and sub-lines ≥ 24px.
+### 2. How each layout rearranges for landscape
 
----
+| Layout | On LinkedIn |
+|---|---|
+| `centered` | Text inside the shape; the shape grows wide (e.g. a lantern gets a wider structural aspect, never a stretch) |
+| `split` / `stacked` | **Split**: text left in a 56% column (so a headline holds two lines at full size), device right 44% |
+| `editorial` | One left column anchored low |
+| Per-banner overrides | `markOnLinkedIn` (logo place differs from Meta), `landScale` (shape height on LinkedIn), `titleSize` / `lineSize` / `textShift` with a `landscape` key |
 
-### 2. Layouts (landscape versions of the three expressions)
+### 3. The final LinkedIn set (`banners/final/`)
 
-#### A · Campaign: "Nested gateways, centred"
-- Campaign gradient + grain; 5 nested gateway outlines rising from the bottom, centred (widths 420 → 1100).
-- White wordmark top-centre; centred 1–2 line headline inside the innermost arch; optional 1-line sub.
-
-#### B · Product: "Split: claim left, product right"
-- `sf` background. Wordmark top-left. Eyebrow + headline + sub in cols 1–6, vertically centred.
-- Cols 7–12: a tint panel (inset 32 from the right/top/bottom edges, radius 28) holding one product mock at ×1.15.
-
-#### C · Community: "Split or cloud"
-- **Cloud variant:** soft gradient, a wide soft cloud centred, headline centred on it.
-- **Gloss variant:** wordmark top-left, headline left (cols 1–6), and a cluster of 2–4 **gloss** shapes (studio → gloss render) in cols 7–12, overlapping slightly, largest at the back. One shape family per banner.
-
----
-
-### 3. Steps
-1. Same copy as the Meta version of the campaign; the headline may shorten to fit 2 lines.
-2. Rebuild on the landscape grid (rearrange, don't crop the Meta art).
-3. Check legibility at 360px wide (mobile feed) and 1200px.
-4. Export with `scripts/export-banners.mjs`.
+| # | Banner | Notes for landscape |
+|---|---|---|
+| 1 | Sarvam Prism | Whole star (tips touch the edges); logomark inside the star above the title; title pinned at 79px and nudged up 28px |
+| 2 | Every task leaves a trail | Split: claim left, the emblem right |
+| 3 | Indus Cowork early access | Split: partner lockup + title left, gloss cluster right |
 
 ### Don't
-- Centre a long 3-line headline on a landscape canvas: switch to the split layout.
-- Put text in the right half when the hero device is there.
-- Let the wordmark exceed 180px wide.
+- Centre a long three-line headline on landscape: switch to `split`, widen the opening, or shorten the copy.
+- Put text in the right half when the device is there.
+- Use the Meta PNG cropped to 1.91:1.
 
 
 ---
