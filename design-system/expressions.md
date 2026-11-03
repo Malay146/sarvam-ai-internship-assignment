@@ -27,40 +27,49 @@ One Sarvam system, three ways of showing up. Every expression uses the same toke
 
 ## 2. The three expressions
 
+Every sample below is rendered by the banner engine (`src/components/sarvam/composer.tsx`); live at `/system/expressions`. Device names are the engine's `device` values.
+
 ### A · Campaign: *the gateway opens*
 Big, saturated, symmetric. The moment something new arrives.
 
-- **Surfaces:** `--gradient-dusk`, `--gradient-dawn`, `--gradient-indigo-glow`, `--gradient-saffron-rose`, `--gradient-olive`, `--gradient-night`.
+- **Surfaces:** `dawn`, `saffron-rose`, `dusk`, `olive`, `night`.
 - **Hero device** (pick one):
-  - a **gateway window** onto a gradient (social 02, 06)
-  - **nested gateway echoes** filling the frame (social 12; our echo rings)
-  - an **emblem** (EmblemArt)
-- **Type:** centred. Display headline 2–5 words (Season Mix 300–400). For a product or model name, Matter 500 (`Sarvam 30B`) `[observed]`. Optional 1-line sub.
-- **Wordmark:** top-centre, white on dark surfaces.
-- **Energy:** high contrast, one strong colour family, nothing else on the canvas.
+  - `medallion-glow`: one lit medallion holding the headline (Onion lantern, Eight-point star, Scalloped…)
+  - `gateway-echo`: nested gateways rising from the edge
+  - a **number as the hero** (`primaryIsNumber`, gold treatment)
+- **Type:** centred. A product or model name in Matter 600 (`Sarvam Prism`) `[observed]`; statements in Season Mix.
+- **Logo:** logomark or wordmark, top-centre, white.
+- **Energy:** saturated, symmetric, one moment.
+- **Final set:** `prism`. Presets: `launch`, `announcement`, `milestone`, `funding`.
 
 ### B · Product: *the work, shown plainly*
-Calm, white, informative. The product is the image.
+Calm and structured. The object explains.
 
-- **Surfaces:** `--color-sf` / white, `--gradient-haze`, tint panels (`--gradient-tint-*`), `--mesh-card-light`. A gradient only behind the product UI.
-- **Hero device:**
-  - **real product UI** (MockPlan / MockResearch / MockReview, the dashboards) on a tint panel
-  - **split layouts** (text left, UI right)
-- **Type:** left-aligned in splits. Season Mix H2 claim + Matter lead. Eyebrow = product name (indigo accent).
-- **Wordmark:** top-left, black.
-- **Energy:** quiet, structured, lots of white. Accents in indigo, orange and green one at a time (feature sequence).
+- **Surfaces:** `indigo-glow`, tints, haze, `plain` (`--color-sf`).
+- **Hero device** (pick one):
+  - `emblem`: the capability as one engraved object (a Nucleo icon in a frosted medallion)
+  - `arch-window`: the gateway as a window onto the product
+  - `spectrum`: a calm canvas, the brand spectrum strip and a corner rosette `[addition]`
+  - real product UI on a tint panel (web)
+- **Type:** left-aligned claim + one fact (split / editorial layouts), Season Mix.
+- **Logo:** wordmark, top-left.
+- **Energy:** quiet; one accent at a time.
+- **Final set:** `final-trail`. Presets: `capability`, `product`, `spectrum`, `sunrise`.
 
 ### C · Community: *people, warmly*
-Soft, warm, floral. Stories about people and partners.
+Light, warm and floral. Programs, partners and people.
 
-- **Surfaces:** `--gradient-lavender-dusk`, `--gradient-spring`, `--gradient-meadow`, tints. **Soft cloud** (`cloudSVG`, `--color-cloud`) as the text ground.
+- **Surfaces:** `plain`, `spring`, `lavender-dusk`, `meadow`.
 - **Hero device** (pick one):
-  - a **soft cloud** behind a centred headline (social 05, 07)
-  - **gloss shapes**: a cluster of 2–4 glossy flowers and medallions beside the text (social 03, 10)
-  - a **shape cluster**: a mirrored arrangement of small gloss shapes (social 11)
-- **Type:** Season Mix 400, centred on a cloud and left in splits. Partner lockup `sarvam · PARTNER` above the headline.
-- **Wordmark:** top-centre (cloud) or top-left (split), black.
-- **Energy:** gentle and welcoming; colour comes from the shapes, not from heavy fields.
+  - `gloss`: a cluster of glossy flowers and medallions beside the text (social 03, 10, 11)
+  - `medallion-glow` on a soft ground + the **partner lockup** `sarvam · PARTNER`
+  - `script-mandala`: "Sarvam" in nine scripts, for India-wide stories `[addition]`
+- **Type:** Season Mix 400; left in splits, centred on shapes.
+- **Logo:** wordmark or partner lockup, top-left (split) or top-centre.
+- **Energy:** gentle and welcoming; colour comes from the shapes, not heavy fields.
+- **Final set:** `final-early-access`. Presets: `program`, `event`, `story`, `partnership`, `mission`.
+
+**The test:** the same message ("Indus Cowork early access") rendered in all three expressions sits on `/system/expressions`. The copy and the constants hold; the surface, device and energy change.
 
 ---
 
@@ -72,7 +81,7 @@ Soft, warm, floral. Stories about people and partners.
 | Headline | One idea, ≤ 8 words, sentence case, display or Matter role from `typography.md` |
 | Margins | 6–8% of the short side on banners; container tokens on web |
 | Grain | On every gradient and every glow |
-| Shapes | Only from `/studio` families (gateway, medallion, flower); one shape family per piece |
+| Shapes | Only from `/studio` families (gateway, medallion, flower); one hero device per piece; never stretched |
 | Icons | Nucleo Core outline, 1.5 stroke |
 | CTA | At most one: a pill button (web) or a small chip / URL line (banners) |
 | Contrast | Text and symbols pass `tokens.md` §1.6 and `components.md` §3.2 |

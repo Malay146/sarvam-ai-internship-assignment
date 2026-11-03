@@ -558,3 +558,21 @@ Entry format:
 - Sarvam's own images (`references/brand/`, `references/site/`, `references/social/*.png`, 51 MB) are now git-ignored and purged from every commit (`git filter-branch`), so the public repo never contains them. They stay on disk as research. `brand-findings.md`, the social README and the extracted CSS text stay public as provenance.
 - The rewrite also deleted the local copies; they were restored from the `backup/pre-public` branch.
 - `main` fast-forwarded to `design-system`. Public repo: https://github.com/Malay146/sarvam-ai-internship-assignment (default branch `main`).
+
+## 2026-11-04 — Expressions page rebuilt
+- Prompt (verbatim): "improve the expression section. It is too simple and quite bad. Improve it."
+- Problems with the old page:
+  - Three narrow columns of legacy hand-built samples, including the soft cloud device we had removed.
+  - A four-row rule list.
+  - Nothing tied it to the banners we actually ship.
+- New page (`/system/expressions`), with every artboard a live render from the banner engine:
+  1. **Intro + index** (01 Campaign / 02 Product / 03 Community), with anchor links.
+  2. **One band per expression:**
+     - Left: the name and line, then "Use it for", surface swatches, hero devices, and type / logo / energy.
+     - Right: the expression's final banner as a Meta + LinkedIn pair at equal heights, plus "More in …" (three presets showing its range).
+     - Phone and tablet order: heading → banners → details. Desktop: two columns.
+  3. **The test:** one message ("Indus Cowork early access") rendered as Campaign / Product / Community side by side.
+  4. **The contract:** six things that never change (wordmark, type, headline, shapes, finish, spacing).
+- `expressions.md` §2 was rewritten to match what the engine does: engine device names, the final-set banner and presets per expression, and the cloud removed.
+- QA: check-layout PASS at 10 widths; no overflow in Chromium or WebKit at 375 / 768 / 1440. On tablet the swatches were oversized, so they're capped at 112px.
+- Screens: `process/screens/expressions/`.
