@@ -338,3 +338,8 @@ Entry format:
 ## 2026-11-04 — Feature preset removed
 - Prompt (verbatim): "remove this feature preset. I don't like it anymore." (screenshot: lavender scalloped cloud behind a product card, split layout)
 - Removed the `feature` situation from the engine, the builder and banner-builder.md §3. A product moment is now the `product` preset (the arch window). The builder's situation list also gains the capability, product and mission presets. QA 22/22 PASS.
+
+## 2026-11-04 — Afterglow rejected and removed
+- Prompt (verbatim): "no, remove it. I don't like it."
+- I reverted the afterglow device, its two Prism banners, the Tilt control, the noise image and the doc rules (commit 9fd5b6d reverted). Malay's references and the three rounds stay in `process/screens/refs-afterglow/` as a record of a direction that was tried and rejected.
+- Note for the write-up: copying a reference's effect too literally, even recoloured in brand hues, read as foreign to the system. The soft, fuzzy band fights the brand's "sharp, not soft" rule. That rule held.
