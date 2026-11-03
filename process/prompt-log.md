@@ -527,3 +527,4 @@ Entry format:
   - 96px: "w" and "s" landed on the gold glow band, lowering the contrast.
   - Settled at **88px** (from 63px): every glyph sits on the green core.
 - QA flags 88 < 96 (Meta minimum) for this banner. That's accepted as a by-eye exception, the most the shape allows.
+- Follow-up (verbatim): "Increase the size of the description text size in portrait by a bit." → new `lineSize` option; the portrait supporting line is now 32px (was 28px). It stays on one line inside the green core.

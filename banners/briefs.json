@@ -75,6 +75,9 @@
       "secondaryPlace": "below",
       "titleSize": {
         "portrait": 88
+      },
+      "lineSize": {
+        "portrait": 32
       }
     }
   },

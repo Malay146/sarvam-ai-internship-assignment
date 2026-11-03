@@ -31,7 +31,8 @@ export type BannerSpec = {
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
-  titleSize?: { portrait?: number; landscape?: number };   // set the headline size directly (px); the text box widens to hold it, centred
+  titleSize?: { portrait?: number; landscape?: number };
+  lineSize?: { portrait?: number; landscape?: number };    // set the supporting line size directly (px)   // set the headline size directly (px); the text box widens to hold it, centred
   whole?: boolean;                 // medallion-glow: keep the whole shape in frame on LinkedIn too (no vertical bleed)
   divider?: string;                // a /studio divider preset ABOVE the headline (always the first thing in the text block), drawn in the spectrum
   horizon?: "top" | "bottom";      // the hero's Sun gradient as a horizon from one edge, reaching about half way
@@ -777,7 +778,8 @@ function BannerImpl({ spec, format, id }: { spec: BannerSpec; format: BannerForm
   }
   const k = best === -1 ? STEPS[STEPS.length - 1] : STEPS[best];
   const forced = spec.titleSize?.[format === "landscape" ? "landscape" : "portrait"];
-  const S = { p: forced ?? Math.round(base.p * k), s: Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
+  const forcedLine = spec.lineSize?.[format === "landscape" ? "landscape" : "portrait"];
+  const S = { p: forced ?? Math.round(base.p * k), s: forcedLine ? forcedLine / (land ? 1 : 0.94) : Math.round(Math.max(base.s * k, land ? 20 : 28)), gap: base.gap };
   if (forced) {
     // widen the text box (centred) to the widest forced line at this size, so the title isn't re-wrapped smaller
     const need = Math.max(...spec.primary.split("\n").map((l) => l.length)) * forced * charW(pFont, pWeight, spec.primary) * 1.04;
