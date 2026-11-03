@@ -544,3 +544,11 @@ Entry format:
 - With the logo inside, the title shrank (79 → 68px). I first patched it with a forced size, a forced line break and an upward nudge (the new `titleSize` and `textShift` options, plus a taller box for forced sizes).
 - Malay's better fix: grow the star on LinkedIn only (new `landScale`, 1.12 → 1.4 × frame height). The opening grows, and the logo + two-line title + line fit at full size with no overrides, so the patches were removed from this banner. QA PASS.
 - Follow-up (verbatim): "go back to the original size of the pattern." → `landScale` removed, so the star is back to 1.12 × the frame height. The title is pinned at 79px (`titleSize`) and the block is nudged up 28px (`textShift`), so the logo, the two-line title and the line all sit inside the star. QA PASS, re-exported.
+
+## 2026-11-04 — Final banner set chosen
+- Prompt (verbatim): [4 screenshots: program preset, meta-prism, linkedin-prism, capability preset] "take these as our final banners in the folder."
+- Final set: 3 subjects × 2 formats, in `banners/final/` (numbered, renamed, with a README):
+  1. Sarvam Prism
+  2. Every task leaves a trail (capability preset, saved as brief `final-trail`)
+  3. Indus Cowork early access with the partner lockup (program preset, saved as brief `final-early-access`)
+- All six pass check-banners.

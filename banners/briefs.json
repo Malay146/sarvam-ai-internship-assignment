@@ -208,5 +208,45 @@
       "horizon": "bottom",
       "primaryIsNumber": true
     }
+  },
+  {
+    "id": "final-early-access",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "program",
+      "layout": "split",
+      "background": "plain",
+      "device": "gloss",
+      "treatment": "ink",
+      "mark": "inside",
+      "partner": "Partner",
+      "titleStyle": "serif",
+      "primary": "Indus Cowork early access",
+      "secondary": "Talk to us about your team's workflows",
+      "secondaryPlace": "below"
+    }
+  },
+  {
+    "id": "final-trail",
+    "formats": {
+      "meta": "portrait",
+      "linkedin": "landscape"
+    },
+    "spec": {
+      "situation": "capability",
+      "background": "indigo-glow",
+      "device": "emblem",
+      "shape": "Scalloped medallion",
+      "icon": "shield",
+      "treatment": "white",
+      "mark": "inside",
+      "titleStyle": "serif",
+      "primary": "Every task leaves a trail",
+      "secondary": "Audit logs, SSO and role-based access",
+      "secondaryPlace": "below"
+    }
   }
 ]
