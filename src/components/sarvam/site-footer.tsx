@@ -1,6 +1,5 @@
 // Site footer (v2): a calm white top (brand, columns, trust, socials) and a closing band where the official white
-// wordmark sits large on Sarvam's indigo-glow horizon. Logo rules: official file, white on a dark-enough ground,
-// never recoloured, cropped or given a gradient — the gradient lives behind it, not in it.
+// wordmark sits large on Sarvam's indigo-glow horizon, filled with a light gradient (exception to logo.md rule 4, Malay's call).
 // Links and address [verified: sarvam.ai footer].
 import { SOCIAL } from "./social";
 
@@ -44,8 +43,9 @@ export function SiteFooter() {
       </div>
       <div className="sf__band">
         <div className="sr-container sf__band-inner">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="sf__giant" src="/brand/sarvam-wordmark-white.svg" alt="" aria-hidden width={1200} height={256} />
+          {/* Malay's call (2026-11-04): the official wordmark shape, filled with a gradient — a deliberate exception to
+              logo.md rule 4, used only here as a decorative footer mark. The shape is the official file used as a mask. */}
+          <span className="sf__giant" aria-hidden />
           <div className="sf__band-foot">
             <span>© 2026 Axonwise Private Limited. All rights reserved.</span>
             <span>732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038</span>

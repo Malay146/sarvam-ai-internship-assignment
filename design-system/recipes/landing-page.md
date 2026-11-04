@@ -72,6 +72,7 @@
 | 10 | Proof | What Sarvam's customers say — Tata Capital | centred | passive | `.cw-quote` |
 | 11 | Questions | Questions teams ask first — 8, one open at a time | centred | accordion | `OneFaq` |
 | 12 | Act | Meet your first teammate | — | Talk to Us | `CtaCard` |
+| 13 | Footer | Brand + tagline + socials (Nucleo social marks, verified links), 4 link columns, trust badges + legal links, then a closing band: the wordmark (white → peach gradient, logo.md exception) on the indigo-glow horizon with © and address | — | links | `SiteFooter` |
 
 ## 2. Responsive behaviour
 
