@@ -691,7 +691,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
 
 /* the wordmark: the container width, filled with a soft spectrum (pale indigo → lilac → blush → pale peach) */
-.sf__giant { display: block; width: 100%; aspect-ratio: 202 / 32;
+.sf__giant { display: block; width: 82%; margin-inline: auto; aspect-ratio: 202 / 32;
   -webkit-mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat; mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat;
   background: linear-gradient(100deg in oklab, #a7b4ef 0%, #c6bfe6 35%, #e8cdd6 65%, #f6c9b0 100%); }
 .sf__band-foot { color: var(--color-tx-tertiary); }
