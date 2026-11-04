@@ -643,3 +643,8 @@ html:has(.cw) { scroll-behavior: smooth; }
 .bv-src { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--color-sr-white); box-shadow: inset 0 0 0 1px var(--color-st-secondary); flex-shrink: 0; }
 .cw-tile__visual { padding: var(--space-5) var(--space-4); }
 @media (prefers-reduced-motion: reduce) { .bv-pill, .bv-num, .bv-sched__dot, .bv-kb li { transition: none; } }
+/* knowledge rows: icon tiles are neutral at rest; the row being read gets the pink wash and its icon tile turns solid,
+   so the active row never matches its own icon background */
+.bv-kb .bv-file { background: var(--color-sf-tertiary); color: var(--color-tx-secondary); transition: background var(--duration-moderate) var(--ease-standard), color var(--duration-moderate) var(--ease-standard); }
+.bv-kb li[data-on="true"] .bv-file { background: var(--color-sr-pink-800); color: var(--color-sr-white); }
+@media (prefers-reduced-motion: reduce) { .bv-kb .bv-file { transition: none; } }

@@ -41,7 +41,7 @@
 23. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children; the page clips at `overflow-x: clip`.
 24. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back); logs start pre-filled and keep a fixed length; timelines show every step at once and fill a rail (never swap one card out for the next).
-26a. **Card visuals are real mini UIs, not placeholders:** a header row, 3–5 rows with icon + label + meta, a status pill or footer. No grey bars or bare chips standing in for content.
+26a. **Card visuals are real mini UIs, not placeholders:** a header row, 3–5 rows with icon + label + meta, a status pill or footer. No grey bars or bare chips standing in for content. An active row never shares its icon tile's colour: tiles are neutral at rest and turn solid (white icon) when their row is active.
 26. **Minimal beats busy:** a static grid of real marks beats drifting rows; text beside a grid is top-aligned with its action pinned to the bottom.
 27. Cards inside a panel sit centred and are **never sticky** unless asked. Panels with animated layers use `clip-path: inset(0 round …)` so nothing leaks past rounded corners.
 28. Use `<div role="group">` + a title, not `<fieldset>/<legend>` (the legend sits on the border).
