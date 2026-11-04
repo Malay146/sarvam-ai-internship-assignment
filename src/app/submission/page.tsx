@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight } from "@/components/icons";
 import { Button, ButtonRow, CtaCard, HeroGlow, Motif, SectionHeader } from "@/components/sarvam";
 import { Reveal } from "@/components/sarvam/cowork";
+import { SubmissionBar } from "@/components/sarvam/submission-bar";
 import "../cowork.css";
 import "./submission.css";
 
@@ -54,7 +55,7 @@ const BANNERS: [string, string, string][] = [
 export default function SubmissionPage() {
   return (
     <>
-      <header className="sb-bar">
+      <SubmissionBar>
         <div className="sr-container sb-bar__in">
           <a className="sb-bar__brand" href="#top" aria-label="Back to top">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -67,9 +68,9 @@ export default function SubmissionPage() {
           </nav>
           <a className="sr-button sr-button--primary sb-bar__cta" href={REPO} target="_blank" rel="noreferrer">GitHub</a>
         </div>
-      </header>
+      </SubmissionBar>
 
-      <main id="top" className="cw sb">
+      <main id="top" className="cw sb sr-under-nav">
         <HeroGlow height={640} />
 
         {/* Hero */}

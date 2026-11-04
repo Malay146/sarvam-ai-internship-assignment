@@ -2,19 +2,23 @@
 
 /* hero light: the homepage Sun (the umbrella page for the whole system) */
 .sb .sr-hero-glow__sun { background-image: var(--texture-grain), var(--light-sun); }
-.sb-hero { padding-top: calc(var(--space-16) + 8px); }
+/* content always sits above the glow (the glow is absolutely positioned behind the hero) */
+.sb { position: relative; }
+.sb > *:not(.sr-hero-glow) { position: relative; z-index: 1; }
+.sb-hero { padding-top: var(--space-16); }
 .sb-hero .sr-display-product { max-width: 18ch; }
 
 /* ── Header: wordmark · who · section links · GitHub ── */
-.sb-bar { position: sticky; top: 0; z-index: 50; background: rgb(252 252 252 / 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: var(--border-subtle); }
+.sb-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: transparent; box-shadow: inset 0 -1px 0 transparent; transition: background-color var(--duration-moderate) var(--ease-standard), box-shadow var(--duration-moderate) var(--ease-standard), backdrop-filter var(--duration-moderate) var(--ease-standard); }
+.sb-bar[data-solid="true"] { background: rgb(252 252 252 / 0.94); box-shadow: inset 0 -1px 0 var(--color-st-secondary); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .sb-bar__in { display: flex; align-items: center; gap: var(--space-4); min-height: 64px; }
 .sb-bar__brand { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 44px; text-decoration: none; color: var(--color-tx-secondary); }
 .sb-bar__brand img { height: 15px; width: auto; display: block; }
-.sb-bar__sep { width: 1px; height: 16px; background: var(--color-st-secondary); }
-.sb-bar__who { font-size: var(--text-small); white-space: nowrap; }
+.sb-bar__sep { width: 1px; height: 16px; background: rgb(30 32 51 / 0.18); }
+.sb-bar__who { font-size: var(--text-small); white-space: nowrap; color: var(--color-tx-secondary); }
 .sb-bar__nav { display: none; margin-inline: auto; gap: var(--space-1, 4px); }
-.sb-bar__nav a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--space-3); border-radius: var(--radius-full); font-size: var(--text-small); color: var(--color-tx-secondary); text-decoration: none; transition: background-color var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard); }
-@media (hover: hover) { .sb-bar__nav a:hover { background: var(--color-sf-tertiary); color: var(--color-tx); } }
+.sb-bar__nav a { color: var(--color-tx) !important; display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--space-3); border-radius: var(--radius-full); font-size: var(--text-small); color: var(--color-tx-secondary); text-decoration: none; transition: background-color var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard); }
+@media (hover: hover) { .sb-bar__nav a:hover { background: rgb(255 255 255 / 0.55); color: var(--color-tx); } .sb-bar[data-solid="true"] .sb-bar__nav a:hover { background: var(--color-sf-tertiary); } }
 .sb-bar__cta { margin-left: auto; }
 @media (min-width: 1024px) { .sb-bar__nav { display: flex; } .sb-bar__cta { margin-left: 0; } }
 @media (max-width: 479px) { .sb-bar__sep, .sb-bar__who { display: none; } }
@@ -117,3 +121,6 @@
 .sb-foot__links a { color: var(--color-tx); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .sb-foot__in > span:first-child { display: inline-flex; align-items: center; min-height: 44px; }
 .sb-foot__note { margin-top: var(--space-3) !important; font-size: 12px; color: var(--color-tx-tertiary); }
+/* fade the whole glow layer (grain included) into the page, so no seam shows where it ends */
+.sb .sr-hero-glow { -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 100%); mask-image: linear-gradient(to bottom, #000 50%, transparent 100%); }
+.sb .sr-hero-glow::after { display: none; }
