@@ -72,7 +72,7 @@
 | 10 | Proof | What Sarvam's customers say — Tata Capital | centred | passive | `.cw-quote` |
 | 11 | Questions | Questions teams ask first — 8, one open at a time | centred | accordion | `OneFaq` |
 | 12 | Act | Meet your first teammate | — | Talk to Us | `CtaCard` |
-| 13 | Footer | Brand + tagline + socials (Nucleo social marks, verified links), 4 link columns, trust badges (filled glyph in its own brand hue on a soft tint: ISO indigo, SOC 2 green, residency orange) + legal links, then a closing band: the white wordmark at 82% of the container with a subtle shadow (logo.md exception; no gradient in the logo), with © and address. The whole footer carries a spectrum wash stacked bottom → top (saffron, peach, blush, lilac, periwinkle; OKLab) fading out at 75% height, plus grain | — | links | `SiteFooter` |
+| 13 | Footer | Brand + tagline + socials (Nucleo social marks, verified links), 4 link columns, trust badges (filled glyph in its own brand hue on a soft tint: ISO indigo, SOC 2 green, residency orange) + legal links, then a closing band: the white wordmark at 82% of the container (no gradient, no shadow), with © and address. The whole footer carries a spectrum wash stacked bottom → top (saffron, peach, blush, lilac, periwinkle; OKLab) fading out at 75% height, plus grain | — | links | `SiteFooter` |
 
 ## 2. Responsive behaviour
 
