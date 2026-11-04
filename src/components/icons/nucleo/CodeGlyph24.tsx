@@ -1,0 +1,9 @@
+import type { SVGProps } from "react";
+
+export type CodeGlyph24Props = SVGProps<SVGSVGElement>;
+
+export function CodeGlyph24(props: CodeGlyph24Props) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}><path fillRule="evenodd" clipRule="evenodd" d="M7.49997 18.9141L0.585759 11.9999L7.49997 5.08569L8.91418 6.49991L3.41419 11.9999L8.91418 17.4999L7.49997 18.9141Z" fill="currentColor"></path> <path fillRule="evenodd" clipRule="evenodd" d="M15.0858 6.49991L20.5858 11.9999L15.0858 17.4999L16.5 18.9141L23.4142 11.9999L16.5 5.08569L15.0858 6.49991Z" fill="currentColor" data-color="color-2"></path></svg>
+  );
+}

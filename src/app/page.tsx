@@ -68,8 +68,8 @@ function BentoTile({ area, tone, icon: I, eyebrow, title, desc, visual }: {
   eyebrow: string; title: string; desc: string; visual: React.ReactNode;
 }) {
   return (
-    <article className={`cw-tile cw-surface--${tone}`} style={{ gridArea: area }} data-sibling>
-      <div className="cw-tile__visual" aria-hidden>{visual}</div>
+    <article className="cw-tile" style={{ gridArea: area }} data-sibling>
+      <div className={`cw-tile__visual cw-well--${tone}`} aria-hidden>{visual}</div>
       <div className="cw-tile__text">
         <p className="cw-tile__eyebrow"><span className={`cw-tile__icon cw-tone--${tone}`}><I width={14} height={14} /></span>{eyebrow}</p>
         <h3 className="sr-h4" data-line="title">{title}</h3>
@@ -136,8 +136,8 @@ export default function IndusCoworkPage() {
         </section>
 
         {/* 4 · Building blocks (Product): a bento of six tiles, each its own colour and its own small product moment */}
-        <section className="sr-container cw-section" aria-labelledby="blocks-h">
-          <Reveal><SectionHeader eyebrow="Building blocks" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Six parts you set up once. Every teammate on your workspace shares them." /></Reveal>
+        <section id="blocks" className="sr-container cw-section" aria-labelledby="blocks-h">
+          <Reveal><SectionHeader eyebrow="Building blocks" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Five parts you set up once. Every teammate on your workspace shares them." /></Reveal>
           <Reveal className="cw-bento" >
             <BentoTile area="mates" tone="indigo" icon={UserFill} eyebrow="Teammates" title="One teammate per job" desc="Point each one at a role and it runs the work from start to finish."
               visual={<div className="cw-bv-mates">{ROLES.slice(0, 4).map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
@@ -147,15 +147,13 @@ export default function IndusCoworkPage() {
               visual={<ul className="cw-bv-times">{[["06:00", "Cluster check"], ["08:00", "Standup digest"], ["17:00", "Spend watch"]].map(([h, l]) => <li key={h}><code>{h}</code>{l}</li>)}</ul>} />
             <BentoTile area="kb" tone="rose" icon={BookOpenFill} eyebrow="Knowledge base" title="Never forgets" desc="Store your context once and every task can draw on it."
               visual={<div className="cw-bv-docs">{["Pricing playbook", "Brand voice", "Q3 targets"].map((d) => <span key={d}>{d}</span>)}</div>} />
-            <BentoTile area="research" tone="indigo" icon={SearchFill} eyebrow="Built-in research" title="Finds its answers" desc="Web search is built in, so the plan stays current as it works."
-              visual={<div className="cw-bv-search"><span className="cw-bv-search__bar">Q3 inbound by city</span><span className="cw-bv-search__hit" /><span className="cw-bv-search__hit" /></div>} />
             <BentoTile area="apps" tone="neutral" icon={PlugFill} eyebrow="Connected apps" title="100+ connectors" desc="Teammates act inside the tools your team already uses."
               visual={<div className="cw-bv-logos">{["Gmail", "Slack", "Notion", "GitHub", "Jira", "Snowflake", "Linear", "Google Drive"].map((a) => <span key={a} title={a}><BrandMark name={a} size={24} title={a} colored /></span>)}</div>} />
           </Reveal>
         </section>
 
         {/* 5 · Integrations (Product): the directory */}
-        <section className="sr-container cw-section" aria-labelledby="int-h">
+        <section id="integrations" className="sr-container cw-section" aria-labelledby="int-h">
           <Reveal><SectionHeader variant="split" large eyebrow="Integrations" title={<span id="int-h">Plugs into the stack you already run on</span>} lead="Connect the tools your team already uses. With more than 100 connectors, your teammates work where your work already lives." aside={<p className="sr-small cw-muted">Need something custom? Bring your own connector.</p>} /></Reveal>
           <Reveal className="cw-directory">
             {CONNECTORS.map((g) => (
@@ -259,7 +257,7 @@ export default function IndusCoworkPage() {
         </section>
 
         {/* 12 · Customer voice (Community): a real quote from sarvam.ai, about Sarvam (not Indus Cowork) */}
-        <section className="sr-container cw-section" aria-labelledby="quote-h">
+        <section id="stories" className="sr-container cw-section" aria-labelledby="quote-h">
           <Reveal><SectionHeader title={<span id="quote-h">What Sarvam&apos;s customers say</span>} /></Reveal>
           <Reveal>
             <figure className="cw-quote">
@@ -278,7 +276,7 @@ export default function IndusCoworkPage() {
         </section>
 
         {/* 13 · FAQ (Product) */}
-        <section className="sr-container cw-section cw-faq" aria-labelledby="faq-h">
+        <section id="faq" className="sr-container cw-section cw-faq" aria-labelledby="faq-h">
           <Reveal><SectionHeader title={<span id="faq-h">Your questions, answered</span>} /></Reveal>
           <Reveal className="cw-narrow">
             <Faq items={[

@@ -1,0 +1,9 @@
+import type { SVGProps } from "react";
+
+export type DocumentSearchGlyph24Props = SVGProps<SVGSVGElement>;
+
+export function DocumentSearchGlyph24(props: DocumentSearchGlyph24Props) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}><path d="M22 19V21H2V19H22Z" fill="currentColor"></path> <path d="M9 15V17H2V15H9Z" fill="currentColor"></path> <path d="M10.5 11V13H2V11H10.5Z" fill="currentColor"></path> <path d="M10.5 3V5H2V3H10.5Z" fill="currentColor"></path> <path d="M17 7V9H9V7H17Z" fill="currentColor"></path> <path d="M20 8C20 5.23858 17.7614 3 15 3C12.2386 3 10 5.23858 10 8C10 10.7614 12.2386 13 15 13C17.7614 13 20 10.7614 20 8ZM22 8C22 11.866 18.866 15 15 15C11.134 15 8 11.866 8 8C8 4.13401 11.134 1 15 1C18.866 1 22 4.13401 22 8Z" fill="currentColor" data-color="color-2"></path> <path d="M19.707 11.293L23.9141 15.5L22.5 16.9141L18.293 12.707L19.707 11.293Z" fill="currentColor" data-color="color-2"></path></svg>
+  );
+}

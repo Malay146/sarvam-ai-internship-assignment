@@ -1,14 +1,17 @@
 "use client";
 // Mega navigation, modelled on sarvam.ai's navbar (menu items, descriptions and icon tones read from its navbar bundle,
-// references/brand-css/dep_Navbar.Bna_uiTB.js). Icons: Nucleo Core outline 24. Spec: components.md → MegaNav.
+// references/brand-css/dep_Navbar.Bna_uiTB.js). Icons: Nucleo Core glyph (filled) 24, in the item's tone. Spec: components.md → MegaNav.
 // Desktop (≥1024): click or hover a link → one panel drops under the bar (items in 2 columns + a featured card), the page dims.
 // Phone/tablet: the menu button opens a full sheet with one accordion per section. Esc / outside click closes. Reduced motion: no slide.
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type ComponentType, type SVGProps } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  ArrowRight, BookOpenAlt, Brain, CalendarCheck, Clapperboard, Code, DocumentSearch, FileText, Film, Handshake, Info, Language,
-  Menu as MenuIcon, Microphone, Mobile, Newspaper, Nodes, Plug, Quote, Server, BriefcaseBusiness as Suitcase, Tag, Volume, X,
+  ArrowRight, BookOpenAltFill as BookOpenAlt, BrainFill as Brain, CalendarCheckFill as CalendarCheck, ClapperboardFill as Clapperboard,
+  CodeFill as Code, DocumentSearchFill as DocumentSearch, FileTextFill as FileText, FilmFill as Film, HandshakeFill as Handshake,
+  InfoFill as Info, LanguageFill as Language, Menu as MenuIcon, MicrophoneFill as Microphone, MobileFill as Mobile,
+  NewspaperFill as Newspaper, NodesFill as Nodes, PlugFill as Plug, QuoteFill as Quote, ServerFill as Server,
+  BriefcaseFill as Suitcase, TagFill as Tag, VolumeFill as Volume, X,
 } from "@/components/icons";
 import { NavFrame } from "./client";
 import { DUR, EASE } from "./motion";
@@ -26,14 +29,14 @@ const MENUS: Menu[] = [
     items: [
       { label: "Voice Agents", desc: "Conversational AI", icon: Microphone, tone: "indigo" },
       { label: "Token Factory", desc: "Open model inference in India", icon: Server, tone: "green" },
-      { label: "Work Agents", desc: "AI for Work", icon: Nodes, tone: "green", href: "/" },
+      { label: "Work Agents", desc: "AI for Work", icon: Nodes, tone: "green", href: "#how" },
       { label: "Model Training", desc: "Custom AI models", icon: Brain, tone: "indigo" },
       { label: "Coding Agents", desc: "Ship high quality code", icon: Code, tone: "orange" },
       { label: "Sarvam Edge", desc: "On device AI", icon: Mobile, tone: "neutral" },
       { label: "Content Studio", desc: "Content Transformation", icon: Newspaper, tone: "green" },
       { label: "Document AI", desc: "Parse, extract and translate docs", icon: FileText, tone: "orange" },
     ],
-    feature: { eyebrow: "New", title: "Indus Cowork", href: "/", surface: "sr-gradient-dawn" },
+    feature: { eyebrow: "New", title: "Indus Cowork", href: "#how", surface: "sr-gradient-dawn" },
   },
   {
     key: "developers", label: "Developers", heading: "APIs",
@@ -50,8 +53,8 @@ const MENUS: Menu[] = [
   {
     key: "resources", label: "Resources", heading: "Resources",
     items: [
-      { label: "Customer Stories", icon: Quote, tone: "orange" },
-      { label: "Integrations", icon: Plug, tone: "green" },
+      { label: "Customer Stories", icon: Quote, tone: "orange", href: "#stories" },
+      { label: "Integrations", icon: Plug, tone: "green", href: "#integrations" },
       { label: "API Pricing", icon: Tag, tone: "red" },
       { label: "Events", icon: CalendarCheck, tone: "indigo" },
       { label: "Partnerships", icon: Handshake, tone: "green" },
@@ -73,7 +76,7 @@ function MenuItem({ it, onPick }: { it: Item; onPick?: () => void }) {
   const I = it.icon;
   return (
     <a className="mn-item" href={it.href ?? "#"} onClick={onPick}>
-      <span className={`mn-item__icon mn-tone--${it.tone}`} aria-hidden><I width={20} height={20} strokeWidth={1.5} /></span>
+      <span className={`mn-item__icon mn-tone--${it.tone}`} aria-hidden><I width={20} height={20} /></span>
       <span className="mn-item__text"><span className="mn-item__label">{it.label}</span>{it.desc && <span className="mn-item__desc">{it.desc}</span>}</span>
     </a>
   );

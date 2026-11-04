@@ -178,18 +178,26 @@
 /* Security cards: wide 2-up cards; cap the line so every description is exactly two lines (sibling rule) */
 @media (min-width: 600px) { .cw-security .sr-card__desc { max-width: 40ch; } }
 
-/* ── Bento (building blocks): 6 cols. Row 1: mates 4 + skills 2 · row 2: three tiles · row 3: apps full width.
-   Tablet: 2 cols (mates + apps span both). Phone: 1 col. Rows are equal height; every tile: visual on top, text below. ── */
-.cw-bento { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); grid-template-areas: "mates" "skills" "sched" "kb" "research" "apps"; }
-@media (min-width: 768px) { .cw-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "mates mates" "skills sched" "kb research" "apps apps"; } }
-@media (min-width: 1024px) { .cw-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-areas: "mates mates mates mates skills skills" "sched sched kb kb research research" "apps apps apps apps apps apps"; gap: var(--space-5); } }
-.cw-tile { display: grid; grid-template-rows: 1fr auto; gap: var(--space-5); padding: var(--space-6); border-radius: var(--radius-3xl); box-shadow: inset 0 0 0 1px rgb(30 32 51 / 0.06); min-height: 320px; overflow: hidden; }
-.cw-tile__visual { display: grid; place-items: center; min-height: 120px; }
-.cw-tile__text { display: flex; flex-direction: column; gap: var(--space-2); }
-.cw-tile__text .sr-body { color: var(--color-tx-secondary); margin: 0; }
-.cw-tile__eyebrow { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 12px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-tx-secondary); }
+/* ── Bento (building blocks): 5 cards in Sarvam's card language — a white card with a hairline, a soft lit "well" on top
+   (the tone as a pale wash fading to white, plus grain, like sarvam.ai's Full-Stack cards), title + one line below.
+   Desktop 6 cols: row 1 = teammates 3 + skills 3 · row 2 = schedule 2 + knowledge 2 + apps 2. Tablet 2 cols (apps spans). Phone 1. ── */
+.cw-bento { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); grid-template-areas: "mates" "skills" "sched" "kb" "apps"; }
+@media (min-width: 768px) { .cw-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "mates skills" "sched kb" "apps apps"; } }
+@media (min-width: 1024px) { .cw-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-areas: "mates mates mates skills skills skills" "sched sched kb kb apps apps"; gap: var(--space-5); } }
+.cw-tile { display: grid; grid-template-rows: 1fr auto; gap: var(--space-5); padding: var(--space-2) var(--space-2) var(--space-6); border-radius: var(--radius-3xl); background: var(--color-sr-white); border: var(--border-default); min-height: 340px; }
+.cw-tile__visual { position: relative; display: grid; place-items: center; min-height: 180px; padding: var(--space-6) var(--space-4); border-radius: calc(var(--radius-3xl) - var(--space-2)); overflow: hidden; isolation: isolate; }
+/* the well: a pale tone that fades into white toward the bottom, grain on top, a 1px inner highlight */
+.cw-tile__visual::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--texture-grain), linear-gradient(180deg, var(--well) 0%, var(--well-2) 60%, var(--color-sr-white) 100%); background-blend-mode: overlay, normal; }
+.cw-tile__visual::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), inset 0 0 0 1px rgb(30 32 51 / 0.04); pointer-events: none; }
+.cw-well--indigo { --well: var(--color-sr-indigo-100); --well-2: var(--color-sr-indigo-50); }
+.cw-well--orange { --well: var(--color-sr-orange-100); --well-2: var(--color-sr-orange-50); }
+.cw-well--green { --well: var(--color-sr-green-100); --well-2: var(--color-sr-green-50); }
+.cw-well--rose { --well: var(--color-sr-pink-100); --well-2: var(--color-sr-pink-50); }
+.cw-well--neutral { --well: var(--color-sr-grey-100); --well-2: var(--color-sr-grey-50); }
+.cw-tile__text { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-4); }
+.cw-tile__text .sr-body { color: var(--color-tx-tertiary); margin: 0; }
+.cw-tile__eyebrow { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 12px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-tx-tertiary); }
 .cw-tile__icon { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; }
-@media (min-width: 1024px) { [style*="grid-area: apps"].cw-tile { grid-template-rows: none; grid-template-columns: 5fr 7fr; align-items: center; min-height: 0; } [style*="grid-area: apps"] .cw-tile__visual { order: 2; } }
 /* bento visuals */
 .cw-bv-mates { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; max-width: 520px; }
 .cw-bv-mate { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 40px; padding: 0 var(--space-4) 0 6px; border-radius: var(--radius-full); background: var(--color-sr-white); box-shadow: var(--shadow-ambient-sm); font-size: var(--text-small); color: var(--color-tx); }
@@ -240,3 +248,9 @@
 .cw-sv__qtext { display: flex; flex-direction: column; min-width: 0; } .cw-sv__qtext span { font-size: 12px; color: var(--color-tx-tertiary); }
 .cw-sv__mini { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: var(--radius-full); background: var(--color-sr-slate); color: var(--color-sr-white); font-size: 12px; font-weight: var(--weight-medium); }
 .cw-msg__icon { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; margin-right: 6px; vertical-align: -4px; }
+
+/* Smooth scroll for in-page links (nav, hero buttons, menu items); sections clear the 64px bar. Off with reduced motion. */
+html:has(.cw) { scroll-behavior: smooth; }
+/* land each section's heading ~88px under the top (the bar is 64px), not its big top padding */
+.cw-section { scroll-margin-top: calc(88px - var(--space-section)); }
+@media (prefers-reduced-motion: reduce) { html:has(.cw) { scroll-behavior: auto; } }

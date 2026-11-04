@@ -17,7 +17,9 @@
    - **and side-by-side pairs** (stage rail = panel; skills text = skills card)
 5. **Colour by tone, one tone per block:** indigo, orange, green, rose, neutral (haze) surfaces with grain (`cw-surface--*`), and the matching ink for icons (`cw-tone--*`).
 6. **Every card that explains a step shows its moment:** a small product mock (StepVisual), not plain text.
-7. **Icons:** outline by default; Nucleo glyph in tab icons and small coloured tiles.
+7. **Icons:** outline by default; Nucleo glyph (filled) in tab icons, small coloured tiles and the mega-menu item icons.
+8. **Cards stay soft:** colour lives in a pale **well** at the top of a white card (tone-100 → tone-50 → white, grain, hairline), never as a full saturated card. One tone per card; 5 building-block cards (3 + 3 / 2 + 2 + 2).
+9. **In-page links scroll smoothly** (`scroll-behavior: smooth`, off with reduced motion) and land each heading ~88px under the top. Menu items that exist on the page link to their section (`#how`, `#integrations`, `#stories`, `#faq`).
 
 
 One complete, responsive product page, hero → footer, built only from `src/components/sarvam` and tokens. Expression: **Product**, with one **Campaign** moment (the closing CTA) and one **Community** moment (the testimonial / proof band).
