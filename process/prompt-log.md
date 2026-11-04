@@ -737,6 +737,20 @@ Entry format:
   - The © row floated alone in the wash, so it moved into the meta block. The second divider was dropped.
 - QA: check-layout 10/10 widths after each round. Chromium and WebKit screenshots of the wordmark filters.
 
+## 2026-11-04 · Claude Code (Opus 5.5) · Mobile pass, round 1: hero dashboard
+
+- Prompt (verbatim): "hey, i think we need to improve the mobile version of landing page, starting with hero section dashboard, make main point is that user shouldn't need to like scroll horizontally, and everything should fit properly like not stacked and text broken in 2 lines, etc, try to do that and fix the hero section dashbaord first"
+- What we found at 375: the body grid used a `1fr` track, so the teammate swipe row's min-content (1266px) pushed the detail panel to 600px wide inside a ~300px frame. The task title, summary, table and footer were all clipped on the right. The teammate list itself was a sideways swipe. The sidebar header stacked onto two lines. The three-column result table truncated every action.
+- What changed (CoworkDashboard, `dashboards.tsx` + `dashboards.css`):
+  - Track is now `minmax(0, 1fr)`. Layout below 1024 is keyed to the dashboard's own width with container queries, so in-between widths get the layout that fits them.
+  - Teammates, < 520px wide: one row of six icon tiles with a status dot. Names stay as accessible text and in `title`. Under 300px (320 phones) the tiles go 3 × 2 so taps stay at least 44px. From 520px to 1023px: a 2-column named grid. Desktop sidebar unchanged.
+  - Detail head on phone: name plus a short status ("Needs you" for "Needs your yes") on one row. Run now moved to the footer as an icon button beside a full-width Approve. The meta line is hidden on phone.
+  - Result table on phone: each row reads "name · value" with the action underneath. No header, no truncation.
+  - Sidebar header is one row below 1024 ("Your" dropped under 300px). The two-line stack is kept only for the narrow desktop sidebar.
+  - Detail heights (640 tablet, 660 phone, 700 under 300px) are sized so no teammate needs inner scrolling.
+- QA: Playwright at 320/375/414/600/768/900/1024/1440, clicking every teammate. Stage overflow is 0 for all six teammates below 1024. No page overflow. check-layout PASS at all 10 widths.
+- Still open: at 1024+ the stage scrolls 36px for five of the six teammates. This was already the case before this round.
+
 ## 2026-11-04 · Claude Code · Bulbul V4 Flash page (`/bulbul`): the consistency test
 
 - Prompts (verbatim, in order): "now what i want to do is that create a page /whatever you want, choose a subject from sarvam, understand and gather information from it, and genareta a full landing page, a new one new creativity, try to make it as sarvam as possible and beauitful, make sure evertghing is conisistent, understandable and visually apealling and not too cluttered, make sure everythign is aligned properly … do your best, go all out" · "use pattersns, cards, or logos, etc, but make sure accordingly and not too much and make it look good" · "basically this is going to be a testing page to me check how consistent you are" · "ya but gradient thing should be like differnt know so we know the theme is different for bulbul" · "not everything section should feel like indus page, it should have its own theme like bulbul"
@@ -756,6 +770,18 @@ Entry format:
   - No overflow and no page errors in Chromium or WebKit at 375 / 768 / 1440.
   - Playground interactions scripted (voice, pace, rate, format, tab → code updated).
   - `next build` passes.
+
+## 2026-11-04 · Claude Code (Opus 5.5) · Mobile pass, round 2: dashboard desktop fix + How it works
+
+- Prompt (verbatim): "yes and good, now go to next section how it works"
+- Dashboard follow-up: the earlier `minmax(0, 1fr)` rule came after the desktop rule, so it would have overridden the 248px sidebar column. I moved it into the base rule instead. Desktop detail height went from 600 to 664px, so no teammate scrolls inside the panel at 1024 or 1440.
+- What we found in How it works: below 1024 the tab rail scrolled sideways at every width. At 1024 the 3/12 side rail cut off "Waits for your yes". At 768 the two-column panel squeezed the checklist onto two lines per item and truncated the mock rows. At 320–375 the mocks broke: plan steps truncated, research source titles wrapped into their URLs, the review card's Approve button spilled out, and the approval titles wrapped.
+- What changed:
+  - Rail: a 2 × 2 grid below 1280. No sideways scroll. When the rail is narrower than 560px, each tab shows an icon and a short label (new `tabShort`: Plans / Researches / Improves / Asks first). From 560px each tab shows its title and note. The side rail starts at 1280.
+  - Panel on phone: a thinner frame, so the mock gets the width. From 768 to 1023: the visual sits on top, with the title and body on the left and the checklist on the right below it, so every check stays on one line. From 1024: text on the left, visual on the right. Panel titles use `text-wrap: balance`.
+  - Mocks: container queries on each mock card. A narrow card drops decoration only (time stamps, favicons, status words, the arrow and the gate meta line) and never truncates content. Under 300px the approval queue shows a round check button instead of the worded pill.
+  - Copy, written to fit the width: "Indian SaaS outlook 2026", "2 steps added to the plan", "Merge the pricing fix", "Pulls from connected apps", and "Needs your yes" / "Sends at 10:00" on the review gate. "Needs your yes" matches the dashboard's term.
+- QA: a Playwright pass clicked every tab at 320 / 360 / 375 / 414 / 600 / 768 / 900 / 1024 / 1280 / 1440. No clipping or truncation in the visible panel at any width, and no page overflow. The only wraps left are panel headings (h3). check-layout PASS at 10/10 widths. tsc clean.
 
 ## 2026-11-04 · Claude Code · Bulbul page, refinement rounds (theme, playground, horizon)
 
@@ -777,3 +803,32 @@ Entry format:
   - tokens.md §2.4c (page lights), imagery.md 2, components.md (CtaCard, Bulbul pieces), voice.md §6, SKILL.md.
   - bulbul-page.md §4 ("tried and rejected").
   - design.md regenerated.
+
+## 2026-11-04 · Claude Code (Opus 5.5) · Mobile pass, round 3: every remaining section
+
+- Prompt (verbatim): "yes and do all from now, do your best, go all out"
+- Method: a page-wide Playwright audit (temporary script, kept out of the repo). Per section and per width (320 → 1440, 9 widths), it flagged sideways scrollers, clipped or truncated text, nowrap text overflowing its box, short labels that wrap, and elements past the viewport. Each section got a fix, a re-audit and a screenshot check. Interactive parts were clicked through: every Build role, every How-it-works tab, the mobile nav sheet with all groups open.
+- Assistant vs teammate: the card label scales with its card (container units, 15–22px, measured at 12.3em), so "An Indus Cowork teammate" and "A chat assistant" both stay on one line at every width. Tighter card padding on phones.
+- Building blocks (bento): the teammate roster spilled out of its card at 320, the schedule rows wrapped ("Cluster / check") and the skill footer wrapped. Changes: a tighter well on phones; one line per row; narrow cards trim gaps and pill widths; on the narrowest schedule card (the 1024 bento) the status dot steps out because the pill already shows the state. Copy: "Ready for 4 teammates".
+- Integrations: a leftover phone rule had zeroed the panel's inline padding, so "100+" and the logos touched the edge. Padding restored. The logo grid is 6 across at every width: 4 even rows instead of 6 rows of scroll.
+- Your yes (approval desk): the 148px of buttons forced every task title onto 2–3 lines. On narrow cards Approve becomes a round check button beside the send-back X, with an accessible label, and the result pills compact. Copy: "Send 31 emails", "Post the readout".
+- A day with your teammate: below 1024 the stacked cards were already fine. At 1024–1279 the five columns were ~160px wide, so titles ran 1–3 lines. That range is now one timeline row per task (time · title · what lands · status). From 1280 it's five columns: titles reserve two balanced lines and pills sit on the bottom edge, so all five cards line up.
+- Build a teammate: the CTA label ("Talk to us about this teammate") stretched the result card about 100px off-screen. The card track is now `minmax(0, 1fr)`, and on narrow cards the CTA reads "Talk to us". App tiles are their own containers: a narrow tile shows "Calendar / Sheets / Docs" (the Google mark carries the brand; the full name stays the accessible name). The rhythm control reads Daily / Weekly / On demand on narrow fields, and the full rhythm still shows in the card's Runs row. The role name sizes to the card (longest, "Product Performance", is 9.34em). The hint reads "up to 5". Verified for all five roles at 6 widths.
+- Sovereign by default: on phones the icon sits beside the text, not above it, so the four facts and three deployment tiles take about half the scroll. Descriptions are capped at 32ch and balanced, so all four always take two lines (check-layout caught a 1/2/1/2 split at 414).
+- Customer quote: 18px on phones (it ran 13 lines); the role line stays on one line.
+- Hero CTAs: from 360px, two equal buttons side by side. Below 360, stacked at equal full width.
+- Dashboard: the desktop sidebar went from 248px to 264px, so "Cluster Health Monitor" fits on one line. This was already the case before this round.
+- Left as is: section H2s, FAQ questions, h3 panel titles and body paragraphs wrap naturally. The closing CTA's lattice bleeds past the card on purpose (decoration, clipped).
+- QA: audit clean at 9 widths. check-layout PASS 10/10. check-nav PASS. tsc clean.
+
+## 2026-11-04 · Claude Code (Opus 5.5) · Writing the responsive rules into the system
+
+- Prompt (verbatim): "great, did you create proper files and rules for this responsive thing?"
+- Honest answer at the time: no. Rounds 1–3 changed code and this log only. Worse, the docs still allowed swipe rows (layout.md §7.4) and said the tab rail and the dashboard list scroll sideways (components.md).
+- What changed:
+  - **layout.md:** Rules for AI 6–8 rewritten (no sideways scroll, ever; everything fits; check every state). §7.4 swipe rows replaced by "No sideways scroll". New §7.6, the fit ladder: rearrange → tighten → drop decoration → short label → fluid `cqi` size → rewrite copy, each with examples from the page, plus what may wrap and the accessibility rule for shortened labels. New §7.7, a container-threshold table per component. P2, P8, P10 and P11 updated to what's built. Test matrix §8.2 gains `check-fit` and a click-through of every state. New Do/Don't rows and Considered addition 7.
+  - **components.md:** the Dashboards responsive table (by dashboard width), narrow product-mock rules, Stage below 1280 (2 × 2, `tabShort`), the How-it-works panel per tier, the TileCard phone row, and a new "Landing-page interactive pieces" entry (ApprovalDesk, DayScrubber, TeammateBuilder, IntegrationField, bento visuals, the vs labels).
+  - **recipes/landing-page.md:** playbook 24 / 24b / 24c (no sideways scroll, the fit ladder, phone spacing tiers); the §2 responsive table rewritten per section; `check-fit` added to the done-gate.
+  - **SKILL.md:** a Fit non-negotiable, and the QA step names `check-fit`. **CLAUDE.md:** Malay's fit rule in the working rules. design.md regenerated.
+  - **scripts/check-fit.mjs (new):** the round-3 audit made permanent. It flags SIDEWAYS / CLIP / OVERFLOW / PAST-VIEWPORT as errors (exit 1) and wrapped short labels as warnings. It only counts text that actually crosses a box edge, skips decoration and visually hidden text, and lets deliberate two-line slots opt in with `data-may-wrap`. Landing page: all 9 widths fit. Sanity check on /bulbul at 375: it correctly fails on the sideways voice rail.
+- Known gap: /bulbul breaks the new rule (sideways voice rail, recipes/bulbul-page.md). Flagged for the next pass.

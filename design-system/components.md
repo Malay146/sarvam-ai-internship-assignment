@@ -235,11 +235,13 @@ Three distinct moments of a teammate's work, so feature panels never repeat the 
 
 Sizes: max width 380, text 13–14, mono 11. Each mock's accent follows its panel's tone (indigo → orange → green). Spinners stop under reduced motion.
 
+**Narrow mocks** (`container: mock`, layout.md §7.7): the card drops decoration and never truncates content. < 340: step times and the "teammate" tail go. < 300: status word beside the spinner, favicons, the gate meta line go; fixed-width pills become auto. < 260: the Approve arrow and search icon go, buttons tighten, rows go to 13px. Copy is written to fit the narrowest card ("Indian SaaS outlook 2026", "2 steps added to the plan", "Needs your yes" / "Sends at 10:00").
+
 ### FeatureBento `<FeatureBento items>`
 A denser alternative to three FeatureRows: one wide tile (text + visual side by side) and two equal tiles below (subgrid rows). Phone: stacked. Same tones, same mocks.
 
 ### TileCard `<TileCard svg title desc>`
-A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 16/20; inner top highlight + 1px hairline) beside a feature-title and one line. Stacked until 1280, then 3 across. Used for options like Sarvam Cloud / Private Cloud (VPC) / On-Premises `[verified copy, evened out to equal length]`.
+A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 16/20; inner top highlight + 1px hairline) beside a feature-title and one line. Stacked until 1280, then 3 across. Below 768 the tile is 56px and **always beside** the text (never above it); the title is one line and the description is balanced. Used for options like Sarvam Cloud / Private Cloud (VPC) / On-Premises `[verified copy, evened out to equal length]`.
 
 ### GlowCard · FactCard
 - **GlowCard:** a card whose header is a crisp glow shape on its tint (lavender / rose / leaf), then eyebrow, h4 and body. Header 16:10, **rendered at that aspect (never cropped)**; the shape fills 66% of the header height so siblings match; the header is inset 8px on three sides; text is inset 24px left, right and bottom.
@@ -271,13 +273,21 @@ The official Sarvam line motif (`/brand/motif.svg`) sits above a hero eyebrow `[
 
 ### Dashboards `<CoworkDashboard />` `<ScheduleDashboard />` (working)
 Calm, information-dense product views that **work**. They sit on a tint stage (`.db-frame` + `sr-tint-*`), like Sarvam's hero mockup over its haze.
-- **Cowork (teammates):** sidebar "Your teammates" (name, role, a status dot; a swipe row on phone) + one detail view (name + status, the task in display type, steps, the result table, approval, message box).
+- **Cowork (teammates):** sidebar "Your teammates" (name, role, a status dot) + one detail view (name + status, the task in display type, steps, the result table, approval, message box).
   - **Run now** walks the steps, then waits for your yes.
   - **Approve** updates the "need your yes" count.
   - **Messages** get a reply.
 - **Schedule (today):** a quiet day timeline + one list (time, task, last result, status, a run icon, an on/off switch) + "Needs your yes" with approve/decline and the latest activity.
 - **Status:** a small dot + plain text (indigo working, orange needs your yes, green done, grey scheduled). No colourful pills.
-- **Rules:** no KPI-box walls, one accent, hairline separators instead of boxes. Fixed heights per breakpoint; the detail stage scrolls inside, so the page never moves. Text rows are single-line with ellipsis. Tap targets are 44px on touch screens.
+- **Rules:** no KPI-box walls, one accent, hairline separators instead of boxes. Fixed heights per breakpoint, **sized so no teammate needs inner scrolling** (640 tablet, 660 phone, 700 under 300px, 664 desktop with a 264px sidebar); only an added chat thread scrolls inside, so the page never moves. Tap targets are 44px on touch screens.
+- **Responsive (Cowork), keyed to the dashboard's own width** (`container: db`, layout.md §7.7). The grid track is `minmax(0, 1fr)` so a wide child can't widen it.
+  | Dashboard width | Teammate list | Detail |
+  |---|---|---|
+  | ≥ 1024 viewport | sidebar, name + team + dot | head: name, full status, Run now · meta line + Approve |
+  | 520 – 1023 | 2-column named grid above the detail | same as desktop |
+  | 300 – 519 | **one row of 6 icon tiles** (status dot on the tile; names visually hidden, kept in `title`) | head: name + **short status** ("Needs you") · footer: full-width Approve + round Run · table rows re-flow to "name · value" with the action underneath, no header |
+  | < 300 | icon tiles 3 × 2 (taps stay ≥ 44px); "Your" drops from the header | same |
+  Header ("Your teammates · 2 need your yes") is one row below 1024 and stacks only in the narrow desktop sidebar.
 
 ### EmblemArt · EmblemCard `<EmblemArt shape icon surface />`
 Our richest illustration, built only from our assets (`imagery.md` §2.4):
@@ -309,8 +319,18 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
 - **What:** a product stage with a tab rail. Each tab has an optional icon (glyph, in a tone tile) and a `tone`; the active tab shows the tone's border and a progress bar.
 - **No page movement:** all panels share one grid cell, so the stage is as tall as the tallest panel and switching never moves the page.
 - **Side rail (≥1024):** the tabs stretch to exactly the panel's height (`grid-auto-rows: 1fr`), so both columns start and end on one line. Use 4 tabs.
-- **Phone/tablet:** the rail becomes a full-bleed horizontal scroller; tabs size to their labels (never truncated); the active tab scrolls into view.
+- **Below 1280:** the rail is a **2 × 2 grid** above the panel (never a sideways scroller, layout.md §7.4). Rail < 560px: icon + a one-word `tabShort` (e.g. Plans / Researches / Improves / Asks first), no note. Rail ≥ 560px: title + note. The side rail starts at 1280 (at 1024 a 3/12 rail cut labels short).
+- **How-it-works panel inside a Stage:** phone = visual first in a thin frame (the mock gets the width), then text. 768–1023 = visual on top, then title + body **beside** the checklist (two columns, each check one line). ≥ 1024 = text 5 / visual 7. Panel titles use `text-wrap: balance`.
 - **Auto-advance:** only while visible; it stops for good once the reader picks a tab.
+
+### Landing-page interactive pieces `[addition]` (`cowork-play.tsx`, `bento-visuals.tsx`)
+How each one stays whole on a phone. All use layout.md §7.6 (fit ladder) and §7.7 (thresholds).
+- **ApprovalDesk** (queue + trail): task titles and the role line are one line. On a card < 440px, Approve becomes a **round ✓ button** (`aria-label="Approve: …"`) beside the send-back ✕, and the result pill compacts (min 104px). < 280px: titles 13.5px. Queue copy is written short ("Send 31 emails", "Post the readout").
+- **DayScrubber** (timeline): see layout.md P8. Phone/tablet stacked cards; 1024–1279 one row per event; ≥ 1280 five columns with two reserved title lines and bottom-pinned pills.
+- **TeammateBuilder:** the result card's track is `minmax(0, 1fr)`; the role name sizes to the card (`clamp(15px, calc((100cqi - 60px) / 9.6), 22px)`, longest "Product Performance" = 9.34em). Narrow fields: rhythm reads Daily / Weekly / On demand (the full rhythm stays in the card's Runs row), the hint reads "up to 5", the CTA reads "Talk to us". Each app tile is its own container: < 160px shows "Calendar / Sheets / Docs" (the Google mark carries the brand; the full name stays the accessible name). Verify **every role** at every width.
+- **IntegrationField:** padding never drops to 0 on phones; the logo grid is 6 across at every width (24 marks = 4 even rows).
+- **Bento visuals** (`bv-*`): one line per row; on narrow cards gaps and pill widths tighten, then the schedule's status dot steps out (the pill already says Done / Next). Copy: "Ready for 4 teammates".
+- **Assistant vs teammate:** both card labels stay one line by sizing to the card (`clamp(15px, calc((100cqi - 48px) / 12.6), 22px)`; "An Indus Cowork teammate" = 12.3em).
 
 ### Bulbul page pieces `[addition]` (`bulbul-wave.tsx`, `bulbul-play.tsx`, recipe `recipes/bulbul-page.md`)
 - **`<Wave seed n profile state tone steps>`**: a deterministic speech waveform. Its state drives CSS only (transform + colour): `idle` (flat) → `stream` (bars rise left to right) → `play` (colour fills left to right, playhead sweeps) → `done`. `profile` is speech, calm, energy, duet or bilingual (two-colour segments); `steps` quantises the heights (a lo-fi look for 8 kHz).

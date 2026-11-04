@@ -13,8 +13,9 @@ How Sarvam pages are built at every screen size: breakpoints, containers, grids,
 3. **Siblings are identical** (§5): equal width, equal height, aligned inner rows, and the **same number of lines** in every title and every description. Write copy to fit.
 4. **One alignment per role** (§4): the hero is centred; everything else is left-aligned on mobile.
 5. **Use tokens only:** `--container-width`, `--space-*`, `--grid-*`. No raw px for layout.
-6. **Nothing scrolls sideways** except an intentional swipe row (§7.4), which must show a peek of the next item.
-7. **Check every width,** not only the three exports (§8).
+6. **Nothing scrolls sideways. Ever** (§7.4). Rails, chips, tabs and lists rearrange into grids or rows; they never become swipe rows.
+7. **Everything fits** (§7.6): no label breaks onto two lines, no text is clipped, truncated with "…" or runs past its box. Fix it with the fit ladder (rearrange → tighten → drop decoration → short label → fluid size → rewrite), in that order.
+8. **Check every width,** not only the three exports (§8): `check-fit` + `check-layout` at 9–10 widths, and click every interactive state.
 
 ---
 
@@ -192,8 +193,8 @@ Sticky at the top with `backdrop-filter: blur(var(--blur-glass))` over an `sf` 8
 ### P2. Product hero
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| Line motif → eyebrow → H1 (`display-product`, 36, centred, 2–3 lines) → lead (16, centred, ≤ 5 lines) → buttons **side by side** if both fit in 330px, otherwise stacked full-width, primary on top → product mockup. | Same order; H1 ~46; lead max 42rem; buttons side by side. | H1 52, max 56rem (2 lines); mockup 1200 wide. |
-| **Mockup on phone:** don't shrink the full desktop UI. Show a **cropped, simplified view**: one panel (the task view), real text at ≥ 12px, tabs as a swipe row `[observed: Sarvam crops to the task panel with swipeable tabs]`. | Mockup at full container width, sidebar visible. | Full mockup: sidebar + task view. |
+| Line motif → eyebrow → H1 (`display-product`, 36, centred, 2–3 lines) → lead (16, centred, ≤ 5 lines) → buttons: **two equal columns side by side from 360px** (15px, padding 16), **stacked at equal full width below 360**. Never two stacked buttons of different widths. Primary first → product mockup. | Same order; H1 ~46; lead max 42rem; buttons side by side at their natural width. | H1 52, max 56rem (2 lines); mockup 1200 wide. |
+| **Mockup on phone:** don't shrink the full desktop UI. Show a **simplified view**: the list becomes a row of icon tiles (names move to the detail head and stay as accessible text), one detail panel, real text at ≥ 12px, tables re-flow to "name · value" with the action underneath. **No swipe row** `[changed from Sarvam: it crops to the task panel with swipeable tabs; we keep everything visible]`. | Mockup at full container width; the list is a 2-column named grid above the detail. | Full mockup: sidebar + task view. |
 
 Background: `--gradient-haze` rising behind the lower half of the hero and the mockup (full-bleed).
 
@@ -227,7 +228,7 @@ Tints in sequence: indigo → orange → green (`tokens.md` §2.4b). All feature
 ### P8. Timeline ("Runs while you sleep")
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| **Vertical list**: mono time (eyebrow-mono) above each event title and description `[observed]`; a vertical line connects the dots. | 2 columns of events (768–1279). | **Horizontal from 1280**: 5 events on one line with a progress line and dots (`--ring-dot`) `[observed]`; all event titles 1 line, all descriptions 2 lines (§5). |
+| **Vertical list** of cards: dot · mono time · status pill on one line, then the title, then the description `[observed]`. | Same stacked cards (768–1023). **1024–1279: one row per event**: dot · time · title (one line, 15em) · description (fills the rest) · status (104px). | **Horizontal from 1280**: 5 events on one rail with dots (`--ring-dot`) `[observed]`. Titles reserve **two balanced lines** (`min-height: 2lh; text-wrap: balance`) and the status pill sits on the card's bottom edge, so all five cards share every row line (§5). |
 
 ### P9. Numbered steps (01 / 02 / 03)
 | Phone | Tablet | Laptop+ |
@@ -237,12 +238,12 @@ Tints in sequence: indigo → orange → green (`tokens.md` §2.4b). All feature
 ### P10. Role / use-case cards ("Give each teammate a job")
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| One bordered list with dividers `[observed]`, or a swipe row of equal cards (82% width + peek). | 2 columns. | 5 equal columns, or 3 + 2 with the same rule as P5. |
+| One bordered list with dividers `[observed]`, or chips that wrap onto new lines. Never a swipe row (§7.4). | 2 columns. | 5 equal columns, or 3 + 2 with the same rule as P5. |
 
 ### P11. Dark trust band ("Sovereign by default")
 | Phone | Tablet | Laptop+ |
 |---|---|---|
-| `sr-indigo-950` panel, radius 24, inside the container. Title, then points separated by `st-dark` dividers `[observed]`. | Same, 2 columns of points. | Title left (4 cols), points in a 2×2 grid right (8 cols). Text uses `tx-inverse` / `tx-inverse-secondary`. |
+| `sr-indigo-950` panel, radius 24, inside the container. Title, then points separated by `st-dark` dividers `[observed]`. Each point is a **row: icon (40px) beside title + description**, not icon above; descriptions capped at 32ch and balanced so every point takes the same two lines. Deployment tiles below follow the same row shape (56px tile left). | Same, 2 columns of points. | Title left (4 cols), points in a 2×2 grid right (8 cols). Text uses `tx-inverse` / `tx-inverse-secondary`. |
 
 ### P12. FAQ
 | Phone | Tablet | Laptop+ |
@@ -278,16 +279,54 @@ Sarvam's mobile hierarchy, spacing and type sizes are kept exactly (`typography.
 ### 7.3 Hover has a tap equivalent
 - Anything revealed on hover (card shadow, image zoom) is either always visible on touch, or not needed. Use `@media (hover: hover)` for hover-only effects `[verified: Sarvam does this]`.
 
-### 7.4 Swipe rows (the only allowed sideways scroll)
-- Used for: hero mockup tabs, role cards (P10).
-- Items are ≤ 82% of the viewport so the next one peeks (signals "swipe").
-- `scroll-snap-type: x mandatory`, `scroll-padding-inline` = side margin, scrollbar hidden.
-- All items in the row are equal size (§5).
+### 7.4 No sideways scroll `[addition, Malay's rule, replaces swipe rows]`
+Nothing on the page scrolls sideways, at any width. A sideways row hides content and asks the reader to discover a gesture.
+- **Tab rails** become a 2 × 2 grid (4 tabs) below 1280. Narrow rails (< 560px) show icon + a one-word `tabShort` label; wider rails show title + note.
+- **Lists of items** (teammates, roles, chips) become a grid of equal tiles, or wrap onto new lines.
+- **Long tables** re-flow (row → "name · value" with the detail underneath), never scroll.
+- **Exception:** an auto-moving logo marquee (it moves on its own; nothing to discover). Code blocks wrap long lines instead of scrolling.
+- Checked by `check-fit` (SIDEWAYS). Any `overflow-x: auto` with content wider than its box fails.
 
 ### 7.5 Viewport
 - Use `100dvh`, not `100vh`, for full-height sections (mobile browser bars).
 - Respect safe areas: `padding-bottom: env(safe-area-inset-bottom)` on fixed bars.
 - No fixed element covers more than 15% of the screen height.
+
+### 7.6 Everything fits: the fit ladder `[addition, Malay's rule]`
+**Fits** means: no label on two lines, no text clipped or truncated with "…", no text running past its box or under a neighbour, no element past the screen edge.
+When something doesn't fit, try these **in order** and stop at the first that works:
+
+| # | Move | Examples from the landing page |
+|---|---|---|
+| 1 | **Rearrange** (change the layout, not the size) | tab rail → 2 × 2 grid · 5 timeline columns → one row per event at 1024 · panel text → title + body beside the checklist at 768 · trust point icon above → icon beside · result table → "name · value" + action below |
+| 2 | **Tighten spacing** on the tight tier only | card padding 32 → 24 (< 1024) → 20 (< 480) → 16 (< 360); well padding 24 → 12 on phones |
+| 3 | **Drop decoration**, never content | step timestamps, favicons, status words beside a spinner, arrow icons, the gate meta line, a status dot when the pill already says it |
+| 4 | **Short label variant**, same meaning | `tabShort` ("Plans", "Asks first") · status "Needs you" for "Needs your yes" · "Calendar" for "Google Calendar" (the mark carries the brand) · rhythm "Daily / Weekly / On demand" · CTA "Talk to us" · Approve → round ✓ button with `aria-label` |
+| 5 | **Fluid size inside the component**: `clamp(min, calc((100cqi − fixed) / em-width), max)`. Measure the longest string in em first. | card labels: `clamp(15px, calc((100cqi - 48px) / 12.6), 22px)` · role name: `(100cqi - 60px) / 9.6` |
+| 6 | **Rewrite the copy** to the budget (§5.2) | "Send 31 emails" · "Merge the pricing fix" · "Indian SaaS outlook 2026" · "Ready for 4 teammates" |
+
+**Never:** `text-overflow: ellipsis` on content, `white-space: nowrap` without the fit having been measured, 2-line labels, sideways scroll, a smaller font than §7.2 allows.
+
+**Allowed to wrap** (they are prose, not labels): section headings, panel headings (`text-wrap: balance`), body paragraphs, FAQ questions, card descriptions. In a sibling set, descriptions still take the **same** number of lines (§5); cap the measure (e.g. 32ch) and balance to get there. A slot that deliberately takes two lines is marked `data-may-wrap`.
+
+**Accessibility when a label shortens or hides:** the full text stays in the DOM (visually hidden or `aria-label`); short variants are `aria-hidden`. Tap targets stay ≥ 44px.
+
+### 7.7 Container thresholds `[addition]`
+Components switch on **their own width** (container queries), so they behave the same in a phone column, a tablet half-column or a narrow desktop bento cell. Viewport breakpoints only move the big layout (§1).
+
+| Component | Container | Switch | What changes |
+|---|---|---|---|
+| Cowork dashboard | `.db` (`db`) | < 520 / < 300 | named 2-col grid → 6 icon tiles → 3 × 2 tiles; short status; Run beside Approve; table re-flow |
+| Stage tab rail | `.cw-stage__rail` (`rail`) | < 560 / < 300 | title + note → icon + `tabShort` → tighter tab padding |
+| Product mock card | `.sr-mock` (`mock`) | < 340 / < 300 / < 260 | drop times, then favicons / status words / gate meta, then arrow + tighter buttons |
+| Approval queue mock | `.cw-sv--queue` (`queue`) | < 300 | worded pill → round check |
+| Bento mini UI | `.bv-card` (`bv`) | < 260 / < 230 | tighter gaps and pills → status dot steps out |
+| Approval desk | `.pv-desk__queue` (`desk`) | < 440 / < 280 | Approve → round ✓; then 13.5px titles |
+| Builder field / card | `.pv-field`, `.pv-mate__card` | < 460 / < 340 | rhythm short labels; hint and CTA lose their tail |
+| Builder app tile | `.pv-app` (`app`) | < 160 | "Google X" → "X" |
+| Comparison card | `.pv-vs__col` (`vs`) | fluid | label size from `cqi` |
+
+⚠️ A container can't style itself from its own query: put padding changes on a parent query or a viewport media query. Never put `container-type` on a subgrid item (§8.1).
 
 ---
 
@@ -312,7 +351,9 @@ For each width, check:
 3. No text under its minimum size (§7.2).
 4. Every tap target ≥ 44px (phone widths).
 5. Alignment follows §4.
-6. Screenshot at 375 / 768 / 1440 for the submission.
+6. **Fit** (§7.4, §7.6): `node scripts/check-fit.mjs <url>` reports SIDEWAYS, CLIP, OVERFLOW and PAST-VIEWPORT as errors and wrapped short labels as warnings. Must exit 0.
+7. **Click every state at every width**: each tab, each role or option, approve / send back, open menus. A label that fits in the default state can overflow in another (a longer role name, the "Approved" pill).
+8. Screenshot at 375 / 768 / 1440 for the submission.
 
 ---
 
@@ -326,7 +367,9 @@ For each width, check:
 | Write copy to the character budget | Fix uneven cards with random padding |
 | Left-align multi-line text on phones | Centre a 5-line paragraph |
 | Crop and simplify product mockups on phone | Show an unreadable miniature of the desktop UI |
-| Use swipe rows with a visible peek | Hide content in sideways scroll with no hint |
+| Rearrange a row into a grid or wrap it | Put anything in a sideways scroller |
+| Climb the fit ladder (§7.6) in order | Truncate with "…" or let a label break onto two lines |
+| Drop decoration before shortening content | Shrink text below §7.2 to make it fit |
 | Use container queries for cards | Rely only on viewport breakpoints |
 
 ---
@@ -339,3 +382,4 @@ For each width, check:
 4. **Sibling consistency system** (§5): subgrid rows, `lh` min-heights, copy budgets. This is our main flair.
 5. **Non-alternating feature rows** and no orphan cards at tablet (P4, P5).
 6. **Mobile rules** (§7) and the **test matrix with an automated parity check** (§8).
+7. **No sideways scroll and the fit ladder** (§7.4, §7.6), with container thresholds per component (§7.7) and an automated fit check (`check-fit`). Sarvam's own phone pages use swipe rows and truncation; we don't.

@@ -43,7 +43,9 @@
 21. **One header-to-content gap:** `--space-section-head` (40 / 56). Never stack the header margin on a flex gap.
 22. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes. **Tabbed panes (code tabs) have one fixed height on every tab**: longer content scrolls inside with a soft fade at the foot, and long lines wrap. The card beside them never changes height when the tab changes.
 23. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children; the page clips at `overflow-x: clip`.
-24. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
+24. Phone/tablet rearrange, never squeeze: **nothing scrolls sideways** (rails become 2 × 2 grids, lists become tile grids, tables re-flow); 3-up cards become horizontal cards at 768–1023.
+24b. **Everything fits** (layout.md §7.6): no label on two lines, no "…", no text under a neighbour. Climb the fit ladder in order: rearrange → tighten spacing → drop decoration → short label → fluid size (`cqi`) → rewrite copy. Components switch on their own width (container queries, layout.md §7.7), not the viewport.
+24c. **Phone spacing tiers:** card padding 32 → 24 below 1024 → 20 below 480 → 16 below 360. Never 0: content never touches a card edge.
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back); logs start pre-filled and keep a fixed length; timelines show every step at once and fill a rail (never swap one card out for the next).
 26a. **Card visuals are real mini UIs, not placeholders:** a header row, 3–5 rows with icon + label + meta, a status pill or footer. No grey bars or bare chips standing in for content. An active row never shares its icon tile's colour: tiles are neutral at rest and turn solid (white icon) when their row is active.
 26. **Minimal beats busy:** a static grid of real marks beats drifting rows; text beside a grid is top-aligned with its action pinned to the bottom.
@@ -59,7 +61,7 @@
 33b. **Closing card title: never more than 2 lines at any width.** Keep the copy (Sarvam's own line is fine); widen the title (≤ 30ch), balance it, and scale it with the viewport on phones (voice.md §6). Check the line count at 320–1920.
 
 ### 0.6 Before calling it done
-34. `check-layout` (10 widths), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look: screenshots at 375 / 768 / 1440.
+34. `check-layout` (10 widths), `check-fit` (9 widths, must exit 0), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look: screenshots at 375 / 768 / 1440.
 
 ## 1. Section order (v3, as built)
 
@@ -81,16 +83,20 @@
 
 ## 2. Responsive behaviour
 
+Viewport breakpoints move the big layout; inside each section, components switch on their own width (layout.md §7.7). Nothing scrolls sideways at any width.
+
 | Section | Phone (<768) | Tablet (768–1023) | Desktop (≥1024) |
 |---|---|---|---|
-| Hero | centred text, dashboard below (its own phone layout) | same | same, dashboard full container width |
-| How it works | tab rail scrolls sideways, panel below (visual first) | same | tabs left (stretch to the panel's height), panel right |
-| Assistant vs teammate | stacked, no "vs" badge | 2 columns + "vs" | same |
-| Integrations | number on top, 4-up grid, pill under the text | 6-up grid | number left (top-aligned, pill at the foot) / 6 × 4 grid right |
-| Approval desk | queue, then trail | same | queue 7 / trail 5, equal height |
-| Timeline | vertical list of the five cards | same | five cards under one rail |
-| Builder | controls, then the teammate card | same; apps 3-up | controls 7 / panel 5 (card centred, not sticky); apps 4-up from 1280 |
-| Security | list | 2 × 2 | 4 across |
+| Hero | centred text; CTAs two equal columns from 360, equal full width below; dashboard: 6 icon tiles + detail, short status, table re-flow | same; dashboard list is a 2-column named grid | dashboard sidebar (264) + detail |
+| How it works | tabs 2 × 2 (icon + one-word label), panel below: visual first in a thin frame, then text | tabs 2 × 2 (title + note); visual on top, title + body beside the checklist | 1024–1279: tabs 2 × 2 above, panel text 5 / visual 7 · ≥ 1280: side rail 3 / panel 9 |
+| Assistant vs teammate | stacked, no "vs" badge; labels one line (sized to the card) | 2 columns + "vs" | same |
+| Building blocks | 1 column, tight wells; every mini-UI row one line | 2 + 2 + 1 | 3 + 3 / 2 + 2 + 2 |
+| Integrations | padded panel; number, text, pill; 6-up logo grid (4 rows) | same | number left (pill at the foot) / 6 × 4 grid right |
+| Approval desk | queue (Approve = round ✓ beside ✕), then trail | same, worded Approve | queue 7 / trail 5, equal height |
+| Timeline | stacked cards | same | 1024–1279: one row per event · ≥ 1280: five cards on one rail, aligned rows |
+| Builder | controls, then the teammate card; short labels on narrow fields and tiles; CTA "Talk to us" | same; apps 3-up | controls 7 / panel 5 (card centred, not sticky); apps 4-up from 1280 |
+| Security | icon-beside rows, two balanced lines each; deployment tiles as rows | 2 × 2 | 4 across; deployment tiles 3 across from 1280 |
+| Customer quote | 18px quote, tighter padding, role line one line | centred | centred |
 | FAQ | full width | max 720 | max 720, centred |
 
 ## 3. Quality gates (all must pass before export)

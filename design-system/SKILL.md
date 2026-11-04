@@ -14,7 +14,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 3. **Use tokens only.** Every colour, size, space, radius, shadow and duration comes from `tokens.css` (mirrored in `tokens.md`). Never write a raw value that isn't a token.
 4. **Use the components** in `src/components/sarvam` for web work; follow their specs in `components.md`.
 5. **Copy:** only claims from `voice.md` §5, written to the character budgets in `voice.md` §6.
-6. **Check before calling it done:** the quality gates in the recipe (QA scripts and contrast).
+6. **Check before calling it done:** the quality gates in the recipe (QA scripts and contrast). For web: `check-fit` and `check-layout` at every width, plus a click-through of every interactive state.
 
 | Task | Read |
 |---|---|
@@ -51,6 +51,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 - **Type:** display font for headings and primary CTAs; sentence case; weights 300–500; no italics.
 - **Colour:** gradients carry grain; one gradient per composition; text only on approved pairs.
 - **Layout:** design mobile first; rearrange, don't shrink; siblings identical in size and line count.
+- **Fit:** nothing scrolls sideways, ever; no label breaks onto two lines; no text is clipped, truncated with "…" or runs past its box. Fix with the fit ladder in `layout.md` §7.6 (rearrange → tighten → drop decoration → short label → fluid size → rewrite). Components switch on their own width (`layout.md` §7.7).
 - **Icons:** Nucleo Core outline, 24 grid, 1.5 stroke, round caps.
 - **Motion:** transform and opacity only; loops only in product mocks; nothing changes size; respect reduced motion.
 - **Voice:** calm, plain, confident; "Talk to Us" for Indus Cowork; only verified facts.
