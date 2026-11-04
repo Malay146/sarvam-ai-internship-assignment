@@ -592,3 +592,13 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-faq__a { overflow: hidden; }
 .pv-faq__a p { margin: 0; padding: 0 var(--space-8) var(--space-5) 0; font-size: var(--text-body); line-height: 1.6; color: var(--color-tx-secondary); max-width: 62ch; }
 @media (prefers-reduced-motion: reduce) { .pv-faq__chev::before, .pv-faq__chev::after { transition: none; } }
+
+/* Hero horizon: on landing, the light rises — it grows down from the top edge (scaleY only, so the sides never show an edge)
+   while fading in. Runs once per page load; nothing else moves (no layout shift). Off with reduced motion. */
+.cw .sr-hero-glow { transform-origin: 50% 0%; animation: cw-horizon-rise 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; will-change: transform, opacity; }
+@keyframes cw-horizon-rise {
+  from { opacity: 0; transform: scaleY(0.2); }
+  60% { opacity: 1; }
+  to { opacity: 1; transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) { .cw .sr-hero-glow { animation: none; } }
