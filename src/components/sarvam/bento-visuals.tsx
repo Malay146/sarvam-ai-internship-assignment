@@ -38,21 +38,31 @@ export function BvTeammates() {
 
 /* Skills: a skill file with numbered steps on a rail, and the teammates it is shared with. Steps light up in turn. */
 export function BvSkill() {
-  const [ref, phase] = useLoop([900, 900, 900, 2200]);
+  // 0–2: step n is running (ring), earlier steps are done (check) · 3: all done, hold · then reset
+  const [ref, phase] = useLoop([1100, 1100, 1100, 2400]);
   const steps = ["Pull the week's numbers", "Explain the movement", "Park it for review"];
   return (
     <div ref={ref} className="bv-card bv-skill" aria-hidden>
       <div className="bv-head"><code>weekly-revenue-readout</code><span className="bv-tag">Skill</span></div>
       <ol className="bv-steps">
-        {steps.map((s, n) => (
-          <motion.li key={s} initial={false} animate={{ opacity: n <= phase ? 1 : 0.4 }} transition={T}>
-            <span className="bv-num" data-on={n <= phase}>{n + 1}</span>{s}
-          </motion.li>
-        ))}
+        {/* the rail fills down to the running step */}
+        <motion.span className="bv-steps__fill" initial={false} animate={{ scaleY: Math.min(phase, 2) / 2 }} transition={{ duration: 0.6, ease: EASE.outQuint }} />
+        {steps.map((s, n) => {
+          const st = n < phase ? "done" : n === phase ? "run" : "todo";
+          return (
+            <li key={s} data-st={st}>
+              <span className="bv-num">
+                {st === "done" ? <motion.span key="d" initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={T}><Check width={11} height={11} strokeWidth={3} /></motion.span> : n + 1}
+                {st === "run" && <motion.span className="bv-num__ring" animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />}
+              </span>
+              <span className="bv-steps__text">{s}</span>
+            </li>
+          );
+        })}
       </ol>
       <div className="bv-foot">
         <span className="bv-stack">{ROLES.slice(0, 4).map((r) => <span key={r.key} className={`bv-ava bv-ava--sm cw-tone--${r.tone}`}><r.icon width={11} height={11} /></span>)}</span>
-        <span>Shared with 4 teammates</span>
+        <span>{phase >= 3 ? "Ready · shared with 4 teammates" : "Shared with 4 teammates"}</span>
       </div>
     </div>
   );

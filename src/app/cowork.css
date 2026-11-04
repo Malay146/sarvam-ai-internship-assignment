@@ -648,3 +648,14 @@ html:has(.cw) { scroll-behavior: smooth; }
 .bv-kb .bv-file { background: var(--color-sf-tertiary); color: var(--color-tx-secondary); transition: background var(--duration-moderate) var(--ease-standard), color var(--duration-moderate) var(--ease-standard); }
 .bv-kb li[data-on="true"] .bv-file { background: var(--color-sr-pink-800); color: var(--color-sr-white); }
 @media (prefers-reduced-motion: reduce) { .bv-kb .bv-file { transition: none; } }
+
+/* skill steps: outlined number at rest, a spinning orange ring while running, a solid check when done; the rail fills */
+.bv-steps__fill { position: absolute; left: 10px; top: 12px; bottom: 12px; width: 1px; background: var(--color-sr-orange-800); transform-origin: 50% 0%; z-index: 0; }
+.bv-steps li { z-index: 1; }
+.bv-steps li[data-st="todo"] .bv-steps__text { color: var(--color-tx-tertiary); }
+.bv-steps__text { transition: color var(--duration-moderate) var(--ease-standard); }
+.bv-num { position: relative; z-index: 1; }
+.bv-steps li[data-st="run"] .bv-num { border-color: var(--color-sr-orange-200); color: var(--color-sr-orange-900); background: var(--color-sr-white); }
+.bv-steps li[data-st="done"] .bv-num { background: var(--color-sr-orange-800); border-color: var(--color-sr-orange-800); color: var(--color-sr-white); }
+.bv-num__ring { position: absolute; inset: -1px; border-radius: 50%; border: 1.5px solid transparent; border-top-color: var(--color-sr-orange-800); border-right-color: var(--color-sr-orange-800); }
+.bv-num > span:first-child { display: grid; place-items: center; }
