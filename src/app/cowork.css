@@ -320,3 +320,10 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-sec b { font-weight: var(--weight-medium); font-size: var(--text-body); color: var(--color-tx); }
 .cw-sec span { font-size: var(--text-small); color: var(--color-tx-tertiary); max-width: 26ch; }
 @media (min-width: 1024px) and (max-width: 1279px) { .cw-sec li { padding: var(--space-5); } .cw-sec span { font-size: 13px; } }
+
+/* Hero light for Indus Cowork: the Product expression's indigo glow, not the homepage Sun.
+   Same disc and fade as HeroGlow, recoloured from the indigo-glow ramp [sampled]: indigo core → lilac → a peach rim. */
+.cw .sr-hero-glow__sun {
+  background-image: var(--texture-grain),
+    radial-gradient(circle farthest-side at 50% 0% in oklab, #5957c4 0%, #7c71d0 50%, #a99ad8 62%, #c2abcc 72%, #e6bfb8 82%, rgb(250 190 163 / 0.45) 90%, rgb(250 190 163 / 0) 100%);
+}

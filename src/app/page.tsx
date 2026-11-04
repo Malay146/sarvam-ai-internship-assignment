@@ -11,6 +11,7 @@ import {
   Motif, ScheduleDashboard, SectionHeader, TileCard, TrustBand,
 } from "@/components/sarvam";
 import { BrandMark, LogoLockup, hasMark } from "@/components/sarvam/brand";
+import { BRAND_MARKS } from "@/components/sarvam/brand-marks";
 import { MegaNav } from "@/components/sarvam/mega-nav";
 import { Marquee, Reveal, SkillCreator, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
@@ -32,6 +33,7 @@ const MORE_APPS = ["Asana", "Calendly", "Dropbox", "Canva", "Apify", "DataRobot"
 const ALL_APPS = [...CONNECTORS.flatMap((g) => g.apps.map((a) => ({ a, tone: g.tone }))), ...MORE_APPS.map((a) => ({ a, tone: "neutral" as const }))];
 
 function App({ name }: { name: string; tone?: string }) {
+  if (BRAND_MARKS[name]?.vh) return <span className="cw-app" title={name}><BrandMark name={name} size={18} colored title={name} /></span>;   // wordmark logos carry the name
   return <span className="cw-app">{hasMark(name) ? <BrandMark name={name} size={18} colored /> : <span className="cw-app__none" aria-hidden />}{name}</span>;
 }
 
