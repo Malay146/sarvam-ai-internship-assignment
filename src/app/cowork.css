@@ -283,6 +283,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-stage__tab[aria-selected="true"]::before { opacity: 1; }
 /* How it works (side rail): no tab gradient; the active tab is shown by its tone border, icon tile and progress bar */
 .cw-stage--side .cw-stage__tab::before { display: none; }
+.cw-stage--side .cw-stage__tab[aria-selected="true"] { border-color: var(--color-sr-grey-400); }
 .cw-stage__tab[data-tone="indigo"] { --tab-tint: var(--color-sr-indigo-100); }
 .cw-stage__tab[data-tone="orange"] { --tab-tint: var(--color-sr-orange-100); }
 .cw-stage__tab[data-tone="green"] { --tab-tint: var(--color-sr-green-100); }
