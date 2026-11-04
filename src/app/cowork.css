@@ -411,21 +411,34 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-desk__mark { width: 10px; height: 10px; border-radius: 50%; background: var(--color-sr-green-800); flex-shrink: 0; }
 .pv-desk__trail li[data-ok="false"] .pv-desk__mark { background: var(--color-sr-orange-800); }
 
-/* Day scrubber */
-.pv-day { display: grid; gap: var(--space-8); }
-.pv-day__track { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.pv-day__line { position: absolute; left: 10%; right: 10%; top: 21px; height: 2px; background: var(--color-st-secondary); }
-.pv-day__fill { position: absolute; inset: 0; background: var(--color-sr-indigo-800); transform-origin: 0 50%; }
-.pv-day__stop { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-height: 64px; padding: 12px 0 0; border: 0; background: none; font: inherit; cursor: pointer; }
-.pv-day__knob { width: 20px; height: 20px; border-radius: 50%; background: var(--color-sr-white); border: 2px solid var(--color-st-secondary); transition: border-color var(--duration-moderate) var(--ease-standard), transform var(--duration-moderate) var(--ease-standard); }
-.pv-day__stop[data-past="true"] .pv-day__knob { border-color: var(--color-sr-indigo-800); }
-.pv-day__stop[aria-selected="true"] .pv-day__knob { background: var(--color-sr-indigo-800); transform: scale(1.15); }
-.pv-day__time { font-family: var(--font-code); font-size: var(--text-small); color: var(--color-tx-tertiary); font-variant-numeric: tabular-nums; }
-.pv-day__stop[aria-selected="true"] .pv-day__time { color: var(--color-tx); }
-.pv-day__stage { display: grid; min-height: 200px; }
-.pv-day__card { grid-area: 1 / 1; display: flex; flex-direction: column; gap: var(--space-3); align-items: center; text-align: center; justify-content: center; padding: var(--space-8); border-radius: var(--radius-3xl); background: var(--texture-grain), var(--gradient-haze); background-blend-mode: overlay, normal; }
-.pv-day__card .sr-h3 { margin: 0; } .pv-day__card .sr-body { margin: 0; max-width: 46ch; color: var(--color-tx-secondary); }
-.pv-day__badge { font-size: 12px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-accent); }
+/* Day: five delivery cards always on screen, one rail above them (desktop). Cards turn Scheduled → Delivered as the
+   fill passes; the current one lifts. Nothing leaves, so nothing goes blank. Phone/tablet: a vertical list with its own rail. */
+.pv-day { position: relative; }
+.pv-day__rail { display: none; }
+.pv-day__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); position: relative; }
+.pv-day__item { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "dot time status" "dot title title" "dot body body"; column-gap: var(--space-3); row-gap: 4px; align-items: start; padding: var(--space-5); border-radius: var(--radius-3xl); border: var(--border-default); background: var(--color-sr-white); text-align: left; font: inherit; cursor: pointer; transition: border-color var(--duration-moderate) var(--ease-standard), box-shadow var(--duration-moderate) var(--ease-standard), transform var(--duration-moderate) var(--ease-standard); }
+.pv-day__item:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.pv-day__dot { grid-area: dot; width: 12px; height: 12px; margin-top: 4px; border-radius: 50%; border: 2px solid var(--color-st-secondary); background: var(--color-sr-white); transition: background var(--duration-moderate) var(--ease-standard), border-color var(--duration-moderate) var(--ease-standard); }
+.pv-day__time { grid-area: time; font-family: var(--font-code); font-size: var(--text-small); color: var(--color-tx-tertiary); font-variant-numeric: tabular-nums; }
+.pv-day__title { grid-area: title; font-family: var(--font-display); font-size: 20px; line-height: 1.25; color: var(--color-tx); }
+.pv-day__body { grid-area: body; font-size: var(--text-small); line-height: 1.5; color: var(--color-tx-tertiary); }
+.pv-day__status { grid-area: status; display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--color-sf-tertiary); font-size: 12px; font-weight: var(--weight-medium); color: var(--color-tx-tertiary); white-space: nowrap; transition: background var(--duration-moderate) var(--ease-standard), color var(--duration-moderate) var(--ease-standard); }
+.pv-day__item[data-done="true"] .pv-day__dot { background: var(--color-sr-indigo-800); border-color: var(--color-sr-indigo-800); }
+.pv-day__item[data-done="true"] .pv-day__status { background: var(--color-sr-green-50); color: var(--color-sr-green-800); }
+.pv-day__item[data-now="true"] { border-color: var(--color-sr-indigo-300); box-shadow: var(--shadow-ambient-md); }
+.pv-day__item[data-now="true"] .pv-day__time { color: var(--color-accent); }
+@media (min-width: 1024px) {
+  .pv-day { padding-top: 28px; }
+  .pv-day__rail { display: block; position: absolute; left: 10%; right: 10%; top: 6px; height: 2px; background: var(--color-st-secondary); }
+  .pv-day__fill { position: absolute; inset: 0; background: var(--color-sr-indigo-800); transform-origin: 0 50%; }
+  .pv-day__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4); }
+  .pv-day__item { grid-template-columns: minmax(0, 1fr); grid-template-areas: "time" "title" "body" "status"; row-gap: var(--space-2); align-content: start; padding: var(--space-6) var(--space-5); }
+  .pv-day__item[data-now="true"] { transform: translateY(-4px); }
+  /* the dot sits on the rail above each card */
+  .pv-day__dot { position: absolute; left: 50%; top: -29px; margin: 0; transform: translateX(-50%); width: 14px; height: 14px; }
+  .pv-day__status { justify-self: start; margin-top: var(--space-2); }
+}
+@media (prefers-reduced-motion: reduce) { .pv-day__item, .pv-day__dot, .pv-day__status { transition: none; } }
 
 /* Teammate builder: controls left, live teammate card right (sticky on desktop) */
 .pv-build { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }

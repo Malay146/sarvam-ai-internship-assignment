@@ -93,31 +93,34 @@ export function DayScrubber() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
   const reduced = useReducedMotion();
+  const at = reduced ? DAY.length - 1 : i;
   useEffect(() => {
     if (!auto || !inView || reduced) return;
-    const t = setTimeout(() => setI((n) => (n + 1) % DAY.length), 3200);
+    const t = setTimeout(() => setI((n) => (n + 1) % DAY.length), i === DAY.length - 1 ? 3600 : 2400);
     return () => clearTimeout(t);
   }, [i, auto, inView, reduced]);
-  const d = DAY[i];
   return (
     <div ref={ref} className="pv-day">
-      <div className="pv-day__track" role="tablist" aria-label="Pick a time of day">
-        <span className="pv-day__line" aria-hidden><motion.span className="pv-day__fill" initial={false} animate={{ scaleX: i / (DAY.length - 1) }} transition={ease(reduced)} /></span>
-        {DAY.map((x, n) => (
-          <button key={x.t} type="button" role="tab" aria-selected={n === i} className="pv-day__stop" data-past={n <= i} onClick={() => { setI(n); setAuto(false); }}>
-            <span className="pv-day__knob" aria-hidden /><span className="pv-day__time">{x.t}</span>
-          </button>
-        ))}
+      {/* one rail across all five; the fill reaches the current time */}
+      <div className="pv-day__rail" aria-hidden>
+        <motion.span className="pv-day__fill" initial={false} animate={{ scaleX: at / (DAY.length - 1) }} transition={reduced ? { duration: 0 } : { duration: 0.9, ease: EASE.outQuint }} />
       </div>
-      <div className="pv-day__stage">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div key={d.t} className="pv-day__card" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={ease(reduced)}>
-            <span className="pv-day__badge">Delivered at {d.t}</span>
-            <h3 className="sr-h3">{d.title}</h3>
-            <p className="sr-body">{d.body}</p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      <ol className="pv-day__grid" role="tablist" aria-label="A day of scheduled tasks">
+        {DAY.map((d, n) => {
+          const done = n <= at, now = n === at;
+          return (
+            <li key={d.t}>
+              <button type="button" role="tab" aria-selected={now} className="pv-day__item" data-done={done} data-now={now} onClick={() => { setI(n); setAuto(false); }}>
+                <span className="pv-day__dot" aria-hidden />
+                <span className="pv-day__time">{d.t}</span>
+                <span className="pv-day__title">{d.title}</span>
+                <span className="pv-day__body">{d.body}</span>
+                <span className="pv-day__status">{done ? <><Check width={12} height={12} strokeWidth={2.5} />Delivered</> : "Scheduled"}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }

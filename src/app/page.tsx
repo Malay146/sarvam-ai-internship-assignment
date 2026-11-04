@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 import {
   BookOpenFill, CalendarClockFill, Globe, ListTodoFill, Lock, SearchFill, ShieldCheck, ShieldCheckFill, SparkleFill, UserFill, UserRound,
 } from "@/components/icons";
-import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader } from "@/components/sarvam";
+import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
+import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import { MegaNav } from "@/components/sarvam/mega-nav";
 import { Reveal, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { ApprovalDesk, DayScrubber, IntegrationField, TeammateBuilder } from "@/components/sarvam/cowork-play";
@@ -161,6 +162,12 @@ export default function IndusCoworkPage() {
                 <li key={title} data-sibling><I width={20} height={20} strokeWidth={1.5} aria-hidden /><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
               ))}
             </ul>
+          </Reveal>
+          {/* deployment options [verified: sarvam.ai homepage] */}
+          <Reveal className="sr-tile-row" >
+            <TileCard svg={glowSVG(medallionPath(MEDALLION_PRESETS["Ogee cross"]), "lavender", "dp1")} title="Sarvam Cloud" desc="Fully managed and scales on its own. Fastest to value." />
+            <TileCard svg={glowSVG(flowerPath(FLOWER_PRESETS["Rosette"]), "rose", "dp2")} title="Private Cloud (VPC)" desc="Inside your own security perimeter, managed by Sarvam." />
+            <TileCard svg={glowSVG(medallionPath(MEDALLION_PRESETS["Scalloped medallion"]), "leaf", "dp3")} title="On-Premises" desc="Full control and air-gapped, for regulated industries." />
           </Reveal>
         </section>
 

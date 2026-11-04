@@ -38,6 +38,7 @@
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back) instead of leaving; logs start pre-filled and stay at a fixed length.
 26. **Minimal beats busy:** a static grid of real marks with one soft fade-in beats drifting rows with overlays. Text columns beside a grid are top-aligned, with their action pinned to the bottom.
 27. **Cards inside a panel sit centred and are never sticky** unless asked.
+28. **Timelines show every step at once** (cards turn Scheduled → Delivered as a rail fills). Never swap one card out for the next: exit-then-enter transitions leave a blank gap.
 
 ### 0.5 Motion
 21. Transform + opacity only; nothing changes size. Loops run only while visible and stop for good once the reader interacts. Reduced motion = the finished state, no movement.
@@ -57,9 +58,9 @@
 | 4 | What it's made of | Everything a teammate is made of (5-card bento) | split | passive | `BentoTile` |
 | 5 | Where it works | Works where your work already lives: 100+ (top-left) + a static 6 × 4 grid of the 24 named marks, "Pick apps for a teammate" link at the bottom | centred | passive (one fade-in) | `IntegrationField` |
 | 6 | Control | Nothing ships without your yes | split | plays itself; can step in | `ApprovalDesk` |
-| 7 | Control | It works while you sleep | split | auto; tap a time | `DayScrubber` |
+| 7 | Control | It works while you sleep: five delivery cards under one filling rail (vertical list on phone) | split | auto; tap a card | `DayScrubber` |
 | 8 | Try it | Build your first teammate | centred + eyebrow | hands-on → Talk to Us | `TeammateBuilder` |
-| 9 | Trust | Sovereign by default | centred | passive | `.cw-sec` |
+| 9 | Trust | Sovereign by default: four facts + three deployment tiles (Sarvam Cloud · VPC · On-Premises) | centred | passive | `.cw-sec` + `TileCard` |
 | 10 | Proof | What Sarvam's customers say | centred | passive | `.cw-quote` |
 | 11 | Questions | Questions teams ask first | centred | accordion | `Faq` |
 | 12 | Act | Meet your first teammate | — | Talk to Us | `CtaCard` |
