@@ -281,6 +281,8 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-stage__tab { isolation: isolate; }
 .cw-stage__tab::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity var(--duration-moderate) var(--ease-standard); background: var(--texture-grain), linear-gradient(135deg, var(--color-sr-white) 10%, var(--tab-tint, var(--color-sf-tertiary)) 100%); background-blend-mode: overlay, normal; }
 .cw-stage__tab[aria-selected="true"]::before { opacity: 1; }
+/* How it works (side rail): no tab gradient; the active tab is shown by its tone border, icon tile and progress bar */
+.cw-stage--side .cw-stage__tab::before { display: none; }
 .cw-stage__tab[data-tone="indigo"] { --tab-tint: var(--color-sr-indigo-100); }
 .cw-stage__tab[data-tone="orange"] { --tab-tint: var(--color-sr-orange-100); }
 .cw-stage__tab[data-tone="green"] { --tab-tint: var(--color-sr-green-100); }
