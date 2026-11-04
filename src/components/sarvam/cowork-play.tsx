@@ -273,8 +273,9 @@ export function TeammateBuilder() {
       </div>
       <div className={`pv-mate cw-surface--${r.tone}`} data-tone={r.tone}>
         {/* layered echoes of one medallion per job; switching jobs crossfades to that job's shape */}
-        <AnimatePresence initial={false}>
-          <motion.div key={r.key} className="pv-mate__pattern" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : 0.5 }}>
+        {/* sequential, not a crossfade: the old pattern fades out fast, then the new one fades in, so two never overlap */}
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div key={r.key} className="pv-mate__pattern" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1, transition: { duration: reduced ? 0 : 0.4, ease: EASE.outQuint } }} exit={{ opacity: 0, transition: { duration: reduced ? 0 : 0.14 } }}>
             <MedallionEcho shape={JOB_PATTERN[r.key] ?? "Scalloped medallion"} rings={11} step={0.38} fade={0.04} />
           </motion.div>
         </AnimatePresence>
