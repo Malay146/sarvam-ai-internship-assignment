@@ -19,14 +19,14 @@ export function GatewayEcho({ count = 5, shape = "Mihrab", className = "" }: { c
 }
 
 /** Medallion echo: one medallion outline repeated outward (true scale steps), for dark bands and quiet corners. */
-export function MedallionEcho({ shape = "Scalloped medallion", rings = 4, className = "" }: { shape?: string; rings?: number; className?: string }) {
+export function MedallionEcho({ shape = "Scalloped medallion", rings = 4, step = 0.32, fade = 0.2, className = "" }: { shape?: string; rings?: number; step?: number; fade?: number; className?: string }) {
   const g = medallionPath({ ...(MEDALLION_PRESETS[shape] ?? MEDALLION_PRESETS["Scalloped medallion"]), aspect: 1, frame: 0 });
   const c = g.width / 2;
   return (
     <svg className={`pt-medallion ${className}`} viewBox={`${-g.width} ${-g.height} ${g.width * 3} ${g.height * 3}`} aria-hidden>
       {Array.from({ length: rings }, (_, i) => (
-        <path key={i} d={g.d} fill="none" stroke="currentColor" strokeWidth={1.25} vectorEffect="non-scaling-stroke" opacity={1 - i * 0.2}
-          transform={`translate(${c} ${c}) scale(${1 + i * 0.32}) translate(${-c} ${-c})`} />
+        <path key={i} d={g.d} fill="none" stroke="currentColor" strokeWidth={1.25} vectorEffect="non-scaling-stroke" opacity={Math.max(0.15, 1 - i * fade)}
+          transform={`translate(${c} ${c}) scale(${1 + i * step}) translate(${-c} ${-c})`} />
       ))}
     </svg>
   );
