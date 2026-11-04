@@ -6,10 +6,11 @@ import { waveBars, type Tone, type WaveProfile } from "./bulbul-data";
 
 export type WaveState = "idle" | "stream" | "play" | "done" | "static";
 
-export function Wave({ seed, n = 64, profile = "speech", state = "static", tone = "indigo", playMs = 4000, streamMs = 900, head = true, className = "" }: {
-  seed: number; n?: number; profile?: WaveProfile; state?: WaveState; tone?: Tone; playMs?: number; streamMs?: number; head?: boolean; className?: string;
+export function Wave({ seed, n = 64, profile = "speech", state = "static", tone = "indigo", playMs = 4000, streamMs = 900, head = true, steps = 0, className = "" }: {
+  seed: number; n?: number; profile?: WaveProfile; state?: WaveState; tone?: Tone; playMs?: number; streamMs?: number; head?: boolean; steps?: number; className?: string;
 }) {
-  const bars = waveBars(seed, n, profile);
+  // steps > 0 quantises the heights (a coarse, lo-fi look for low sample rates)
+  const bars = waveBars(seed, n, profile).map((b) => (steps ? { ...b, h: Math.max(0.1, Math.round(b.h * steps) / steps) } : b));
   const style = { "--n": n, "--play-ms": `${playMs}ms`, "--stream-ms": `${streamMs}ms` } as CSSProperties;
   return (
     <div className={`bb-wave bb-tone-${tone} ${className}`} data-state={state} style={style} aria-hidden>

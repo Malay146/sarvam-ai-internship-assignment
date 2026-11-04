@@ -2,7 +2,7 @@
 // Bulbul V4 Flash page: the live pieces. Each is a fixed-size mini UI (nothing resizes), loops only while visible and
 // stops for good once the reader interacts; reduced motion shows the finished state. Rules: recipes/landing-page.md §0.
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { BoltFill, Check, Copy, PlayCircleFill, VolumeFill } from "@/components/icons";
 import { LANGS, VOICES } from "./bulbul-data";
 import { VoiceAvatar, Wave, type WaveState } from "./bulbul-wave";
@@ -205,8 +205,14 @@ export function Playground() {
   const [codec, setCodec] = useState("wav");
   const [tab, setTab] = useState<(typeof TABS)[number]>("cURL");
   const [copied, setCopied] = useState(false);
+  const copyTimer = useRef<number | undefined>(undefined);
   const v = VOICES[vi];
   const p = pace.toFixed(1);
+  // the response replays whenever a setting changes (stream → play), only while visible
+  const [outRef, outState] = usePlayback(`${vi}-${p}-${rate}-${codec}`, 2600);
+  // pace sets the clip's length (faster → shorter); sample rate sets its detail (8 kHz stepped, 48 kHz smooth)
+  const clipPct = Math.round(Math.min(100, Math.max(38, 72 / pace)));
+  const detail = rate === 8000 ? { n: 36, steps: 4 } : rate === 24000 ? { n: 60, steps: 10 } : { n: 84, steps: 0 };
 
   const fields: [string, Seg][] = [
     ["text", { t: `"${v.line}"`, k: "str", live: true }],
@@ -249,7 +255,16 @@ export function Playground() {
     ];
   const plain = lines.map((l) => l.map((s) => s.t).join("")).join("\n");
   const copy = async () => {
-    try { await navigator.clipboard.writeText(plain); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch { /* clipboard blocked: nothing to do */ }
+    let ok = false;
+    try { await navigator.clipboard.writeText(plain); ok = true; } catch {
+      // fallback when the async clipboard is blocked: a hidden textarea + execCommand
+      const ta = document.createElement("textarea"); ta.value = plain; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); try { ok = document.execCommand("copy"); } catch { ok = false; } ta.remove();
+    }
+    if (!ok) return;
+    setCopied(true);
+    window.clearTimeout(copyTimer.current);
+    copyTimer.current = window.setTimeout(() => setCopied(false), 1800);
   };
 
   return (
@@ -277,8 +292,14 @@ export function Playground() {
       <div className="bb-codecard">
         <div className="bb-codecard__bar">
           <Segmented id="pg-tab" label="Code language" hideLabel options={[...TABS]} value={tab} onChange={setTab} render={(t) => t} />
-          <button type="button" className="pv-again bb-copy" onClick={copy} aria-live="polite">
-            {copied ? <Check width={14} height={14} strokeWidth={2.5} /> : <Copy width={14} height={14} />}{copied ? "Copied" : "Copy"}
+          <button type="button" className="pv-again bb-copy" data-copied={copied} onClick={copy} aria-label={copied ? "Copied" : "Copy request"}>
+            {/* one swap at a time: the old icon + label leave fast, the new ones rise in (no overlap, fixed width) */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span key={copied ? "done" : "copy"} className="bb-copy__in" initial={{ opacity: 0, y: 6, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, transition: { duration: 0.1 } }} transition={{ duration: 0.25, ease: EASE.outQuint }}>
+                {copied ? <Check width={14} height={14} strokeWidth={2.5} /> : <Copy width={14} height={14} />}{copied ? "Copied" : "Copy"}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
         <pre className="bb-pre" tabIndex={0} aria-label={`${tab} request`}><code>
@@ -291,6 +312,27 @@ export function Playground() {
             </span>
           ))}
         </code></pre>
+        <div ref={outRef} className="bb-out" aria-live="polite">
+          <div className="bb-out__head">
+            <span className="bb-out__title">Response</span>
+            <span className="bb-ok bb-ok--on"><Check width={12} height={12} strokeWidth={2.75} />200 OK</span>
+            <code className="bb-out__field">audios[0] · base64 {codec.toUpperCase()}</code>
+          </div>
+          <div className="bb-out__player">
+            <span className="bb-player__btn"><PlayCircleFill width={32} height={32} /></span>
+            <div className="bb-out__track">
+              <div className="bb-out__clip" style={{ width: `${clipPct}%` }}>
+                <Wave key={`${vi}-${rate}`} seed={v.seed} n={detail.n} steps={detail.steps} state={outState} tone={v.tone} playMs={2600} streamMs={700} />
+              </div>
+            </div>
+          </div>
+          <div className="bb-out__meta">
+            <span>{v.name} · {v.lang}</span>
+            <span>{p}× pace</span>
+            <span>{rate / 1000} kHz</span>
+            <span>{codec.toUpperCase()}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
