@@ -549,12 +549,12 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* Builder panel: medallion echoes radiating from the centre, behind the teammate card, covering the whole panel, subtle */
 .pv-mate { position: relative; overflow: hidden; isolation: isolate; }
 .pv-mate__pattern { position: absolute; z-index: -1; inset: 0; display: grid; place-items: center; color: var(--color-sr-indigo-500); pointer-events: none; }
-.pv-mate__pattern svg { width: max(150%, 820px); height: auto; flex-shrink: 0; opacity: 0.38; }
+.pv-mate__pattern svg { width: max(260%, 1500px); height: auto; flex-shrink: 0; opacity: 0.5; }   /* 11 widely spaced layers from the centre out past every corner */
 .pv-mate__card { position: relative; }
 
 /* pattern in the job's own tone, and a real grain layer over the whole panel (under the card) */
-.pv-mate[data-tone="indigo"] .pv-mate__pattern { color: var(--color-sr-indigo-500); }
-.pv-mate[data-tone="orange"] .pv-mate__pattern { color: var(--color-sr-orange-700); }
-.pv-mate[data-tone="green"] .pv-mate__pattern { color: var(--color-sr-green-700); }
-.pv-mate[data-tone="rose"] .pv-mate__pattern { color: var(--color-sr-pink-700); }
+.pv-mate[data-tone="indigo"] .pv-mate__pattern { color: var(--color-sr-indigo-300); }
+.pv-mate[data-tone="orange"] .pv-mate__pattern { color: var(--color-sr-orange-300); }
+.pv-mate[data-tone="green"] .pv-mate__pattern { color: var(--color-sr-green-300); }
+.pv-mate[data-tone="rose"] .pv-mate__pattern { color: var(--color-sr-pink-300); }
 .pv-mate::after { content: ""; position: absolute; inset: 0; z-index: -1; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.55; pointer-events: none; }

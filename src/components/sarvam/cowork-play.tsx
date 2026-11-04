@@ -275,7 +275,7 @@ export function TeammateBuilder() {
         {/* layered echoes of one medallion per job; switching jobs crossfades to that job's shape */}
         <AnimatePresence initial={false}>
           <motion.div key={r.key} className="pv-mate__pattern" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : 0.5 }}>
-            <MedallionEcho shape={JOB_PATTERN[r.key] ?? "Scalloped medallion"} rings={10} step={0.18} fade={0.07} />
+            <MedallionEcho shape={JOB_PATTERN[r.key] ?? "Scalloped medallion"} rings={11} step={0.38} fade={0.04} />
           </motion.div>
         </AnimatePresence>
         <div className="pv-mate__card">

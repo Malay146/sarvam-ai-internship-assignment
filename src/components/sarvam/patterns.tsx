@@ -22,8 +22,10 @@ export function GatewayEcho({ count = 5, shape = "Mihrab", className = "" }: { c
 export function MedallionEcho({ shape = "Scalloped medallion", rings = 4, step = 0.32, fade = 0.2, className = "" }: { shape?: string; rings?: number; step?: number; fade?: number; className?: string }) {
   const g = medallionPath({ ...(MEDALLION_PRESETS[shape] ?? MEDALLION_PRESETS["Scalloped medallion"]), aspect: 1, frame: 0 });
   const c = g.width / 2;
+  // the viewBox grows with the outermost ring, so many layers are never clipped
+  const half = (g.width * Math.max(3, 1 + (rings - 1) * step)) / 2;
   return (
-    <svg className={`pt-medallion ${className}`} viewBox={`${-g.width} ${-g.height} ${g.width * 3} ${g.height * 3}`} aria-hidden>
+    <svg className={`pt-medallion ${className}`} viewBox={`${c - half} ${c - half} ${half * 2} ${half * 2}`} aria-hidden>
       {Array.from({ length: rings }, (_, i) => (
         <path key={i} d={g.d} fill="none" stroke="currentColor" strokeWidth={1.25} vectorEffect="non-scaling-stroke" opacity={Math.max(0.15, 1 - i * fade)}
           transform={`translate(${c} ${c}) scale(${1 + i * step}) translate(${-c} ${-c})`} />
