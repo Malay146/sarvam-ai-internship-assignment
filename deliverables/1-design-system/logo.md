@@ -88,7 +88,7 @@ The wordmark is a signature, not the headline: always smaller than the headline'
 
 ## 4. Co-branding
 
-- **Partner lockup:** `sarvam · Partner` with a centred dot separator. The wordmark only, never the logomark. Match the visual weight of both logos; don't show them at very different sizes. Never over a busy image. Needs approval from Sarvam.
+- **Partner lockup:** `sarvam · Partner` with a centred dot separator. Use the partner's **official logo file** in its own colours (stored in `public/brand/partners/`, set with `partnerLogo` + `partnerLogoRatio` in a banner spec), sized to the wordmark's visual weight. Only name a partner whose partnership Sarvam has published. The wordmark only, never the logomark. Match the visual weight of both logos; don't show them at very different sizes. Never over a busy image. Needs approval from Sarvam.
 - **Government lockup:** a vertical stack of emblem and ministry name → "with" → Sarvam wordmark. Don't reorder; no logomark; no photographic background. Needs approval from Sarvam.
 - **Third-party integrations:** "powered by Sarvam AI" / "built with Sarvam AI's speech-to-text API" (see `voice.md`).
 

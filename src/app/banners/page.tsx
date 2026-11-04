@@ -7,7 +7,7 @@ export const metadata = { title: "Banners · Sarvam design system" };
 const FINAL = [
   { id: "prism", n: "01", subject: "Sarvam Prism launch", expression: "Campaign", device: "Lit medallion on Dawn" },
   { id: "final-trail", n: "02", subject: "Every task leaves a trail", expression: "Product", device: "Shield emblem on indigo glow" },
-  { id: "final-early-access", n: "03", subject: "Indus Cowork early access", expression: "Community", device: "Gloss cluster, partner lockup" },
+  { id: "final-early-access", n: "03", subject: "Sarvam Edge on Snapdragon", expression: "Community", device: "Gloss cluster, sarvam · Qualcomm lockup" },
 ];
 const FINAL_IDS = new Set(FINAL.map((f) => f.id));
 

@@ -1909,7 +1909,7 @@ The wordmark is a signature, not the headline: always smaller than the headline'
 
 ### 4. Co-branding
 
-- **Partner lockup:** `sarvam · Partner` with a centred dot separator. The wordmark only, never the logomark. Match the visual weight of both logos; don't show them at very different sizes. Never over a busy image. Needs approval from Sarvam.
+- **Partner lockup:** `sarvam · Partner` with a centred dot separator. Use the partner's **official logo file** in its own colours (stored in `public/brand/partners/`, set with `partnerLogo` + `partnerLogoRatio` in a banner spec), sized to the wordmark's visual weight. Only name a partner whose partnership Sarvam has published. The wordmark only, never the logomark. Match the visual weight of both logos; don't show them at very different sizes. Never over a busy image. Needs approval from Sarvam.
 - **Government lockup:** a vertical stack of emblem and ministry name → "with" → Sarvam wordmark. Don't reorder; no logomark; no photographic background. Needs approval from Sarvam.
 - **Third-party integrations:** "powered by Sarvam AI" / "built with Sarvam AI's speech-to-text API" (see `voice.md`).
 
@@ -2055,6 +2055,13 @@ Use only these claims.
 - Use cases: government and public records; publishing and archives; finance and legal; research and education; developers (Parse via the API).
 - CTAs on Sarvam's page: "Try the API", "Explore the Platform", "Try Document AI".
 - No customer names, accuracy figures or benchmarks are published: don't invent any.
+
+**Sarvam Edge** `[verified: sarvam.ai/products/edge, 2026-11-04]`
+- "India's sovereign AI, running on your device": voice, transcription and translation on the device, with no cloud dependency, no network latency and no per-query cost.
+- Models: Saaras (speech recognition), Mayura (translation), Bulbul (speech); the stack fits under 1 GB.
+- Pre-validated per chipset: Qualcomm, NVIDIA, Intel and Apple Silicon.
+- Published partners: **Qualcomm**, with full-stack AI validated for the **Snapdragon Hexagon NPU** across phones and Windows laptops. **Bosch**: voice AI for in-car controls on vehicle hardware. **Meta Ray-Ban** glasses: Indic language support.
+- **Source conflict, don't copy:** the page describes an India-hosted cloud fallback, but its FAQ says there is no cloud fallback for Edge inference. Don't claim either way.
 
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
@@ -2239,7 +2246,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 |---|---|---|---|---|
 | 1 | `prism` | Sarvam Prism launch | Campaign | `medallion-glow` · Eight-point star · dawn · logomark |
 | 2 | `final-trail` | Every task leaves a trail | Product | `emblem` · shield · indigo glow |
-| 3 | `final-early-access` | Indus Cowork early access | Community | `gloss` · split · `sarvam · PARTNER` |
+| 3 | `final-early-access` | Sarvam Edge on Snapdragon | Community | `gloss` · split · `sarvam · Qualcomm` (official logo via `partnerLogo`) |
 
 Each brief renders the Meta (1080×1350) and the LinkedIn (1200×627) banner. Every preset is shown on `/banners` and, by expression, on `/system/expressions`.
 
@@ -2342,7 +2349,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 |---|---|---|---|
 | 1 | Sarvam Prism | Campaign | `medallion-glow` · Eight-point star · dawn · logomark above the star |
 | 2 | Every task leaves a trail | Product | `emblem` · shield · indigo glow · stacked |
-| 3 | Indus Cowork early access | Community | `gloss` · stacked · `sarvam · PARTNER` |
+| 3 | Sarvam Edge on Snapdragon | Community | `gloss` · stacked · `sarvam · Qualcomm` |
 
 ### Don't
 - Put more than two text sections, an eyebrow, a pill, mono text, a CTA or a URL on the art (they go in the caption).
@@ -2392,7 +2399,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 |---|---|---|
 | 1 | Sarvam Prism | Whole star (tips touch the edges); logomark inside the star above the title; title pinned at 79px and nudged up 28px |
 | 2 | Every task leaves a trail | Split: claim left, the emblem right |
-| 3 | Indus Cowork early access | Split: partner lockup + title left, gloss cluster right |
+| 3 | Sarvam Edge on Snapdragon | Split: `sarvam · Qualcomm` lockup + title left, gloss cluster right |
 
 ### Don't
 - Centre a long three-line headline on landscape: switch to `split`, widen the opening, or shorten the copy.

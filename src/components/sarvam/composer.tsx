@@ -28,6 +28,8 @@ export type BannerSpec = {
   secondaryPlace?: "above" | "below";
   layout?: Layout;                 // centred (text inside the device) · split · stacked. Rearranges per format.
   partner?: string;                // partner lockup: "sarvam · PARTNER" (replaces the plain wordmark)
+  partnerLogo?: string;            // the partner's official logo file (public/brand/partners/…), used instead of the text name
+  partnerLogoRatio?: number;       // that file's width / height, so it is sized to match the wordmark, never stretched
   logo?: "wordmark" | "logomark";  // logomark = the official lotus symbol, used alone (logo.md: never beside the wordmark)
   card?: "plan" | "research" | "review";   // product moment shown inside the device (split / stacked only); arch-window shows it through the arch
   icon?: EmblemIcon;               // emblem device: the one object that stands for the subject
@@ -689,7 +691,7 @@ function Mark({ tone, width, style }: { tone: "black" | "white"; width: number; 
 }
 
 /** Wordmark, or the partner lockup "sarvam · PARTNER" (logo.md §4: wordmark only, centred dot, matched weight). */
-function Lockup({ tone, width, partner, logomark, style }: { tone: "black" | "white"; width: number; partner?: string; logomark?: boolean; style?: CSSProperties }) {
+function Lockup({ tone, width, partner, partnerLogo, partnerLogoRatio = 5.44, logomark, style }: { tone: "black" | "white"; width: number; partner?: string; partnerLogo?: string; partnerLogoRatio?: number; logomark?: boolean; style?: CSSProperties }) {
   const color = tone === "white" ? "#ffffff" : "#141414";
   if (logomark && !partner) {
     // Official logomark, alone. Height ≈ 0.55 × the wordmark width rule, so its presence matches.
@@ -702,7 +704,11 @@ function Lockup({ tone, width, partner, logomark, style }: { tone: "black" | "wh
       <img src={`/brand/sarvam-wordmark-${tone}.svg`} alt="Sarvam" style={{ width, height: "auto", display: "block" }} />
       {partner && <>
         <span style={{ width: width * 0.04, height: width * 0.04, borderRadius: "50%", background: color, opacity: 0.8 }} />
-        <span style={{ fontFamily: "var(--font-text)", fontWeight: 700, fontSize: width * 0.2, letterSpacing: "0.04em", textTransform: "uppercase", color: tone === "white" ? "#ffffff" : "var(--color-sr-indigo-700)", lineHeight: 1 }}>{partner}</span>
+        {partnerLogo
+          // the partner's official file, in its own colours, at a height that matches the wordmark's visual weight
+          // eslint-disable-next-line @next/next/no-img-element
+          ? <img src={partnerLogo} alt={partner} style={{ height: width * 0.158 * 1.4, width: width * 0.158 * 1.4 * partnerLogoRatio, display: "block" }} />
+          : <span style={{ fontFamily: "var(--font-text)", fontWeight: 700, fontSize: width * 0.2, letterSpacing: "0.04em", textTransform: "uppercase", color: tone === "white" ? "#ffffff" : "var(--color-sr-indigo-700)", lineHeight: 1 }}>{partner}</span>}
       </>}
     </div>
   );
@@ -816,12 +822,12 @@ function BannerImpl({ spec: spec0, format, id }: { spec: BannerSpec; format: Ban
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/grain.png" alt="" aria-hidden width={1200} height={1350} style={{ position: "absolute", left: 0, top: 0, mixBlendMode: "overlay", pointerEvents: "none", maxWidth: "none" }} />
       {!centreMark && (spec.mark === "top" || (spec.mark === "inside" && layout !== "centered")) && (
-        <Lockup logomark={spec.logo === "logomark"} tone={spec.logoTone ?? (layout === "centered" || editorial ? markTone : onLight ? "black" : "white")} width={markW} partner={spec.partner}
+        <Lockup logomark={spec.logo === "logomark"} tone={spec.logoTone ?? (layout === "centered" || editorial ? markTone : onLight ? "black" : "white")} width={markW} partner={spec.partner} partnerLogo={spec.partnerLogo} partnerLogoRatio={spec.partnerLogoRatio}
           style={{ position: "absolute", top: F.M, ...(align === "left" ? { left: editorial ? F.M * 1.5 : F.M } : { left: 0, right: 0, justifyContent: "center" }) }} />
       )}
-      {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
+      {spec.mark === "bottom" && <Lockup logomark={spec.logo === "logomark"} tone={markTone} width={markW} partner={spec.partner} partnerLogo={spec.partnerLogo} partnerLogoRatio={spec.partnerLogoRatio} style={{ position: "absolute", bottom: land ? 36 : F.M, left: 0, right: 0, justifyContent: "center" }} />}
       <div data-qa="open" style={{ position: "absolute", left: open.x, top: open.y, width: open.w, height: open.h, display: "flex", flexDirection: "column", alignItems: align === "left" ? "flex-start" : "center", justifyContent: editorial ? D.textJustify ?? "flex-end" : layout === "split" ? "flex-start" : "center", gap: S.gap, textAlign: align }}>
-        {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
+        {spec.mark === "inside" && layout === "centered" && <Lockup logomark={spec.logo === "logomark"} tone={onLight ? "black" : "white"} width={markW} partner={spec.partner} partnerLogo={spec.partnerLogo} partnerLogoRatio={spec.partnerLogoRatio} style={{ marginBottom: S.gap * 0.7, opacity: onLight ? 0.9 : 1 }} />}
         {spec.divider && <SpectrumDivider name={spec.divider} width={dividerW} id={id} dark={DARK_BG.has(spec.background)} />}
         {spec.secondaryPlace === "above" && secondary}
         {primary}
@@ -835,7 +841,7 @@ function BannerImpl({ spec: spec0, format, id }: { spec: BannerSpec; format: Ban
 export function variationsOf(spec: BannerSpec): BannerSpec[] {
   const num = !!spec.primaryIsNumber;
   const dark = (bg: Background, light: Treatment = "white"): Treatment => (DARK_BG.has(bg) ? (num ? "gold" : light) : num ? "indigo" : "ink");
-  const base = { primary: spec.primary, primaryIsNumber: spec.primaryIsNumber, secondary: spec.secondary, secondaryPlace: spec.secondaryPlace, partner: spec.partner, card: spec.card };
+  const base = { primary: spec.primary, primaryIsNumber: spec.primaryIsNumber, secondary: spec.secondary, secondaryPlace: spec.secondaryPlace, partner: spec.partner, partnerLogo: spec.partnerLogo, partnerLogoRatio: spec.partnerLogoRatio, card: spec.card };
   const v = (o: Partial<BannerSpec> & { background: Background; device: Device }): BannerSpec =>
     ({ ...base, layout: "centered", mark: "inside", titleStyle: spec.titleStyle, treatment: dark(o.background), ...o } as BannerSpec);
   return [

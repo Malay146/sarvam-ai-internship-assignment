@@ -125,6 +125,13 @@ Use only these claims.
 - CTAs on Sarvam's page: "Try the API", "Explore the Platform", "Try Document AI".
 - No customer names, accuracy figures or benchmarks are published: don't invent any.
 
+**Sarvam Edge** `[verified: sarvam.ai/products/edge, 2026-11-04]`
+- "India's sovereign AI, running on your device": voice, transcription and translation on the device, with no cloud dependency, no network latency and no per-query cost.
+- Models: Saaras (speech recognition), Mayura (translation), Bulbul (speech); the stack fits under 1 GB.
+- Pre-validated per chipset: Qualcomm, NVIDIA, Intel and Apple Silicon.
+- Published partners: **Qualcomm**, with full-stack AI validated for the **Snapdragon Hexagon NPU** across phones and Windows laptops. **Bosch**: voice AI for in-car controls on vehicle hardware. **Meta Ray-Ban** glasses: Indic language support.
+- **Source conflict, don't copy:** the page describes an India-hosted cloud fallback, but its FAQ says there is no cloud fallback for Edge inference. Don't claim either way.
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.

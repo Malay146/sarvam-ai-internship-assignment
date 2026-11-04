@@ -36,7 +36,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 |---|---|---|---|
 | 1 | Sarvam Prism | Campaign | `medallion-glow` · Eight-point star · dawn · logomark above the star |
 | 2 | Every task leaves a trail | Product | `emblem` · shield · indigo glow · stacked |
-| 3 | Indus Cowork early access | Community | `gloss` · stacked · `sarvam · PARTNER` |
+| 3 | Sarvam Edge on Snapdragon | Community | `gloss` · stacked · `sarvam · Qualcomm` |
 
 ## Don't
 - Put more than two text sections, an eyebrow, a pill, mono text, a CTA or a URL on the art (they go in the caption).

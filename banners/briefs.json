@@ -222,11 +222,13 @@
       "device": "gloss",
       "treatment": "ink",
       "mark": "inside",
-      "partner": "Partner",
+      "partner": "Qualcomm",
       "titleStyle": "serif",
-      "primary": "Indus Cowork early access",
-      "secondary": "Talk to us about your team's workflows",
-      "secondaryPlace": "below"
+      "primary": "Sarvam Edge on Snapdragon",
+      "secondary": "Speech AI validated for the Snapdragon Hexagon NPU",
+      "secondaryPlace": "below",
+      "partnerLogo": "/brand/partners/qualcomm.svg",
+      "partnerLogoRatio": 5.4417
     }
   },
   {

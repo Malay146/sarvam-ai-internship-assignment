@@ -49,7 +49,7 @@ const SYSTEM: [string, string, string][] = [
 const BANNERS: [string, string, string][] = [
   ["Sarvam Prism launch", "meta-1-sarvam-prism", "linkedin-1-sarvam-prism"],
   ["Every task leaves a trail", "meta-2-every-task-leaves-a-trail", "linkedin-2-every-task-leaves-a-trail"],
-  ["Indus Cowork early access", "meta-3-indus-cowork-early-access", "linkedin-3-indus-cowork-early-access"],
+  ["Sarvam Edge × Qualcomm", "meta-3-sarvam-edge-qualcomm", "linkedin-3-sarvam-edge-qualcomm"],
 ];
 
 export default function SubmissionPage() {
@@ -131,7 +131,7 @@ export default function SubmissionPage() {
 
         {/* 02–03 · Banners */}
         <section id="banners" className="sr-container cw-section" aria-labelledby="ban-h">
-          <Reveal><SectionHeader eyebrow="02 – 03 · Banners" eyebrowTone="accent" title={<span id="ban-h">Three messages, two formats each</span>} lead="Each subject is rearranged for Meta and LinkedIn, never cropped or stretched. One device, two text slots, the official logo." /></Reveal>
+          <Reveal><SectionHeader eyebrow="02 – 03 · Banners" eyebrowTone="accent" title={<span id="ban-h">Three messages, two formats each</span>} lead="Each subject is rearranged for Meta and LinkedIn, never cropped or stretched. One device, two text slots, official logos only." /></Reveal>
           <div className="sb-banners">
             {BANNERS.map(([name, meta, li]) => (
               <Reveal key={name} className="sb-pair">

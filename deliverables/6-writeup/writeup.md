@@ -72,7 +72,7 @@ I didn't design banners or a page by hand. I wrote down Sarvam's existing brand 
 - **The one drift and its fix:** a soft blurred glow on the banner. That rule existed, but only in a script a fresh model never runs. So the script-enforced banner rules now also sit in `SKILL.md`'s non-negotiables.
 - Evidence: `deliverables/6-writeup/before-after/`.
 
-**2. One system, every format.** The same subject (Indus Cowork), tokens and gradients run through 3 Meta banners, 3 LinkedIn banners and the landing page. Each banner is rearranged per format, never cropped or stretched, with one message per banner.
+**2. One system, every format.** The same tokens, gradients and rules run through 3 Meta banners, 3 LinkedIn banners and the landing page. Each banner is rearranged per format, never cropped or stretched, with one message per banner.
 
 **3. Responsive at every size.** The page is checked at 10 widths, 320 to 1920. Sections rearrange:
 - Tab rails become 2×2 grids.

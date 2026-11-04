@@ -934,3 +934,17 @@ Entry format:
 - **Header and footer:** plain, not Sarvam's marketing nav and footer. The page is Malay's submission, so it names him and carries a note that Sarvam's name and marks belong to Sarvam.
 - **Images:** web-sized WebP copies in `public/submission/` (1.3 MB total).
 - **QA:** check-layout 10/10, no overflow at 375 or 1440, `next build` passes.
+
+## 2026-11-04 · Claude Code · Banner 3: a real partner instead of a placeholder
+
+- Prompt (verbatim): "ok then use like a actual partner logo there" (banner 3 showed `sarvam · PARTNER`).
+- **Problem:** Indus Cowork has no published partner. A real logo on "Indus Cowork early access" would claim a partnership that doesn't exist. I asked Malay, who chose a verified one: **Sarvam Edge × Qualcomm** (sarvam.ai/products/edge: "full-stack AI validated for the Snapdragon Hexagon NPU").
+- **Banner 3 now:**
+  - Lockup: `sarvam · Qualcomm`, using Qualcomm's official wordmark SVG (Wikimedia Commons, `#3253DC`, stored in `public/brand/partners/`).
+  - Headline: "Sarvam Edge on Snapdragon"
+  - Supporting line: "Speech AI validated for the Snapdragon Hexagon NPU"
+  - Device and layout unchanged.
+- **Engine:** the banner engine's lockup takes `partnerLogo` + `partnerLogoRatio`, so a partner's official file is sized to the wordmark's visual weight (first try was too light; raised from 1.12× to 1.4× the wordmark height). Recorded in logo.md.
+- **Facts:** a Sarvam Edge fact sheet was added to voice.md, including the cloud-fallback conflict on Sarvam's page.
+- **Files:** renamed to `*-3-sarvam-edge-qualcomm.png`. READMEs, recipes, the /banners gallery, /submission and the write-up were updated.
+- **QA:** check-banners set PASS (both formats); check-layout 10/10 on /submission and /banners; build passes.

@@ -37,7 +37,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 |---|---|---|
 | 1 | Sarvam Prism | Whole star (tips touch the edges); logomark inside the star above the title; title pinned at 79px and nudged up 28px |
 | 2 | Every task leaves a trail | Split: claim left, the emblem right |
-| 3 | Indus Cowork early access | Split: partner lockup + title left, gloss cluster right |
+| 3 | Sarvam Edge on Snapdragon | Split: `sarvam · Qualcomm` lockup + title left, gloss cluster right |
 
 ## Don't
 - Centre a long three-line headline on landscape: switch to `split`, widen the opening, or shorten the copy.

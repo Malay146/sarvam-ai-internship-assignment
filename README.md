@@ -19,13 +19,13 @@ Everything is in **[`deliverables/`](deliverables)**, numbered to match the brie
 | 6 | **Write-up**: process, tools, key prompts, testing | [`deliverables/6-writeup/writeup.md`](deliverables/6-writeup/writeup.md) |
 
 ## The banners
-One subject family, one message per banner. Each banner is rearranged per format, never cropped or stretched.
+Three messages (a model launch, a Cowork capability, a hardware partnership), one per banner. Each banner is rearranged per format, never cropped or stretched.
 
 | Meta 1080×1350 | LinkedIn 1200×627 |
 |---|---|
 | <img src="deliverables/2-meta-banners/meta-1-sarvam-prism.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-1-sarvam-prism.png" width="420"> |
 | <img src="deliverables/2-meta-banners/meta-2-every-task-leaves-a-trail.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-2-every-task-leaves-a-trail.png" width="420"> |
-| <img src="deliverables/2-meta-banners/meta-3-indus-cowork-early-access.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-3-indus-cowork-early-access.png" width="420"> |
+| <img src="deliverables/2-meta-banners/meta-3-sarvam-edge-qualcomm.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-3-sarvam-edge-qualcomm.png" width="420"> |
 
 ## How the system was tested
 - **Before / after:** the same prompt went to a fresh model in an empty folder, once without the system and once with it. Without, it invented a logo, numbers and a wrong CTA; with, the output was on-brand. See [`deliverables/6-writeup/before-after/`](deliverables/6-writeup/before-after).
