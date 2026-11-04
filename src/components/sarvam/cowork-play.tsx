@@ -225,8 +225,8 @@ export function TeammateBuilder() {
   return (
     <div className="pv-build">
       <div className="pv-build__controls">
-        <fieldset className="pv-field">
-          <legend><span className="pv-n">1</span>Give it a job</legend>
+        <div className="pv-field" role="group" aria-labelledby="pv-f1">
+          <p className="pv-field__title" id="pv-f1"><span className="pv-n">1</span>Give it a job</p>
           <div className="pv-chips pv-chips--wrap">
             {ROLES.map((x, n) => (
               <button key={x.key} type="button" aria-pressed={n === k} className="pv-chip" data-tone={x.tone} onClick={() => pickRole(n)}>
@@ -234,9 +234,9 @@ export function TeammateBuilder() {
               </button>
             ))}
           </div>
-        </fieldset>
-        <fieldset className="pv-field">
-          <legend><span className="pv-n">2</span>Connect its apps <span className="pv-hint">up to 5 of 100+</span></legend>
+        </div>
+        <div className="pv-field" role="group" aria-labelledby="pv-f2">
+          <p className="pv-field__title" id="pv-f2"><span className="pv-n">2</span>Connect its apps <span className="pv-hint">up to 5 of 100+</span></p>
           <div className="pv-apps">
             {APP_CHOICES.map((a) => (
               <button key={a} type="button" aria-pressed={apps.includes(a)} className="pv-app" onClick={() => toggle(a)} title={a}>
@@ -244,13 +244,18 @@ export function TeammateBuilder() {
               </button>
             ))}
           </div>
-        </fieldset>
-        <fieldset className="pv-field">
-          <legend><span className="pv-n">3</span>Set its rhythm</legend>
+        </div>
+        <div className="pv-field" role="group" aria-labelledby="pv-f3">
+          <p className="pv-field__title" id="pv-f3"><span className="pv-n">3</span>Set its rhythm</p>
           <div className="pv-seg">
-            {RHYTHMS.map(([v, l]) => <button key={v} type="button" aria-pressed={rhythm === v} onClick={() => setRhythm(v)}>{l}</button>)}
+            {RHYTHMS.map(([v, l]) => (
+              <button key={v} type="button" aria-pressed={rhythm === v} onClick={() => setRhythm(v)}>
+                {rhythm === v && <motion.span layoutId="pv-seg-pill" className="pv-seg__pill" transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }} />}
+                <span className="pv-seg__label">{l}</span>
+              </button>
+            ))}
           </div>
-        </fieldset>
+        </div>
       </div>
       <div className={`pv-mate cw-surface--${r.tone}`}>
         <div className="pv-mate__card">

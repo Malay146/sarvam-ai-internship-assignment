@@ -451,8 +451,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 @media (min-width: 1024px) { .pv-build { grid-template-columns: 7fr 5fr; gap: var(--space-8); align-items: stretch; } }
 .pv-build__controls { display: flex; flex-direction: column; gap: var(--space-4); }
 .pv-field { margin: 0; padding: var(--space-6); border: var(--border-default); border-radius: var(--radius-3xl); background: var(--color-sr-white); display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
-.pv-field legend { float: left; width: 100%; display: flex; align-items: center; gap: var(--space-3); padding: 0; font-family: var(--font-display); font-size: 20px; color: var(--color-tx); }
-.pv-field legend + * { clear: both; }
+.pv-field__title { margin: 0; width: 100%; display: flex; align-items: center; gap: var(--space-3); padding: 0; font-family: var(--font-display); font-size: 20px; color: var(--color-tx); }
 .pv-n { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--color-st-secondary); font-family: var(--font-code); font-size: 12px; color: var(--color-tx-secondary); }
 .pv-hint { margin-left: auto; font-family: var(--font-text); font-size: var(--text-small); color: var(--color-tx-tertiary); }
 .pv-apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
@@ -463,7 +462,11 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-app[aria-pressed="true"] { color: var(--color-tx); border-color: var(--color-sr-indigo-300); box-shadow: inset 0 0 0 1px var(--color-sr-indigo-300); }
 .pv-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: var(--radius-full); background: var(--color-sf-tertiary); }
 .pv-seg button { min-height: 44px; border: 0; border-radius: var(--radius-full); background: none; font: inherit; font-size: var(--text-small); color: var(--color-tx-secondary); cursor: pointer; padding: 0 var(--space-2); }
-.pv-seg button[aria-pressed="true"] { background: var(--color-sr-white); color: var(--color-tx); box-shadow: var(--shadow-ambient-sm); }
+.pv-seg button { position: relative; transition: color var(--duration-moderate) var(--ease-standard); }
+.pv-seg button[aria-pressed="true"] { color: var(--color-tx); }
+/* one white pill that slides between options (shared layout), so the switch reads as movement, not a jump */
+.pv-seg__pill { position: absolute; inset: 0; z-index: 0; border-radius: var(--radius-full); background: var(--color-sr-white); box-shadow: var(--shadow-ambient-sm); }
+.pv-seg__label { position: relative; z-index: 1; }
 .pv-mate { border-radius: var(--radius-3xl); padding: var(--space-6); display: grid; align-items: center; }   /* the teammate card sits centred in its panel, never sticky */
 @media (min-width: 1024px) { .pv-mate { padding: var(--space-8); } }
 .pv-mate__card { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-6); border-radius: var(--radius-3xl); background: var(--color-sr-white); box-shadow: var(--shadow-ambient-md); }
