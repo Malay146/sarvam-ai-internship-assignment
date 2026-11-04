@@ -566,7 +566,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* Integrations: a soft multi-colour horizon rising from the bottom to about half the panel — the brand spectrum,
    indigo · lilac · peach · orange side by side, each blurred into the next, fading to white by 50% */
 /* colours stacked bottom → top (each a horizontal band, blended in OKLab): saffron at the foot, then peach, lilac,
-   periwinkle, fading to white at half height */
-.pv-int::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 52%; pointer-events: none;
+   periwinkle, fading to white three-quarters of the way up */
+.pv-int::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 75%; pointer-events: none;
   background: linear-gradient(0deg in oklab, rgb(250 155 67 / 0.30) 0%, rgb(250 190 163 / 0.34) 22%, rgb(194 171 204 / 0.32) 48%, rgb(167 192 241 / 0.24) 72%, rgb(232 239 252 / 0) 100%); }
 .pv-int::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.35; pointer-events: none; }
