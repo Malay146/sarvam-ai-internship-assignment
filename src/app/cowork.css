@@ -77,13 +77,8 @@
 .cw-stage__tabtext { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .cw-stage__tabtitle { font-weight: var(--weight-medium); font-size: var(--text-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cw-stage__tabnote { font-size: var(--text-small); color: var(--color-tx-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Progress: a pill track inset inside the card (never clipped by the corner radius), lined up with the tab text.
-   The track only shows on the active tab, tinted with its tone; the fill runs left to right over the interval. */
-.cw-stage__bar { position: absolute; left: var(--space-4); right: var(--space-4); bottom: var(--space-2); height: 3px; border-radius: var(--radius-full); overflow: hidden; background: var(--tab-tint, var(--color-sf-tertiary)); opacity: 0; transition: opacity var(--duration-moderate) var(--ease-standard); }
-.cw-stage__tab[aria-selected="true"] .cw-stage__bar { opacity: 1; }
-.cw-stage--side .cw-stage__bar { left: calc(var(--space-4) + 36px + var(--space-4)); }
-.cw-stage__fill { position: absolute; inset: 0; border-radius: inherit; background: var(--color-accent); transform-origin: 0 50%; }
-@media (prefers-reduced-motion: reduce) { .cw-stage__bar { transition: none; } }
+.cw-stage__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: transparent; }
+.cw-stage__fill { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 0 50%; }
 .cw-stage__panels { display: grid; grid-template-columns: minmax(0, 1fr); }
 .cw-stage__panel { grid-area: 1 / 1; min-width: 0; }
 .cw-stage__panel[aria-hidden="true"] { pointer-events: none; }
@@ -690,8 +685,13 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); color: var(--color-tx-tertiary); text-decoration: none; }
 @media (hover: hover) { .sf__legal a:hover { color: var(--color-tx); } }
 /* closing band: the indigo-glow horizon with the official white wordmark spanning the container */
-.sf__band { position: relative; overflow: hidden; isolation: isolate; background: var(--texture-grain), linear-gradient(180deg in oklab, #2a2aa8 0%, #3333cc 25%, #7c71d0 60%, #c2abcc 85%, #f2c3ad 100%); background-blend-mode: overlay, normal; color: rgb(255 255 255 / 0.78); }
-.sf__band-inner { display: flex; flex-direction: column; gap: var(--space-8); padding: var(--space-16) 0 var(--space-6); }
+.sf__band { position: relative; overflow: hidden; isolation: isolate; background: var(--texture-grain), linear-gradient(180deg in oklab, var(--color-sf) 0%, #f3f4fd 55%, #f7eef0 100%); background-blend-mode: overlay, normal; }
+.sf__band-inner { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-12) 0 var(--space-6); }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
-.sf__giant { display: block; width: 100%; height: auto; opacity: 0.96; }
 .sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
+
+/* the big wordmark: almost the full page width, filled with the brand spectrum (indigo → lilac → peach → saffron) */
+.sf__giant { display: block; width: calc(100vw - 2 * max(16px, 3vw)); max-width: none; margin-inline: calc(50% - (100vw - 2 * max(16px, 3vw)) / 2); aspect-ratio: 202 / 32;
+  -webkit-mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat; mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat;
+  background: linear-gradient(100deg in oklab, #3333cc 0%, #7c71d0 30%, #c2abcc 52%, #f2a07f 74%, #e6651b 100%); }
+.sf__band-foot { color: var(--color-tx-tertiary); }
