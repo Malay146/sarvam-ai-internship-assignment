@@ -6,7 +6,7 @@
 ## 0. Page-building playbook (apply to every new page)
 
 ### 0.1 Originality: our sections, their facts
-1. **Hierarchy first, then originality.** A product page reads as a story: **promise → why it's different → how it works → what it's made of → where it works → control → try it → trust → proof → questions → act.** Proven sections that carry that story (a how-it-works stage, a building-block bento) are fine even when sarvam.ai has similar ones; mix them with our own formats (contrast, integration field, approval desk, day scrubber, teammate builder). v1 copied Sarvam's order wholesale; v2 dropped the proven sections and lost the hierarchy. Both were rejected.
+1. **Hierarchy first, then originality.** A product page reads as a story: **promise → how it works → why it's different → what it's made of → where it works → control → try it → trust → proof → questions → act.** Proven sections that carry that story (a how-it-works stage, a building-block bento) are fine even when sarvam.ai has similar ones; mix them with our own formats (contrast, integration field, approval desk, day scrubber, teammate builder). v1 copied Sarvam's order wholesale; v2 dropped the proven sections and lost the hierarchy. Both were rejected.
 1b. **Header rhythm:** big chapters use the centred header (How it works, Integrations, Try it, Trust); sub-sections inside a chapter use the split header (title left, lead right: building blocks, your yes, while you sleep). Never two identical header styles three times in a row.
 2. **Engage, but don't make every section a control panel.** Only a few sections are hands-on (here: the teammate builder, the day scrubber, and the approval desk, which plays itself until the reader steps in). The rest are passive and motion-led (dashboard, drifting integrations, contrast, facts, quote). Interactive sections end in a clear next step ("Talk to us about this teammate").
 3. **One idea per section, said as a contrast or a promise** ("An assistant answers. A teammate finishes.", "Nothing ships without your yes").
@@ -52,8 +52,8 @@
 | # | Story beat | Section | Header | Interaction | Component |
 |---|---|---|---|---|---|
 | 1 | Promise | Hero: title + live dashboard | — | passive | `CoworkDashboard` |
-| 2 | Why it's different | An assistant answers. A teammate finishes. | centred | passive | `.pv-vs` |
-| 3 | How it works | It runs the whole task (4 tabs: plans · researches · improves · waits for your yes) | centred + eyebrow | auto-advances; tabs | `Stage` + `HowPanel` |
+| 2 | How it works | It runs the whole task (4 tabs: plans · researches · improves · waits for your yes) | centred + eyebrow | auto-advances; tabs | `Stage` + `HowPanel` |
+| 3 | Why it's different | An assistant answers. A teammate finishes. | centred | passive | `.pv-vs` |
 | 4 | What it's made of | Everything a teammate is made of (5-card bento) | split | passive | `BentoTile` |
 | 5 | Where it works | Works where your work already lives: 100+ (top-left) + a static 6 × 4 grid of the 24 named marks, "Pick apps for a teammate" link at the bottom | centred | passive (one fade-in) | `IntegrationField` |
 | 6 | Control | Nothing ships without your yes | split | plays itself; can step in | `ApprovalDesk` |

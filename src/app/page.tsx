@@ -68,7 +68,21 @@ export default function IndusCoworkPage() {
           <Reveal delay={0.12} className="pv-hero__shot"><CoworkDashboard /></Reveal>
         </section>
 
-        {/* 2 · Assistant or teammate? (Product): the one idea to understand, side by side */}
+        {/* 2 · How it works (Product): one stage, four moments of the work */}
+        <section id="how" className="sr-container cw-section" aria-labelledby="how-h">
+          <Reveal><SectionHeader eyebrow="How it works" eyebrowTone="accent" title={<span id="how-h">It runs the whole task, start to finish.</span>} lead="Every teammate plans, researches and checks its own work, so you hand off the outcome and not the steps." /></Reveal>
+          <Reveal>
+            <Stage label="How a teammate works" interval={6500} items={[
+              { key: "plan", tone: "indigo", icon: <span className="cw-tab-icon cw-tone--indigo"><ListTodoFill width={18} height={18} /></span>, tab: "Plans the work", tabNote: "A to-do list first", panel: <HowPanel tone="indigo" title="Plans the work before it starts." body="It turns your request into a to-do list and works through it in order." checks={["Breaks the task into steps", "Orders the work itself", "Tracks progress as it goes"]} visual={<MockPlan />} /> },
+              { key: "research", tone: "orange", icon: <span className="cw-tab-icon cw-tone--orange"><SearchFill width={18} height={18} /></span>, tab: "Researches", tabNote: "Web and your apps", panel: <HowPanel tone="orange" title="Researches on its own." body="Web search is built in, so it finds what it needs while it works." checks={["Searches the web as it works", "Pulls from your connected apps", "Re-plans when it learns more"]} visual={<MockResearch />} /> },
+              { key: "review", tone: "green", icon: <span className="cw-tab-icon cw-tone--green"><SparkleFill width={18} height={18} /></span>, tab: "Improves", tabNote: "Until it holds up", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Sources every claim", "Refines until it is right"]} visual={<MockReview />} /> },
+              { key: "approve", tone: "rose", icon: <span className="cw-tab-icon cw-tone--rose"><ShieldCheckFill width={18} height={18} /></span>, tab: "Waits for your yes", tabNote: "Nothing ships without it", panel: <HowPanel tone="rose" title="Nothing ships without your yes." body="Sending, merging and making changes all wait for your approval." checks={["Drafts and prepares the work", "Asks before anything goes out", "Leaves a trail of every step"]} visual={<StepVisual kind="approvals" />} /> },
+            ]} />
+          </Reveal>
+        </section>
+
+
+        {/* 3 · Assistant or teammate? (Product): the one idea to understand, side by side */}
         <section className="sr-container cw-section" aria-labelledby="vs-h">
           <Reveal><SectionHeader title={<span id="vs-h">An assistant answers. A teammate finishes.</span>} lead="The difference is who carries the work from the request to the result." /></Reveal>
           <Reveal className="pv-vs">
@@ -90,20 +104,6 @@ export default function IndusCoworkPage() {
             </article>
           </Reveal>
         </section>
-
-        {/* 3 · How it works (Product): one stage, four moments of the work */}
-        <section id="how" className="sr-container cw-section" aria-labelledby="how-h">
-          <Reveal><SectionHeader eyebrow="How it works" eyebrowTone="accent" title={<span id="how-h">It runs the whole task, start to finish.</span>} lead="Every teammate plans, researches and checks its own work, so you hand off the outcome and not the steps." /></Reveal>
-          <Reveal>
-            <Stage label="How a teammate works" interval={6500} items={[
-              { key: "plan", tone: "indigo", icon: <span className="cw-tab-icon cw-tone--indigo"><ListTodoFill width={18} height={18} /></span>, tab: "Plans the work", tabNote: "A to-do list first", panel: <HowPanel tone="indigo" title="Plans the work before it starts." body="It turns your request into a to-do list and works through it in order." checks={["Breaks the task into steps", "Orders the work itself", "Tracks progress as it goes"]} visual={<MockPlan />} /> },
-              { key: "research", tone: "orange", icon: <span className="cw-tab-icon cw-tone--orange"><SearchFill width={18} height={18} /></span>, tab: "Researches", tabNote: "Web and your apps", panel: <HowPanel tone="orange" title="Researches on its own." body="Web search is built in, so it finds what it needs while it works." checks={["Searches the web as it works", "Pulls from your connected apps", "Re-plans when it learns more"]} visual={<MockResearch />} /> },
-              { key: "review", tone: "green", icon: <span className="cw-tab-icon cw-tone--green"><SparkleFill width={18} height={18} /></span>, tab: "Improves", tabNote: "Until it holds up", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Sources every claim", "Refines until it is right"]} visual={<MockReview />} /> },
-              { key: "approve", tone: "rose", icon: <span className="cw-tab-icon cw-tone--rose"><ShieldCheckFill width={18} height={18} /></span>, tab: "Waits for your yes", tabNote: "Nothing ships without it", panel: <HowPanel tone="rose" title="Nothing ships without your yes." body="Sending, merging and making changes all wait for your approval." checks={["Drafts and prepares the work", "Asks before anything goes out", "Leaves a trail of every step"]} visual={<StepVisual kind="approvals" />} /> },
-            ]} />
-          </Reveal>
-        </section>
-
 
         {/* 4 · Building blocks (Product): five parts, one bento */}
         <section id="blocks" className="sr-container cw-section" aria-labelledby="blocks-h">
