@@ -3,7 +3,7 @@
 // Playbook (rules learned building this page): design-system/recipes/landing-page.md.
 import type { Metadata } from "next";
 import {
-  BookOpenFill, CalendarClockFill, Globe, ListTodoFill, Lock, SearchFill, ShieldCheck, ShieldCheckFill, SparkleFill, UserFill, UserRound,
+  BookOpenFill, CalendarClockFill, Check, Globe, Message as MessageIcon, ListTodoFill, Lock, SearchFill, ShieldCheck, ShieldCheckFill, SparkleFill, UserFill, UserRound,
 } from "@/components/icons";
 import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
@@ -88,19 +88,20 @@ export default function IndusCoworkPage() {
           <Reveal><SectionHeader title={<span id="vs-h">An assistant answers. A teammate finishes.</span>} lead="The difference is who carries the work from the request to the result." /></Reveal>
           <Reveal className="pv-vs">
             <article className="pv-vs__col" data-sibling>
-              <p className="pv-vs__label">A chat assistant</p>
+              <p className="pv-vs__label"><span className="pv-vs__icon pv-vs__icon--muted"><MessageIcon width={18} height={18} strokeWidth={1.5} /></span>A chat assistant</p>
               <ul>
-                <li>Answers the question you asked</li>
-                <li>Waits for your next prompt</li>
-                <li>Leaves the doing to you</li>
+                {["Answers the question you asked", "Waits for your next prompt", "Leaves the doing to you"].map((x) => (
+                  <li key={x}><span className="pv-vs__mark pv-vs__mark--muted" aria-hidden />{x}</li>
+                ))}
               </ul>
             </article>
-            <article className="pv-vs__col pv-vs__col--mate cw-surface--indigo" data-sibling>
-              <p className="pv-vs__label">An Indus Cowork teammate</p>
+            <span className="pv-vs__vs" aria-hidden>vs</span>
+            <article className="pv-vs__col pv-vs__col--mate" data-sibling>
+              <p className="pv-vs__label"><span className="pv-vs__icon cw-tone--indigo"><UserFill width={18} height={18} /></span>An Indus Cowork teammate</p>
               <ul>
-                <li>Plans the work as a to-do list</li>
-                <li>Researches and acts in your apps</li>
-                <li>Brings the result back for your yes</li>
+                {["Plans the work as a to-do list", "Researches and acts in your apps", "Brings the result back for your yes"].map((x) => (
+                  <li key={x}><span className="pv-vs__mark" aria-hidden><Check width={12} height={12} strokeWidth={2.5} /></span>{x}</li>
+                ))}
               </ul>
             </article>
           </Reveal>
