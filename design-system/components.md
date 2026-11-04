@@ -71,6 +71,7 @@ Recipes read from sarvam.ai markup. All of them are classes in `tokens.css`.
 | Trust band | `--color-sr-indigo-950` | flat `#11115b` | "Sovereign by default" |
 | Haze | `.sr-haze` | transparent → periwinkle | Product hero background |
 
+**Strong grain (CTA card):** the closing CTA adds a second layer, `--texture-grain-strong` (grey luminance noise with both dark and light specks, contrast boosted, 200px tile at 1:1), as `.sr-cta::after`, with `overlay` blend at 22% opacity. It sits above the gradient and lattice and below the text. The white-only `--texture-grain` almost disappears on near-black, so dark surfaces need this one. `[considered addition]`
 
 **Grain:** Sarvam overlays a 64px noise tile with `mix-blend-mode: soft-light` at 50% opacity on gradients `[verified]`. We use our SVG noise token (`--texture-grain`, `overlay`), which looks equivalent and needs no image file.
 
@@ -212,8 +213,11 @@ Min-height 32, radius full, text 14. Neutral: white + light bevel. Tinted: 50 ba
 - Points separated by white-10% dividers.
 - Points: 1 column on phone → 2 columns from 768; title column left from 1024 (4fr / 8fr).
 
-### Faq `<Faq items>`
-Native `<details>`: works without JavaScript and is accessible. Each question row has a min-height of 44, item-title type and a chevron that rotates 180° (300ms, emphasized ease). The answer is body text with 40px right padding. The first item opens by default. Hairline dividers.
+### Faq `<Faq items defaultOpen>` (animated, client)
+Accordion built on Motion (`src/components/sarvam/faq.tsx`). Each question is a `<button aria-expanded aria-controls>` inside an `h3`, and its answer is a labelled `region`. Rows are at least 44px tall and use item-title type, with hairline dividers. The answer is body text with 40px right padding. The first item opens by default, and several items can be open at once.
+- **Open:** the height eases from 0 to auto (500ms, out-quint). The answer fades in, rises 8px and goes from 4px blur to sharp, starting 80ms behind the height. The chevron turns 180° on the same curve.
+- **Close:** the answer fades out first (150ms, standard ease, up 4px). Then the height collapses (300ms, emphasized ease, 50ms delay), so text is never clipped while it is still visible.
+- **Reduced motion:** every transition is instant.
 
 ### CtaCard `<CtaCard title cta>` (animated)
 - Night gradient + grain, radius 24, centred.
@@ -256,7 +260,7 @@ A horizontal card: a **crisp glow tile** (64px on phone, 80px from 768; radius 1
 ### Footer `<Footer>`
 - Wordmark + "AI for all from India".
 - Link columns: 2 on phone → 4 from 768, beside the brand column from 1024.
-- Links are 44px tall on touch screens and 36 from 1024.
+- Links are 44px tall on touch screens and 36 from 1024. Hover (pointer devices only): text goes `tx-secondary` → `sr-indigo-800` over `--duration-normal`. Indigo, not `tx-accent`, because accent fails contrast at 14px. `[considered addition]`
 - Legal line + Bengaluru address `[verified]`.
 - Faint grain over the flat surface (`--texture-grain` tile scaled to 360px for a coarser speck, 35% opacity, behind content). Ties the footer to the grained gradients above it. `[considered addition]`
 
@@ -294,6 +298,7 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
   - Panel: the section heading, items in **2 columns** (a 44px white icon tile with a hairline, Nucleo outline icon in the item's tone, then title + description), and a **featured card** on the right (a named gradient + the title).
   - The page dims behind it (scrim, 6px blur).
   - Switching menus crossfades inside one panel; the panel never moves.
+  - **Direction-aware hover** `[addition]`: the links share **one grey pill** (`sf-tertiary`, full radius). It appears under the first link the mouse enters (200ms fade, no slide in from nowhere), **slides** to each next link with its width (300ms out-quint), stays on the open link, and fades out when the pointer leaves the links with no menu open. The panel content slides **24px in from the side the pointer moved toward** and leaves to the other side (200ms, standard ease). Reduced motion: no slide, the pill jumps.
 - **Phone/tablet:**
   - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom.
   - Page scroll is locked while open.

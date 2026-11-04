@@ -56,6 +56,7 @@
 @media (min-width: 768px) { .st-gallery--wide { grid-template-columns: repeat(3, 1fr); } }
 .st-gallery--wide .st-thumb { aspect-ratio: 3 / 1; padding: 6%; }
 .st-card--glow { padding: 0; overflow: hidden; position: relative; }
+.st-card--glow::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: var(--shadow-glow-inset); }
 .st-glowcard, .st-glowcard svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .st-card--glow .sr-meta { position: absolute; bottom: var(--space-4); left: 50%; transform: translateX(-50%); }
 .st-thumb:has(.st-thumb__svg svg rect) { padding: 0; overflow: hidden; }

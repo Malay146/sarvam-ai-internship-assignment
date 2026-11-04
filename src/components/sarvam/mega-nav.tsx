@@ -2,6 +2,7 @@
 // Mega navigation, modelled on sarvam.ai's navbar (menu items, descriptions and icon tones read from its navbar bundle,
 // references/brand-css/dep_Navbar.Bna_uiTB.js). Icons: Nucleo Core glyph (filled) 24, in the item's tone. Spec: components.md → MegaNav.
 // Desktop (≥1024): click or hover a link → one panel drops under the bar (items in 2 columns + a featured card), the page dims.
+// Direction aware hover: one pill slides between the links, and the panel content slides in from the side you moved toward.
 // Phone/tablet: the menu button opens a full sheet with one accordion per section. Esc / outside click closes. Reduced motion: no slide.
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type ComponentType, type SVGProps } from "react";
@@ -82,10 +83,27 @@ function MenuItem({ it, onPick }: { it: Item; onPick?: () => void }) {
   );
 }
 
+/** Panel content slide: enters from the side the pointer moved toward, leaves to the other side. */
+const slide = (d: number) => ({
+  enter: (dir: number) => ({ opacity: 0, x: dir * d }),
+  center: { opacity: 1, x: 0 },
+  leave: (dir: number) => ({ opacity: 0, x: dir * -d }),
+});
+
 export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }: { cta?: string; ctaHref?: string; login?: boolean }) {
   const [open, setOpen] = useState<string | null>(null);
   const [sheet, setSheet] = useState(false);
   const [acc, setAcc] = useState<string | null>("products");
+  const [hov, setHov] = useState<string | null>(null);
+  const [dir, setDir] = useState(1);
+  // One pill for all links: jumps under the first link you touch, then slides between links, fades out when you leave.
+  const active = hov ?? open;
+  const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [pill, setPill] = useState<{ x: number; w: number; on: boolean; jump: boolean }>({ x: 0, w: 0, on: false, jump: true });
+  useEffect(() => {
+    const el = active ? linkRefs.current[active] : null;
+    setPill((p) => el ? { x: el.offsetLeft, w: el.offsetWidth, on: true, jump: !p.on } : { ...p, on: false, jump: false });
+  }, [active]);
   const reduced = useReducedMotion();
   const barRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,7 +118,10 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
   }, []);
   useEffect(() => { document.documentElement.style.overflow = sheet ? "hidden" : ""; return () => { document.documentElement.style.overflow = ""; }; }, [sheet]);
 
-  const hoverOpen = (k: string) => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(k); };
+  const idx = (k: string | null) => MENUS.findIndex((m) => m.key === k);
+  // switching menus: remember which way we moved, so the panel content enters from that side
+  const go = (k: string | null) => { if (k && open && k !== open) setDir(idx(k) > idx(open) ? 1 : -1); setOpen(k); };
+  const hoverOpen = (k: string) => { if (closeTimer.current) clearTimeout(closeTimer.current); go(k); };
   const hoverClose = () => { closeTimer.current = setTimeout(() => setOpen(null), 160); };
   const t = reduced ? { duration: 0 } : { duration: DUR.moderate, ease: EASE.outQuint };
 
@@ -114,11 +135,16 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/sarvam-wordmark-black.svg" alt="Sarvam" />
             </Link>
-            <ul className="mn-links">
+            <ul className="mn-links" onPointerLeave={() => setHov(null)}>
+              <motion.li className="mn-link__pill" aria-hidden initial={false}
+                animate={{ x: pill.x, width: pill.w, opacity: pill.on ? 1 : 0 }}
+                transition={reduced || pill.jump
+                  ? { x: { duration: 0 }, width: { duration: 0 }, opacity: { duration: reduced ? 0 : DUR.normal } }
+                  : { x: { duration: DUR.moderate, ease: EASE.outQuint }, width: { duration: DUR.moderate, ease: EASE.outQuint }, opacity: { duration: DUR.normal } }} />
               {MENUS.map((m) => (
-                <li key={m.key}>
-                  <button type="button" className="mn-link" aria-expanded={open === m.key} aria-controls={`${uid}-panel`}
-                    onPointerEnter={(e) => e.pointerType === "mouse" && hoverOpen(m.key)} onClick={() => setOpen(open === m.key ? null : m.key)}>
+                <li key={m.key} className="mn-links__item">
+                  <button type="button" ref={(el) => { linkRefs.current[m.key] = el; }} className="mn-link" aria-expanded={open === m.key} aria-controls={`${uid}-panel`}
+                    onPointerEnter={(e) => { if (e.pointerType !== "mouse") return; setHov(m.key); hoverOpen(m.key); }} onClick={() => go(open === m.key ? null : m.key)}>
                     {m.label}
                   </button>
                 </li>
@@ -138,8 +164,9 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
             {menu && (
               <motion.div id={`${uid}-panel`} className="mn-panel" initial={{ opacity: 0, y: reduced ? 0 : -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -4 }} transition={t}>
                 <div className="sr-container mn-panel__inner">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div key={menu.key} className="mn-panel__body" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={reduced ? { duration: 0 } : { duration: DUR.normal }}>
+                  <AnimatePresence mode="wait" initial={false} custom={dir}>
+                    <motion.div key={menu.key} className="mn-panel__body" custom={dir} variants={slide(reduced ? 0 : 24)} initial="enter" animate="center" exit="leave"
+                      transition={reduced ? { duration: 0 } : { duration: DUR.normal, ease: EASE.standard }}>
                       <div className="mn-panel__items">
                         <p className="sr-eyebrow mn-panel__heading">{menu.heading}</p>
                         <div className="mn-grid">{menu.items.map((it) => <MenuItem key={it.label} it={it} onPick={() => setOpen(null)} />)}</div>

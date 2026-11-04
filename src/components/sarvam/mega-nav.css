@@ -1,10 +1,11 @@
 /* MegaNav. Prefix mn-. Tokens only. Bar = .sr-nav (shared). */
 .mn-open .sr-nav__surface { opacity: 1; }
-.mn-links { display: none; list-style: none; margin: 0; padding: 0; gap: var(--space-1); }
+.mn-links { position: relative; display: none; list-style: none; margin: 0; padding: 0; gap: var(--space-1); }
 @media (min-width: 1024px) { .mn-links { display: flex; } }
-.mn-link { min-height: 40px; padding: 0 var(--space-4); border: 0; border-radius: var(--radius-full); background: transparent; font: inherit; font-size: var(--text-nav); color: var(--color-tx); cursor: pointer; transition: background var(--duration-normal) var(--ease-standard); }
-.mn-link[aria-expanded="true"] { background: var(--color-sf-tertiary); }
-@media (hover: hover) { .mn-link:hover { background: var(--color-sf-tertiary); } }
+/* Links share one pill (.mn-link__pill) that slides to the hovered or open link: direction aware hover. */
+.mn-links__item { display: flex; }
+.mn-link__pill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--radius-full); background: var(--color-sf-tertiary); pointer-events: none; }
+.mn-link { position: relative; z-index: 1; min-height: 40px; padding: 0 var(--space-4); border: 0; border-radius: var(--radius-full); background: transparent; font: inherit; font-size: var(--text-nav); color: var(--color-tx); cursor: pointer; }
 .mn-link:focus-visible, .mn-burger:focus-visible, .mn-item:focus-visible, .mn-feature:focus-visible, .mn-acc__head:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .mn-wide { display: none; }
 @media (min-width: 768px) { .mn-wide { display: inline-flex; } }

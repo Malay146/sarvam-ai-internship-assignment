@@ -173,19 +173,8 @@ export function Timeline({ events }: { events: { time: string; title: string; bo
   );
 }
 
-/* ── FAQ (P12) ── */
-export function Faq({ items }: { items: { q: string; a: string }[] }) {
-  return (
-    <div className="sr-faq">
-      {items.map((it, i) => (
-        <details key={it.q} className="sr-faq__item" open={i === 0}>
-          <summary className="sr-faq__q">{it.q}<ChevronDown strokeWidth={ICON_STROKE} aria-hidden /></summary>
-          <div className="sr-faq__a"><p className="sr-body">{it.a}</p></div>
-        </details>
-      ))}
-    </div>
-  );
-}
+/* ── FAQ (P12): client component, animated with Motion ── */
+export { Faq } from "./faq";
 
 /* ── Trust band (P11) ── */
 export function TrustBand({ title, lead, points }: { title: string; lead: string; points: { title: string; body: string }[] }) {

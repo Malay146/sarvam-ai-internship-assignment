@@ -313,13 +313,14 @@ export function randomFlower(r: () => number): FlowerParams {
 }
 
 /* ───────────── Glow render (soft emboss on a tinted card) ───────────── */
-// Palettes use brand ramps only (tokens.css). bg = card gradient top→bottom, rim = glow top→bottom.
+// Palettes use brand ramps (tokens.css), one step deeper at the top so the card darkens slightly top→bottom.
+// Rose and lavender mid stops are blends between adjacent ramp steps. bg = card gradient top→bottom, rim = stroke top→bottom: a deeper step of the same ramp to a lighter one, a stronger fall-off than the card. A second, white-to-clear stroke (bottom-left → top-right) sits just inside it.
 export const GLOW_PALETTES = {
-  lavender: { bg: ["#d2dff9", "#b8c9fa", "#c9d1f7"], rim: ["#e380a8", "#81a0e9"], sheen: "#ffffff" },
-  rose: { bg: ["#db715c", "#e8908a", "#efabc5"], rim: ["#ffffff", "#fceaf0"], sheen: "#ffffff" },
-  leaf: { bg: ["#acd587", "#c8e4b0", "#e3f1d8"], rim: ["#ffffff", "#efabc5"], sheen: "#ffffff" },
-  marigold: { bg: ["#ffcb79", "#ffe8b7", "#fff8e6"], rim: ["#ee7944", "#ffffff"], sheen: "#ffffff" },
-  dusk: { bg: ["#1f2f55", "#5f78af", "#ddac88"], rim: ["#f59970", "#a7c0f1"], sheen: "#ffffff" },
+  lavender: { bg: ["#9db7ef", "#b3c6f6", "#dae5fa"], rim: ["#e380a8", "#81a0e9"], sheen: "#ffffff", light: "#fafcff" },
+  rose: { bg: ["#cc5844", "#df8277", "#f2b8cd"], rim: ["#c43d2b", "#eba18f"], sheen: "#ffffff", light: "#fde7e2" },
+  leaf: { bg: ["#88c350", "#acd587", "#dcefcc"], rim: ["#6ea335", "#acd587"], sheen: "#ffffff", light: "#f2f8eb" },
+  marigold: { bg: ["#feb33a", "#ffcb79", "#fff4da"], rim: ["#e96c2f", "#ffb94a"], sheen: "#ffffff", light: "#fff8e6" },
+  dusk: { bg: ["#1f2f55", "#5f78af", "#ddac88"], rim: ["#f59970", "#a7c0f1"], sheen: "#ffffff", light: "#feede6" },
 } as const;
 export type GlowPalette = keyof typeof GLOW_PALETTES;
 
@@ -339,13 +340,14 @@ export function glowSVG(geom: { d: string; width: number; height: number }, pale
     <filter id="${id("blur")}" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${f(2.4 / scale)}"/></filter>
     <filter id="${id("blur2")}" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${f(0.7 / scale)}"/></filter>
     <clipPath id="${id("in")}"><path d="${geom.d}"/></clipPath>
+    <linearGradient id="${id("hl")}" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="${P.light}" stop-opacity="1"/><stop offset="1" stop-color="${P.light}" stop-opacity="0"/></linearGradient>
     <filter id="${id("grain")}"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.16"/></feComponentTransfer></filter>
   </defs>`;
+  // Crisp: no fill, so the card gradient shows straight through the shape; only the light highlight and the coloured rim.
   const crisp = `<g transform="translate(${f(tx)} ${f(ty)}) scale(${f(scale)})">
-    <path d="${geom.d}" fill="url(#${id("sheen")})"/>
-    <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="${f(4 / scale)}" filter="url(#${id("blur2")})" opacity="0.35"/>
-    <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="${f(1.6 / scale)}"/>
-    <g clip-path="url(#${id("in")})"><path d="${geom.d}" fill="none" stroke="#ffffff" stroke-width="${f(2.4 / scale)}" opacity="0.7"/></g>
+    <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="${f(6.5 / scale)}" filter="url(#${id("blur2")})" opacity="0.35"/>
+    <g clip-path="url(#${id("in")})"><path d="${geom.d}" fill="none" stroke="url(#${id("hl")})" stroke-width="${f(7 / scale)}"/></g>
+    <path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="${f(4 / scale)}"/>
   </g>`;
   const shape = style === "crisp" ? crisp : `<g transform="translate(${f(tx)} ${f(ty)}) scale(${f(scale)})">
     <path d="${geom.d}" fill="url(#${id("sheen")})"/>
@@ -353,6 +355,7 @@ export function glowSVG(geom: { d: string; width: number; height: number }, pale
     <g clip-path="url(#${id("in")})"><path d="${geom.d}" fill="none" stroke="url(#${id("rim")})" stroke-width="${f(10 / scale)}" filter="url(#${id("blur")})" opacity="0.45"/></g>
     <path d="${geom.d}" fill="none" stroke="#ffffff" stroke-width="${f(1.2 / scale)}" filter="url(#${id("blur2")})" opacity="0.75"/>
   </g>`;
+  // The card's light inner shadow lives in CSS (--shadow-glow-inset on .sr-card__glow, .sr-tile, Studio's glow card) so it follows the container radius.
   const card = withCard ? `<rect width="${f(W)}" height="${f(Hc)}" fill="url(#${id("bg")})"/>` : "";
   void size;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${f(W)} ${f(Hc)}">${defs}${card}${shape}<rect width="${f(W)}" height="${f(Hc)}" filter="url(#${id("grain")})" style="mix-blend-mode:overlay"/></svg>`;

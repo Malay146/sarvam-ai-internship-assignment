@@ -592,6 +592,74 @@ Entry format:
   - sarvam-banner skill: all presets, expressions, the 96 / 72px and 2-line rules, the fine-tuning fields, how to add new facts, and `banners/final/`.
   - SKILL.md routing descriptions and the CLAUDE.md checklist (banners done, repo public) are updated. design.md rebuilt.
 
+## 2026-11-04 · Claude Code · Stronger grain on the footer CTA
+
+**Prompt:** "have like a stronger and good quality grain in this footer cta"
+
+**Out:** The existing `--texture-grain` is white-only noise at 22% alpha. Under `overlay` on the near-black night gradient it barely showed. Added a `--texture-grain-strong` token: greyscale fractal noise (baseFrequency .95, 2 octaves), contrast boosted so it has both dark and light specks, full alpha, 200px tile drawn at 1:1 so the specks stay crisp. It goes on `.sr-cta::after` with `overlay` at 22% opacity (first tried 50%, which Malay found too strong, then 35% and 30%), painted above the gradient and lattice and below the text, so the headline stays sharp.
+
+**Why:** Grain on dark surfaces needs dark and light values to read. A white-only overlay only lifts the midtones.
+
+## 2026-11-04 · Claude Code · FAQ motion
+
+**Prompt:** "faqs should have motion"
+
+**Out:** Only the chevron moved before; the answer appeared and vanished in one frame. The FAQ keeps native `<details>` (it works without JS and is accessible) and adds CSS motion. `::details-content` animates from height 0 to auto through `interpolate-size: allow-keywords` (300ms, emphasized ease), and `content-visibility` flips discretely at the end, so closing animates too. The answer fades in and rises 8px; `@starting-style` gives it a start frame on open. Measured in Chromium: the row height eases 64 → 136px on open and back down on close. Browsers without `interpolate-size` snap the height but keep the fade. All of it is off under reduced motion.
+
+**Why:** A JS height-measure accordion would animate in every browser, but it costs the no-JS fallback. Progressive CSS was the cleaner trade.
+
+## 2026-11-04 · Claude Code · FAQ rebuilt on Motion
+
+**Prompt:** "use motion from react/motion, and give it a proper animation of closing and openining"
+
+**Out:** Replaced the CSS-only `<details>` motion. That version only animated height in Chromium. The FAQ is now a client component, `faq.tsx`, using `motion/react` and the shared `EASE`/`DUR` tokens from `motion.ts`. Open and close are choreographed separately. On open, the height eases to auto (500ms, out-quint) while the answer fades in, rises 8px and un-blurs, 80ms behind the height. On close, the text fades out first (150ms), then the height collapses (300ms, emphasized ease). The chevron rotates with Motion. Accessibility: a button with `aria-expanded`/`aria-controls` inside an `h3`, and the answer is a labelled region. Measured: open 64 → 136px and close 136 → 64px, both smooth, no console errors.
+
+**Why:** Motion animates height to auto in every browser and lets open and close have different timing. Collapsing before the text has faded looks clipped. The trade-off is that the FAQ now needs JS.
+
+## 2026-11-04 · Claude Code · Glow art: from flat outline to lit glass
+
+**Prompt:** "I have provided you with two sets of images. The first is of Sarvam AI and the other one is ours. Ours looks too plain and like there is nothing at all. Try to improve it: design style and all that, inner shadow, gradient, masking, colours, etc." (Reference: Sarvam's deep red icon tile with a frosted lotus. Ours: a pale rose GlowCard with a white outline flower.)
+
+**Out:** Rebuilt `glowSVG` (crisp style) in `src/lib/shapes.ts`. Card: saturated ramp gradient (for rose: red-400 → red-300 → red-200), plus a radial centre bloom (50 step) and an edge vignette in the deep step (600–700), so the card is lit from the middle like Sarvam's. Shape, as frosted glass: a halo behind it, a faint white sheen fill, and two clipped blurred strokes inside the outline (a deep-tone inner shadow nudged up-left, a white inner highlight nudged down-right) for the bevel, then a thin rim gradient that is brighter at the bottom. Grain is raised slightly. Palettes gained `deep` and `bloom`, both from brand ramps only.
+
+**Iteration:** The first pass made the interiors milky white: halo 0.4, bloom 0.6, sheen 0.34. Cut them to 0.22 / 0.42 / 0.24 so the card colour shows through the glass, as in the reference.
+
+**Applies to:** GlowCard headers, deployment TileCards, and Studio's glow render.
+
+**Rejected, then redone (same day):** Malay: "no it looks just bad. The previous one was better. Try to make it like a glossy effect." Then: "Like a knot area, try to make it realistic, like the light coming from the bottom left, something like that." I reverted the saturated, vignetted card to the previous pastel cards. "Knot" was most likely "knob", so I relit the shape as a glossy object with one light source at the bottom-left: a lamp glow in that corner of the card; a glass body bright at bottom-left that fades toward top-right; a white inner highlight on the bottom-left edges; an inner shadow on the top-right edges in a new per-palette `shade` colour (one ramp step deeper); a specular hotspot low-left; a rim fading from white; and a drop shadow cast up-right. **Lesson:** a heavier, darker treatment read as "bad" here. The gloss works because it keeps the light pastel card and adds one consistent light direction.
+
+**Dropped:** Malay: "Remove it. I don't like it." Reverted `glowSVG` and imagery.md to the original pastel glow (white rim on a light ramp card). The original stays. Neither the saturated vignette nor the bottom-left-lit gloss beat it.
+
+**Follow-up:** "try to use slightly darker colours in the gradient, coming from the top to the bottom very slightly." Moved the glow card gradients one ramp step deeper at the top, so each card darkens gently from bottom to top. Lavender: indigo-300 → blend → blend (it used to dip darker in the middle). Rose: blends a step deeper than red-300 → pink-200. Leaf: green-400 → 300 → 200. Marigold: yellow-400 → 300 → 200. Dusk is unchanged. The outline and glow render are untouched.
+
+**Follow-up:** "make the strokes of the petals and the centre pattern slightly thicker." In the crisp glow render: rim 1.6 → 2.2 → 3, inner white edge 2.4 → 3.2 → 4.2 (half of it shows, because it is clipped inside the shape), soft outer glow stroke 4 → 5 → 6.5. Malay asked for "more thicker" after the first bump. All in canvas units, so the stroke stays the same visual weight whatever the shape's scale.
+
+**Follow-up:** "now the sticker stroke also has a gradient similar to its background, from darker to light, but in a slightly stronger way, very slightly." Rim gradients now run from a light tint of the card's own ramp at the top to white at the bottom: lavender indigo-100, rose red-100, leaf green-100, marigold yellow-100. So the stroke darkens toward the top like its card, a little more strongly. The clipped inner edge also uses the rim gradient now (it was flat white), otherwise it hid the gradient. Lavender loses its old pink-to-blue rim for consistency; lavender started at indigo-200, which melted into the card at the top, so it moved to indigo-100. Dusk is unchanged.
+
+**Follow-up:** "stronger than the background. Darker colours from the top and slightly lighter colour at the bottom. Also one more stroke attached to it, which will have a gradient too, but it will be from the bottom left to the top right, like a white-to-transparent thing." The rim is now a coloured edge with a stronger fall-off than its card: lavender indigo-600 → 300, rose red-400 → red-200, leaf green-600 → 300, marigold orange-700 → yellow-400. A second stroke sits just inside it (6 wide, clipped, so 3 shows): white at the bottom-left fading to clear at the top-right. Together they read like the cut edge of a sticker catching the light. The blurred outer glow follows the rim colours.
+
+**Follow-up:** "no gap between two strokes and the one which has a stronger colour gradient should be thicker than the inner rim." Changed the draw order and the widths so the two strokes butt together. The white highlight now draws first: 7 wide, clipped inside, so it fills 0–3.5 inside the edge. The coloured rim draws on top of it: 4 wide, centred, so it covers 2 outside and 2 inside. Result: a 4-unit coloured rim, then 1.5 units of white highlight starting exactly where the rim ends, with no gap.
+
+**Follow-up:** "now reduce the strongness of the inner rim gradient." White highlight gradient changed from opacity 1 → 0 to 0.65 → 0.15 (bottom-left → top-right). It is softer at the bright end and never vanishes completely at the far end.
+
+**Follow-up (with a Sarvam reference: lavender tile, pink-to-violet scalloped rim):** "they are using a slightly different colour in the blue one so use that one." Lavender rim restored to Sarvam's two-hue edge, pink-300 `#e380a8` (top) → indigo-400 `#81a0e9` (bottom), instead of a single indigo ramp. Same stroke structure: 4-unit rim plus the white inner highlight.
+
+**Follow-up:** "the centre area of the pattern … should be transparent. It should have that background's gradient shown." Removed the white sheen fill from the crisp glow render, so the inside of each shape now shows the card gradient directly. The shape is defined only by its coloured rim, the white inner highlight and the soft outer glow.
+
+**Follow-up:** "in the background's gradient, I want to have a slightly lighter colour on the bottom side." Bottom stops lightened: lavender `#c3cff6` → indigo-200 `#d2dff9`, rose `#e99fb6` → pink-200 `#efabc5`, leaf `#c8e4b0` → `#d6ebc4` (between green-200 and 100), marigold `#ffe8b7` → yellow-100 `#fff0cf`. Top and middle stops are unchanged.
+
+**Follow-up:** "very slightly stronger on the top side and very slightly lighter on the bottom." Each card's top stop moved about 5% deeper and its bottom stop about 5% lighter (blends toward the next ramp step): lavender `#9db7ef` → `#dae5fa`, rose `#cc5844` → `#f2b8cd`, leaf `#88c350` → `#dcefcc`, marigold `#feb33a` → `#fff4da`. Middle stops are unchanged.
+
+**Follow-up:** "I want you to have an inner shadow on the overall card, which would be in the light colour." Added a light inner shadow to the glow card: a blurred stroke on the card's edge, with the half outside the canvas cut off, so a soft light band runs inside every edge. Each palette gained an `inner` colour, its ramp's 50 step (lavender indigo-50, rose pink-50, leaf green-50, marigold yellow-50; dusk indigo-100). First pass (width 18, blur 6, opacity 0.75) read as fog that ate the card; tightened to width 9, blur 3, opacity 0.7. Now it reads as a pillowy lit edge, as on Sarvam's tiles. It also shows on the 64–80px deployment tiles.
+
+**Follow-up:** "Slightly less strong, more professional, and covering properly, it will be subtle. And it should be blended quite well. The corners are also not covering properly. Fix it." Cause of the corner problem: the inner shadow was a square-edged SVG stroke, and the container's border-radius clipped it away at the corners. Moved it out of the SVG into CSS. `.sr-card__glow::after` is an inset box-shadow (20px blur, 2px spread, white) plus a 1px white hairline, blended with `mix-blend-mode: soft-light` so it becomes a lighter shade of each card's own hue instead of a white haze. It follows `border-radius`, so the corners are covered evenly. Tiles get a smaller version (10px blur, 28% white) on their existing `::after`. Removed the per-palette `inner` colours, which are no longer needed.
+
+**Follow-up:** "the inner rim gradient should be from a light colour to transparent. Also the outer card's inner shadow should be visible. Right now it is not visible." (1) The inner highlight is now each palette's 50-step tint (new `light` field: indigo-50, red-50, green-50, yellow-50, orange-100 for dusk), running from full at the bottom-left to fully transparent at the top-right. (2) The soft-light blend made the card inner shadow nearly invisible on mid-tone cards. It is now a normal-blend token, `--shadow-glow-inset` (18px white band at 45% plus a 35% hairline; `-sm` version for tiles), applied on `::after` overlays for `.sr-card__glow`, `.sr-tile` and Studio's `.st-card--glow`. Studio's glow card had no inner shadow at all, which is probably the view in Malay's screenshot.
+
+**Follow-up:** "it is blended too well so that I can't see the white glow. Fix it. Also I want you to have an inner shadow in the pattern, maybe black or white … it should be subtle." (1) Card inner glow raised: `--shadow-glow-inset` is now a 22px blur with 2px spread at 62% white plus a 55% hairline (tiles: 12px/1px at 58% plus a 50% hairline). (2) Tried a dark inner shadow inside the shape, not white: white would merge with the light highlight that is already there. It is ink `#1e2033` at 16%, a 12-unit stroke clipped inside the edge, 3-unit blur, nudged 1.2 down so it is slightly heavier under the top edge. It sits beneath the highlight and the rim, so the shape reads as gently pressed into the card while the centre stays transparent.
+
+**Follow-up:** "remove the pattern inner shadow." Removed the dark inner shadow inside the shape. The card inner glow stays.
+
 ## 2026-11-04 — Indus Cowork landing page, round 1
 - Prompts (verbatim): "Are you able to create the indus cowork page professionally … Don't do anything, just tell me." → "it should feel close to sarvam ai, not to sarvam's own indus cowork page, use your own creativity and all that. Try to add things, which are needed, like integration, testimonials and all that, or according to the Sarvam design sensors, all that. Try to build it. Also, try to use motion where needed."
 - Direction: follow the rhythm of sarvam.ai's **homepage** (Sun hero, a marquee under it, a big product stage, centred chapters, pillars, deployment cards, a customer quote, a night CTA), told for one product. It is not a reskin of /indus-cowork.
@@ -643,6 +711,16 @@ Entry format:
 - Round 4 (v3, current): a story order (promise → how → why → made of → where → control → try → trust → proof → questions → act); proven sections (how-it-works stage, bento) kept, mixed with ours (contrast, integrations grid, approval desk + activity trail, day timeline, teammate builder, one-open FAQ).
 - Fixes along the way: indigo hero glow (no visible ring), no blank states (in-place row states, pre-filled logs, timelines show every card), dots on the rail, sliding segmented pill, fieldset legend on the border → div, patterns tried then removed, gradient icons without tiles, softer shadows, grain token 0.22 → 0.30.
 - Every rule is recorded in  §0 (34 rules) so the next page needs no correction rounds; components.md updated for icons, brand marks, MegaNav, Stage.
+
+## 2026-11-04 — MegaNav direction-aware hover
+- Tool: Claude Code (Opus 5.5).
+- Prompts (verbatim): "make the navbar direction aware thing" · then "direction aware thing on hover".
+- First read: hide the bar on scroll down and show it on scroll up. Built it, then reverted it once the second prompt made clear the ask was about hover.
+- What came out: one shared pill behind the desktop links slides between them (x + width), and the panel content slides in from the side the pointer moved toward.
+- What changed and why:
+  - First version used Motion `layoutId` with a pill per link. Mid-slide the shared-layout crossfade dropped the pill to about 0.3 opacity, so it flickered. Replaced it with one measured pill (`offsetLeft` / `offsetWidth`) that animates x and width at full opacity.
+  - The pill fades only when it first appears or when the pointer leaves the links. Between links it only slides.
+- QA: Playwright hover pass at 1440 with the pill matching each button's x and width (±1px), mid-slide opacity 1, opacity 0 after leaving, no page errors. tsc clean.
 
 ## 2026-11-04 · Claude Code · Landing page footer (rounds 5+)
 
