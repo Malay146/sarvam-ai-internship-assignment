@@ -545,3 +545,8 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-sec .cw-sec__icon { align-self: flex-start; }
 .cw-sec .cw-sec__icon svg { display: block; margin: 0; width: 28px; height: 28px; filter: url(#cw-icon-inset); }
 .cw-sec .cw-sec__icon svg * { fill: url(#cw-icon-grad); }
+
+/* Builder panel: medallion echoes radiating from the centre, behind the teammate card, covering the whole panel, subtle */
+.pv-mate { position: relative; overflow: hidden; isolation: isolate; }
+.pv-mate__pattern { position: absolute; z-index: -1; left: 50%; top: 50%; width: max(140%, 760px); height: auto; transform: translate(-50%, -50%); color: var(--color-sr-indigo-500); opacity: 0.4; pointer-events: none; }
+.pv-mate__card { position: relative; }

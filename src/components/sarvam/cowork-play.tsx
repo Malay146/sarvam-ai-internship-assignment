@@ -9,6 +9,7 @@ import {
   ArrowRight, ArrowUp, Check, X,
 } from "@/components/icons";
 import { BrandMark } from "./brand";
+import { MedallionEcho } from "./patterns";
 import { DUR, EASE } from "./motion";
 
 export type Tone = "indigo" | "orange" | "green" | "rose";
@@ -268,6 +269,7 @@ export function TeammateBuilder() {
         </div>
       </div>
       <div className={`pv-mate cw-surface--${r.tone}`}>
+        <MedallionEcho shape="Scalloped medallion" rings={7} className="pv-mate__pattern" />
         <div className="pv-mate__card">
           <div className="pv-mate__head">
             <span className={`pv-mate__avatar cw-tone--${r.tone}`}><r.icon width={22} height={22} /></span>
