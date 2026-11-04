@@ -701,5 +701,5 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__band-inner { padding: var(--space-12) 0 0; }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
 
-/* the wordmark: the full container width, its lower 10% submerged below the bottom edge (height is 15.84% of width, so -1.58% margin), an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
-.sf__giant { display: block; width: 100%; height: auto; margin: 0 auto -1.58%; overflow: visible; }
+/* the wordmark: one flat grey, the full container width, its lower 10% submerged below the bottom edge (height is 15.84% of width, so -1.58% margin), an inline SVG of the official path */
+.sf__giant { display: block; width: 100%; height: auto; margin: 0 auto -1.58%; overflow: visible; color: rgb(20 20 20 / 0.08); }
