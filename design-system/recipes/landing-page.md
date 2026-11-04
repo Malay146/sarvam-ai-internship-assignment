@@ -38,6 +38,7 @@
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back) instead of leaving; logs start pre-filled and stay at a fixed length.
 26. **Minimal beats busy:** a static grid of real marks with one soft fade-in beats drifting rows with overlays. Text columns beside a grid are top-aligned, with their action pinned to the bottom.
 27. **Cards inside a panel sit centred and are never sticky** unless asked.
+29. **Controls never match their surface:** on a white card, unselected chips / tiles are a soft grey fill with no border; the selected one is white, raised, with an indigo ring. Icon tiles: filled glyph on a bottom-to-top tint with a subtle inner shadow.
 28. **Timelines show every step at once** (cards turn Scheduled → Delivered as a rail fills). Never swap one card out for the next: exit-then-enter transitions leave a blank gap.
 
 ### 0.5 Motion

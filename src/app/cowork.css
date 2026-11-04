@@ -319,7 +319,10 @@ html:has(.cw) { scroll-behavior: smooth; }
 @media (min-width: 768px) { .cw-sec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .cw-sec { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .cw-sec li { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-6); box-shadow: inset 1px 1px 0 var(--color-st-secondary); margin: 0 0 -1px -1px; }
-.cw-sec svg { color: var(--color-sr-indigo-800); margin-bottom: var(--space-2); }
+/* icon tile: a soft indigo wash rising from the bottom, a 1px top highlight and a faint inner shadow at the foot */
+.cw-sec .cw-sec__icon { display: grid; max-width: none; place-items: center; width: 44px; height: 44px; margin-bottom: var(--space-3); border-radius: 12px; color: var(--color-sr-indigo-800);
+  background: linear-gradient(0deg, var(--color-sr-indigo-100) 0%, var(--color-sr-white) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -2px 4px rgb(51 51 204 / 0.12), inset 0 0 0 1px rgb(51 51 204 / 0.08); }
 .cw-sec b { font-weight: var(--weight-medium); font-size: var(--text-body); color: var(--color-tx); }
 .cw-sec span { font-size: var(--text-small); color: var(--color-tx-tertiary); max-width: 26ch; }
 @media (min-width: 1024px) and (max-width: 1279px) { .cw-sec li { padding: var(--space-5); } .cw-sec span { font-size: 13px; } }
@@ -517,3 +520,9 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-desk__queue li[data-status="approved"] .pv-desk__what b, .pv-desk__queue li[data-status="back"] .pv-desk__what b { color: var(--color-tx-secondary); }
 .pv-desk__foot { margin: auto 0 0; padding-top: var(--space-4); border-top: var(--border-subtle); font-size: var(--text-small); color: var(--color-tx-tertiary); }
 .pv-desk__head .pv-link { min-height: 0; font-size: var(--text-small); }
+
+/* Builder controls on a white card: unselected = soft grey fill (no border), selected = white raised + indigo ring,
+   so the choice reads at a glance instead of white-on-white */
+.pv-build .pv-chip, .pv-build .pv-app { background: var(--color-sf-secondary); border-color: transparent; }
+@media (hover: hover) { .pv-build .pv-chip:hover, .pv-build .pv-app:hover { background: var(--color-sf-tertiary); } }
+.pv-build .pv-chip[aria-pressed="true"], .pv-build .pv-app[aria-pressed="true"] { background: var(--color-sr-white); border-color: var(--color-sr-indigo-300); box-shadow: 0 0 0 1px var(--color-sr-indigo-300), var(--shadow-ambient-sm); color: var(--color-tx); }

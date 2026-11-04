@@ -3,7 +3,7 @@
 // Playbook (rules learned building this page): design-system/recipes/landing-page.md.
 import type { Metadata } from "next";
 import {
-  BookOpenFill, CalendarClockFill, Check, Globe, MessageFill, ListTodoFill, Lock, SearchFill, ShieldCheck, ShieldCheckFill, SparkleFill, UserFill, UserRound,
+  BookOpenFill, CalendarClockFill, Check, GlobeFill, LockFill, MessageFill, ListTodoFill, SearchFill, ShieldCheckFill, SparkleFill, UserFill,
 } from "@/components/icons";
 import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
@@ -155,12 +155,12 @@ export default function IndusCoworkPage() {
           <Reveal>
             <ul className="cw-sec" data-siblings="security">
               {[
-                { icon: Globe, title: "Data residency", desc: "Data for Indian deployments stays in India." },
-                { icon: ShieldCheck, title: "Certifications", desc: "ISO 27001:2022 and SOC 2 Type I, on record." },
-                { icon: UserRound, title: "Access controls", desc: "SSO, role-based access and full audit logs." },
-                { icon: Lock, title: "Encryption", desc: "Your data is encrypted at rest and in transit." },
+                { icon: GlobeFill, title: "Data residency", desc: "Data for Indian deployments stays in India." },
+                { icon: ShieldCheckFill, title: "Certifications", desc: "ISO 27001:2022 and SOC 2 Type I, on record." },
+                { icon: UserFill, title: "Access controls", desc: "SSO, role-based access and full audit logs." },
+                { icon: LockFill, title: "Encryption", desc: "Your data is encrypted at rest and in transit." },
               ].map(({ icon: I, title, desc }) => (
-                <li key={title} data-sibling><I width={20} height={20} strokeWidth={1.5} aria-hidden /><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
+                <li key={title} data-sibling><span className="cw-sec__icon" aria-hidden><I width={20} height={20} /></span><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
               ))}
             </ul>
           </Reveal>
