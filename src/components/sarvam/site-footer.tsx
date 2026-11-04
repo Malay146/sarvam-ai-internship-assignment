@@ -45,7 +45,8 @@ export function SiteFooter() {
         <div className="sr-container sf__band-inner">
           {/* Malay's call (2026-11-04): the official wordmark shape, filled with a gradient — a deliberate exception to
               logo.md rule 4, used only here as a decorative footer mark. The shape is the official file used as a mask. */}
-          <span className="sf__giant" aria-hidden />
+          {/* the shadow sits on a wrapper: a filter on the masked element itself would be masked away */}
+          <span className="sf__giant-wrap" aria-hidden><span className="sf__giant" /></span>
           <div className="sf__band-foot">
             <span>© 2026 Axonwise Private Limited. All rights reserved.</span>
             <span>732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038</span>
