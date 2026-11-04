@@ -1,7 +1,15 @@
 // Site footer (v2): a calm white top (brand, columns, trust, socials) and a closing band where the official white
 // wordmark sits large on Sarvam's indigo-glow horizon, filled with a light gradient (exception to logo.md rule 4, Malay's call).
 // Links and address [verified: sarvam.ai footer].
+import { GlobeFill, LockFill, ShieldCheckFill } from "@/components/icons";
 import { SOCIAL } from "./social";
+
+// trust badges: a filled glyph in its own brand hue on a soft tint of that hue
+const BADGES = [
+  { label: "ISO 27001:2022", icon: ShieldCheckFill, tone: "indigo" },
+  { label: "SOC 2 Type I", icon: LockFill, tone: "green" },
+  { label: "Data residency in India", icon: GlobeFill, tone: "orange" },
+] as const;
 
 const COLS: { h: string; links: string[] }[] = [
   { h: "Products", links: ["Indus Cowork", "Work Agents", "Document AI", "Coding Agents", "Sarvam Edge"] },
@@ -38,7 +46,7 @@ export function SiteFooter() {
         </nav>
       </div>
       <div className="sr-container sf__meta">
-        <p className="sf__badges"><span>ISO 27001:2022</span><span>SOC 2 Type I</span><span>Data residency in India</span></p>
+        <p className="sf__badges">{BADGES.map((b) => <span key={b.label} data-tone={b.tone}><b.icon width={14} height={14} aria-hidden />{b.label}</span>)}</p>
         <p className="sf__legal"><a href="#">Trust Center</a><a href="#">Terms</a><a href="#">Privacy</a></p>
       </div>
       <div className="sf__band">

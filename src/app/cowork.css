@@ -661,7 +661,12 @@ html:has(.cw) { scroll-behavior: smooth; }
 .bv-num > span:first-child { display: grid; place-items: center; }
 
 /* ── Site footer ── */
-.sf { border-top: var(--border-default); background: var(--color-sf); }
+.sf { position: relative; isolation: isolate; overflow: hidden; border-top: var(--border-default); background: var(--color-sf); }
+/* footer wash: the spectrum stacked bottom → top (saffron, peach, blush, lilac, periwinkle), well blended in OKLab,
+   subtle, fading out three-quarters of the way up; grain over it */
+.sf::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 75%; pointer-events: none;
+  background: linear-gradient(0deg in oklab, rgb(250 155 67 / 0.40) 0%, rgb(250 190 163 / 0.42) 18%, rgb(236 196 208 / 0.38) 38%, rgb(194 171 204 / 0.32) 58%, rgb(167 192 241 / 0.22) 78%, rgb(232 239 252 / 0) 100%); }
+.sf::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.4; pointer-events: none; }
 .sf__top { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-12); padding: var(--space-16) 0 var(--space-12); }
 @media (min-width: 1024px) { .sf__top { grid-template-columns: 4fr 8fr; gap: var(--space-16); padding: var(--space-20) 0 var(--space-16); } }
 .sf__brand { display: flex; flex-direction: column; gap: var(--space-4); align-items: flex-start; }
@@ -680,12 +685,15 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: 6px; }
 .sf__meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-6) 0; border-top: var(--border-subtle); }
 .sf__badges { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.sf__badges span { display: inline-flex; align-items: center; min-height: 28px; padding: 0 var(--space-3); border-radius: var(--radius-full); background: var(--color-sr-white); box-shadow: inset 0 0 0 1px var(--color-st-secondary); font-size: 12px; color: var(--color-tx-secondary); }
+.sf__badges span { --b: var(--color-sr-indigo-800); display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 var(--space-3) 0 10px; border-radius: var(--radius-full); background: color-mix(in oklab, var(--b) 7%, white); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--b) 16%, white); font-size: 12px; font-weight: 500; color: var(--color-tx-secondary); }
+.sf__badges span svg { flex: none; color: var(--b); }
+.sf__badges span[data-tone="green"] { --b: var(--color-sr-green-800); }
+.sf__badges span[data-tone="orange"] { --b: var(--color-sr-orange-800); }
 .sf__legal { margin: 0; display: flex; gap: var(--space-5); }
 .sf__legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); color: var(--color-tx-tertiary); text-decoration: none; }
 @media (hover: hover) { .sf__legal a:hover { color: var(--color-tx); } }
 /* closing band: the indigo-glow horizon with the official white wordmark spanning the container */
-.sf__band { position: relative; overflow: hidden; isolation: isolate; background: var(--texture-grain), linear-gradient(180deg in oklab, var(--color-sf) 0%, #f3f4fd 55%, #f7eef0 100%); background-blend-mode: overlay, normal; }
+.sf__band { position: relative; }
 .sf__band-inner { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-12) 0 var(--space-6); }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
 .sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
