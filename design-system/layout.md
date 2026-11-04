@@ -125,6 +125,7 @@ Why left on phone: centred text over 3+ lines gives a ragged left edge that's ha
 When two or more blocks sit side by side, or stack as a set (cards, features, steps, stats, testimonials, pricing tiers), they must be **identical in structure and size**. Sarvam's own page doesn't hold this (on mobile, "Teach any skill, or let AI write it" wraps to 2 lines while sibling titles take 1–2; card heights vary) `[observed]`. We hold it everywhere.
 
 ### 5.1 The five rules
+0. **Side-by-side blocks end on the same line** `[Malay]`. When two blocks sit beside each other (text + visual, rail + panel, skills text + card), both columns have the same height: use `align-items: stretch` and let the shorter side centre its content. Check with a script: equal `bottom` values at 1024+.
 1. **Same structure.** If one card has an icon, an eyebrow or a CTA, all of them do. Same order of parts.
 2. **Same width.** Use grid tracks `repeat(n, minmax(0, 1fr))`, never `flex-wrap` with content-sized items.
 3. **Same height.** Grid items stretch. Cards are `display: flex; flex-direction: column` with the CTA or footer pinned by `margin-top: auto`.

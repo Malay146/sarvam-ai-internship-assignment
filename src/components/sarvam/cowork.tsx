@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { DUR, EASE } from "./motion";
+import { Check } from "@/components/icons";
 
 /* ── Reveal: one gentle entrance per block (8px rise + fade), once ── */
 export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
@@ -34,7 +35,7 @@ export function Marquee({ children, label }: { children: ReactNode; label: strin
 /* ── Stage: a fixed-size product stage with a tab rail (how it works · roles).
  *  All panels share one grid cell, so the stage is always as tall as the tallest panel: switching never moves the page.
  *  Auto-advances while visible (progress bar = scaleX), stops for good once the reader picks a tab. ── */
-export type StageItem = { key: string; tab: string; tabNote?: string; panel: ReactNode };
+export type StageItem = { key: string; tab: string; tabNote?: string; panel: ReactNode; icon?: ReactNode; tone?: "indigo" | "orange" | "green" | "rose" };
 export function Stage({ items, interval = 7000, label, rail = "side" }: { items: StageItem[]; interval?: number; label: string; rail?: "side" | "top" }) {
   const [i, setI] = useState(0);
   const [auto, setAuto] = useState(true);
@@ -60,8 +61,8 @@ export function Stage({ items, interval = 7000, label, rail = "side" }: { items:
       <div ref={railRef} className="cw-stage__rail" role="tablist" aria-label={label}>
         {items.map((it, n) => (
           <button key={it.key} role="tab" type="button" aria-selected={n === i} aria-controls={`${it.key}-panel`} id={`${it.key}-tab`}
-            className="cw-stage__tab" onClick={() => pick(n)}>
-            <span className="cw-stage__num">{String(n + 1).padStart(2, "0")}</span>
+            className="cw-stage__tab" data-tone={it.tone} onClick={() => pick(n)}>
+            {it.icon ? <span className="cw-stage__icon" aria-hidden>{it.icon}</span> : <span className="cw-stage__num">{String(n + 1).padStart(2, "0")}</span>}
             <span className="cw-stage__tabtext">
               <span className="cw-stage__tabtitle">{it.tab}</span>
               {it.tabNote && <span className="cw-stage__tabnote">{it.tabNote}</span>}
@@ -113,6 +114,64 @@ export function SkillCard({ name, tags, steps, foot }: { name: string; tags: str
             transition={{ duration: DUR.slow, delay: 0.25 + steps.length * 0.35 }}>{foot}</motion.p>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/* ── Step visuals: one small product moment per card. Each plays once when it enters the view; reduced motion = final state. ── */
+export function StepVisual({ kind }: { kind: "message" | "progress" | "approve" | "approvals" }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const on = useInView(ref, { once: true, amount: 0.5 });
+  const reduced = useReducedMotion();
+  const show = on || !!reduced;
+  const ease = { duration: DUR.slow, ease: EASE.outQuint };
+  const at = (d: number) => (reduced ? { duration: 0 } : { ...ease, delay: d });
+  if (kind === "message") return (
+    <div ref={ref} className="cw-sv cw-sv--msg" aria-hidden>
+      <div className="cw-sv__app"><span className="cw-sv__hash">#</span>sales-team</div>
+      <motion.div className="cw-sv__bubble cw-sv__bubble--you" initial={reduced ? false : { opacity: 0, y: 8 }} animate={show ? { opacity: 1, y: 0 } : {}} transition={at(0.1)}>
+        <b>You</b><span><i>@Sales Outbound</i> work the inbound list before EOD.</span>
+      </motion.div>
+      <motion.div className="cw-sv__bubble" initial={reduced ? false : { opacity: 0, y: 8 }} animate={show ? { opacity: 1, y: 0 } : {}} transition={at(0.7)}>
+        <b>Sales Outbound</b><span>On it. Planning it as a to-do list.</span>
+      </motion.div>
+    </div>
+  );
+  if (kind === "progress") {
+    const steps = ["Pull the inbound list", "Research each account", "Draft outreach"];
+    return (
+      <div ref={ref} className="cw-sv cw-sv--progress" aria-hidden>
+        <div className="cw-sv__row"><b>Working</b><span>3 of 4</span></div>
+        <div className="cw-sv__track"><motion.span className="cw-sv__fill" initial={reduced ? false : { scaleX: 0 }} animate={show ? { scaleX: 0.75 } : {}} transition={reduced ? { duration: 0 } : { duration: 1.6, ease: EASE.outQuint, delay: 0.2 }} /></div>
+        <ul>{steps.map((s, n) => (
+          <motion.li key={s} initial={reduced ? false : { opacity: 0.35 }} animate={show ? { opacity: 1 } : {}} transition={at(0.4 + n * 0.4)}>
+            <Check width={14} height={14} strokeWidth={2} />{s}
+          </motion.li>
+        ))}</ul>
+      </div>
+    );
+  }
+  if (kind === "approve") return (
+    <div ref={ref} className="cw-sv cw-sv--approve" aria-hidden>
+      <div className="cw-sv__row"><b>40 accounts researched</b><span>31 drafts</span></div>
+      <p className="cw-sv__note">Drafts parked for your review. Nothing goes out without your yes.</p>
+      <div className="cw-sv__actions">
+        <span className="cw-sv__btn">Review</span>
+        <motion.span className="cw-sv__btn cw-sv__btn--primary" initial={false} animate={show && !reduced ? { scale: [1, 0.95, 1] } : {}} transition={{ duration: 0.5, delay: 1.1 }}>Approve</motion.span>
+      </div>
+    </div>
+  );
+  // approvals: the queue of actions waiting for a yes
+  const items = [["Send 31 outreach emails", "Sales Outbound"], ["Merge the pricing-page fix", "Product Performance"], ["Pause two campaigns", "Paid Media"]];
+  return (
+    <div ref={ref} className="cw-sv cw-sv--queue" aria-hidden>
+      <div className="cw-sv__row"><b>Needs your yes</b><span>3</span></div>
+      <ul>{items.map(([a, who], n) => (
+        <motion.li key={a} initial={reduced ? false : { opacity: 0, y: 6 }} animate={show ? { opacity: 1, y: 0 } : {}} transition={at(0.15 + n * 0.25)}>
+          <span className="cw-sv__qtext"><b>{a}</b><span>{who}</span></span>
+          <span className="cw-sv__mini">Approve</span>
+        </motion.li>
+      ))}</ul>
     </div>
   );
 }

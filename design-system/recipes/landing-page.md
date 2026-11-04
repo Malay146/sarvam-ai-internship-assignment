@@ -1,5 +1,25 @@
 # Recipe · Indus Cowork landing page
 
+> **Built:** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork,mega-nav,brand}.tsx`. The table below is the build as shipped (round 2); follow it for any new product page.
+
+## 0. Rules learned on this page (apply to every new page)
+1. **Feel close to sarvam.ai's homepage, not to a product subpage:**
+   - Sun hero, a proof strip under it, a product stage, centred chapter headers
+   - bento / pillars, deployment cards, a customer quote on the horizon gradient, the night CTA
+   - the mega menu
+2. **Authentic or absent:**
+   - only verified facts and real assets: official brand marks (`brand-marks.ts`), Sarvam's published customer logo and photo, real quotes
+   - no invented logos, testimonials, numbers or customer names
+   - a quote about Sarvam (not this product) is headed "What Sarvam's customers say"
+3. **Logos:** mono in the proof marquee; **official colours** in the directory and logo tiles (components.md §3.1b).
+4. **Equal heights everywhere:**
+   - sibling cards, bento rows, step cards
+   - **and side-by-side pairs** (stage rail = panel; skills text = skills card)
+5. **Colour by tone, one tone per block:** indigo, orange, green, rose, neutral (haze) surfaces with grain (`cw-surface--*`), and the matching ink for icons (`cw-tone--*`).
+6. **Every card that explains a step shows its moment:** a small product mock (StepVisual), not plain text.
+7. **Icons:** outline by default; Nucleo glyph in tab icons and small coloured tiles.
+
+
 One complete, responsive product page, hero → footer, built only from `src/components/sarvam` and tokens. Expression: **Product**, with one **Campaign** moment (the closing CTA) and one **Community** moment (the testimonial / proof band).
 Exports: **375 / 768 / 1440**. It must also hold at every width in between (QA at 10 widths).
 
@@ -9,7 +29,7 @@ Exports: **375 / 768 / 1440**. It must also hold at every width in between (QA a
 
 | # | Section | Component(s) | Expression | Copy source |
 |---|---|---|---|---|
-| 1 | Nav (overlay) | `Nav overlay` with action "Talk to Us" | — | voice.md §3 |
+| 1 | Nav (overlay) | `MegaNav` (Products / Developers / Resources / Company panels, Log In + Talk to Us) | — | sarvam.ai navbar |
 | 2 | Hero | `HeroGlow` + motif + eyebrow "Indus Cowork" + `display-product` H1 + lead + `ButtonRow` (Talk to Us / See how it works) + `CoworkDashboard` as the product shot | Product | H1: "Hire an AI teammate that finishes the work" |
 | 3 | How it works | `SectionHeader` chapter + 3 × `FeatureRow` (Plan / Research / Review mocks, tints indigo → orange → green) | Product | voice.md §5 |
 | 4 | Building blocks | `SectionHeader` + `CardGrid` (Skills, Teammates, Scheduled tasks…) or `EmblemCard` row | Product | voice.md §5 |

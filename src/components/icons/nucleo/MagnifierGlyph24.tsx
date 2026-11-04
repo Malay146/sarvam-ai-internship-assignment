@@ -1,0 +1,9 @@
+import type { SVGProps } from "react";
+
+export type MagnifierGlyph24Props = SVGProps<SVGSVGElement>;
+
+export function MagnifierGlyph24(props: MagnifierGlyph24Props) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}><rect x="16.75" y="12.861" width={2} height={9.778} transform="translate(-7.352 17.75) rotate(-45)" fill="currentColor" strokeWidth={0} data-color="color-2"></rect><path d="m10,18c-4.411,0-8-3.589-8-8S5.589,2,10,2s8,3.589,8,8-3.589,8-8,8Zm0-14c-3.309,0-6,2.691-6,6s2.691,6,6,6,6-2.691,6-6-2.691-6-6-6Z" strokeWidth={0} fill="currentColor"></path><circle cx="10" cy="10" r="4" fill="currentColor" strokeWidth={0} data-color="color-2"></circle></svg>
+  );
+}

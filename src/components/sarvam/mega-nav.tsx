@@ -1,0 +1,183 @@
+"use client";
+// Mega navigation, modelled on sarvam.ai's navbar (menu items, descriptions and icon tones read from its navbar bundle,
+// references/brand-css/dep_Navbar.Bna_uiTB.js). Icons: Nucleo Core outline 24. Spec: components.md → MegaNav.
+// Desktop (≥1024): click or hover a link → one panel drops under the bar (items in 2 columns + a featured card), the page dims.
+// Phone/tablet: the menu button opens a full sheet with one accordion per section. Esc / outside click closes. Reduced motion: no slide.
+import Link from "next/link";
+import { useEffect, useId, useRef, useState, type ComponentType, type SVGProps } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  ArrowRight, BookOpenAlt, Brain, CalendarCheck, Clapperboard, Code, DocumentSearch, FileText, Film, Handshake, Info, Language,
+  Menu as MenuIcon, Microphone, Mobile, Newspaper, Nodes, Plug, Quote, Server, BriefcaseBusiness as Suitcase, Tag, Volume, X,
+} from "@/components/icons";
+import { NavFrame } from "./client";
+import { DUR, EASE } from "./motion";
+import "./mega-nav.css";
+
+type Ic = ComponentType<SVGProps<SVGSVGElement> & { strokeWidth?: number | string }>;
+type Tone = "indigo" | "green" | "orange" | "red" | "neutral";
+type Item = { label: string; desc?: string; icon: Ic; tone: Tone; href?: string };
+type Menu = { key: string; label: string; heading: string; items: Item[]; feature: { eyebrow: string; title: string; href: string; surface: string } };
+
+/* [verified] labels, descriptions and tones from sarvam.ai's navbar */
+const MENUS: Menu[] = [
+  {
+    key: "products", label: "Products", heading: "Products",
+    items: [
+      { label: "Voice Agents", desc: "Conversational AI", icon: Microphone, tone: "indigo" },
+      { label: "Token Factory", desc: "Open model inference in India", icon: Server, tone: "green" },
+      { label: "Work Agents", desc: "AI for Work", icon: Nodes, tone: "green", href: "/" },
+      { label: "Model Training", desc: "Custom AI models", icon: Brain, tone: "indigo" },
+      { label: "Coding Agents", desc: "Ship high quality code", icon: Code, tone: "orange" },
+      { label: "Sarvam Edge", desc: "On device AI", icon: Mobile, tone: "neutral" },
+      { label: "Content Studio", desc: "Content Transformation", icon: Newspaper, tone: "green" },
+      { label: "Document AI", desc: "Parse, extract and translate docs", icon: FileText, tone: "orange" },
+    ],
+    feature: { eyebrow: "New", title: "Indus Cowork", href: "/", surface: "sr-gradient-dawn" },
+  },
+  {
+    key: "developers", label: "Developers", heading: "APIs",
+    items: [
+      { label: "Text to Speech", desc: "Bulbul V4 Flash", icon: Volume, tone: "orange" },
+      { label: "Speech to Text", desc: "Saaras V4", icon: Microphone, tone: "indigo" },
+      { label: "Parse", desc: "Sarvam Vision", icon: DocumentSearch, tone: "red" },
+      { label: "Document Translation", desc: "PDF, Word, Excel and more", icon: Language, tone: "indigo" },
+      { label: "Dubbing", desc: "Content Studio API", icon: Clapperboard, tone: "green" },
+      { label: "Documentation", desc: "API reference and guides", icon: BookOpenAlt, tone: "green" },
+    ],
+    feature: { eyebrow: "Developers", title: "Build with Sarvam APIs", href: "#", surface: "sr-gradient-indigo-glow" },
+  },
+  {
+    key: "resources", label: "Resources", heading: "Resources",
+    items: [
+      { label: "Customer Stories", icon: Quote, tone: "orange" },
+      { label: "Integrations", icon: Plug, tone: "green" },
+      { label: "API Pricing", icon: Tag, tone: "red" },
+      { label: "Events", icon: CalendarCheck, tone: "indigo" },
+      { label: "Partnerships", icon: Handshake, tone: "green" },
+      { label: "Blogs", icon: Film, tone: "indigo" },
+    ],
+    feature: { eyebrow: "Story", title: "India builds with Sarvam", href: "#", surface: "sr-gradient-dusk" },
+  },
+  {
+    key: "company", label: "Company", heading: "Company",
+    items: [
+      { label: "About Sarvam", icon: Info, tone: "indigo" },
+      { label: "Careers", icon: Suitcase, tone: "green" },
+    ],
+    feature: { eyebrow: "Sarvam", title: "AI for all from India", href: "#", surface: "sr-gradient-saffron-rose" },
+  },
+];
+
+function MenuItem({ it, onPick }: { it: Item; onPick?: () => void }) {
+  const I = it.icon;
+  return (
+    <a className="mn-item" href={it.href ?? "#"} onClick={onPick}>
+      <span className={`mn-item__icon mn-tone--${it.tone}`} aria-hidden><I width={20} height={20} strokeWidth={1.5} /></span>
+      <span className="mn-item__text"><span className="mn-item__label">{it.label}</span>{it.desc && <span className="mn-item__desc">{it.desc}</span>}</span>
+    </a>
+  );
+}
+
+export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }: { cta?: string; ctaHref?: string; login?: boolean }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const [sheet, setSheet] = useState(false);
+  const [acc, setAcc] = useState<string | null>("products");
+  const reduced = useReducedMotion();
+  const barRef = useRef<HTMLDivElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const uid = useId();
+  const menu = MENUS.find((m) => m.key === open);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") { setOpen(null); setSheet(false); } };
+    const onDown = (e: PointerEvent) => { if (barRef.current && !barRef.current.contains(e.target as Node)) setOpen(null); };
+    window.addEventListener("keydown", onKey); window.addEventListener("pointerdown", onDown);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("pointerdown", onDown); };
+  }, []);
+  useEffect(() => { document.documentElement.style.overflow = sheet ? "hidden" : ""; return () => { document.documentElement.style.overflow = ""; }; }, [sheet]);
+
+  const hoverOpen = (k: string) => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(k); };
+  const hoverClose = () => { closeTimer.current = setTimeout(() => setOpen(null), 160); };
+  const t = reduced ? { duration: 0 } : { duration: DUR.moderate, ease: EASE.outQuint };
+
+  return (
+    <>
+      <NavFrame overlay className={open || sheet ? "mn-open" : ""}>
+        <div className="sr-nav__surface" aria-hidden />
+        <div ref={barRef} onPointerLeave={hoverClose} onPointerEnter={() => closeTimer.current && clearTimeout(closeTimer.current)}>
+          <div className="sr-container sr-nav__bar">
+            <Link href="/" className="sr-nav__logo" aria-label="Sarvam home">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/sarvam-wordmark-black.svg" alt="Sarvam" />
+            </Link>
+            <ul className="mn-links">
+              {MENUS.map((m) => (
+                <li key={m.key}>
+                  <button type="button" className="mn-link" aria-expanded={open === m.key} aria-controls={`${uid}-panel`}
+                    onPointerEnter={(e) => e.pointerType === "mouse" && hoverOpen(m.key)} onClick={() => setOpen(open === m.key ? null : m.key)}>
+                    {m.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="sr-nav__actions">
+              {login && <a className="sr-button sr-button--primary mn-wide" href="#">Log In</a>}
+              <a className="sr-button sr-button--secondary mn-wide" href={ctaHref}>{cta}</a>
+              <button type="button" className="mn-burger" aria-label={sheet ? "Close menu" : "Open menu"} aria-expanded={sheet} onClick={() => setSheet((s) => !s)}>
+                {sheet ? <X width={22} height={22} strokeWidth={1.5} /> : <MenuIcon width={22} height={22} strokeWidth={1.5} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop panel: one cell for every menu, so switching menus never changes the panel's position */}
+          <AnimatePresence>
+            {menu && (
+              <motion.div id={`${uid}-panel`} className="mn-panel" initial={{ opacity: 0, y: reduced ? 0 : -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -4 }} transition={t}>
+                <div className="sr-container mn-panel__inner">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div key={menu.key} className="mn-panel__body" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={reduced ? { duration: 0 } : { duration: DUR.normal }}>
+                      <div className="mn-panel__items">
+                        <p className="sr-eyebrow mn-panel__heading">{menu.heading}</p>
+                        <div className="mn-grid">{menu.items.map((it) => <MenuItem key={it.label} it={it} onPick={() => setOpen(null)} />)}</div>
+                      </div>
+                      <a className="mn-feature" href={menu.feature.href} onClick={() => setOpen(null)}>
+                        <span className={`mn-feature__art ${menu.feature.surface}`}><span>{menu.feature.title}</span></span>
+                        <span className="mn-feature__foot"><span className="sr-eyebrow">{menu.feature.eyebrow}</span><ArrowRight width={18} height={18} strokeWidth={1.5} /></span>
+                      </a>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </NavFrame>
+
+      {/* page dim behind the open desktop panel */}
+      <AnimatePresence>{menu && <motion.div className="mn-scrim" aria-hidden initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={t} onClick={() => setOpen(null)} />}</AnimatePresence>
+
+      {/* Phone/tablet sheet: accordions, 56px rows */}
+      <AnimatePresence>
+        {sheet && (
+          <motion.div className="mn-sheet" initial={{ opacity: 0, y: reduced ? 0 : -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={t}>
+            <div className="sr-container mn-sheet__inner">
+              {MENUS.map((m) => (
+                <section key={m.key} className="mn-acc">
+                  <button type="button" className="mn-acc__head" aria-expanded={acc === m.key} onClick={() => setAcc(acc === m.key ? null : m.key)}>
+                    {m.label}<span className="mn-acc__chev" data-open={acc === m.key} aria-hidden>+</span>
+                  </button>
+                  {acc === m.key && <div className="mn-acc__body">{m.items.map((it) => <MenuItem key={it.label} it={it} onPick={() => setSheet(false)} />)}</div>}
+                </section>
+              ))}
+              <div className="mn-sheet__ctas">
+                <a className="sr-button sr-button--secondary" href={ctaHref} onClick={() => setSheet(false)}>{cta}</a>
+                {login && <a className="sr-button sr-button--primary" href="#">Log In</a>}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

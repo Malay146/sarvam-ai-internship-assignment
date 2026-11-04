@@ -3,12 +3,16 @@
 // Feel: sarvam.ai's homepage rhythm (Sun hero, centred chapters, product stage, pillars, deployment, customer voice, night CTA),
 // told for one product. Expression per section is named in each comment.
 import type { Metadata } from "next";
-import { BookOpen, CalendarClock, Check, Globe, Lock, Plug, Search, ShieldCheck, Sparkles, UserRound } from "@/components/icons";
+import {
+  BookOpenFill, BriefcaseFill, CalendarClockFill, ChartFill, Check, Globe, Lock, MegaphoneFill, PlugFill, SearchFill, ShieldCheck, SparkleFill, TargetFill, UserFill, UserRound,
+} from "@/components/icons";
 import {
   Button, ButtonRow, CardGrid, Checklist, CoworkDashboard, CtaCard, Eyebrow, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview,
-  Motif, Nav, ScheduleDashboard, SectionHeader, Steps, TileCard, TrustBand,
+  Motif, ScheduleDashboard, SectionHeader, TileCard, TrustBand,
 } from "@/components/sarvam";
-import { Marquee, Reveal, SkillCard, Stage } from "@/components/sarvam/cowork";
+import { BrandMark, LogoLockup, hasMark } from "@/components/sarvam/brand";
+import { MegaNav } from "@/components/sarvam/mega-nav";
+import { Marquee, Reveal, SkillCard, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import "./cowork.css";
 
@@ -17,9 +21,8 @@ export const metadata: Metadata = {
   description: "Indus Cowork teammates plan the work, research on their own, act inside your apps and bring the result back for your approval. Built on Sarvam's sovereign stack.",
 };
 
-const NAV = ["Products", "Developers", "Resources", "Company"].map((label) => ({ label, href: "#" }));
 
-/* Connectors named on sarvam.ai/indus-cowork [verified]. Shown as names with a monogram, never as third-party logos. */
+/* Connectors named on sarvam.ai/indus-cowork [verified]. Shown with their official mono mark (brand-marks.ts); name only when no official mark exists. */
 const CONNECTORS: { group: string; tone: "indigo" | "orange" | "green"; apps: string[] }[] = [
   { group: "Productivity", tone: "indigo", apps: ["Gmail", "Google Calendar", "Google Docs", "Google Drive", "Google Sheets", "Slack", "Notion", "Airtable"] },
   { group: "Data", tone: "orange", apps: ["Metabase", "PostHog", "BigQuery", "Snowflake"] },
@@ -28,17 +31,17 @@ const CONNECTORS: { group: string; tone: "indigo" | "orange" | "green"; apps: st
 const MORE_APPS = ["Asana", "Calendly", "Dropbox", "Canva", "Apify", "DataRobot", "PagerDuty", "Vercel"];
 const ALL_APPS = [...CONNECTORS.flatMap((g) => g.apps.map((a) => ({ a, tone: g.tone }))), ...MORE_APPS.map((a) => ({ a, tone: "neutral" as const }))];
 
-function App({ name, tone }: { name: string; tone: "indigo" | "orange" | "green" | "neutral" }) {
-  return <span className={`cw-app cw-app--${tone}`}><span className="cw-app__mono" aria-hidden>{name.replace("Google ", "G").slice(0, 2)}</span>{name}</span>;
+function App({ name }: { name: string; tone?: string }) {
+  return <span className="cw-app">{hasMark(name) ? <BrandMark name={name} size={18} colored /> : <span className="cw-app__none" aria-hidden />}{name}</span>;
 }
 
 /* Roles + outcomes from sarvam.ai/indus-cowork [verified]; the request lines are illustrative UI text. */
 const ROLES = [
-  { key: "sales", role: "Sales Outbound", ask: "Work the new inbound list before EOD and draft outreach.", does: "Researches accounts, scores contacts on intent, drafts email and LinkedIn in your voice.", hands: "A review list for you to approve", tone: "indigo" },
-  { key: "talent", role: "Talent Scout", ask: "Find five strong candidates for the backend role.", does: "Sources candidates, screens them against the role and drafts warm outreach.", hands: "A shortlist, ready to review", tone: "orange" },
-  { key: "media", role: "Paid Media", ask: "Keep an eye on spend across this week's campaigns.", does: "Watches spend and cost per result, flags wasted budget and recommends the moves.", hands: "Recommendations, never changes without your yes", tone: "green" },
-  { key: "product", role: "Product Performance", ask: "Write this week's funnel readout.", does: "Pulls the funnel, spots the drop-offs and writes the weekly readout.", hands: "The reason, not just the number", tone: "indigo" },
-  { key: "cos", role: "Chief of Staff", ask: "Chase the owners on this week's blockers.", does: "Chases owners on blockers, prepares your reviews and records every decision.", hands: "A running record of decisions", tone: "orange" },
+  { key: "sales", icon: TargetFill, role: "Sales Outbound", ask: "Work the new inbound list before EOD and draft outreach.", does: "Researches accounts, scores contacts on intent, drafts email and LinkedIn in your voice.", hands: "A review list for you to approve", tone: "indigo" },
+  { key: "talent", icon: UserFill, role: "Talent Scout", ask: "Find five strong candidates for the backend role.", does: "Sources candidates, screens them against the role and drafts warm outreach.", hands: "A shortlist, ready to review", tone: "rose" },
+  { key: "media", icon: MegaphoneFill, role: "Paid Media", ask: "Keep an eye on spend across this week's campaigns.", does: "Watches spend and cost per result, flags wasted budget and recommends the moves.", hands: "Recommendations, never changes without your yes", tone: "green" },
+  { key: "product", icon: ChartFill, role: "Product Performance", ask: "Write this week's funnel readout.", does: "Pulls the funnel, spots the drop-offs and writes the weekly readout.", hands: "The reason, not just the number", tone: "orange" },
+  { key: "cos", icon: BriefcaseFill, role: "Chief of Staff", ask: "Chase the owners on this week's blockers.", does: "Chases owners on blockers, prepares your reviews and records every decision.", hands: "A running record of decisions", tone: "indigo" },
 ] as const;
 
 function RolePanel({ r }: { r: (typeof ROLES)[number] }) {
@@ -49,10 +52,10 @@ function RolePanel({ r }: { r: (typeof ROLES)[number] }) {
         <p className="sr-body">{r.does}</p>
         <p className="cw-role__hands"><Check width={18} strokeWidth={1.75} aria-hidden />{r.hands}</p>
       </div>
-      <div className={`cw-thread sr-tint-${r.tone}`} aria-hidden>
+      <div className={`cw-thread cw-surface--${r.tone}`} aria-hidden>
         <div className="cw-thread__card">
           <div className="cw-msg cw-msg--you"><span className="cw-msg__who">You</span><p>{r.ask}</p></div>
-          <div className="cw-msg cw-msg--mate"><span className="cw-msg__who">{r.role} · teammate</span><p>On it. I&apos;ll plan it as a to-do list and bring it back for your yes.</p></div>
+          <div className="cw-msg cw-msg--mate"><span className="cw-msg__who"><span className={`cw-msg__icon cw-tone--${r.tone}`}><r.icon width={12} height={12} /></span>{r.role} · teammate</span><p>On it. I&apos;ll plan it as a to-do list and bring it back for your yes.</p></div>
           <div className="cw-thread__approve"><span>Ready for review</span><span className="cw-thread__btn">Approve</span></div>
         </div>
       </div>
@@ -60,15 +63,31 @@ function RolePanel({ r }: { r: (typeof ROLES)[number] }) {
   );
 }
 
-function HowPanel({ title, body, checks, tone, visual }: { title: string; body: string; checks: string[]; tone: "indigo" | "orange" | "green"; visual: React.ReactNode }) {
+function BentoTile({ area, tone, icon: I, eyebrow, title, desc, visual }: {
+  area: string; tone: "indigo" | "orange" | "green" | "rose" | "neutral"; icon: React.ComponentType<{ width?: number; height?: number }>;
+  eyebrow: string; title: string; desc: string; visual: React.ReactNode;
+}) {
+  return (
+    <article className={`cw-tile cw-surface--${tone}`} style={{ gridArea: area }} data-sibling>
+      <div className="cw-tile__visual" aria-hidden>{visual}</div>
+      <div className="cw-tile__text">
+        <p className="cw-tile__eyebrow"><span className={`cw-tile__icon cw-tone--${tone}`}><I width={14} height={14} /></span>{eyebrow}</p>
+        <h3 className="sr-h4" data-line="title">{title}</h3>
+        <p className="sr-body" data-line="desc">{desc}</p>
+      </div>
+    </article>
+  );
+}
+
+function HowPanel({ title, body, checks, tone, visual }: { title: string; body: string; checks: string[]; tone: "indigo" | "orange" | "green" | "rose"; visual: React.ReactNode }) {
   return (
     <div className="cw-how">
       <div className="cw-how__text">
         <h3 className="sr-h3">{title}</h3>
         <p className="sr-body">{body}</p>
-        <Checklist tone={tone} items={checks} />
+        <Checklist tone={tone === "rose" ? "orange" : tone} items={checks} />
       </div>
-      <div className={`cw-how__visual sr-tint-${tone}`}><div className="cw-how__mock">{visual}</div></div>
+      <div className={`cw-how__visual cw-surface--${tone}`}><div className="cw-how__mock">{visual}</div></div>
     </div>
   );
 }
@@ -76,7 +95,7 @@ function HowPanel({ title, body, checks, tone, visual }: { title: string; body: 
 export default function IndusCoworkPage() {
   return (
     <>
-      <Nav overlay links={NAV} cta="Talk to Us" ctaHref="#talk" />
+      <MegaNav cta="Talk to Us" ctaHref="#talk" />
       <main className="cw sr-under-nav">
         <HeroGlow height={720} />
 
@@ -100,33 +119,38 @@ export default function IndusCoworkPage() {
         {/* 2 · Connector strip (Product): proof of reach, the way the homepage shows its customer marquee */}
         <section className="cw-strip" aria-labelledby="strip-h">
           <p id="strip-h" className="sr-eyebrow cw-strip__label">Works where your work already lives</p>
-          <Marquee label="Connected apps">{ALL_APPS.map(({ a, tone }) => <App key={a} name={a} tone={tone} />)}</Marquee>
+          <Marquee label="Connected apps">{ALL_APPS.filter(({ a }) => hasMark(a)).map(({ a }) => <LogoLockup key={a} name={a} />)}</Marquee>
         </section>
 
         {/* 3 · How it works (Product): one stage, three moments of the work */}
         <section id="how" className="sr-container cw-section" aria-labelledby="how-h">
           <Reveal><SectionHeader eyebrow="How it works" eyebrowTone="accent" title={<span id="how-h">It runs the whole task, start to finish.</span>} lead="Every teammate plans, researches and checks its own work, so you hand off the outcome and not the steps." /></Reveal>
           <Reveal>
-            <Stage label="How a teammate works" items={[
+            <Stage label="How a teammate works" interval={6500} items={[
               { key: "plan", tab: "Plans the work", tabNote: "A to-do list first", panel: <HowPanel tone="indigo" title="Plans the work before it starts." body="It turns your request into a to-do list and works through it in order." checks={["Breaks the task into steps", "Orders the work itself", "Tracks progress as it goes"]} visual={<MockPlan />} /> },
               { key: "research", tab: "Researches", tabNote: "Web and your apps", panel: <HowPanel tone="orange" title="Researches on its own." body="Web search is built in, so it finds what it needs while it works." checks={["Searches the web as it works", "Pulls from your connected apps", "Re-plans when it learns more"]} visual={<MockResearch />} /> },
-              { key: "review", tab: "Improves", tabNote: "Then asks for your yes", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Refines until it is right", "Returns it for your approval"]} visual={<MockReview />} /> },
+              { key: "review", tab: "Improves", tabNote: "Until it holds up", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Sources every claim", "Refines until it is right"]} visual={<MockReview />} /> },
+              { key: "approve", tab: "Waits for your yes", tabNote: "Nothing ships without it", panel: <HowPanel tone="rose" title="Nothing ships without your yes." body="Sending, merging and making changes all wait for your approval." checks={["Drafts and prepares the work", "Asks before anything goes out", "Leaves a trail of every step"]} visual={<StepVisual kind="approvals" />} /> },
             ]} />
           </Reveal>
         </section>
 
-        {/* 4 · Building blocks (Product) */}
+        {/* 4 · Building blocks (Product): a bento of six tiles, each its own colour and its own small product moment */}
         <section className="sr-container cw-section" aria-labelledby="blocks-h">
           <Reveal><SectionHeader eyebrow="Building blocks" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Six parts you set up once. Every teammate on your workspace shares them." /></Reveal>
-          <Reveal>
-            <CardGrid name="building blocks" cards={[
-              { icon: UserRound, eyebrow: "Teammates", title: "One per job", desc: "Point each teammate at a role and let it run the work end to end." },
-              { icon: Sparkles, eyebrow: "Skills", title: "Teach it once", desc: "Write a way of working down once and every teammate can use it." },
-              { icon: CalendarClock, eyebrow: "Scheduled tasks", title: "Runs on its own", desc: "Set a report up once and it lands on its own, every single morning." },
-              { icon: BookOpen, eyebrow: "Knowledge base", title: "Never forgets", desc: "Store your context once and every chat and task can draw on it." },
-              { icon: Search, eyebrow: "Built-in research", title: "Finds its answers", desc: "Web search is built in, so the plan stays current while it works." },
-              { icon: Plug, eyebrow: "Connected apps", title: "100+ connectors", desc: "Teammates act inside the tools your team already runs every day." },
-            ]} />
+          <Reveal className="cw-bento" >
+            <BentoTile area="mates" tone="indigo" icon={UserFill} eyebrow="Teammates" title="One teammate per job" desc="Point each one at a role and it runs the work from start to finish."
+              visual={<div className="cw-bv-mates">{ROLES.slice(0, 4).map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
+            <BentoTile area="skills" tone="orange" icon={SparkleFill} eyebrow="Skills" title="Teach it once" desc="Write a way of working down and every teammate can use it."
+              visual={<div className="cw-bv-code"><code>weekly-revenue-readout</code><span>4 steps · shared</span></div>} />
+            <BentoTile area="sched" tone="green" icon={CalendarClockFill} eyebrow="Scheduled tasks" title="Runs on its own" desc="Set a report up once and it lands on its own every morning."
+              visual={<ul className="cw-bv-times">{[["06:00", "Cluster check"], ["08:00", "Standup digest"], ["17:00", "Spend watch"]].map(([h, l]) => <li key={h}><code>{h}</code>{l}</li>)}</ul>} />
+            <BentoTile area="kb" tone="rose" icon={BookOpenFill} eyebrow="Knowledge base" title="Never forgets" desc="Store your context once and every task can draw on it."
+              visual={<div className="cw-bv-docs">{["Pricing playbook", "Brand voice", "Q3 targets"].map((d) => <span key={d}>{d}</span>)}</div>} />
+            <BentoTile area="research" tone="indigo" icon={SearchFill} eyebrow="Built-in research" title="Finds its answers" desc="Web search is built in, so the plan stays current as it works."
+              visual={<div className="cw-bv-search"><span className="cw-bv-search__bar">Q3 inbound by city</span><span className="cw-bv-search__hit" /><span className="cw-bv-search__hit" /></div>} />
+            <BentoTile area="apps" tone="neutral" icon={PlugFill} eyebrow="Connected apps" title="100+ connectors" desc="Teammates act inside the tools your team already uses."
+              visual={<div className="cw-bv-logos">{["Gmail", "Slack", "Notion", "GitHub", "Jira", "Snowflake", "Linear", "Google Drive"].map((a) => <span key={a} title={a}><BrandMark name={a} size={24} title={a} colored /></span>)}</div>} />
           </Reveal>
         </section>
 
@@ -175,15 +199,24 @@ export default function IndusCoworkPage() {
           <Reveal><ScheduleDashboard /></Reveal>
         </section>
 
-        {/* 8 · Steps (Product) */}
+        {/* 8 · Day to day (Product): three cards, each showing its moment */}
         <section className="sr-container cw-section" aria-labelledby="steps-h">
           <Reveal><SectionHeader eyebrow="Day to day" title={<span id="steps-h">Message an agent like a teammate</span>} lead="Teammates live in Slack and Indus Chat. You talk to them the way you would a colleague." /></Reveal>
-          <Reveal>
-            <Steps steps={[
-              { title: "Hand over the task", body: "Message a teammate in Slack or Indus Chat, the way you would a colleague." },
-              { title: "It works on its own", body: "It searches the web and uses your apps to work out each next step by itself." },
-              { title: "You approve the result", body: "It reviews its own output, then brings the finished work back for your yes." },
-            ]} />
+          <Reveal className="cw-steps" >
+            {[
+              { kind: "message" as const, tone: "indigo", title: "Hand over the task", body: "Message a teammate in Slack or Indus Chat, the way you would a colleague." },
+              { kind: "progress" as const, tone: "orange", title: "It works on its own", body: "It searches the web and uses your apps to work out each next step itself." },
+              { kind: "approve" as const, tone: "green", title: "You approve the result", body: "It reviews its own output, then brings the finished work back for your yes." },
+            ].map((s, n) => (
+              <article key={s.kind} className="cw-step" data-sibling>
+                <div className={`cw-step__visual cw-surface--${s.tone}`}><StepVisual kind={s.kind} /></div>
+                <div className="cw-step__text">
+                  <span className="cw-step__num">{String(n + 1).padStart(2, "0")}</span>
+                  <h3 className="sr-h4" data-line="title">{s.title}</h3>
+                  <p className="sr-body" data-line="body">{s.body}</p>
+                </div>
+              </article>
+            ))}
           </Reveal>
         </section>
 
@@ -191,7 +224,7 @@ export default function IndusCoworkPage() {
         <section className="sr-container cw-section" aria-labelledby="roles-h">
           <Reveal><SectionHeader eyebrow="Teammates" title={<span id="roles-h">Give each teammate a job</span>} lead="Point a teammate at a role and let it run. Every result comes back for your review before anything goes out." /></Reveal>
           <Reveal>
-            <Stage label="Example teammates" interval={6000} rail="top" items={ROLES.map((r) => ({ key: r.key, tab: r.role, panel: <RolePanel r={r} /> }))} />
+            <Stage label="Example teammates" interval={6000} rail="top" items={ROLES.map((r) => ({ key: r.key, tab: r.role, tone: r.tone, icon: <span className={`cw-tab-icon cw-tone--${r.tone}`}><r.icon width={16} height={16} /></span>, panel: <RolePanel r={r} /> }))} />
           </Reveal>
         </section>
 
@@ -230,10 +263,14 @@ export default function IndusCoworkPage() {
           <Reveal><SectionHeader title={<span id="quote-h">What Sarvam&apos;s customers say</span>} /></Reveal>
           <Reveal>
             <figure className="cw-quote">
-              <span className="cw-quote__org">Tata Capital</span>
+              <div className="cw-quote__glow" aria-hidden />
+              {/* Customer logo + photo exactly as published on sarvam.ai (served from Sarvam's CDN, not copied into this repo) */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="cw-quote__logo" src="https://assets.sarvam.ai/assets/logos/investors/tata-capital.svg" alt="Tata Capital" width={145} height={27} />
               <blockquote className="cw-quote__text">“Our partnership with Sarvam has enabled us to scale highly personalized, product and segment-specific conversations across the customer lifecycle. By embedding multilingual interactions across our consumer loan products, we are reaching more customers with greater relevance, breaking access barriers, and deepening engagement in a cost-effective manner.”</blockquote>
               <figcaption className="cw-quote__who">
-                <span className="cw-quote__avatar" aria-hidden>SK</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="cw-quote__avatar" src="https://assets.sarvam.ai/tr:w-112,q-80,f-auto/assets/products/voice-agents/logos/testimonial-profiel.png" alt="Shallu Kaushik" width={56} height={56} />
                 <span><b>Shallu Kaushik</b><span className="sr-meta">Chief Digital Officer, Tata Capital</span></span>
               </figcaption>
             </figure>
