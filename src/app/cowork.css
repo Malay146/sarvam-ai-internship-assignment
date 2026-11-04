@@ -554,7 +554,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-mate__card { position: relative; }
 
 /* pattern in the job's own tone, and a real grain layer over the whole panel (under the card) */
-.pv-mate::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.55; pointer-events: none; }
+.pv-mate::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.7; pointer-events: none; }
 
 /* each job's pattern in a mid shade of its own tone; a radial mask keeps the centre visible and lets the rings dissolve
    at the edges, so the colour reads as glow, not stripes */
@@ -570,7 +570,7 @@ html:has(.cw) { scroll-behavior: smooth; }
    periwinkle, fading to white three-quarters of the way up */
 .pv-int::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 75%; pointer-events: none;
   background: linear-gradient(0deg in oklab, rgb(250 155 67 / 0.30) 0%, rgb(250 190 163 / 0.34) 22%, rgb(194 171 204 / 0.32) 48%, rgb(167 192 241 / 0.24) 72%, rgb(232 239 252 / 0) 100%); }
-.pv-int::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.35; pointer-events: none; }
+.pv-int::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.48; pointer-events: none; }
 
 /* "Run it again": a small secondary pill in the desk header */
 .pv-again { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 var(--space-4); border-radius: var(--radius-full); border: var(--border-default); background: var(--color-sr-white); box-shadow: var(--shadow-ambient-sm); font: inherit; font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-tx); cursor: pointer; transition: border-color var(--duration-normal) var(--ease-standard); }
