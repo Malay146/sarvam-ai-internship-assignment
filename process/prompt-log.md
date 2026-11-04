@@ -756,3 +756,24 @@ Entry format:
   - No overflow and no page errors in Chromium or WebKit at 375 / 768 / 1440.
   - Playground interactions scripted (voice, pace, rate, format, tab → code updated).
   - `next build` passes.
+
+## 2026-11-04 · Claude Code · Bulbul page, refinement rounds (theme, playground, horizon)
+
+- Prompts (verbatim, in order): "i see you using organe only, but by theme that now what i meant, i meant the strutcutre layout and how to presnt it, so use different colors also but accoridngly" · "improve this section the code is shorter and the card is bigger and improve it" · "this copy button is not working properly, fix it the animation part" · "now if i choose python then left side card is bigger, it should be conisistent fix it" · "this tilted icon is not looking good fix it" · "use different icon here" · "why in 4 lines, never go beyound 2 lines" · "don't change the text, increase the width simple" · "change the colors sets of hero section horizon" · "different set of colors it is too similar" · "have 2-3 different color well bleneded in it" · "ya but like top to bottom only, always keep in mind" · "have old one only, the yellowisg obe" · "good now update the rules and files accordingly an dproperly"
+- What changed and why:
+  1. **Theme is structure, not colour.** Indigo is back for controls; tones are given per item (tracklist rows, voice stage + ripple, fact and door icons).
+  2. **Playground:**
+     - A Response panel replays on every change (pace = clip length, sample rate = detail).
+     - The code pane has one fixed height on every tab, so the cards stay equal (measured 657/657 on all tabs in Chromium and WebKit).
+     - Long lines wrap.
+     - Copy swaps icon + label without overlap at a fixed width, with a clipboard fallback. The inherited replay spin was removed.
+  3. Link arrows are a plain → that slides on hover.
+  4. The closing card keeps Sarvam's line at 2 lines at every width (320–1920): the title widens, balances and scales on phones.
+  5. **Hero horizon:**
+     - Tried: rose/lilac (too close to Cowork), three side-by-side lights (colours must stack vertically), a linear band (too strong).
+     - Kept: the soft garden-sunrise radial (green core → marigold → cream).
+- Rules recorded:
+  - landing-page.md 9 (each page owns a hero light), 9a, 12 (gradients stack vertically), 19b–d (links, inherited hover, copy button), 22 (fixed-height tabbed panes), 33b (closing title ≤ 2 lines).
+  - tokens.md §2.4c (page lights), imagery.md 2, components.md (CtaCard, Bulbul pieces), voice.md §6, SKILL.md.
+  - bulbul-page.md §4 ("tried and rejected").
+  - design.md regenerated.

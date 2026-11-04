@@ -213,6 +213,17 @@ Rules:
 - Use them **in sequence** when features repeat: indigo, then orange, then green. The checkmark icons in each feature take the matching colour (`sr-indigo-800`, `sr-orange-800`, `sr-green-600`) `[observed]`.
 - The haze is the product-page alternative to the Sun: calmer, all blue, for pages where the product UI is the hero.
 
+### 2.4c Page lights: one hero light per page `[addition]`
+Every product page owns one light, so pages read as different places in the same system (landing-page.md rule 9). It is a radial from the top edge, colour and alpha eased over ≥ 16 stops (no ring), with grain. Colours stack **top → bottom**, never side by side.
+
+| Page | Light | Stops (centre → edge) |
+|---|---|---|
+| Homepage | **Sun** (§2.4) | `#f9730c` → `#ed8c44` → `#bfc9f1` → `#e8effd` → transparent |
+| Indus Cowork | **Indigo glow** | `#5957c4` → `#8a7fd2` → `#c2abcc` → `#fabea3` → transparent |
+| Bulbul V4 Flash | **Garden sunrise** | `#5fae8c` → `#94cc86` → `#cfdc84` → `#f4d474` → `#fbe1b4` → `#fdf0de` → transparent (Sarvam's green and yellow craft ramps) |
+
+A new page picks a light no other page uses, built from the named ramps. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
+
 ### 2.5 Blend space: OKLab `[addition]`
 All gradients interpolate **in OKLab** (`linear-gradient(in oklab 180deg, …)`). With sRGB, the default, blue meeting orange turns slightly grey and muddy. OKLab keeps brightness even and passes through the soft lavender and peach seen in Sarvam's images.
 - Not OKLCH: it blends around the hue wheel, so blue-to-orange picks up extra saturated pink and a harder band. That's off-brand. Comparison: `process/screens/interp-compare.png`.

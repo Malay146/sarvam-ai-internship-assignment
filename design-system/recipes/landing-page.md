@@ -1,7 +1,7 @@
-# Recipe · Indus Cowork landing page
+# Recipe · Indus Cowork landing page (+ the playbook for every page)
 
 > **Built (v3):** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork-play,cowork-data,cowork,mega-nav,brand,brand-marks,patterns}.tsx`.
-> **Read §0 before building any page.** It is every lesson from building this one, so the next page needs no correction rounds.
+> **Read §0 before building any page.** It is every lesson from building this one and the Bulbul test page (`recipes/bulbul-page.md`), so the next page needs no correction rounds.
 
 ## 0. Page-building playbook (apply to every new page)
 
@@ -18,7 +18,7 @@
 8. A quote about Sarvam (not this product) is headed "What Sarvam's customers say".
 
 ### 0.3 Look
-9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. Hero light by expression: the homepage owns the orange Sun; product pages use the **indigo glow** (eased colour + alpha, ≥ 16 stops, so no ring shows).
+9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. **Hero light: each page owns one** (tokens.md §2.4c): homepage = orange **Sun**, Indus Cowork = **indigo glow**, Bulbul = **garden sunrise** (green core → marigold → cream). A radial from the top edge, colour and alpha eased over ≥ 16 stops so no ring shows. A new page picks a light no other page uses.
 9a. **Each product page owns its theme: its structure and presentation.** Shared on every page: nav, hero structure, section headers, FAQ, closing card, footer, tokens and controls. Each page owns **section formats drawn from its subject** (Cowork: approval desk, day timeline, teammate builder; Bulbul: studio, tracklist, chorus, ripple stage, multitrack, playground) and **one Sarvam light for the hero** (homepage Sun, Cowork indigo glow, Bulbul Dawn). The theme is **not one colour**: colour stays the system's, with indigo for controls and selection and the full tone set given per item (one tone per row, card, voice, fact or door). Never reuse another page's signature format (bento tiles, integrations panel, deployment tiles) just because it exists. Recipe per page: `recipes/<page>.md`.
 10. **Navbar:** MegaNav — real menu items, **filled** Nucleo icons in item tones, a frameless featured tile (kicker + serif title + one line + text link), **one CTA** (Talk to Us, primary). Nav links scroll to on-page sections when they exist.
 11. **Cards:** white + hairline by default. Colour lives in a soft tone well or a tone surface with grain; never a full saturated card. One tone per block.
@@ -36,9 +36,12 @@
 19. **Controls never match their surface:** on a white card, unselected chips/tiles are a soft grey fill, no border; the selected one is white with an indigo ring. Segmented controls use one white pill that **slides** between options. Secondary actions are real pills (icon + label), never a bare text link.
 
 ### 0.4 Layout
+19b. **Links read forward:** text links and "learn more" style links end in a plain forward arrow (→) that slides 3px right on hover. No diagonal ↗ arrow.
+19c. **Don't inherit another component's hover motion.** When a page reuses a class (e.g. the `pv-again` pill), override motion that belongs to the original's meaning (its replay icon spins 60°); a copy icon must stay upright.
+19d. **Copy buttons** swap icon + label in place ("Copy" → ✓ "Copied", about 1.8s), one at a time (fast exit, then rise in), at a **fixed width**, with a green success tint, and with a hidden-textarea fallback when the clipboard API is blocked.
 20. **Side-by-side blocks end on the same line** (stretch; check equal `bottom` at ≥ 1024). Sibling cards: equal heights and line counts (`check-layout`).
 21. **One header-to-content gap:** `--space-section-head` (40 / 56). Never stack the header margin on a flex gap.
-22. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes.
+22. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes. **Tabbed panes (code tabs) have one fixed height on every tab**: longer content scrolls inside with a soft fade at the foot, and long lines wrap. The card beside them never changes height when the tab changes.
 23. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children; the page clips at `overflow-x: clip`.
 24. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back); logs start pre-filled and keep a fixed length; timelines show every step at once and fill a rail (never swap one card out for the next).
@@ -53,6 +56,7 @@
 31. Real controls inside mocks really work and are 44px to the finger.
 32. In-page links scroll smoothly (off with reduced motion) and land each heading ~88px under the top. QA scripts scroll with `behavior: "instant"`.
 33. FAQs: one answer open at a time; 7–8 questions.
+33b. **Closing card title: never more than 2 lines at any width.** Keep the copy (Sarvam's own line is fine); widen the title (≤ 30ch), balance it, and scale it with the viewport on phones (voice.md §6). Check the line count at 320–1920.
 
 ### 0.6 Before calling it done
 34. `check-layout` (10 widths), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look: screenshots at 375 / 768 / 1440.

@@ -221,7 +221,7 @@ Accordion built on Motion (`src/components/sarvam/faq.tsx`). Each question is a 
 
 ### CtaCard `<CtaCard title cta>` (animated)
 - Night gradient + grain, radius 24, centred.
-- Display-2 white headline (max 14ch) in the dark top zone, a thin-stroke symbol in the middle, a **dark primary** pill at the bottom.
+- Display-2 white headline (max 14ch; a longer line widens to ≤ 30ch, balanced and viewport-scaled on phones, so it stays at **2 lines max**) in the dark top zone, a thin-stroke symbol in the middle, a **dark primary** pill at the bottom.
 - White glass buttons are not allowed here: the bottom of the gradient is light (`#a5bbfc`), and white on it is about 1.9:1.
 - **Ring lattice:** a half rosette of thin 20%-white circles (5 + 7) centred on the bottom edge, nudged slightly below it. When the card scrolls into view, the two layers grow up from the bottom (1.8s, out-quint, 220ms apart). The symbol (an 8-petal lotus from the Flower generator) unfurls from scale 0.3 and −180° with the blur clearing, and the headline and button rise 32px. All motion is off under reduced motion.
 - Sarvam's version enlarges its logomark for this background. We built our own lattice because `logo.md` forbids cropping or recreating the logomark.
@@ -311,6 +311,13 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
 - **Side rail (≥1024):** the tabs stretch to exactly the panel's height (`grid-auto-rows: 1fr`), so both columns start and end on one line. Use 4 tabs.
 - **Phone/tablet:** the rail becomes a full-bleed horizontal scroller; tabs size to their labels (never truncated); the active tab scrolls into view.
 - **Auto-advance:** only while visible; it stops for good once the reader picks a tab.
+
+### Bulbul page pieces `[addition]` (`bulbul-wave.tsx`, `bulbul-play.tsx`, recipe `recipes/bulbul-page.md`)
+- **`<Wave seed n profile state tone steps>`**: a deterministic speech waveform. Its state drives CSS only (transform + colour): `idle` (flat) → `stream` (bars rise left to right) → `play` (colour fills left to right, playhead sweeps) → `done`. `profile` is speech, calm, energy, duet or bilingual (two-colour segments); `steps` quantises the heights (a lo-fi look for 8 kHz).
+- **`<VoiceAvatar svg>`**: a voice's avatar is one of our studio shapes on a glow card (voices have no faces; no stock photos).
+- **Per-item tone (`data-tone`)**: sets `--t`, `--t-soft` and `--t-w1/2` for anything that carries a tone (rows, stages, icons). Controls stay system indigo.
+- **Copy button**: see landing-page.md 19d.
+- **Fixed-height request pane + Response panel**: code tabs share one height; the response under it replays on every change.
 
 ## Do / Don't
 

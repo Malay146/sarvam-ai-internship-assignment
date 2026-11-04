@@ -8,7 +8,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 
 | Where | Treatment |
 |---|---|
-| Hero light | **Bulbul horizon, a garden at sunrise**: leaf green `#5fae8c` → spring green `#94cc86` → lime `#cfdc84` → marigold `#f4d474` → cream `#fbe1b4`, radial from the top, colour and alpha eased over 17 stops (no ring). It uses Sarvam's green and yellow craft ramps so it can't be confused with the homepage Sun (orange) or Cowork's indigo glow. |
+| Hero light | **Bulbul horizon, a garden at sunrise**: leaf green `#5fae8c` → spring green `#94cc86` → lime `#cfdc84` → marigold `#f4d474` → cream `#fbe1b4`, radial from the top, colour and alpha eased over 17 stops (no ring). It uses Sarvam's green and yellow craft ramps so it can't be confused with the homepage Sun (orange) or Cowork's indigo glow. Only the outer stops show (marigold into cream), because the disc's centre sits above the frame (tokens.md §2.4c). |
 | Controls | System indigo: selection rings, slider, segmented pills, playhead, live dots, level meters |
 | Per-item tone | `data-tone` sets `--t`, `--t-soft` and `--t-w1/2`. Tracklist rows: 01 indigo, 02 rose, 03 green, 04 orange. The voice stage and its ripple take the voice's tone. Lanes take theirs. Fact icons: orange, indigo, green. Doors: indigo, orange, rose. |
 | Filled icons | Glyphs with a gradient in their own tone, rising bottom → top, plus a soft inner shadow and no tile (`#bb-grad-<tone>`, `#bb-icon-inset`) |
@@ -28,7 +28,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 | 6 | Build | Made for developers. Scales for enterprises. | split | Fact list with filled gradient icons and SDK chips (official Python and Node.js marks) + **request timeline** (sent → first audio → streams → ready; delivery mode rotates) | plays itself |
 | 7 | Try it | Shape the voice, then ship it | centred + eyebrow | **Playground**: voice chips, pace slider, rate and format segmented controls → a live cURL / Python / JS request in a **fixed-height** area (scrolls with a soft fade, so the cards never change size between tabs; changed values flash) + a **Response** panel that replays on every change (pace sets the clip length, sample rate its detail: 8 kHz stepped, 48 kHz smooth). Copy swaps icon + label in place (fixed width, turns green), with a fallback if clipboard access is blocked; then Get API key | hands-on |
 | 8 | Upgrade | Switch from V3 in one line | split | Diff card + "What you get for that one line" checklist | passive |
-| 9 | Where to use | Use it where you build | centred | **Doors**: one band, three columns (API, Playground, Content Studio), each with a link | links |
+| 9 | Where to use | Use it where you build | centred | **Doors**: one band, three columns (API, Playground, Content Studio), each with a filled icon in its own tone and a forward-arrow link (→, slides on hover) | links |
 | 10 | Questions | Questions developers ask first | centred | `OneFaq` (shared), 8 questions | accordion |
 | 11 | Act | Your next million conversations can sound more human. (Sarvam's line; title 30ch wide, balanced, scales on phones, so it stays at 2 lines) | — | `CtaCard` (shared) on Dusk | Get API key |
 
@@ -52,3 +52,16 @@ Shared with every page: `MegaNav` (CTA "Get API key"), `HeroGlow` + `Motif`, `Se
 - Facts only from the fact sheet. Don't claim pitch or loudness for V4 Flash (the API docs say V2 only). Use `language_code`, not `target_language_code`.
 - The sample lines come from Sarvam's own samples where they exist; the rest are short everyday lines that claim nothing. Written → spoken readings are illustrative.
 - Voice avatars are studio shapes (our geometry), never faces.
+
+## 4. What was tried and rejected (don't repeat)
+| Tried | Why it was rejected | Rule now |
+|---|---|---|
+| Cowork's formats reused (bento tiles, integrations panel, deployment tiles) | "Not every section should feel like the Indus page" | landing-page.md 9a: each page's formats come from its subject |
+| Theme as one colour: everything saffron (rings, icons, panels) | "By theme I meant the structure, layout and how to present it" | 9a: colour stays multi-tone; controls are indigo; tones per item |
+| Hero light rose → lilac → periwinkle | Too close to Cowork's indigo glow | tokens.md §2.4c: each page picks an unused light |
+| Three colour lights side by side (green, marigold, coral) | Colours must stack top → bottom | Rule 12 + imagery.md 2: multi-colour gradients stack vertically |
+| A straight linear green → marigold → coral band | Too strong; back to the soft radial | Keep the radial-from-top horizon, eased, soft |
+| Closing title shortened to fit 2 lines | Keep Sarvam's line; widen instead | 33b: widen (≤ 30ch), balance, scale on phones |
+| Diagonal ↗ link arrow | Didn't read well | 19b: plain → that slides on hover |
+| Copy icon spinning on hover (inherited from the replay pill) | Looked tilted | 19c: don't inherit another component's hover motion |
+| Code tab changing the card height (Python is longer) | Siblings must stay equal | 22: tabbed panes have one fixed height |

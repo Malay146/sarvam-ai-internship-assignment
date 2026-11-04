@@ -40,7 +40,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | Any banner (Meta / LinkedIn), from a subject or a reference | `recipes/banner-builder.md` (+ `/banners/make`, `.claude/skills/sarvam-banner`) → `voice.md` |
 | Meta banner grid details | `recipes/meta-banner.md` |
 | LinkedIn banner grid details | `recipes/linkedin-banner.md` |
-| Landing page / web section | `recipes/landing-page.md` → `layout.md` → `components.md` → `typography.md` |
+| Landing page / web section | `recipes/landing-page.md` (§0 playbook first) → `layout.md` → `components.md` → `typography.md`; a worked second page: `recipes/bulbul-page.md` |
 | New component | `components.md` §0–3 → `layout.md` §5 (siblings) → `tokens.md` |
 | Illustration, pattern, gradient art | `imagery.md` → `tokens.md` §2 → `/studio` (`src/lib/shapes.ts`) |
 | Any copy | `voice.md` |
@@ -61,7 +61,8 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `recipes/banner-builder.md` | The banner engine: hard rules, spec, devices, presets, subject → banner method, our taste, the final set |
 | `recipes/meta-banner.md` | Portrait grid (1080×1350), layouts on Meta, the final Meta set |
 | `recipes/linkedin-banner.md` | Landscape grid (1200×627), how each layout rearranges, the final LinkedIn set |
-| `recipes/landing-page.md` | Section order, per-breakpoint behaviour, quality gates, export |
+| `recipes/landing-page.md` | The page-building playbook (§0) + the Indus Cowork page: section order, per-breakpoint behaviour, quality gates, export |
+| `recipes/bulbul-page.md` | The Bulbul V4 Flash page (`/bulbul`): its own theme (structure, garden-sunrise hero light, per-item tones), sections and responsive table |
 
 ### Non-negotiables (summary)
 
@@ -396,6 +397,17 @@ Rules:
 - Tint panels hold a **white UI card** (product mockup) on top. Never put text directly on a tint.
 - Use them **in sequence** when features repeat: indigo, then orange, then green. The checkmark icons in each feature take the matching colour (`sr-indigo-800`, `sr-orange-800`, `sr-green-600`) `[observed]`.
 - The haze is the product-page alternative to the Sun: calmer, all blue, for pages where the product UI is the hero.
+
+#### 2.4c Page lights: one hero light per page `[addition]`
+Every product page owns one light, so pages read as different places in the same system (landing-page.md rule 9). It is a radial from the top edge, colour and alpha eased over ≥ 16 stops (no ring), with grain. Colours stack **top → bottom**, never side by side.
+
+| Page | Light | Stops (centre → edge) |
+|---|---|---|
+| Homepage | **Sun** (§2.4) | `#f9730c` → `#ed8c44` → `#bfc9f1` → `#e8effd` → transparent |
+| Indus Cowork | **Indigo glow** | `#5957c4` → `#8a7fd2` → `#c2abcc` → `#fabea3` → transparent |
+| Bulbul V4 Flash | **Garden sunrise** | `#5fae8c` → `#94cc86` → `#cfdc84` → `#f4d474` → `#fbe1b4` → `#fdf0de` → transparent (Sarvam's green and yellow craft ramps) |
+
+A new page picks a light no other page uses, built from the named ramps. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
 
 #### 2.5 Blend space: OKLab `[addition]`
 All gradients interpolate **in OKLab** (`linear-gradient(in oklab 180deg, …)`). With sRGB, the default, blue meeting orange turns slightly grey and muddy. OKLab keeps brightness even and passes through the soft lavender and peach seen in Sarvam's images.
@@ -1426,7 +1438,7 @@ Accordion built on Motion (`src/components/sarvam/faq.tsx`). Each question is a 
 
 #### CtaCard `<CtaCard title cta>` (animated)
 - Night gradient + grain, radius 24, centred.
-- Display-2 white headline (max 14ch) in the dark top zone, a thin-stroke symbol in the middle, a **dark primary** pill at the bottom.
+- Display-2 white headline (max 14ch; a longer line widens to ≤ 30ch, balanced and viewport-scaled on phones, so it stays at **2 lines max**) in the dark top zone, a thin-stroke symbol in the middle, a **dark primary** pill at the bottom.
 - White glass buttons are not allowed here: the bottom of the gradient is light (`#a5bbfc`), and white on it is about 1.9:1.
 - **Ring lattice:** a half rosette of thin 20%-white circles (5 + 7) centred on the bottom edge, nudged slightly below it. When the card scrolls into view, the two layers grow up from the bottom (1.8s, out-quint, 220ms apart). The symbol (an 8-petal lotus from the Flower generator) unfurls from scale 0.3 and −180° with the blur clearing, and the headline and button rise 32px. All motion is off under reduced motion.
 - Sarvam's version enlarges its logomark for this background. We built our own lattice because `logo.md` forbids cropping or recreating the logomark.
@@ -1517,6 +1529,13 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
 - **Phone/tablet:** the rail becomes a full-bleed horizontal scroller; tabs size to their labels (never truncated); the active tab scrolls into view.
 - **Auto-advance:** only while visible; it stops for good once the reader picks a tab.
 
+#### Bulbul page pieces `[addition]` (`bulbul-wave.tsx`, `bulbul-play.tsx`, recipe `recipes/bulbul-page.md`)
+- **`<Wave seed n profile state tone steps>`**: a deterministic speech waveform. Its state drives CSS only (transform + colour): `idle` (flat) → `stream` (bars rise left to right) → `play` (colour fills left to right, playhead sweeps) → `done`. `profile` is speech, calm, energy, duet or bilingual (two-colour segments); `steps` quantises the heights (a lo-fi look for 8 kHz).
+- **`<VoiceAvatar svg>`**: a voice's avatar is one of our studio shapes on a glow card (voices have no faces; no stock photos).
+- **Per-item tone (`data-tone`)**: sets `--t`, `--t-soft` and `--t-w1/2` for anything that carries a tone (rows, stages, icons). Controls stay system indigo.
+- **Copy button**: see landing-page.md 19d.
+- **Fixed-height request pane + Response panel**: code tabs share one height; the response under it replays on every change.
+
 ### Do / Don't
 
 | Do | Don't |
@@ -1582,7 +1601,7 @@ What goes into Sarvam visuals: gradients, gateway shapes, motifs, product UI and
 ### Rules for AI (read first)
 
 1. **Pick one hero device per composition:** a gradient field, a gateway window, a product mockup, or a photograph. Never two.
-2. **Gradients come from the named set** (dusk, dawn, indigo glow, sun, haze, tints, night). Always add grain. Never invent one.
+2. **Gradients come from the named set** (dusk, dawn, indigo glow, sun, haze, tints, night, and the page lights in tokens.md §2.4c). Always add grain. Never invent one. Multi-colour gradients stack **vertically** (top → bottom for a hero or sky, bottom → top for panels and the footer), never side by side.
 3. **Gateways are windows, not decoration.** A gateway shape always contains something (a gradient, a tint, product UI, a photo) and is the largest shape on the canvas.
 4. **Product UI is real and readable:** real Indus Cowork states, text ≥ 12px at the final size, white cards on tints.
 5. **Ornaments are punctuation.** At most one motif or divider per composition, small, in a quiet colour.
@@ -1924,6 +1943,19 @@ Use only these claims.
 - Scores **71.8**, with a **median response time of 44 milliseconds**: "the highest average score among decision models that respond in under 100 milliseconds."
 - Write "Sarvam Prism" exactly. Don't round 71.8 or 44 ms, and don't drop the "under 100 ms" qualifier when claiming "highest".
 
+**Bulbul V4 Flash** (text to speech) `[verified: sarvam.ai/apis/text-to-speech, sarvam.ai/models, docs.sarvam.ai TTS reference + voices guide, 2026-11-04]`
+- Name: **Bulbul V4 Flash**; model string `bulbul:v4-flash`. Sarvam's line: "Expressive, accurate, fast."
+- **11 languages:** Hindi, Bengali, Gujarati, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu and Indian English. Codes: `hi-IN`, `bn-IN`, `gu-IN`, `kn-IN`, `ml-IN`, `mr-IN`, `od-IN`, `pa-IN`, `ta-IN`, `te-IN`, `en-IN`. Code-mixed text (e.g. Hinglish) works when each language is in its own script.
+- **83 voices in 224 styles.** Speaker IDs are `<name>_<language>_<style>` (e.g. `ishita_enhi_companion`, `shubh_enhi_ads` = default, `sophia_en_conversational`, `sanchita_hi_assistant`, `aparna_hi_customer`, `arnab_bn_conversation`, `ashwin_en_sports`, `anand_hi_documentary`, `gokul_ta_narration`).
+- **First audio in under 250 ms** in production, over **HTTP streaming, WebSocket or a single response**.
+- Output: **8 kHz to 48 kHz**; **WAV, MP3, FLAC or AAC**. Pace **0.5–2.0** (default 1.0).
+- Same request shape as **Bulbul V3**: switching is a **one-line change** (the model name). **Python and Node.js SDKs.**
+- Versus V3: more expressive; better with Indian names, numbers and abbreviations in context.
+- Price: **₹20 per 10,000 characters** (a third less than V3's ₹30); launch offer **₹10, 50% off until 12 Nov**.
+- Where: the **Sarvam API**, the **Playground** and **Content Studio**. Use cases named: voice agents, support agents, teaching, live sports, documentary, ads; dubbing and localisation.
+- Closing line on Sarvam's page: "Your next million conversations can sound more human."
+- **Source conflicts, don't copy:** the marketing page lists pitch and loudness controls, but the API docs say they are Bulbul V2 only, so don't claim them for V4 Flash. The marketing cURL uses `target_language_code`; the API reference uses `language_code` (use `language_code`). The marketing page pairs Kalpit with Bengali and Ishita with Tamil, but the voices guide doesn't (avoid those pairings). The sample conversations on Sarvam's page are scripted demos, not live calls.
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.
@@ -1943,6 +1975,7 @@ Use only these claims.
 | Banner headline | 8 words / 40 characters; ~26 characters when it sits inside a shape on LinkedIn | ≤ 3 lines (Meta), ≤ 2 lines (LinkedIn), at full size |
 | Banner subhead | 70 characters | 1–2 lines |
 | Eyebrow | 24 characters | uppercase via CSS, written in sentence case |
+| Closing CTA title | 2 lines | **never more than 2 lines at any width.** Keep the copy (Malay's call); for a longer line, widen the title (up to 30ch), balance it, and scale it with the viewport on phones (`min(var(--text-display-2), 6vw)`) |
 
 ---
 
@@ -2270,10 +2303,10 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 ---
 
 <!-- recipes/landing-page.md -->
-## Recipe · Indus Cowork landing page
+## Recipe · Indus Cowork landing page (+ the playbook for every page)
 
 > **Built (v3):** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork-play,cowork-data,cowork,mega-nav,brand,brand-marks,patterns}.tsx`.
-> **Read §0 before building any page.** It is every lesson from building this one, so the next page needs no correction rounds.
+> **Read §0 before building any page.** It is every lesson from building this one and the Bulbul test page (`recipes/bulbul-page.md`), so the next page needs no correction rounds.
 
 ### 0. Page-building playbook (apply to every new page)
 
@@ -2290,10 +2323,11 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 8. A quote about Sarvam (not this product) is headed "What Sarvam's customers say".
 
 #### 0.3 Look
-9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. Hero light by expression: the homepage owns the orange Sun; product pages use the **indigo glow** (eased colour + alpha, ≥ 16 stops, so no ring shows).
+9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. **Hero light: each page owns one** (tokens.md §2.4c): homepage = orange **Sun**, Indus Cowork = **indigo glow**, Bulbul = **garden sunrise** (green core → marigold → cream). A radial from the top edge, colour and alpha eased over ≥ 16 stops so no ring shows. A new page picks a light no other page uses.
+9a. **Each product page owns its theme: its structure and presentation.** Shared on every page: nav, hero structure, section headers, FAQ, closing card, footer, tokens and controls. Each page owns **section formats drawn from its subject** (Cowork: approval desk, day timeline, teammate builder; Bulbul: studio, tracklist, chorus, ripple stage, multitrack, playground) and **one Sarvam light for the hero** (homepage Sun, Cowork indigo glow, Bulbul Dawn). The theme is **not one colour**: colour stays the system's, with indigo for controls and selection and the full tone set given per item (one tone per row, card, voice, fact or door). Never reuse another page's signature format (bento tiles, integrations panel, deployment tiles) just because it exists. Recipe per page: `recipes/<page>.md`.
 10. **Navbar:** MegaNav — real menu items, **filled** Nucleo icons in item tones, a frameless featured tile (kicker + serif title + one line + text link), **one CTA** (Talk to Us, primary). Nav links scroll to on-page sections when they exist.
 11. **Cards:** white + hairline by default. Colour lives in a soft tone well or a tone surface with grain; never a full saturated card. One tone per block.
-12. **Gradients — only where they add a calm sense of place, and soft:**
+12. **Gradients — only where they add a calm sense of place, and soft. Multi-colour gradients always stack their colours vertically** (top → bottom for a hero horizon, bottom → top for panels and the footer), never side by side (Malay, 2026-11-04):
     - integrations panel: the spectrum stacked **bottom → top** (saffron, peach, lilac, periwinkle) fading out ~75% up;
     - selected timeline card: tone-100 rising to white;
     - builder panel: the job's tone surface.
@@ -2307,9 +2341,12 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 19. **Controls never match their surface:** on a white card, unselected chips/tiles are a soft grey fill, no border; the selected one is white with an indigo ring. Segmented controls use one white pill that **slides** between options. Secondary actions are real pills (icon + label), never a bare text link.
 
 #### 0.4 Layout
+19b. **Links read forward:** text links and "learn more" style links end in a plain forward arrow (→) that slides 3px right on hover. No diagonal ↗ arrow.
+19c. **Don't inherit another component's hover motion.** When a page reuses a class (e.g. the `pv-again` pill), override motion that belongs to the original's meaning (its replay icon spins 60°); a copy icon must stay upright.
+19d. **Copy buttons** swap icon + label in place ("Copy" → ✓ "Copied", about 1.8s), one at a time (fast exit, then rise in), at a **fixed width**, with a green success tint, and with a hidden-textarea fallback when the clipboard API is blocked.
 20. **Side-by-side blocks end on the same line** (stretch; check equal `bottom` at ≥ 1024). Sibling cards: equal heights and line counts (`check-layout`).
 21. **One header-to-content gap:** `--space-section-head` (40 / 56). Never stack the header margin on a flex gap.
-22. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes.
+22. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes. **Tabbed panes (code tabs) have one fixed height on every tab**: longer content scrolls inside with a soft fade at the foot, and long lines wrap. The card beside them never changes height when the tab changes.
 23. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children; the page clips at `overflow-x: clip`.
 24. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back); logs start pre-filled and keep a fixed length; timelines show every step at once and fill a rail (never swap one card out for the next).
@@ -2324,6 +2361,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 31. Real controls inside mocks really work and are 44px to the finger.
 32. In-page links scroll smoothly (off with reduced motion) and land each heading ~88px under the top. QA scripts scroll with `behavior: "instant"`.
 33. FAQs: one answer open at a time; 7–8 questions.
+33b. **Closing card title: never more than 2 lines at any width.** Keep the copy (Sarvam's own line is fine); widen the title (≤ 30ch), balance it, and scale it with the viewport on phones (voice.md §6). Check the line count at 320–1920.
 
 #### 0.6 Before calling it done
 34. `check-layout` (10 widths), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look: screenshots at 375 / 768 / 1440.

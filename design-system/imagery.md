@@ -9,7 +9,7 @@ What goes into Sarvam visuals: gradients, gateway shapes, motifs, product UI and
 ## Rules for AI (read first)
 
 1. **Pick one hero device per composition:** a gradient field, a gateway window, a product mockup, or a photograph. Never two.
-2. **Gradients come from the named set** (dusk, dawn, indigo glow, sun, haze, tints, night). Always add grain. Never invent one.
+2. **Gradients come from the named set** (dusk, dawn, indigo glow, sun, haze, tints, night, and the page lights in tokens.md §2.4c). Always add grain. Never invent one. Multi-colour gradients stack **vertically** (top → bottom for a hero or sky, bottom → top for panels and the footer), never side by side.
 3. **Gateways are windows, not decoration.** A gateway shape always contains something (a gradient, a tint, product UI, a photo) and is the largest shape on the canvas.
 4. **Product UI is real and readable:** real Indus Cowork states, text ≥ 12px at the final size, white cards on tints.
 5. **Ornaments are punctuation.** At most one motif or divider per composition, small, in a quiet colour.
