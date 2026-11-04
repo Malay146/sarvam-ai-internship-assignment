@@ -134,12 +134,14 @@ const QUEUE: Item[] = [
   { id: 2, what: "Pause two campaigns", who: "Paid Media" },
   { id: 3, what: "Post the weekly readout", who: "Product Performance" },
 ];
-const HISTORY = [
-  { id: -1, text: "Drafted 31 emails · Sales Outbound", ok: true },
-  { id: -2, text: "Flagged wasted spend · Paid Media", ok: true },
-  { id: -3, text: "Pulled the funnel · Product Performance", ok: true },
-  { id: -4, text: "Researched 40 accounts · Sales Outbound", ok: true },
+const HISTORY: Ev[] = [
+  { id: -1, text: "Drafted 31 emails", who: "Sales Outbound", time: "09:42", ok: true },
+  { id: -2, text: "Flagged wasted spend", who: "Paid Media", time: "09:15", ok: true },
+  { id: -3, text: "Pulled the funnel", who: "Product Performance", time: "08:30", ok: true },
+  { id: -4, text: "Researched 40 accounts", who: "Sales Outbound", time: "08:05", ok: true },
 ];
+type Ev = { id: number; text: string; who: string; time: string; ok: boolean; you?: boolean };
+const roleOf = (who: string) => ROLES.find((r) => r.role === who) ?? ROLES[0];
 export function ApprovalDesk() {
   const fresh = () => Object.fromEntries(QUEUE.map((q) => [q.id, "waiting"])) as Record<number, Status>;
   const [status, setStatus] = useState<Record<number, Status>>(fresh);
@@ -151,7 +153,7 @@ export function ApprovalDesk() {
   const waiting = QUEUE.filter((q) => status[q.id] === "waiting");
   const decide = (it: Item, ok: boolean) => {
     setStatus((s) => ({ ...s, [it.id]: ok ? "approved" : "back" }));
-    setTrail((tr) => [{ id: Date.now(), text: `${ok ? "Approved" : "Sent back"}: ${it.what.toLowerCase()}`, ok }, ...tr].slice(0, 4));
+    setTrail((tr) => [{ id: Date.now(), text: `${ok ? "You approved" : "You sent back"}: ${it.what.toLowerCase()}`, who: it.who, time: "Just now", ok, you: true }, ...tr].slice(0, 4));
   };
   useEffect(() => {
     if (touched || !inView || reduced) return;
@@ -194,16 +196,24 @@ export function ApprovalDesk() {
         <p className="pv-desk__foot">Sending, merging and changes always wait here first.</p>
       </div>
       <div className="pv-desk__trail">
-        <div className="pv-desk__head"><b>Trail</b><span>Every task leaves one</span></div>
-        <ol>
-          <AnimatePresence initial={false} mode="popLayout">
-            {trail.map((t) => (
-              <motion.li key={t.id} layout={!reduced} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={ease(reduced)} data-ok={t.ok}>
-                <span className="pv-desk__mark" aria-hidden />{t.text}
-              </motion.li>
-            ))}
-          </AnimatePresence>
-        </ol>
+        <div className="pv-log">
+          <div className="pv-desk__head"><b>Trail</b><span>Every task leaves one</span></div>
+          <ol className="pv-log__list">
+            <AnimatePresence initial={false} mode="popLayout">
+              {trail.map((ev) => {
+                const r = roleOf(ev.who);
+                return (
+                  <motion.li key={ev.id} layout={!reduced} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={ease(reduced)}>
+                    <span className={`pv-log__icon ${ev.you ? (ev.ok ? "pv-log__icon--yes" : "pv-log__icon--back") : `cw-tone--${r.tone}`}`} aria-hidden>
+                      {ev.you ? (ev.ok ? <Check width={13} height={13} strokeWidth={2.5} /> : <X width={13} height={13} strokeWidth={2.5} />) : <r.icon width={13} height={13} />}
+                    </span>
+                    <span className="pv-log__text"><b>{ev.text}</b><span>{ev.who} · {ev.time}</span></span>
+                  </motion.li>
+                );
+              })}
+            </AnimatePresence>
+          </ol>
+        </div>
       </div>
     </div>
   );

@@ -153,6 +153,18 @@ export default function IndusCoworkPage() {
         <section id="trust" className="sr-container cw-section" aria-labelledby="trust-h">
           <Reveal><SectionHeader title={<span id="trust-h">Sovereign by default</span>} lead="Runs on Sarvam's own models and infrastructure, with data residency in India for Indian deployments." /></Reveal>
           <Reveal>
+            {/* shared paint for the filled security icons: indigo gradient (bottom → top) + a soft inner shadow */}
+            <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
+              <defs>
+                <linearGradient id="cw-icon-grad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#3333cc" /><stop offset="1" stopColor="#8b93f0" /></linearGradient>
+                <filter id="cw-icon-inset" x="-20%" y="-20%" width="140%" height="140%">
+                  <feOffset dy="-1.2" in="SourceAlpha" result="up" /><feComposite in="SourceAlpha" in2="up" operator="out" result="edge" />
+                  <feGaussianBlur in="edge" stdDeviation="0.8" result="eb" /><feFlood floodColor="#11115b" floodOpacity="0.45" />
+                  <feComposite in2="eb" operator="in" result="sh" /><feComposite in="sh" in2="SourceAlpha" operator="in" result="inset" />
+                  <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="inset" /></feMerge>
+                </filter>
+              </defs>
+            </svg>
             <ul className="cw-sec" data-siblings="security">
               {[
                 { icon: GlobeFill, title: "Data residency", desc: "Data for Indian deployments stays in India." },
@@ -160,7 +172,7 @@ export default function IndusCoworkPage() {
                 { icon: UserFill, title: "Access controls", desc: "SSO, role-based access and full audit logs." },
                 { icon: LockFill, title: "Encryption", desc: "Your data is encrypted at rest and in transit." },
               ].map(({ icon: I, title, desc }) => (
-                <li key={title} data-sibling><span className="cw-sec__icon" aria-hidden><I width={20} height={20} /></span><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
+                <li key={title} data-sibling><span className="cw-sec__icon" aria-hidden><I width={28} height={28} /></span><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
               ))}
             </ul>
           </Reveal>
