@@ -9,7 +9,6 @@ import {
   ArrowRight, ArrowUp, Check, Replay, X,
 } from "@/components/icons";
 import { BrandMark } from "./brand";
-import { MedallionEcho } from "./patterns";
 import { DUR, EASE } from "./motion";
 
 export type Tone = "indigo" | "orange" | "green" | "rose";
@@ -223,9 +222,6 @@ export function ApprovalDesk() {
 /* ── 4 · Build a teammate: role + apps + rhythm → a live teammate card ── */
 const APP_CHOICES = ["Gmail", "Slack", "Google Sheets", "Notion", "Google Calendar", "Google Docs", "BigQuery", "PostHog", "Metabase", "Linear", "GitHub", "Jira"];
 const RHYTHMS = [["daily", "Every morning at 8"], ["weekly", "Every Friday"], ["ondemand", "When you message it"]] as const;
-const JOB_PATTERN: Record<string, string> = {
-  sales: "Ogee cross", talent: "Quatrefoil", media: "Scalloped medallion", product: "Eight-point star", cos: "Six-fold lotus",
-};
 export function TeammateBuilder() {
   const [k, setK] = useState(0);
   const [apps, setApps] = useState<string[]>(ROLES[0].apps);
@@ -273,12 +269,6 @@ export function TeammateBuilder() {
       </div>
       <div className={`pv-mate cw-surface--${r.tone}`} data-tone={r.tone}>
         {/* layered echoes of one medallion per job; switching jobs crossfades to that job's shape */}
-        {/* sequential, not a crossfade: the old pattern fades out fast, then the new one fades in, so two never overlap */}
-        <AnimatePresence initial={false} mode="wait">
-          <motion.div key={r.key} className="pv-mate__pattern" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1, transition: { duration: reduced ? 0 : 0.4, ease: EASE.outQuint } }} exit={{ opacity: 0, transition: { duration: reduced ? 0 : 0.14 } }}>
-            <MedallionEcho shape={JOB_PATTERN[r.key] ?? "Scalloped medallion"} rings={11} step={0.38} fade={0.04} />
-          </motion.div>
-        </AnimatePresence>
         <div className="pv-mate__card">
           <div className="pv-mate__head">
             <span className={`pv-mate__avatar cw-tone--${r.tone}`}><r.icon width={22} height={22} /></span>
