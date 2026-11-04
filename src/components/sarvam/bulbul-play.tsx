@@ -22,7 +22,7 @@ export function BulbulStudio() {
     <div ref={ref} className="bb-studio" data-state={state}>
       <p className="sr-visually-hidden">A Bulbul V4 Flash studio: a Hindi and English line, spoken by the voice Ishita, with first audio in under 250 milliseconds.</p>
       <div className="bb-studio__bar" aria-hidden>
-        <span className="bb-studio__title"><span className="bb-studio__mark cw-tone--orange"><VolumeFill width={14} height={14} /></span>Text to speech</span>
+        <span className="bb-studio__title"><span className="bb-studio__mark cw-tone--indigo"><VolumeFill width={14} height={14} /></span>Text to speech</span>
         <code className="bb-code-chip">bulbul:v4-flash</code>
         <span className="bb-status" data-state={state}><i />{STATE_LABEL[state]}</span>
       </div>

@@ -28,9 +28,9 @@ const API_KEY = "https://indus.sarvam.ai/";
 type Ic = ComponentType<{ width?: number; height?: number }>;
 
 /* Tracklist row: number, title + one line, then the line it is about (a transcript). */
-function Track({ n, icon: I, title, desc, clip }: { n: string; icon: Ic; title: string; desc: string; clip: ReactNode }) {
+function Track({ n, tone, icon: I, title, desc, clip }: { n: string; tone: Tone; icon: Ic; title: string; desc: string; clip: ReactNode }) {
   return (
-    <li className="bb-trk" data-sibling="tracks">
+    <li className="bb-trk" data-tone={tone} data-sibling="tracks">
       <span className="bb-trk__num" aria-hidden>{n}</span>
       <div className="bb-trk__text">
         <span className="bb-trk__icon" aria-hidden><I width={16} height={16} /></span>
@@ -112,13 +112,13 @@ export default function BulbulPage() {
           <Reveal><SectionHeader variant="split" title={<span id="depth-h">Built for the depth of Indian speech</span>} lead="The details that make a voice sound local: the pauses, the particles, and the names and numbers people say every day." /></Reveal>
           <Reveal>
             <ol className="bb-trks">
-              <Track n="01" icon={LanguageFill} title="Voices that sound native" desc="Bengali delivery with natural hesitation, and English words kept as they are said."
+              <Track n="01" tone="indigo" icon={LanguageFill} title="Voices that sound native" desc="Bengali delivery with natural hesitation, and English words kept as they are said."
                 clip={<Transcript voice={4} lang="bn" line="ধুর বাবা, এই জ্যামে আর পারা যায় না!" marks={["ধুর বাবা,"]} tags={["Bengali delivery", "Hesitation", "English inside Bengali"]} />} />
-              <Track n="02" icon={MicrophoneFill} title="Indian English that sounds Indian" desc="The particles and regional cadence of English as India speaks it, not a borrowed accent."
+              <Track n="02" tone="rose" icon={MicrophoneFill} title="Indian English that sounds Indian" desc="The particles and regional cadence of English as India speaks it, not a borrowed accent."
                 clip={<Transcript voice={1} lang="en" line="What ra Sudeep? You said five minutes!" marks={["ra"]} tags={["Indian English particles", "Regional cadence"]} />} />
-              <Track n="03" icon={BookOpenFill} title="Names and numbers, read in context" desc="PNR, train, coach and seat numbers, PAN and Aadhaar, each read the way an agent would."
+              <Track n="03" tone="green" icon={BookOpenFill} title="Names and numbers, read in context" desc="PNR, train, coach and seat numbers, PAN and Aadhaar, each read the way an agent would."
                 clip={<Transcript voice={3} lang="hi" line="हाँ जी, umm… एक second, आपकी booking details check कर रही हूँ…" marks={["umm…", "second"]} reads={[["Coach B2", "कोच बी टू"], ["Seat 34", "सीट चौंतीस"]]} />} />
-              <Track n="04" icon={BoltFill} title="Amounts and dates in a payment reminder" desc="Rupee amounts, due dates and cut-off times, spoken clearly enough to act on."
+              <Track n="04" tone="orange" icon={BoltFill} title="Amounts and dates in a payment reminder" desc="Rupee amounts, due dates and cut-off times, spoken clearly enough to act on."
                 clip={<Transcript voice={2} lang="hi" line="नमस्ते राहुल जी, मैं Vistaar Finance से बोल रही हूँ।" marks={["राहुल जी"]} reads={[["₹4,250", "चार हज़ार दो सौ पचास रुपये"], ["15 Nov", "पंद्रह नवंबर"]]} />} />
             </ol>
           </Reveal>
@@ -159,13 +159,15 @@ export default function BulbulPage() {
         {/* 6 · For developers (Product): three facts + one request, start to finish */}
         <section id="developers" className="sr-container cw-section" aria-labelledby="dev-h">
           <Reveal><SectionHeader variant="split" title={<span id="dev-h">Made for developers. Scales for enterprises.</span>} lead="Real time in production, the output you need, and the same request shape you already use." /></Reveal>
-          {/* paint for the filled fact icons, in the page theme: saffron rising bottom → top + a soft inner shadow */}
+          {/* paint for the filled icons: each tone rises bottom → top (deep → light), with a soft inner shadow, no tile */}
           <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
             <defs>
-              <linearGradient id="bb-icon-grad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#e6651b" /><stop offset="1" stopColor="#faac57" /></linearGradient>
+              {([["indigo", "#3333cc", "#8b93f0"], ["green", "#3f7d20", "#9ccf6e"], ["rose", "#c2185b", "#f2a0c0"], ["orange", "#e6651b", "#faac57"]] as const).map(([k, a, b]) => (
+                <linearGradient key={k} id={`bb-grad-${k}`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor={a} /><stop offset="1" stopColor={b} /></linearGradient>
+              ))}
               <filter id="bb-icon-inset" x="-20%" y="-20%" width="140%" height="140%">
                 <feOffset dy="-1.2" in="SourceAlpha" result="up" /><feComposite in="SourceAlpha" in2="up" operator="out" result="edge" />
-                <feGaussianBlur in="edge" stdDeviation="0.8" result="eb" /><feFlood floodColor="#7a2e05" floodOpacity="0.45" />
+                <feGaussianBlur in="edge" stdDeviation="0.8" result="eb" /><feFlood floodColor="#11115b" floodOpacity="0.35" />
                 <feComposite in2="eb" operator="in" result="sh" /><feComposite in="sh" in2="SourceAlpha" operator="in" result="inset" />
                 <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="inset" /></feMerge>
               </filter>
@@ -174,12 +176,12 @@ export default function BulbulPage() {
           <Reveal className="bb-dev">
             <div className="bb-dev__facts">
               {([
-                [BoltFill, "Real time at scale", "First audio in under 250 ms in production, over HTTP streaming, WebSocket or a single response."],
-                [SlidersFill, "The output you need", "Sample rates from 8 kHz to 48 kHz, in WAV, MP3, FLAC or AAC, at the pace you set."],
-                [CodeFill, "Plug and play", "The same request shape as Bulbul V3, with SDKs for Python and Node.js."],
-              ] as [Ic, string, string][]).map(([I, t, d]) => (
+                [BoltFill, "orange", "Real time at scale", "First audio in under 250 ms in production, over HTTP streaming, WebSocket or a single response."],
+                [SlidersFill, "indigo", "The output you need", "Sample rates from 8 kHz to 48 kHz, in WAV, MP3, FLAC or AAC, at the pace you set."],
+                [CodeFill, "green", "Plug and play", "The same request shape as Bulbul V3, with SDKs for Python and Node.js."],
+              ] as [Ic, Tone, string, string][]).map(([I, tone, t, d]) => (
                 <div key={t} className="bb-fact" data-sibling="dev">
-                  <span className="bb-fact__icon" aria-hidden><I width={26} height={26} /></span>
+                  <span className="bb-fact__icon" data-tone={tone} aria-hidden><I width={26} height={26} /></span>
                   <span><b data-line="title">{t}</b><span data-line="desc">{d}</span></span>
                 </div>
               ))}
@@ -232,12 +234,12 @@ export default function BulbulPage() {
           <Reveal>
             <ul className="bb-doors">
               {([
-                [CodeFill, "Sarvam API", "Call it from your stack with the Python or Node.js SDK.", "Read the docs", "https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert"],
-                [PlayCircleFill, "Playground", "Write any line, pick a voice and hear it right away.", "Open the playground", "https://indus.sarvam.ai/text-to-speech"],
-                [ClapperboardFill, "Content Studio", "Dub and localise your audio and video across languages.", "See Content Studio", "https://www.sarvam.ai/products/content-studio"],
-              ] as [Ic, string, string, string, string][]).map(([I, t, d, cta, href]) => (
+                [CodeFill, "indigo", "Sarvam API", "Call it from your stack with the Python or Node.js SDK.", "Read the docs", "https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert"],
+                [PlayCircleFill, "orange", "Playground", "Write any line, pick a voice and hear it right away.", "Open the playground", "https://indus.sarvam.ai/text-to-speech"],
+                [ClapperboardFill, "rose", "Content Studio", "Dub and localise your audio and video across languages.", "See Content Studio", "https://www.sarvam.ai/products/content-studio"],
+              ] as [Ic, Tone, string, string, string, string][]).map(([I, tone, t, d, cta, href]) => (
                 <li key={t} data-sibling="doors">
-                  <span className="bb-fact__icon" aria-hidden><I width={28} height={28} /></span>
+                  <span className="bb-fact__icon" data-tone={tone} aria-hidden><I width={28} height={28} /></span>
                   <b data-line="title">{t}</b>
                   <span className="bb-doors__desc" data-line="desc">{d}</span>
                   <a className="bb-doors__link" href={href}>{cta}<ArrowUpRight width={16} height={16} aria-hidden /></a>

@@ -3,17 +3,18 @@
 > **Built:** `src/app/bulbul/page.tsx` + `src/app/bulbul/bulbul.css` (prefix `bb-`) + `src/components/sarvam/{bulbul-play,bulbul-wave,bulbul-data}.tsx`.
 > Facts: `voice.md` §5, Bulbul fact sheet (sources and source conflicts listed there). Playbook: `landing-page.md` §0. This page was the consistency test for the playbook.
 
-## 0. Theme: Dawn
-Each product page owns one of Sarvam's lights (`landing-page.md` rule 9a). The homepage has Sun and Cowork has the indigo glow; Bulbul has **Dawn**, a songbird at first light.
+## 0. Theme
+Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist, a chorus band, a ripple stage, a multitrack, a live playground (`landing-page.md` rule 9a). It is **not a single colour**. Colour stays the system's: indigo for controls and selection, and the full tone set given per item.
 
 | Where | Treatment |
 |---|---|
-| Hero light | Dawn stops `#f57613 → #faac57 → #ccd0e7 → #e2ebff`, radial from the top, colour and alpha eased over 17 stops (no ring) |
-| Accent | `--bb-accent` = orange-800 for rings, dots, meters, sliders and the playhead; `--bb-accent-ink` = orange-900 for small accent text (`tx-accent` is for large text only) |
-| Fact icons | Filled glyphs with a saffron gradient rising bottom → top and a soft inner shadow, with no tile (`#bb-icon-grad`, `#bb-icon-inset`) |
-| Panels | The chorus band is the Dawn sky (top → bottom). The ripple stage is a warm radial. The request panel is `gradient-tint-orange`. All carry grain. |
-| Closing card | `CtaCard` on **Dusk**, which ends in the same saffron |
-| Pattern | Only on the voice stage: Sarvam's medallion repeated outward like sound (`MedallionEcho`), which breathes while a voice speaks |
+| Hero light | **Dawn**: stops `#f57613 → #faac57 → #ccd0e7 → #e2ebff`, radial from the top, colour and alpha eased over 17 stops (no ring). Each product page has its own light (home Sun, Cowork indigo glow). |
+| Controls | System indigo: selection rings, slider, segmented pills, playhead, live dots, level meters |
+| Per-item tone | `data-tone` sets `--t`, `--t-soft` and `--t-w1/2`. Tracklist rows: 01 indigo, 02 rose, 03 green, 04 orange. The voice stage and its ripple take the voice's tone. Lanes take theirs. Fact icons: orange, indigo, green. Doors: indigo, orange, rose. |
+| Filled icons | Glyphs with a gradient in their own tone, rising bottom → top, plus a soft inner shadow and no tile (`#bb-grad-<tone>`, `#bb-icon-inset`) |
+| Panels | The chorus band is the Dawn sky (top → bottom). The request panel is the indigo tint. All carry grain. |
+| Closing card | `CtaCard` on **Dusk** (multi-colour, night into saffron) |
+| Pattern | Only on the voice stage: Sarvam's medallion repeated outward like sound (`MedallionEcho`), in the voice's tone, breathing while it speaks |
 
 ## 1. Sections
 
