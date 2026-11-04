@@ -14,8 +14,7 @@
 /* desktop panel */
 .mn-panel { position: absolute; left: 0; right: 0; top: 64px; background: var(--color-sr-white); border-top: var(--border-subtle); box-shadow: 0 24px 48px -24px rgb(17 17 91 / 0.18); }
 .mn-panel__inner { padding: var(--space-10) 0 var(--space-12); }
-.mn-panel__body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--space-12); align-items: start; }
-.mn-panel__body > .mn-feature { padding-left: var(--space-10); border-left: var(--border-subtle); }
+.mn-panel__body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-16); align-items: start; }
 .mn-panel__heading { margin: 0 0 var(--space-4); }
 .mn-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1) var(--space-8); }
 .mn-item { display: flex; align-items: center; gap: var(--space-4); min-height: 56px; padding: var(--space-2); margin-left: calc(var(--space-2) * -1); border-radius: var(--radius-card); text-decoration: none; color: inherit; transition: background var(--duration-normal) var(--ease-standard); }
@@ -29,11 +28,11 @@
 /* Featured card: no frame — a compact gradient tile (Season Mix title bottom-left, small kicker top-left), then one line
    and a quiet text link. Reads as editorial, not as a second panel. */
 .mn-feature { display: flex; flex-direction: column; gap: var(--space-3); text-decoration: none; color: inherit; border-radius: var(--radius-xl); }
-.mn-feature__art { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius-xl); display: flex; flex-direction: column; justify-content: flex-start; gap: var(--space-2); padding: var(--space-4) var(--space-5); overflow: hidden; isolation: isolate; transition: transform var(--duration-moderate) var(--ease-standard); }
+.mn-feature__art { position: relative; aspect-ratio: 16 / 11; border-radius: var(--radius-xl); display: flex; flex-direction: column; justify-content: flex-start; gap: var(--space-2); padding: var(--space-5) var(--space-6); overflow: hidden; isolation: isolate; transition: transform var(--duration-moderate) var(--ease-standard); }
 .mn-feature__art::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgb(20 20 40 / 0.22), rgb(20 20 40 / 0) 65%); }   /* keeps white text ≥ AA on every gradient's top */
 .mn-feature__art::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18); pointer-events: none; }
 .mn-feature__kicker { font-size: 11px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: rgb(255 255 255 / 0.85); }
-.mn-feature__title { font-family: var(--font-display); font-weight: var(--weight-regular); font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; color: var(--color-sr-white); max-width: 12ch; }
+.mn-feature__title { font-family: var(--font-display); font-weight: var(--weight-regular); font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; color: var(--color-sr-white); max-width: 12ch; }
 .mn-feature__desc { font-size: var(--text-small); color: var(--color-tx-secondary); }
 .mn-feature__cta { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-tx); }
 .mn-feature__cta svg { transition: transform var(--duration-normal) var(--ease-standard); }
