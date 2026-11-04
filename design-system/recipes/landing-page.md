@@ -41,6 +41,7 @@
 23. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children; the page clips at `overflow-x: clip`.
 24. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back); logs start pre-filled and keep a fixed length; timelines show every step at once and fill a rail (never swap one card out for the next).
+26a. **Card visuals are real mini UIs, not placeholders:** a header row, 3–5 rows with icon + label + meta, a status pill or footer. No grey bars or bare chips standing in for content.
 26. **Minimal beats busy:** a static grid of real marks beats drifting rows; text beside a grid is top-aligned with its action pinned to the bottom.
 27. Cards inside a panel sit centred and are **never sticky** unless asked. Panels with animated layers use `clip-path: inset(0 round …)` so nothing leaks past rounded corners.
 28. Use `<div role="group">` + a title, not `<fieldset>/<legend>` (the legend sits on the border).
@@ -62,7 +63,7 @@
 | 1 | Promise | Hero: kicker + H1 + buttons, live dashboard below | — | passive | `CoworkDashboard` |
 | 2 | How it works | It runs the whole task (4 tabs: plans · researches · improves · waits for your yes) | centred + eyebrow | auto-advances; tabs | `Stage` + `HowPanel` |
 | 3 | Why it's different | An assistant answers. A teammate finishes. — two white cards, filled icon each side, hollow marks vs indigo checks, a "vs" badge between | centred | passive | `.pv-vs` |
-| 4 | What it's made of | Everything a teammate is made of (5-card bento) | split | passive | `BentoTile` |
+| 4 | What it's made of | Everything a teammate is made of — 5 cards, each with a real mini UI (roster with live status, skill file with steps + shared avatars, today's schedule, knowledge files being read, research query + real sources), quiet loops | split | passive (looping mini UIs) | `BentoTile` + `bento-visuals.tsx` |
 | 5 | Where it works | 100+ (top-left) + static 6 × 4 grid of 24 real coloured marks; "Pick apps for a teammate" pill at the bottom; spectrum rising bottom → top | centred | passive (one fade-in) | `IntegrationField` |
 | 6 | Control | Nothing ships without your yes — queue (rows change state in place, "Run it again" pill) + Trail activity log (role icons, rail, times) | split | plays itself; can step in | `ApprovalDesk` |
 | 7 | Control | It works while you sleep — five delivery cards under one filling rail; current card tinted, no shadow | split | auto; tap a card | `DayScrubber` |

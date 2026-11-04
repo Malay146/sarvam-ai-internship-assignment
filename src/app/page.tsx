@@ -10,7 +10,7 @@ import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath }
 import { MegaNav } from "@/components/sarvam/mega-nav";
 import { Reveal, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { ApprovalDesk, DayScrubber, IntegrationField, OneFaq, TeammateBuilder } from "@/components/sarvam/cowork-play";
-import { ROLES } from "@/components/sarvam/cowork-data";
+import { BvKnowledge, BvResearch, BvSchedule, BvSkill, BvTeammates } from "@/components/sarvam/bento-visuals";
 import "./cowork.css";
 
 export const metadata: Metadata = {
@@ -112,15 +112,15 @@ export default function IndusCoworkPage() {
           <Reveal><SectionHeader variant="split" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Five parts you set up once. Every teammate on your workspace shares them." /></Reveal>
           <Reveal className="cw-bento" >
             <BentoTile area="mates" tone="indigo" icon={UserFill} eyebrow="Teammates" title="One teammate per job" desc="Point each one at a role and it runs the work from start to finish."
-              visual={<div className="cw-bv-mates">{ROLES.map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
+              visual={<BvTeammates />} />
             <BentoTile area="skills" tone="orange" icon={SparkleFill} eyebrow="Skills" title="Teach it once" desc="Write a way of working down and every teammate can use it."
-              visual={<div className="cw-bv-code"><div className="cw-bv-code__head"><code>weekly-revenue-readout</code><span>Shared</span></div><ol><li>Pull the week&apos;s numbers</li><li>Explain the movement</li><li>Park it for review</li></ol></div>} />
+              visual={<BvSkill />} />
             <BentoTile area="sched" tone="green" icon={CalendarClockFill} eyebrow="Scheduled tasks" title="Runs on its own" desc="Set a report up once and it lands on its own every morning."
-              visual={<ul className="cw-bv-times">{[["06:00", "Cluster check"], ["08:00", "Standup digest"], ["17:00", "Spend watch"]].map(([h, l]) => <li key={h}><code>{h}</code>{l}</li>)}</ul>} />
+              visual={<BvSchedule />} />
             <BentoTile area="kb" tone="rose" icon={BookOpenFill} eyebrow="Knowledge base" title="Never forgets" desc="Store your context once and every task can draw on it."
-              visual={<div className="cw-bv-docs">{["Pricing playbook", "Brand voice", "Q3 targets"].map((d) => <span key={d}>{d}</span>)}</div>} />
+              visual={<BvKnowledge />} />
             <BentoTile area="apps" tone="neutral" icon={SearchFill} eyebrow="Built-in research" title="Finds its answers" desc="Web search is built in, so the plan stays current as it works."
-              visual={<div className="cw-bv-search"><span className="cw-bv-search__bar">Q3 inbound by city</span><span className="cw-bv-search__hit" /><span className="cw-bv-search__hit" /></div>} />
+              visual={<BvResearch />} />
           </Reveal>
         </section>
 
