@@ -50,11 +50,11 @@ function GiantWordmark() {
           <feComposite in2="bottomEdge" operator="in" result="bottomLight" />
           <feOffset in="SourceAlpha" dy="0.25" result="c1" />
           <feGaussianBlur in="c1" stdDeviation="0.2" result="c2" />
-          <feFlood floodColor="#3333cc" floodOpacity="0.12" />
+          <feFlood floodColor="#3333cc" floodOpacity="0.06" />
           <feComposite in2="c2" operator="in" result="contact" />
           <feOffset in="SourceAlpha" dy="1.6" result="s1" />
           <feGaussianBlur in="s1" stdDeviation="2" result="s2" />
-          <feFlood floodColor="#3333cc" floodOpacity="0.12" />
+          <feFlood floodColor="#3333cc" floodOpacity="0.06" />
           <feComposite in2="s2" operator="in" result="soft" />
           <feMerge><feMergeNode in="soft" /><feMergeNode in="contact" /><feMergeNode in="SourceGraphic" /><feMergeNode in="topLight" /><feMergeNode in="bottomLight" /></feMerge>
         </filter>
@@ -106,11 +106,11 @@ export function SiteFooter() {
       </div>
       <div className="sf__band">
         <div className="sr-container sf__band-inner">
-          <GiantWordmark />
           <div className="sf__band-foot">
             <span>© 2026 Axonwise Private Limited. All rights reserved.</span>
             <span>732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038</span>
           </div>
+          <GiantWordmark />
         </div>
       </div>
     </footer>

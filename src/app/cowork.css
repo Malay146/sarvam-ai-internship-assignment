@@ -694,10 +694,11 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); color: var(--color-tx-tertiary); text-decoration: none; transition: color var(--duration-normal) var(--ease-standard); }
 /* closing band: the indigo-glow horizon with the official white wordmark spanning the container */
 .sf__band { position: relative; }
-.sf__band-inner { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-12) 0 var(--space-6); }
+/* © row first, then the wordmark sinks into the bottom edge (the footer's overflow: hidden crops its lower third) */
+.sf__band-inner { display: flex; flex-direction: column; gap: var(--space-10); padding: var(--space-12) 0 0; }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
 .sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
 
-/* the wordmark: 82% of the container, an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
-.sf__giant { display: block; width: 82%; height: auto; margin-inline: auto; overflow: visible; }
+/* the wordmark: 92% of the container, about a third submerged below the bottom edge, an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
+.sf__giant { display: block; width: 92%; height: auto; margin: 0 auto -4.8%; overflow: visible; }
 .sf__band-foot { color: var(--color-tx-tertiary); }
