@@ -72,7 +72,7 @@
 | 10 | Proof | What Sarvam's customers say — Tata Capital | centred | passive | `.cw-quote` |
 | 11 | Questions | Questions teams ask first — 8, one open at a time | centred | accordion | `OneFaq` |
 | 12 | Act | Meet your first teammate | — | Talk to Us | `CtaCard` |
-| 13 | Footer | Brand + tagline + socials (Nucleo social marks, verified links), 4 link columns, trust badges (filled glyph in its own brand hue on a soft tint: ISO indigo, SOC 2 green, residency orange) + legal links, then a closing band: © + address under the trust/legal row (one hairline above both), then the wordmark alone at the full container width, its lower 10% submerged below the bottom edge, in a soft grey → white gradient, bottom to top, both stops at 50% opacity, with a subtle inner white edge (no drop shadow). The whole footer carries a spectrum wash stacked bottom → top (saffron, peach, blush, lilac, periwinkle; OKLab) fading out at 95% height, plus grain | — | links | `SiteFooter` |
+| 13 | Footer | Brand + tagline + socials (Nucleo social marks, verified links), 4 link columns, trust badges (filled glyph in its own brand hue on a soft tint: ISO indigo, SOC 2 green, residency orange) + legal links, then a closing band: © + address under the trust/legal row (one hairline above both), then the wordmark alone at the full container width, its lower 10% submerged below the bottom edge, in a soft grey → white gradient, bottom to top, both stops at 40% opacity, with a subtle inner white edge and a tight, low-blur outer shadow (slight 3D lift). The whole footer carries a spectrum wash stacked bottom → top (saffron, peach, blush, lilac, periwinkle; OKLab) fading out at 95% height, plus grain | — | links | `SiteFooter` |
 
 ## 2. Responsive behaviour
 
