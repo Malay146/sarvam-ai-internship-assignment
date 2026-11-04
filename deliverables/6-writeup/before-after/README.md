@@ -2,7 +2,7 @@
 
 **Method (2026-11-04).** Four fresh, headless Claude Code runs (`claude -p`), each in an empty folder that had never seen this project. Tools were limited to read and write files.
 - **Without:** the prompt alone.
-- **With:** the same prompt plus one sentence: "Use the brand design system in ./design-system (start at design-system/SKILL.md) and the official assets in ./brand". The folder held a copy of `/design-system` and the official logo files.
+- **With:** the same prompt plus one sentence: "Use the brand design system in ./design-system (start at deliverables/1-design-system/SKILL.md) and the official assets in ./brand". The folder held a copy of `/design-system` and the official logo files.
 
 There was no editing and no second attempt. The outputs, logs and prompts are in `source/` and `prompt-*.txt`. Screenshots were taken with Playwright at the stated sizes.
 

@@ -1,7 +1,7 @@
 // Bulbul V4 Flash landing page (Product expression, Dawn theme). Shared system parts: MegaNav, HeroGlow + Motif,
 // SectionHeader (chapter / split rhythm), OneFaq, CtaCard, SiteFooter, tokens. Bulbul's own formats: studio, tracklist,
-// chorus, ripple stage, multitrack, request timeline, playground, diff, doors. Facts: design-system/voice.md §5 (Bulbul fact sheet) only. Playbook: design-system/recipes/landing-page.md §0.
-// Recipe for this page: design-system/recipes/bulbul-page.md.
+// chorus, ripple stage, multitrack, request timeline, playground, diff, doors. Facts: deliverables/1-design-system/voice.md §5 (Bulbul fact sheet) only. Playbook: deliverables/1-design-system/recipes/landing-page.md §0.
+// Recipe for this page: deliverables/1-design-system/recipes/bulbul-page.md.
 import type { Metadata } from "next";
 import type { ComponentType, ReactNode } from "react";
 import {

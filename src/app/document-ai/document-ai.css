@@ -1,5 +1,5 @@
-/* Document AI page. Prefix da-. Tokens only (design-system/tokens.css). Shares cowork.css for system-level page classes
-   (cw-section, pv-hero, pv-seg, pv-vs__mark, cw-tone, sf footer). Recipe: design-system/recipes/document-ai-page.md.
+/* Document AI page. Prefix da-. Tokens only (deliverables/1-design-system/tokens.css). Shares cowork.css for system-level page classes
+   (cw-section, pv-hero, pv-seg, pv-vs__mark, cw-tone, sf footer). Recipe: deliverables/1-design-system/recipes/document-ai-page.md.
    Theme = paper and ink: the formats (workspace, OCR comparison, folders, proofreading desk, specimen sheet, translated
    pages, index cards) plus one hero light, seal ink (red-rose → blush → paper cream). Controls stay system indigo;
    tones are given per item. */

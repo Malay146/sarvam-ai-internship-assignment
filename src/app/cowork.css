@@ -1,4 +1,4 @@
-/* Indus Cowork landing page. Prefix cw-. Tokens only (design-system/tokens.css). Recipe: recipes/landing-page.md §2. */
+/* Indus Cowork landing page. Prefix cw-. Tokens only (deliverables/1-design-system/tokens.css). Recipe: recipes/landing-page.md §2. */
 .cw { padding-bottom: var(--space-section); overflow-x: clip; }
 .cw-section { padding-top: var(--space-section); display: flex; flex-direction: column; gap: var(--space-section-head); scroll-margin-top: 80px; }
 .cw-muted { color: var(--color-tx-tertiary); margin: 0; }

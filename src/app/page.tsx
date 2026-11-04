@@ -1,6 +1,6 @@
 // Indus Cowork landing page, v2: our own structure. Each section is something the reader DOES, not a copy of sarvam.ai's
-// sections. Brand: tokens + src/components/sarvam. Copy: design-system/voice.md §5 (verified facts only).
-// Playbook (rules learned building this page): design-system/recipes/landing-page.md.
+// sections. Brand: tokens + src/components/sarvam. Copy: deliverables/1-design-system/voice.md §5 (verified facts only).
+// Playbook (rules learned building this page): deliverables/1-design-system/recipes/landing-page.md.
 import type { Metadata } from "next";
 import {
   BookOpenFill, CalendarClockFill, Check, GlobeFill, LockFill, MessageFill, ListTodoFill, SearchFill, ShieldCheckFill, SparkleFill, UserFill,

@@ -144,7 +144,7 @@ export default function SystemHub() {
         <section className="sr-container hub-section hub-gap">
           <header className="sr-section-head sr-section-head--split">
             <div className="sr-section-head__text"><Eyebrow>The files</Eyebrow><h2 className="sr-h2">Written for AI and for people</h2></div>
-            <div className="sr-section-head__aside"><p className="sr-lead">Every value is labelled verified, sampled or added, so nothing is invented. Hand the design-system/ folder to an AI and it knows where to look.</p></div>
+            <div className="sr-section-head__aside"><p className="sr-lead">Every value is labelled verified, sampled or added, so nothing is invented. Hand the deliverables/1-design-system/ folder to an AI and it knows where to look.</p></div>
           </header>
           <ul className="hub-docs">
             {DOCS.map(([f, d]) => <li key={f}><code className="hub-docs__path">{f}</code><span>{d}</span></li>)}

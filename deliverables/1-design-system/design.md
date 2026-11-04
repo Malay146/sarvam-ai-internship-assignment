@@ -1,6 +1,6 @@
 # Sarvam design system: single-file edition
 
-Generated from `design-system/` by `scripts/build-design-md.mjs`. Do not edit by hand. Machine-readable tokens: `design-system/tokens.css`.
+Generated from `deliverables/1-design-system/` by `scripts/build-design-md.mjs`. Do not edit by hand. Machine-readable tokens: `deliverables/1-design-system/tokens.css`.
 
 ## Contents
 1. SKILL.md
@@ -2233,7 +2233,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 
 **Reference match** (`scripts/reference-match.mjs`, `process/screens/reference-match-r2.png`): four real Sarvam posts (Knowledge Fabric, Sarvam 30B, Supernova, Startup Program) rebuilt using only builder options, side by side with the originals. The gaps found in round 1 (scale too timid, a narrow landscape lantern, a thin carved stack, a tiny partner name) were fixed in the engine.
 
-### 3b. The final set (`banners/final/`, the submission)
+### 3b. The final set (`deliverables/2-meta-banners/` + `3-linkedin-banners/`, the submission)
 
 | # | Brief id | Subject | Expression | Device |
 |---|---|---|---|---|
@@ -2285,7 +2285,7 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 |---|---|---|---|
 | "Indus Cowork has audit logs" | Every task leaves a trail | capability → `emblem` (shield), indigo-glow | `process/screens/banners-r7/` |
 | "It plans before it acts" | It plans the work first | product moment → `arch-window`, dusk | same |
-| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `banners/final/` |
+| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `deliverables/` |
 | "Sarvam's mission" | AI for all from India | mission → `script-mandala`, olive | same |
 
 ### 6. Our taste (personal flair, within the brand) `[addition]`
@@ -2336,7 +2336,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 | `split` | Becomes **stacked**: text in the top 44%, the device in the bottom 56% |
 | `editorial` | One left column (≥ 108 from the sides) anchored low; wordmark top-left on the column |
 
-### 3. The final Meta set (`banners/final/`)
+### 3. The final Meta set (`deliverables/2-meta-banners/`)
 
 | # | Banner | Expression | Device |
 |---|---|---|---|
@@ -2386,7 +2386,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 | `editorial` | One left column anchored low |
 | Per-banner overrides | `markOnLinkedIn` (logo place differs from Meta), `landScale` (shape height on LinkedIn), `titleSize` / `lineSize` / `textShift` with a `landscape` key |
 
-### 3. The final LinkedIn set (`banners/final/`)
+### 3. The final LinkedIn set (`deliverables/3-linkedin-banners/`)
 
 | # | Banner | Notes for landscape |
 |---|---|---|
@@ -2513,4 +2513,4 @@ Viewport breakpoints move the big layout; inside each section, components switch
 6. Manual: check on a real phone (Malay).
 
 ### 4. Export
-`node scripts/export-page.mjs` → full-page PNGs at 375 / 768 / 1440 in `/exports/page/`.
+`node scripts/export-page.mjs` → full-page PNGs at 375 / 768 / 1440 in `deliverables/4-web-page/` (Indus Cowork) and `deliverables/6-writeup/system-tests/` (Bulbul, Document AI).

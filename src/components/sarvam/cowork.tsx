@@ -1,5 +1,5 @@
 "use client";
-// Indus Cowork landing page: interactive pieces. Spec: design-system/recipes/landing-page.md, components.md §5 (motion).
+// Indus Cowork landing page: interactive pieces. Spec: deliverables/1-design-system/recipes/landing-page.md, components.md §5 (motion).
 // Motion rules: transform + opacity only; nothing changes size; every loop pauses off-screen; reduced motion = static.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";

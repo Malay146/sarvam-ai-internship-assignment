@@ -1,5 +1,5 @@
 "use client";
-// FAQ accordion (P12), animated with Motion. Spec: design-system/components.md → Faq.
+// FAQ accordion (P12), animated with Motion. Spec: deliverables/1-design-system/components.md → Faq.
 // Open: height eases 0 → auto while the answer fades in, rises 8px and un-blurs, slightly behind the height.
 // Close: the answer fades out quickly first, then the height collapses, so text never gets clipped mid-fade.
 import { useId, useState } from "react";

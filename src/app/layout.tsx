@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import "../../design-system/tokens.css";
+import "../../deliverables/1-design-system/tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Sarvam AI brand and design system, applied to Indus Cowork",
 };
 
-// Free stand-ins for Sarvam's licensed fonts (see design-system/typography.md):
+// Free stand-ins for Sarvam's licensed fonts (see deliverables/1-design-system/typography.md):
 // Gambetta (for Season Mix) + General Sans (for Matter) from Fontshare,
 // DM Mono (for Matter Mono) + Noto Devanagari fallbacks from Google Fonts.
 // Banners load the same two stylesheets, so web and banners render identically.

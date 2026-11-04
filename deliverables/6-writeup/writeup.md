@@ -13,13 +13,13 @@ I didn't design banners or a page by hand. I wrote down Sarvam's existing brand 
 
 | Deliverable | Where |
 |---|---|
-| 1 · Brand & design system | `design-system/`: start at `SKILL.md`; single file `design.md`; machine tokens `tokens.css` |
-| 2 · 3 Meta banners (1080×1350) | `banners/final/meta-*.png` |
-| 3 · 3 LinkedIn banners (1200×627) | `banners/final/linkedin-*.png` |
-| 4 · Responsive web page | Live `/` (Indus Cowork); exports `exports/page/cowork-{375,768,1440}.png` |
-| 5 · Source | the repo (Next.js, plain CSS on the tokens) |
-| 6 · This write-up + evidence | `process/writeup.md`, `process/prompt-log.md`, `process/screens/` |
-| System tests | `/bulbul`, `/document-ai` (+ exports) · before/after in `process/screens/before-after/` |
+| 1 · Brand & design system | [`1-design-system/`](../1-design-system): start at `SKILL.md`; single file `design.md`; machine tokens `tokens.css` |
+| 2 · 3 Meta banners (1080×1350) | [`2-meta-banners/`](../2-meta-banners) |
+| 3 · 3 LinkedIn banners (1200×627) | [`3-linkedin-banners/`](../3-linkedin-banners) |
+| 4 · Responsive web page | Live `/` (Indus Cowork); exports in [`4-web-page/`](../4-web-page) |
+| 5 · Source | [`5-source/`](../5-source) maps the repo (Next.js, plain CSS on the tokens) |
+| 6 · This write-up + evidence | this folder · log [`process/prompt-log.md`](../../process/prompt-log.md) · iterations `process/screens/` |
+| System tests | live `/bulbul`, `/document-ai` · exports in [`system-tests/`](system-tests) · [`before-after/`](before-after) |
 
 ## Process
 
@@ -66,11 +66,11 @@ I didn't design banners or a page by hand. I wrote down Sarvam's existing brand 
 ## How the system was tested
 
 **1. Before / after (the same prompt, fresh model, no conversation).**
-- **Setup:** four headless Claude Code runs in empty folders. Two got only the prompt; two got the prompt plus `design-system/` and the official logos.
+- **Setup:** four headless Claude Code runs in empty folders. Two got only the prompt; two got the prompt plus `deliverables/1-design-system/` and the official logos.
 - **Without the system:** polished but generic, with an invented logo, made-up numbers and people, a "Pricing / Get started" CTA for a product that isn't generally available, and Inter.
 - **With the system:** the official wordmark, the gateway device, a named gradient with grain, Sarvam's nav with the single "Talk to Us" CTA, verified copy, the display serif, the indigo hero light, and a phone layout that *rearranges*.
 - **The one drift and its fix:** a soft blurred glow on the banner. That rule existed, but only in a script a fresh model never runs. So the script-enforced banner rules now also sit in `SKILL.md`'s non-negotiables.
-- Evidence: `process/screens/before-after/`.
+- Evidence: `deliverables/6-writeup/before-after/`.
 
 **2. One system, every format.** The same subject (Indus Cowork), tokens and gradients run through 3 Meta banners, 3 LinkedIn banners and the landing page. Each banner is rearranged per format, never cropped or stretched, with one message per banner.
 
@@ -80,7 +80,7 @@ I didn't design banners or a page by hand. I wrote down Sarvam's existing brand 
 - The dashboard has its own phone layout.
 - Code panes keep one height across tabs.
 
-Exports: `exports/page/*-{375,768,1440}.png`.
+Exports: [`4-web-page/`](../4-web-page) (Indus Cowork) and [`system-tests/`](system-tests) (Bulbul, Document AI).
 
 **4. New subjects, same playbook.** Bulbul V4 Flash (text to speech) and Document AI were built from the playbook alone, with facts researched fresh into `voice.md`.
 - **What held:** structure, header rhythm, one CTA, real assets, the QA gates.

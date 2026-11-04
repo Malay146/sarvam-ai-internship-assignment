@@ -1,5 +1,5 @@
 // Bulbul V4 Flash page data, shared by the server page and the client sections.
-// Facts: design-system/voice.md §5 (Bulbul fact sheet). Speaker IDs are from Sarvam's voices guide (docs.sarvam.ai).
+// Facts: deliverables/1-design-system/voice.md §5 (Bulbul fact sheet). Speaker IDs are from Sarvam's voices guide (docs.sarvam.ai).
 // Sample lines: the Bengali, Indian English, booking and playground lines are Sarvam's own samples; the rest are
 // illustrative UI text written for this page (short, everyday, nothing claimed).
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath, type GlowPalette } from "@/lib/shapes";

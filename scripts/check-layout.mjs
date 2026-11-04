@@ -1,4 +1,4 @@
-// Layout QA for the Sarvam design system (design-system/layout.md §8.2).
+// Layout QA for the Sarvam design system (deliverables/1-design-system/layout.md §8.2).
 // Usage: node scripts/check-layout.mjs [url]   (default http://localhost:3000/)
 //
 // Mark sibling sets in the page:

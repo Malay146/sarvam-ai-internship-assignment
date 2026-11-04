@@ -1,4 +1,4 @@
-// Sarvam component library. Spec: design-system/components.md · Styles: ./components.css
+// Sarvam component library. Spec: deliverables/1-design-system/components.md · Styles: ./components.css
 // Server components by default; interactive bits live in ./client.tsx.
 import type { ReactNode, ComponentType, SVGProps } from "react";
 import { ArrowRight, Check, ChevronDown, Circle, CircleCheck, Menu } from "@/components/icons";

@@ -108,4 +108,4 @@ Viewport breakpoints move the big layout; inside each section, components switch
 6. Manual: check on a real phone (Malay).
 
 ## 4. Export
-`node scripts/export-page.mjs` → full-page PNGs at 375 / 768 / 1440 in `/exports/page/`.
+`node scripts/export-page.mjs` → full-page PNGs at 375 / 768 / 1440 in `deliverables/4-web-page/` (Indus Cowork) and `deliverables/6-writeup/system-tests/` (Bulbul, Document AI).

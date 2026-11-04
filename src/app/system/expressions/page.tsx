@@ -1,5 +1,5 @@
 // /system/expressions: the three expressions, rendered by the same banner engine that made the final set.
-// Spec: design-system/expressions.md. Every artboard below is a live render of a BannerSpec (no screenshots).
+// Spec: deliverables/1-design-system/expressions.md. Every artboard below is a live render of a BannerSpec (no screenshots).
 import { Artboard, Banner, BANNER_BRIEFS, Eyebrow, Footer, Nav, SITUATIONS, SYSTEM_NAV, type BannerSpec, type Situation } from "@/components/sarvam";
 import "../hub.css";
 

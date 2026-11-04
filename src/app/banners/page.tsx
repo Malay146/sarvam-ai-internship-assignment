@@ -3,7 +3,7 @@ import "./banners.css";
 
 export const metadata = { title: "Banners · Sarvam design system" };
 
-// The submission set (banners/final/README.md). Each subject comes in both formats, rearranged for the format.
+// The submission set (deliverables/2-meta-banners, 3-linkedin-banners). Each subject comes in both formats, rearranged for the format.
 const FINAL = [
   { id: "prism", n: "01", subject: "Sarvam Prism launch", expression: "Campaign", device: "Lit medallion on Dawn" },
   { id: "final-trail", n: "02", subject: "Every task leaves a trail", expression: "Product", device: "Shield emblem on indigo glow" },
@@ -23,7 +23,7 @@ export default function BannersPage() {
           <p className="sr-lead">
             Meta is 1080×1350 and LinkedIn is 1200×627. Each subject picks its expression from the content, then the engine rearranges it for
             each format rather than cropping it. Everything here is a live render of <code>banners/briefs.json</code>; the PNGs are in{" "}
-            <code>banners/final</code>.
+            <code>deliverables/2-meta-banners</code> and <code>3-linkedin-banners</code>.
           </p>
         </header>
 

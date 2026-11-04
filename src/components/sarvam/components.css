@@ -1,5 +1,5 @@
-/* Sarvam components. Every value comes from design-system/tokens.css.
-   Spec: design-system/components.md. Mobile first. Class prefix: sr- */
+/* Sarvam components. Every value comes from deliverables/1-design-system/tokens.css.
+   Spec: deliverables/1-design-system/components.md. Mobile first. Class prefix: sr- */
 
 /* ── Layout primitives ── */
 .sr-container { width: var(--container-width); max-width: var(--container-max); margin-inline: auto; }

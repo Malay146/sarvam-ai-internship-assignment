@@ -1,6 +1,6 @@
 "use client";
 // Indus Cowork page, v2: our own interactive sections (not sarvam.ai's section order). Every section asks the reader to
-// do something: pick a role, scrub a day, approve work, build a teammate. Facts: design-system/voice.md §5.
+// do something: pick a role, scrub a day, approve work, build a teammate. Facts: deliverables/1-design-system/voice.md §5.
 // Motion rules (components.md §5): transform + opacity only, fixed boxes (nothing resizes), loops pause off-screen,
 // reduced motion shows the final state. Request lines inside mocks are illustrative UI text.
 import { useEffect, useMemo, useRef, useState } from "react";

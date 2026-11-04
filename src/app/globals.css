@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Map Tailwind's theme onto the design-system tokens (design-system/tokens.css). */
+/* Map Tailwind's theme onto the design-system tokens (deliverables/1-design-system/tokens.css). */
 @theme inline {
   --color-background: var(--color-sf);
   --color-foreground: var(--color-tx);

@@ -1,5 +1,5 @@
 // Document AI page data, shared by the server page and the client sections.
-// Facts: design-system/voice.md §5 (Document AI fact sheet). The sample document is illustrative UI text: a Hindi land
+// Facts: deliverables/1-design-system/voice.md §5 (Document AI fact sheet). The sample document is illustrative UI text: a Hindi land
 // record certificate written for this page (no real person, no real record), used to show layout, reading order,
 // tables and handwriting.
 

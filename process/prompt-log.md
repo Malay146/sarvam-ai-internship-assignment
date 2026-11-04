@@ -905,3 +905,17 @@ Entry format:
   - Evidence and notes: `process/screens/before-after/`.
   - First draft of the notes wrongly called two outputs "drift" (the serif primary button, the sans banner headline). Both are allowed by the system, so the notes were corrected.
 - **Write-up:** `process/writeup.md`, built from this log.
+
+## 2026-11-04 · Claude Code · Deliverables folder
+
+- Prompts (verbatim): "but i feel like its not organised well, like how about all deliverables in a folder thing" → options discussed (deliverables folder / README only / a /submission page) → "ya do only A, will think about C later"
+- **What changed:** everything the brief asks for now sits in `deliverables/`, numbered to match the brief:
+  - `1-design-system/`: **moved, not copied**, so there is one source of truth. The site imports `tokens.css` from here.
+  - `2-meta-banners/`, `3-linkedin-banners/`
+  - `4-web-page/`: Cowork exports + live link
+  - `5-source/`: a map of the repo
+  - `6-writeup/`: the write-up, before/after, system-test exports
+- Every folder has a README.
+- All path references were updated: imports, the tokens review page, scripts, the banner skill, recipes, CLAUDE.md, README, memory. `design.md` was regenerated.
+- `scripts/export-page.mjs` now writes into the new folders.
+- QA: tsc, production build, check-layout 10/10 on all three pages; `/system/tokens` reads from the new path.

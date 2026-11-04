@@ -1,5 +1,5 @@
 // Gateway / medallion shape used as a window onto a surface, image or product UI.
-// Spec: design-system/imagery.md §2. Shapes come from src/lib/shapes.ts (also editable in /studio).
+// Spec: deliverables/1-design-system/imagery.md §2. Shapes come from src/lib/shapes.ts (also editable in /studio).
 import type { CSSProperties, ReactNode } from "react";
 import { GATEWAY_PRESETS, MEDALLION_PRESETS, gatewayPath, medallionPath, normalisePath, shapeSVG, type GatewayParams, type MedallionParams } from "@/lib/shapes";
 

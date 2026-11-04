@@ -1,6 +1,6 @@
-/* Bulbul V4 Flash page. Prefix bb-. Tokens only (design-system/tokens.css). Shares cowork.css for the system-level page
+/* Bulbul V4 Flash page. Prefix bb-. Tokens only (deliverables/1-design-system/tokens.css). Shares cowork.css for the system-level page
    classes (cw-section, pv-hero, cw-tile, cw-well, cw-surface, cw-tone, pv-seg, pv-again, pv-int__*, sf footer).
-   Recipe: design-system/recipes/bulbul-page.md. */
+   Recipe: deliverables/1-design-system/recipes/bulbul-page.md. */
 
 /* ── Page theme. Bulbul's theme is its structure and presentation (studio, tracklist, chorus, ripple stage, multitrack,
    playground), not one colour. Colour stays the system's: indigo for controls and selection, and the full tone set

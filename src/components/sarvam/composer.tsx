@@ -1,5 +1,5 @@
 // Banner composer: a banner = background + device + text treatment + content. No prompts; every part is a choice.
-// Situations are presets of these choices. Spec: design-system/recipes/banner-builder.md.
+// Situations are presets of these choices. Spec: deliverables/1-design-system/recipes/banner-builder.md.
 import { memo, type CSSProperties, type ReactNode } from "react";
 import {
   DIVIDER_PRESETS, FLOWER_PRESETS, GATEWAY_PRESETS, MEDALLION_PRESETS, MOTIF_PRESETS, dividerPaths, cloudSVG, flowerPath, gatewayPath, glossSVG, medallionPath, motifPaths,

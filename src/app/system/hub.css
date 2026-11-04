@@ -124,6 +124,6 @@
 .hub-arrow { margin-top: var(--space-2); font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-sr-indigo-700); }
 .hub-arrow span { display: inline-block; transition: transform var(--duration-normal) var(--ease-standard); }
 /* the folder prefix is drawn from 480 up; on phones the section lead names the folder */
-@media (min-width: 480px) { .hub-docs__path::before { content: "design-system/"; } }
+@media (min-width: 480px) { .hub-docs__path::before { content: "deliverables/1-design-system/"; } }
 .hub-proof__light { container-type: inline-size; }
 .hub-proof__h1 { position: absolute; inset: auto 0 14%; padding: 0 10%; text-align: center; font-family: var(--font-display); font-size: clamp(16px, 7.2cqi, 26px); line-height: 1.15; color: var(--color-tx); text-wrap: balance; }

@@ -6,9 +6,9 @@ import { BookOpen, CalendarClock, Sparkles } from "@/components/icons";
 
 export const metadata = { title: "Tokens · Sarvam design system" };
 
-// Single source of truth: read every token straight from design-system/tokens.css.
+// Single source of truth: read every token straight from deliverables/1-design-system/tokens.css.
 function readTokens() {
-  const css = fs.readFileSync(path.join(process.cwd(), "design-system/tokens.css"), "utf8");
+  const css = fs.readFileSync(path.join(process.cwd(), "deliverables/1-design-system/tokens.css"), "utf8");
   const root = css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {")));
   const tokens: Record<string, string> = {};
   for (const m of root.matchAll(/(--[\w-]+):\s*([^;]+);/g)) tokens[m[1]] = m[2].trim();
@@ -151,7 +151,7 @@ export default function SystemPage() {
           <p className="sys-eyebrow">Sarvam design system</p>
           <h1 className="sys-h1">Tokens, type and layout</h1>
           <p className="sys-lead">
-            Every value on this page is read live from <code>design-system/tokens.css</code>. If it looks wrong here, it is wrong in
+            Every value on this page is read live from <code>deliverables/1-design-system/tokens.css</code>. If it looks wrong here, it is wrong in
             the system. Labels say where each value comes from: verified from sarvam.ai, sampled from Sarvam&apos;s images, or added by us.
           </p>
           <nav className="sys-toc">

@@ -31,7 +31,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 | `editorial` | One left column anchored low |
 | Per-banner overrides | `markOnLinkedIn` (logo place differs from Meta), `landScale` (shape height on LinkedIn), `titleSize` / `lineSize` / `textShift` with a `landscape` key |
 
-## 3. The final LinkedIn set (`banners/final/`)
+## 3. The final LinkedIn set (`deliverables/3-linkedin-banners/`)
 
 | # | Banner | Notes for landscape |
 |---|---|---|

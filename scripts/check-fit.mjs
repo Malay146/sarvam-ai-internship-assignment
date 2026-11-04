@@ -1,4 +1,4 @@
-// Fit QA for the Sarvam design system (design-system/layout.md §7.4, §7.6, §8.2).
+// Fit QA for the Sarvam design system (deliverables/1-design-system/layout.md §7.4, §7.6, §8.2).
 // "Everything fits": no sideways scroll, no clipped or truncated text, no text running past its box,
 // no short label broken onto two lines. Complements check-layout.mjs (sibling parity).
 //

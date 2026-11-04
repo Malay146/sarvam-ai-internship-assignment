@@ -30,7 +30,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 | `split` | Becomes **stacked**: text in the top 44%, the device in the bottom 56% |
 | `editorial` | One left column (≥ 108 from the sides) anchored low; wordmark top-left on the column |
 
-## 3. The final Meta set (`banners/final/`)
+## 3. The final Meta set (`deliverables/2-meta-banners/`)
 
 | # | Banner | Expression | Device |
 |---|---|---|---|

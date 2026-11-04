@@ -124,7 +124,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 
 **Reference match** (`scripts/reference-match.mjs`, `process/screens/reference-match-r2.png`): four real Sarvam posts (Knowledge Fabric, Sarvam 30B, Supernova, Startup Program) rebuilt using only builder options, side by side with the originals. The gaps found in round 1 (scale too timid, a narrow landscape lantern, a thin carved stack, a tiny partner name) were fixed in the engine.
 
-## 3b. The final set (`banners/final/`, the submission)
+## 3b. The final set (`deliverables/2-meta-banners/` + `3-linkedin-banners/`, the submission)
 
 | # | Brief id | Subject | Expression | Device |
 |---|---|---|---|---|
@@ -176,7 +176,7 @@ Malay gives a **subject only**. The AI makes every decision below, in order. The
 |---|---|---|---|
 | "Indus Cowork has audit logs" | Every task leaves a trail | capability → `emblem` (shield), indigo-glow | `process/screens/banners-r7/` |
 | "It plans before it acts" | It plans the work first | product moment → `arch-window`, dusk | same |
-| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `banners/final/` |
+| "Sarvam Prism" (from an X post) | Fast, accurate decisions | name → `medallion-glow` (Eight-point star), dawn, logomark | `deliverables/` |
 | "Sarvam's mission" | AI for all from India | mission → `script-mandala`, olive | same |
 
 ## 6. Our taste (personal flair, within the brand) `[addition]`

@@ -1,6 +1,6 @@
 // Parametric generators for Sarvam's gateway shapes, line motifs and scroll dividers.
 // Pure functions → SVG path strings. Used by /studio and by <GatewayFrame>.
-// Spec: design-system/imagery.md (gateway + motif rules).
+// Spec: deliverables/1-design-system/imagery.md (gateway + motif rules).
 
 type P = [number, number];
 type Seg = { t: "L"; to: P } | { t: "C"; c1: P; c2: P; to: P } | { t: "Q"; c: P; to: P };
