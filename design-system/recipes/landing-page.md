@@ -22,7 +22,7 @@
 9a. **Each product page owns its theme: its structure and presentation.** Shared on every page: nav, hero structure, section headers, FAQ, closing card, footer, tokens and controls. Each page owns **section formats drawn from its subject** (Cowork: approval desk, day timeline, teammate builder; Bulbul: studio, tracklist, chorus, ripple stage, multitrack, playground) and **one Sarvam light for the hero** (homepage Sun, Cowork indigo glow, Bulbul Dawn). The theme is **not one colour**: colour stays the system's, with indigo for controls and selection and the full tone set given per item (one tone per row, card, voice, fact or door). Never reuse another page's signature format (bento tiles, integrations panel, deployment tiles) just because it exists. Recipe per page: `recipes/<page>.md`.
 10. **Navbar:** MegaNav — real menu items, **filled** Nucleo icons in item tones, a frameless featured tile (kicker + serif title + one line + text link), **one CTA** (Talk to Us, primary). Nav links scroll to on-page sections when they exist.
 11. **Cards:** white + hairline by default. Colour lives in a soft tone well or a tone surface with grain; never a full saturated card. One tone per block.
-12. **Gradients — only where they add a calm sense of place, and soft:**
+12. **Gradients — only where they add a calm sense of place, and soft. Multi-colour gradients always stack their colours vertically** (top → bottom for a hero horizon, bottom → top for panels and the footer), never side by side (Malay, 2026-11-04):
     - integrations panel: the spectrum stacked **bottom → top** (saffron, peach, lilac, periwinkle) fading out ~75% up;
     - selected timeline card: tone-100 rising to white;
     - builder panel: the job's tone surface.
