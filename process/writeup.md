@@ -1,7 +1,7 @@
 # Write-up: a Sarvam design system, and what it made
 
 **Malay Patel · Design Engineer Internship take-home · November 2026**
-Source: https://github.com/Malay146/sarvam-ai-internship-assignment · Live site: *(Vercel link)*
+Source: https://github.com/Malay146/sarvam-ai-internship-assignment · Live site: https://sarvam-ai-internship-assignment-4of.vercel.app/
 
 ## In one paragraph
 I didn't design banners or a page by hand. I wrote down Sarvam's existing brand as a system an AI can follow: tokens, type, layout, components, imagery, logo rules, voice and recipes, packaged as a skill. Then I used AI to generate everything else from it. My job was direction: choosing, rejecting, correcting, and turning every correction into a rule, so the next output needed fewer corrections. The deliverables are the proof:
