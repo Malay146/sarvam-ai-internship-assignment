@@ -20,7 +20,7 @@ import "./mega-nav.css";
 type Ic = ComponentType<SVGProps<SVGSVGElement> & { strokeWidth?: number | string }>;
 type Tone = "indigo" | "green" | "orange" | "red" | "neutral";
 type Item = { label: string; desc?: string; icon: Ic; tone: Tone; href?: string };
-type Menu = { key: string; label: string; heading: string; items: Item[]; feature: { eyebrow: string; title: string; href: string; surface: string } };
+type Menu = { key: string; label: string; heading: string; items: Item[]; feature: { eyebrow: string; title: string; desc: string; cta: string; href: string; surface: string } };
 
 /* [verified] labels, descriptions and tones from sarvam.ai's navbar */
 const MENUS: Menu[] = [
@@ -36,7 +36,7 @@ const MENUS: Menu[] = [
       { label: "Content Studio", desc: "Content Transformation", icon: Newspaper, tone: "green" },
       { label: "Document AI", desc: "Parse, extract and translate docs", icon: FileText, tone: "orange" },
     ],
-    feature: { eyebrow: "New", title: "Indus Cowork", href: "#how", surface: "sr-gradient-dawn" },
+    feature: { eyebrow: "New", title: "Indus Cowork", desc: "AI teammates that finish the work.", cta: "See how it works", href: "#how", surface: "sr-gradient-dawn" },
   },
   {
     key: "developers", label: "Developers", heading: "APIs",
@@ -48,7 +48,7 @@ const MENUS: Menu[] = [
       { label: "Dubbing", desc: "Content Studio API", icon: Clapperboard, tone: "green" },
       { label: "Documentation", desc: "API reference and guides", icon: BookOpenAlt, tone: "green" },
     ],
-    feature: { eyebrow: "Developers", title: "Build with Sarvam APIs", href: "#", surface: "sr-gradient-indigo-glow" },
+    feature: { eyebrow: "Developers", title: "Build with Sarvam APIs", desc: "Speech, text and documents, in Indian languages.", cta: "Read the docs", href: "#", surface: "sr-gradient-indigo-glow" },
   },
   {
     key: "resources", label: "Resources", heading: "Resources",
@@ -60,7 +60,7 @@ const MENUS: Menu[] = [
       { label: "Partnerships", icon: Handshake, tone: "green" },
       { label: "Blogs", icon: Film, tone: "indigo" },
     ],
-    feature: { eyebrow: "Story", title: "India builds with Sarvam", href: "#", surface: "sr-gradient-dusk" },
+    feature: { eyebrow: "Stories", title: "India builds with Sarvam", desc: "How teams across India work with Sarvam.", cta: "Read the stories", href: "#stories", surface: "sr-gradient-dusk" },
   },
   {
     key: "company", label: "Company", heading: "Company",
@@ -68,7 +68,7 @@ const MENUS: Menu[] = [
       { label: "About Sarvam", icon: Info, tone: "indigo" },
       { label: "Careers", icon: Suitcase, tone: "green" },
     ],
-    feature: { eyebrow: "Sarvam", title: "AI for all from India", href: "#", surface: "sr-gradient-saffron-rose" },
+    feature: { eyebrow: "Company", title: "AI for all from India", desc: "Sovereign AI, built in India for India.", cta: "About Sarvam", href: "#", surface: "sr-gradient-saffron-rose" },
   },
 ];
 
@@ -145,8 +145,12 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
                         <div className="mn-grid">{menu.items.map((it) => <MenuItem key={it.label} it={it} onPick={() => setOpen(null)} />)}</div>
                       </div>
                       <a className="mn-feature" href={menu.feature.href} onClick={() => setOpen(null)}>
-                        <span className={`mn-feature__art ${menu.feature.surface}`}><span>{menu.feature.title}</span></span>
-                        <span className="mn-feature__foot"><span className="sr-eyebrow">{menu.feature.eyebrow}</span><ArrowRight width={18} height={18} strokeWidth={1.5} /></span>
+                        <span className={`mn-feature__art ${menu.feature.surface}`} aria-hidden>
+                          <span className="mn-feature__kicker">{menu.feature.eyebrow}</span>
+                          <span className="mn-feature__title">{menu.feature.title}</span>
+                        </span>
+                        <span className="mn-feature__desc">{menu.feature.desc}</span>
+                        <span className="mn-feature__cta">{menu.feature.cta}<ArrowRight width={16} height={16} strokeWidth={1.5} /></span>
                       </a>
                     </motion.div>
                   </AnimatePresence>
