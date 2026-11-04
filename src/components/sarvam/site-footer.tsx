@@ -27,13 +27,13 @@ function GiantWordmark() {
             cut away under the letters, so the half-transparent fill doesn't show a dark shadow through it */}
         <filter id="sf-inner" x="-5%" y="-20%" width="110%" height="150%">
           <feComponentTransfer in="SourceAlpha" result="solid"><feFuncA type="linear" slope="4" /></feComponentTransfer>
-          <feOffset in="solid" dy="0.35" result="o1" />
-          <feGaussianBlur in="o1" stdDeviation="0.12" result="o1b" />
-          <feFlood floodColor="#5a3a2a" floodOpacity="0.16" />
+          <feOffset in="solid" dy="0.25" result="o1" />
+          <feGaussianBlur in="o1" stdDeviation="0.1" result="o1b" />
+          <feFlood floodColor="#5a3a2a" floodOpacity="0.1" />
           <feComposite in2="o1b" operator="in" result="lift" />
-          <feOffset in="solid" dy="0.9" result="o2" />
-          <feGaussianBlur in="o2" stdDeviation="0.45" result="o2b" />
-          <feFlood floodColor="#5a3a2a" floodOpacity="0.07" />
+          <feOffset in="solid" dy="0.6" result="o2" />
+          <feGaussianBlur in="o2" stdDeviation="0.35" result="o2b" />
+          <feFlood floodColor="#5a3a2a" floodOpacity="0.04" />
           <feComposite in2="o2b" operator="in" result="soft" />
           <feMerge result="shadowAll"><feMergeNode in="soft" /><feMergeNode in="lift" /></feMerge>
           <feComposite in="shadowAll" in2="solid" operator="out" result="shadow" />
