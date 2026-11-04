@@ -697,9 +697,9 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); color: var(--color-tx-tertiary); text-decoration: none; transition: color var(--duration-normal) var(--ease-standard); }
 /* closing band: the indigo-glow horizon with the official white wordmark spanning the container */
 .sf__band { position: relative; }
-/* only the wordmark, sinking into the bottom edge (the footer's overflow: hidden crops its lower 3%) */
+/* only the wordmark, sinking into the bottom edge (the footer's overflow: hidden crops its lower 7%) */
 .sf__band-inner { padding: var(--space-12) 0 0; }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
 
-/* the wordmark: the full container width, its lower 3% submerged below the bottom edge (height is 15.84% of width, so -0.48% margin), an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
-.sf__giant { display: block; width: 100%; height: auto; margin: 0 auto -0.48%; overflow: visible; }
+/* the wordmark: the full container width, its lower 7% submerged below the bottom edge (height is 15.84% of width, so -1.11% margin), an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
+.sf__giant { display: block; width: 100%; height: auto; margin: 0 auto -1.11%; overflow: visible; }
