@@ -372,3 +372,5 @@ li[data-on="true"] .bb-eq i:nth-child(4) { animation-delay: -0.15s; }
 @media (min-width: 768px) { .bb-codecard .bb-pre { height: 340px; } }
 /* a soft fade at the foot says "scrolls" when a tab's request is longer than the area */
 .bb-codecard .bb-pre { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); padding-bottom: var(--space-8); }
+/* Copy reuses the pv-again pill, whose replay icon spins on hover; a copy icon must stay upright: a small lift instead */
+@media (hover: hover) { .bb-copy:hover svg { transform: translateY(-1px); } }
