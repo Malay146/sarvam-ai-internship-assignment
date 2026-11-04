@@ -41,6 +41,6 @@
 .mn-acc__chev[data-open="true"] { transform: rotate(45deg); }
 .mn-acc__body { display: grid; gap: var(--space-1); padding-bottom: var(--space-4); }
 @media (min-width: 640px) { .mn-acc__body { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-6); } }
-.mn-sheet__ctas { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); padding-top: var(--space-6); }
+.mn-sheet__ctas { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-3); padding-top: var(--space-6); }
 .mn-sheet__ctas .sr-button { justify-content: center; }
 @media (prefers-reduced-motion: reduce) { .mn-acc__chev { transition: none; } }

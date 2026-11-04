@@ -126,7 +126,7 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
             </ul>
             <div className="sr-nav__actions">
               {login && <a className="sr-button sr-button--primary mn-wide" href="#">Log In</a>}
-              <a className="sr-button sr-button--secondary mn-wide" href={ctaHref}>{cta}</a>
+              <a className={`sr-button ${login ? "sr-button--secondary" : "sr-button--primary"} mn-wide`} href={ctaHref}>{cta}</a>
               <button type="button" className="mn-burger" aria-label={sheet ? "Close menu" : "Open menu"} aria-expanded={sheet} onClick={() => setSheet((s) => !s)}>
                 {sheet ? <X width={22} height={22} strokeWidth={1.5} /> : <MenuIcon width={22} height={22} strokeWidth={1.5} />}
               </button>
@@ -174,7 +174,7 @@ export function MegaNav({ cta = "Talk to Us", ctaHref = "#talk", login = true }:
                 </section>
               ))}
               <div className="mn-sheet__ctas">
-                <a className="sr-button sr-button--secondary" href={ctaHref} onClick={() => setSheet(false)}>{cta}</a>
+                <a className={`sr-button ${login ? "sr-button--secondary" : "sr-button--primary"}`} href={ctaHref} onClick={() => setSheet(false)}>{cta}</a>
                 {login && <a className="sr-button sr-button--primary" href="#">Log In</a>}
               </div>
             </div>

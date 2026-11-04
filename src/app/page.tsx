@@ -97,7 +97,7 @@ function HowPanel({ title, body, checks, tone, visual }: { title: string; body: 
 export default function IndusCoworkPage() {
   return (
     <>
-      <MegaNav cta="Talk to Us" ctaHref="#talk" />
+      <MegaNav cta="Talk to Us" ctaHref="#talk" login={false} />
       <main className="cw sr-under-nav">
         <HeroGlow height={720} />
 
