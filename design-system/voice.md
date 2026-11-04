@@ -110,6 +110,21 @@ Use only these claims.
 - Closing line on Sarvam's page: "Your next million conversations can sound more human."
 - **Source conflicts, don't copy:** the marketing page lists pitch and loudness controls, but the API docs say they are Bulbul V2 only, so don't claim them for V4 Flash. The marketing cURL uses `target_language_code`; the API reference uses `language_code` (use `language_code`). The marketing page pairs Kalpit with Bengali and Ishita with Tamil, but the voices guide doesn't (avoid those pairings). The sample conversations on Sarvam's page are scripted demos, not live calls.
 
+**Document AI** `[verified: sarvam.ai/products/doc-agents, 2026-11-04]`
+- Name: **Document AI** (Sarvam). Sarvam's line: "Intelligent document processing, down to the last page."
+- It **parses, extracts, reviews and translates** long, messy documents (scanned archives, handwritten notes, complex tables) and returns **structured output with layout and reading order intact**.
+- Inputs: PDFs, Word files, spreadsheets, presentations, web pages. Translation: **up to 300 MB and 500 pages** per upload. Scanned PDFs are OCR'd before translation, with progress tracked page by page.
+- Languages: **English and 22 Indian languages**: Assamese, Bengali, Bodo, Dogri, Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali, Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu. Mixed-language pages are handled.
+- Outputs: **Parse** → HTML, Markdown, DOCX, plain text. **Extract** → JSON, CSV, XLSX. **Translate** → DOCX, PDF, HTML, EPUB, TXT.
+- Understands layout (paragraphs, headings, tables, footnotes, figures) and reading order across columns and sections.
+- Review and correction: agent-driven corrections, **visual grounding** (every element linked to its source location), manual editing. The translation editor has Bulk Translate, AI Assistance, Learned Rules and Edit Guidelines (genre + guidelines for terminology). Side-by-side review, then export.
+- Translation keeps headings, paragraphs, images and layout in place. Multiple target languages, each with its own editor and progress bar.
+- Pain points it names ("Where OCR falls short"): complex layouts, Indian scripts misread, tables lose structure, no way to fix errors.
+- Two ways in: the **API** (batch, no manual step) and the **Platform** (visual review and correction before export; sign up free via the Sarvam dashboard; enterprise volumes via sales).
+- Use cases: government and public records; publishing and archives; finance and legal; research and education; developers (Parse via the API).
+- CTAs on Sarvam's page: "Try the API", "Explore the Platform", "Try Document AI".
+- No customer names, accuracy figures or benchmarks are published: don't invent any.
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.

@@ -92,6 +92,10 @@ import { CircleMediaPlayGlyph24 } from "./nucleo/CircleMediaPlayGlyph24";
 import { CopyOutline24 } from "./nucleo/CopyOutline24";
 import { BoltGlyph24 } from "./nucleo/BoltGlyph24";
 import { Sliders2Glyph24 } from "./nucleo/Sliders2Glyph24";
+import { StampGlyph24 } from "./nucleo/StampGlyph24";
+import { FolderGlyph24 } from "./nucleo/FolderGlyph24";
+import { TableRowsColsGlyph24 } from "./nucleo/TableRowsColsGlyph24";
+import { BankStatementGlyph24 } from "./nucleo/BankStatementGlyph24";
 
 export type IconProps = SVGProps<SVGSVGElement> & { strokeWidth?: number | string; corners?: "round" | "square"; size?: number };
 type NucleoIcon = (p: SVGProps<SVGSVGElement> & { strokeWidth?: number | string; corners?: "round" | "square" }) => React.JSX.Element;
@@ -199,3 +203,8 @@ export const PlayCircleFill = make(CircleMediaPlayGlyph24 as NucleoIcon, "PlayCi
 export const Copy = make(CopyOutline24, "Copy");
 export const BoltFill = make(BoltGlyph24 as NucleoIcon, "BoltFill");
 export const SlidersFill = make(Sliders2Glyph24 as NucleoIcon, "SlidersFill");
+// Document AI page (2026-11-04)
+export const StampFill = make(StampGlyph24 as NucleoIcon, "StampFill");
+export const FolderFill = make(FolderGlyph24 as NucleoIcon, "FolderFill");
+export const TableFill = make(TableRowsColsGlyph24 as NucleoIcon, "TableFill");
+export const StatementFill = make(BankStatementGlyph24 as NucleoIcon, "StatementFill");

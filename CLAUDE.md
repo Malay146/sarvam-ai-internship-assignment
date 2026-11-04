@@ -168,6 +168,7 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - [ ] Run before/after tests, log them
 - [x] 3 Meta + 3 LinkedIn banners: final set in `banners/final/` (Prism, Every task leaves a trail, Indus Cowork early access). Engine: `recipes/banner-builder.md`; skill: `.claude/skills/sarvam-banner`; gallery `/banners`; expressions `/system/expressions`
 - [x] Landing page built (`src/app/page.tsx`, v3); rules in `design-system/recipes/landing-page.md` §0 — read before any new page
+- [x] Document AI page `/document-ai` (paper-and-ink theme, seal-ink light): `design-system/recipes/document-ai-page.md`
 - [x] Consistency test page `/bulbul` (Bulbul V4 Flash; own formats, garden-sunrise hero light, multi-tone): `design-system/recipes/bulbul-page.md`. Each product page owns its light and its formats (landing-page.md rule 9a)
 - [ ] Deploy to Vercel
 - [ ] Export page at 375 / 768 / 1440
@@ -218,6 +219,6 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - **Malay's fit rule: nothing scrolls sideways, ever, and everything fits**: no label on two lines, no "…", no text under a neighbour, at every width from 320. Use the fit ladder (layout.md §7.6) and container thresholds (§7.7). Run `node scripts/check-fit.mjs <url>` (must exit 0) next to `check-layout`, and click every interactive state at 320 / 375 / 768 / 1024 / 1280.
 - **Before building any page or section: read `design-system/recipes/landing-page.md` §0** (the playbook: story hierarchy, facts from the source but our formats, real assets only, soft gradients + grain, no patterns unless asked, filled icons where allowed, no blank states, one CTA in the nav).
 - **Icons: Nucleo Core outline 24px only** (Malay owns Nucleo Pro). Import from `@/components/icons`; add new ones via the Nucleo MCP and copy them into `src/components/icons/nucleo/`. No other icon library.
-- **Each page owns its theme = its structure + one hero light** (tokens.md §2.4c: home Sun, Cowork indigo glow, Bulbul garden sunrise), never a single colour; controls stay indigo, tones per item. **Multi-colour gradients stack vertically** (top → bottom hero, bottom → top panels/footer), never side by side.
+- **Each page owns its theme = its structure + one hero light** (tokens.md §2.4c: home Sun, Cowork indigo glow, Bulbul garden sunrise, Document AI seal ink), never a single colour; controls stay indigo, tones per item. **Multi-colour gradients stack vertically** (top → bottom hero, bottom → top panels/footer), never side by side.
 - **Three expressions** (`design-system/expressions.md`): Campaign / Product / Community, picked by content type. Banners and page sections must name their expression.
 - **Social references:** `references/social/` (12 posts, indexed and analysed in its README). Sarvam posts the same art on every platform.

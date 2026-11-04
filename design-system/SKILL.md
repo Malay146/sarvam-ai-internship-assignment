@@ -21,7 +21,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | Any banner (Meta / LinkedIn), from a subject or a reference | `recipes/banner-builder.md` (+ `/banners/make`, `.claude/skills/sarvam-banner`) → `voice.md` |
 | Meta banner grid details | `recipes/meta-banner.md` |
 | LinkedIn banner grid details | `recipes/linkedin-banner.md` |
-| Landing page / web section | `recipes/landing-page.md` (§0 playbook first) → `layout.md` → `components.md` → `typography.md`; a worked second page: `recipes/bulbul-page.md` |
+| Landing page / web section | `recipes/landing-page.md` (§0 playbook first) → `layout.md` → `components.md` → `typography.md`; worked examples: `recipes/bulbul-page.md`, `recipes/document-ai-page.md` |
 | New component | `components.md` §0–3 → `layout.md` §5 (siblings) → `tokens.md` |
 | Illustration, pattern, gradient art | `imagery.md` → `tokens.md` §2 → `/studio` (`src/lib/shapes.ts`) |
 | Any copy | `voice.md` |
@@ -44,6 +44,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `recipes/linkedin-banner.md` | Landscape grid (1200×627), how each layout rearranges, the final LinkedIn set |
 | `recipes/landing-page.md` | The page-building playbook (§0) + the Indus Cowork page: section order, per-breakpoint behaviour, quality gates, export |
 | `recipes/bulbul-page.md` | The Bulbul V4 Flash page (`/bulbul`): its own theme (structure, garden-sunrise hero light, per-item tones), sections and responsive table |
+| `recipes/document-ai-page.md` | The Document AI page (`/document-ai`): paper-and-ink theme, seal-ink hero light, sections and responsive table |
 
 ## Non-negotiables (summary)
 

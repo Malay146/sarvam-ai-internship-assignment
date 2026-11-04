@@ -346,6 +346,10 @@ How each one stays whole on a phone. All use layout.md §7.6 (fit ladder) and §
   - **Request timeline**: each step one line; a card < 300px reads "Request", values at 11px, "in chunks".
   - **Studio settings**: a settings column < 280px gives each field a full row (no "Sample / rate").
 
+### Document AI page pieces `[addition]` (`doc-play.tsx`, recipe `recipes/document-ai-page.md`)
+- **`<SamplePage shown active scanning>`**: a paper document. Each block of content sits exactly inside its element's box (boxes in % of the page), so the layout boxes always line up with the text. Boxes are numbered in reading order and typed, with one tone per element type.
+- **Stacked states**: when tabs swap content (the read-twice comparison), every state renders in one grid cell and only the active one is shown, so the box keeps one height (landing-page.md rule 22).
+
 ## Do / Don't
 
 | Do | Don't |

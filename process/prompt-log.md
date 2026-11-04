@@ -846,3 +846,34 @@ Entry format:
   - `check-fit` now treats `pre` code as may-wrap (code wraps by rule).
 - Docs: recipes/bulbul-page.md §2 rewritten, plus two rejected-approach rows. components.md gets a "Fit on every width" entry for the Bulbul pieces. layout.md §7.7 gets the Bulbul container thresholds. design.md regenerated.
 - QA: check-fit /bulbul and / at all 9 widths fit. check-layout 10/10 on both pages. All 8 voices, all 8 playground voice chips and all 10 segmented options clicked at 320–1280. The auto-playing studio, chorus and request timeline were watched through full cycles at 320 / 375 / 768 / 1024. tsc clean.
+
+## 2026-11-04 · Claude Code · Document AI page (`/document-ai`)
+
+- Prompt (verbatim): "what i want you to do is that create another landing page, find a subject from sarvam website, just like bulbul do a theme thing, make thing around that subject and create a professional and visually appealling landing page"
+- **Subject:**
+  - Document AI (sarvam.ai/products/doc-agents). Chosen over Sarvam Edge because documents give a strong, readable theme: paper and ink.
+  - The Edge page also has a cloud-fallback inconsistency between its sections and its FAQ.
+  - Facts went into voice.md §5 first.
+- **Theme (rule 9a):** the structure is the theme. Sections:
+  1. Workspace hero: scan → six layout boxes in reading order → Markdown output
+  2. Plain OCR vs Document AI on the same page (Sarvam's four pain points)
+  3. Parse / Extract / Translate as tabbed folders with format file chips
+  4. Proofreading desk with visual grounding and an agent fix
+  5. Type-specimen sheet of the 23 languages grouped by script
+  6. Translated textbook page with four steps and limits
+  7. Library index cards for the use cases
+  8. API vs Platform
+  9. FAQ (8)
+  10. Closing card on the saffron-rose gradient turned upside down
+- **Light:** seal ink (red-rose → blush → paper), unused by any other page. Colours stack vertically. Controls are indigo; one tone per element type throughout.
+- **Fixes along the way:**
+  - The layout boxes didn't line up with the page text, so each block is now positioned inside its own box.
+  - The specimen sheet's last row had gaps, so a "Mixed pages" cell now completes it at every width.
+  - Index-card titles had uneven line counts, so they are always 2 lines and the descriptions are ~66 characters.
+  - The OCR tabs overlapped on phones, so they are a 2 × 2 grid there.
+  - The comparison changed height between tabs (260–325px), so all states share one cell (now 277/325/558 at 1440/768/375 on every tab).
+- **QA:**
+  - check-layout 10/10 and check-nav pass.
+  - No overflow or page errors in Chromium or WebKit at 375 / 768 / 1440.
+  - Tabs and grounding clicked in a script.
+  - `next build` passes.

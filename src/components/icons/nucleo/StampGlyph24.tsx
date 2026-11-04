@@ -1,0 +1,9 @@
+import type { SVGProps } from "react";
+
+export type StampGlyph24Props = SVGProps<SVGSVGElement>;
+
+export function StampGlyph24(props: StampGlyph24Props) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}><path fillRule="evenodd" clipRule="evenodd" d="M3 21H21V23H3V21Z" fill="currentColor" data-color="color-2"></path> <path d="M10 11V5.5L8.10557 4.55279C7.428 4.214 7 3.52148 7 2.76393V1H17V2.76393C17 3.52148 16.572 4.214 15.8944 4.55279L14.7896 5.10519L14 5.5V11L20.9487 13.5955C22.1737 14.0038 23 15.1502 23 16.4415V19H1V16.4415C1 15.1502 1.82629 14.0038 3.05132 13.5955L10 11Z" fill="currentColor"></path></svg>
+  );
+}

@@ -221,6 +221,7 @@ Every product page owns one light, so pages read as different places in the same
 | Homepage | **Sun** (§2.4) | `#f9730c` → `#ed8c44` → `#bfc9f1` → `#e8effd` → transparent |
 | Indus Cowork | **Indigo glow** | `#5957c4` → `#8a7fd2` → `#c2abcc` → `#fabea3` → transparent |
 | Bulbul V4 Flash | **Garden sunrise** | `#5fae8c` → `#94cc86` → `#cfdc84` → `#f4d474` → `#fbe1b4` → `#fdf0de` → transparent (Sarvam's green and yellow craft ramps) |
+| Document AI | **Seal ink** | `#cf5f5a` → `#e3847a` → `#f0a99c` → `#f6c9b9` → `#f9e2d3` → `#fcf1e6` → transparent (Sarvam's red and pink ramps; an official seal, an editor's red pen) |
 
 A new page picks a light no other page uses, built from the named ramps. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
 
