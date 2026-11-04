@@ -684,7 +684,10 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* link hover: brand indigo (indigo-800 #33c, ~8:1 on the white top; tx-accent fails at small sizes) */
 @media (hover: hover) { .sf__col a:hover, .sf__legal a:hover { color: var(--color-sr-indigo-800); } }
 .sf a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: 6px; }
-.sf__meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-6) 0; border-top: var(--border-subtle); }
+.sf__meta { padding: var(--space-6) 0 0; border-top: var(--border-subtle); }
+.sf__meta-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); }
+.sf__fine { margin-top: var(--space-5); gap: var(--space-2) var(--space-6); font-size: 12px; color: var(--color-tx-tertiary); }
+.sf__fine address { font-style: normal; }
 .sf__badges { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .sf__badges span { --b: var(--color-sr-indigo-800); display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 var(--space-3) 0 10px; border-radius: var(--radius-full); background: color-mix(in oklab, var(--b) 7%, white); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--b) 16%, white); font-size: 12px; font-weight: 500; color: var(--color-tx-secondary); }
 .sf__badges span svg { flex: none; color: var(--b); }
@@ -694,11 +697,9 @@ html:has(.cw) { scroll-behavior: smooth; }
 .sf__legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); color: var(--color-tx-tertiary); text-decoration: none; transition: color var(--duration-normal) var(--ease-standard); }
 /* closing band: the indigo-glow horizon with the official white wordmark spanning the container */
 .sf__band { position: relative; }
-/* © row first, then the wordmark sinks into the bottom edge (the footer's overflow: hidden crops its lower third) */
-.sf__band-inner { display: flex; flex-direction: column; gap: var(--space-10); padding: var(--space-12) 0 0; }
+/* only the wordmark, sinking into the bottom edge (the footer's overflow: hidden crops its lower fifth) */
+.sf__band-inner { padding: var(--space-12) 0 0; }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
-.sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
 
-/* the wordmark: 92% of the container, about a third submerged below the bottom edge, an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
-.sf__giant { display: block; width: 92%; height: auto; margin: 0 auto -4.8%; overflow: visible; }
-.sf__band-foot { color: var(--color-tx-tertiary); }
+/* the wordmark: 92% of the container, its lower ~fifth submerged below the bottom edge, an inline SVG (per-letter gradients + light inner edge, see site-footer.tsx) */
+.sf__giant { display: block; width: 92%; height: auto; margin: 0 auto -2.6%; overflow: visible; }

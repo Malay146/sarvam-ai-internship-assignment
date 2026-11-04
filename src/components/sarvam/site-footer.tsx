@@ -100,16 +100,19 @@ export function SiteFooter() {
           ))}
         </nav>
       </div>
+      {/* the meta block (one hairline above it): trust + legal, then © + address; the band under it holds only the wordmark */}
       <div className="sr-container sf__meta">
-        <p className="sf__badges">{BADGES.map((b) => <span key={b.label} data-tone={b.tone}><b.icon width={14} height={14} aria-hidden />{b.label}</span>)}</p>
-        <p className="sf__legal"><a href="#">Trust Center</a><a href="#">Terms</a><a href="#">Privacy</a></p>
+        <div className="sf__meta-row">
+          <p className="sf__badges">{BADGES.map((b) => <span key={b.label} data-tone={b.tone}><b.icon width={14} height={14} aria-hidden />{b.label}</span>)}</p>
+          <p className="sf__legal"><a href="#">Trust Center</a><a href="#">Terms</a><a href="#">Privacy</a></p>
+        </div>
+        <div className="sf__meta-row sf__fine">
+          <span>© 2026 Axonwise Private Limited. All rights reserved.</span>
+          <address>732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038</address>
+        </div>
       </div>
       <div className="sf__band">
         <div className="sr-container sf__band-inner">
-          <div className="sf__band-foot">
-            <span>© 2026 Axonwise Private Limited. All rights reserved.</span>
-            <span>732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038</span>
-          </div>
           <GiantWordmark />
         </div>
       </div>
