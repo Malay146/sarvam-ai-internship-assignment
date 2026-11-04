@@ -27,6 +27,7 @@
 15. **Patterns only where Malay places them.** Don't add decorative patterns (gateway / medallion echoes, ornaments) on your own; `src/components/sarvam/patterns.tsx` provides them (hairlines, one tone, ≤ 30% opacity, never filled) for when a placement is asked for. The official line motif stays in the hero only.
 17. **Hero light by expression:** the homepage owns the orange **Sun**. A Product page uses the **indigo glow** disc (indigo core → lilac → peach rim, same shape and fade as HeroGlow), so the page reads as Sarvam but not as a copy of the homepage.
 18. **Logos with no Simple Icons / Nucleo entry** come from the company's own website (e.g. canva.com, apify.com, datarobot.com), stored unchanged in `public/brand/integrations/`. Wordmark logos (Canva) stand alone, without the name repeated beside them.
+19. **One header-to-content gap:** every section uses exactly `--space-section-head` (40px phone, 56px from 768) between its header and its content. Don't stack the header's own margin on top of a flex gap.
 16. **Eyebrows sparingly:** an uppercase eyebrow only where it adds a label the heading lacks (here: How it works, Integrations, Skills). Most chapters are just heading + lead.
 9. **In-page links scroll smoothly** (`scroll-behavior: smooth`, off with reduced motion) and land each heading ~88px under the top. Menu items that exist on the page link to their section (`#how`, `#integrations`, `#stories`, `#faq`).
 
