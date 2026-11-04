@@ -12,7 +12,6 @@ import {
 } from "@/components/sarvam";
 import { BrandMark, LogoLockup, hasMark } from "@/components/sarvam/brand";
 import { MegaNav } from "@/components/sarvam/mega-nav";
-import { GatewayEcho, MedallionEcho } from "@/components/sarvam/patterns";
 import { Marquee, Reveal, SkillCreator, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import "./cowork.css";
@@ -70,7 +69,7 @@ function BentoTile({ area, tone, icon: I, eyebrow, title, desc, visual }: {
 }) {
   return (
     <article className="cw-tile" style={{ gridArea: area }} data-sibling>
-      <div className={`cw-tile__visual cw-well--${tone}`} aria-hidden><MedallionEcho rings={2} className="cw-tile__pattern" />{visual}</div>
+      <div className={`cw-tile__visual cw-well--${tone}`} aria-hidden>{visual}</div>
       <div className="cw-tile__text">
         <p className="cw-tile__eyebrow"><span className={`cw-tile__icon cw-tone--${tone}`}><I width={14} height={14} /></span>{eyebrow}</p>
         <h3 className="sr-h4" data-line="title">{title}</h3>
@@ -113,7 +112,6 @@ export default function IndusCoworkPage() {
             </ButtonRow>
           </Reveal>
           <Reveal delay={0.15} className="cw-hero__shot">
-            <GatewayEcho className="cw-hero__gates" />
             <CoworkDashboard />
           </Reveal>
         </section>
@@ -225,8 +223,7 @@ export default function IndusCoworkPage() {
 
         {/* 10 · Sovereign by default (Product, the trust band) + security details */}
         <section className="sr-container cw-section" aria-labelledby="trust-h">
-          <Reveal className="cw-trust">
-            <MedallionEcho className="cw-trust__pattern" />
+          <Reveal>
             <TrustBand title="Sovereign by default" lead="Powerful teammates you can hand real work to, without handing over control." points={[
               { title: "Your data stays with you", body: "Knowledge and task history stay together in your own workspace." },
               { title: "Nothing ships without you", body: "Sending, merging and changes always wait for your approval first." },

@@ -311,17 +311,6 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-sc__mate + .cw-sc__mate { margin-left: -6px; }
 .cw-sc__note { font-size: 12px; color: var(--color-tx-tertiary); }
 
-/* ── Pattern layer (patterns.tsx): Sarvam geometry as hairlines, one tone, low opacity ── */
-.pt-chapter { display: block; width: 140px; height: 20px; margin: 0 auto var(--space-5); color: var(--color-sr-orange-800); opacity: 0.55; }
-@media (max-width: 767px) { .pt-chapter { margin-left: 0; } }
-.cw-hero__shot { position: relative; }
-.cw-hero__gates { position: absolute; z-index: -1; left: 0; bottom: 40%; width: 100%; height: 72%; color: var(--color-sr-indigo-400); opacity: 0.28; pointer-events: none; }
-.cw-hero__shot > *:not(.cw-hero__gates) { position: relative; }
-.cw-trust { position: relative; border-radius: var(--radius-3xl); overflow: hidden; isolation: isolate; }
-.cw-trust__pattern { position: absolute; z-index: 1; right: -12%; top: 50%; width: 46%; height: auto; transform: translateY(-50%); color: var(--color-sr-white); opacity: 0.08; pointer-events: none; }
-@media (max-width: 1023px) { .cw-trust__pattern { width: 90%; right: -40%; top: 0; transform: none; } }
-.cw-tile__pattern { position: absolute; z-index: -1; right: -18%; top: -30%; width: 60%; height: auto; color: var(--color-tx); opacity: 0.06; pointer-events: none; }
-
 /* Security: one quiet panel, four items split by hairlines (4 across from 1024, 2×2 on tablet, a list on phone) */
 .cw-sec { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); border: var(--border-default); border-radius: var(--radius-3xl); background: var(--color-sr-white); overflow: hidden; }
 @media (min-width: 768px) { .cw-sec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
