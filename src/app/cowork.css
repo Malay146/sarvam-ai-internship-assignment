@@ -82,16 +82,33 @@
 .cw-stage__panels { display: grid; grid-template-columns: minmax(0, 1fr); }
 .cw-stage__panel { grid-area: 1 / 1; min-width: 0; }
 .cw-stage__panel[aria-hidden="true"] { pointer-events: none; }
-/* phone: tabs show the number + title only */
-/* phone + tablet: tabs size to their label (never truncated) and the rail scrolls sideways, edge to edge */
-@media (max-width: 1023px) {
-  .cw-stage__rail { grid-auto-columns: max-content; margin-inline: calc(calc((100vw - 100%) / 2) * -1); padding-inline: calc((100vw - 100%) / 2); scroll-padding-inline: calc((100vw - 100%) / 2); scroll-snap-type: x proximity; }
-  .cw-stage__tab { scroll-snap-align: start; }
-  .cw-stage__tabtitle, .cw-stage__tabnote { overflow: visible; text-overflow: clip; }
+/* Rail below 1280: a 2 × 2 grid, never a sideways scroll. Every tab shows in full at every width.
+   Rail narrower than 560px (phones): icon + short label (tabShort) and no note. From 560px: title + note.
+   Side rail from 1280 only. At 1024 a 3/12 rail cut "Waits for your yes" short. */
+.cw-stage__rail { container: rail / inline-size; }
+.cw-stage__short { display: none; }
+@media (max-width: 1279.98px) {
+  .cw-stage__rail { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+  .cw-stage__tab { align-items: center; }
+  .cw-stage--side .cw-stage__tab { grid-template-columns: 36px minmax(0, 1fr); }
+  @container rail (max-width: 559.98px) {
+    .cw-stage__tab { min-height: 56px; padding: var(--space-3); column-gap: var(--space-3); }
+    .cw-stage--side .cw-stage__tab { grid-template-columns: 28px minmax(0, 1fr); column-gap: var(--space-2); }
+    .cw-stage--side .cw-tab-icon { width: 28px; height: 28px; border-radius: 8px; }
+    .cw-stage__tabnote { display: none; }
+    .cw-stage__tab:has(.cw-stage__short) .cw-stage__tabtitle { display: none; }
+    .cw-stage__short { display: block; font-weight: var(--weight-medium); font-size: var(--text-small); white-space: nowrap; }
+  }
+  @container rail (max-width: 299.98px) {
+    .cw-stage__tab { padding: var(--space-3) 6px; }
+    .cw-stage--side .cw-stage__tab { grid-template-columns: 24px minmax(0, 1fr); column-gap: 6px; }
+    .cw-stage--side .cw-tab-icon { width: 24px; height: 24px; border-radius: 7px; }
+    .cw-stage--side .cw-tab-icon svg { width: 14px; height: 14px; }
+    .cw-stage__short { font-size: 13px; letter-spacing: -0.01em; }
+  }
 }
-@media (max-width: 767px) { .cw-stage__tabnote { display: none; } }
 /* side rail on desktop: tabs stacked on the left, the stage on the right */
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   /* side rail: four tabs share the panel's height exactly (rows 1fr, stretched), so both columns end on the same line */
   .cw-stage--side { grid-template-columns: 3fr 9fr; gap: var(--space-4); align-items: stretch; }
   .cw-stage--side .cw-stage__rail { grid-auto-flow: row; grid-auto-columns: auto; grid-auto-rows: 1fr; overflow: visible; margin: 0; padding: 0; }
@@ -99,14 +116,25 @@
 }
 @media (min-width: 1024px) { .cw-stage--top .cw-stage__rail { grid-auto-columns: minmax(0, 1fr); } }
 
-/* How-it-works panel: text + a tinted product moment. Phone: visual first. */
-.cw-how { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); padding: var(--space-4); border: var(--border-default); border-radius: var(--radius-3xl); background: var(--color-sr-white); height: 100%; }
-.cw-how__text { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-2); order: 2; }
-.cw-how__visual { order: 1; border-radius: calc(var(--radius-3xl) - var(--space-2)); display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: var(--space-6) var(--space-4); min-height: 320px; }
+/* How-it-works panel: text + a tinted product moment.
+   Phone: visual first, a thin frame so the mock gets the width. 768–1023: visual on top, then title + body
+   beside the checklist (two short columns, each check on one line). 1024+: text left, visual right. */
+.cw-how { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding: var(--space-2); border: var(--border-default); border-radius: var(--radius-3xl); background: var(--color-sr-white); height: 100%; }
+.cw-how__text { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-3) var(--space-4); order: 2; }
+.cw-how__visual { order: 1; border-radius: calc(var(--radius-3xl) - var(--space-2)); display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: var(--space-5) var(--space-3); min-height: 320px; }
+.cw-how__text > h3 { text-wrap: balance; }
 .cw-how__mock { width: 100%; max-width: 400px; min-width: 0; display: grid; justify-items: center; }
 @media (min-width: 768px) {
-  .cw-how { grid-template-columns: 5fr 7fr; align-items: stretch; padding: var(--space-3); gap: var(--space-8); }
-  .cw-how__text { order: 1; padding: var(--space-8) 0 var(--space-8) var(--space-6); justify-content: center; }
+  .cw-how { padding: var(--space-3); gap: var(--space-6); }
+  .cw-how__visual { padding: var(--space-8); min-height: 400px; }
+  .cw-how__text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: var(--space-8); row-gap: var(--space-3); padding: 0 var(--space-5) var(--space-5); }
+  .cw-how__text > h3 { grid-column: 1; grid-row: 1; }
+  .cw-how__text > p { grid-column: 1; grid-row: 2; }
+  .cw-how__text > ul { grid-column: 2; grid-row: 1 / -1; }
+}
+@media (min-width: 1024px) {
+  .cw-how { grid-template-columns: 5fr 7fr; align-items: stretch; gap: var(--space-8); }
+  .cw-how__text { display: flex; order: 1; padding: var(--space-8) 0 var(--space-8) var(--space-6); justify-content: center; }
   .cw-how__visual { order: 2; min-height: 440px; padding: var(--space-10); }
 }
 
@@ -386,7 +414,13 @@ html:has(.cw) { scroll-behavior: smooth; }
 @media (min-width: 768px) { .pv-vs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .pv-vs__col { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-8); border-radius: var(--radius-3xl); background: var(--color-sr-white); border: var(--border-default); }
 .pv-vs__col--mate { border-color: var(--color-sr-indigo-200); }   /* white like its sibling; the indigo border, icon and checks mark it */
-.pv-vs__label { margin: 0; display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-display); font-size: 22px; color: var(--color-tx); }
+.pv-vs__label { margin: 0; display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-display); font-size: 22px; color: var(--color-tx); white-space: nowrap; }
+/* Both labels stay on one line at every width: the label scales with its card (container units), 15–22px.
+   "An Indus Cowork teammate" is 12.3em wide; 48px = icon + gap, 12.6 leaves a hair of slack. */
+.pv-vs__col { container: vs / inline-size; }
+.pv-vs__label { font-size: clamp(15px, calc((100cqi - 48px) / 12.6), 22px); }
+@media (max-width: 1023.98px) { .pv-vs__col { padding: var(--space-6); gap: var(--space-4); } }
+@media (max-width: 479.98px) { .pv-vs__col { padding: var(--space-5); } .pv-vs__col li { min-height: 48px; } }
 .pv-vs__icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; }
 .pv-vs__icon--muted { background: var(--color-sf-tertiary); color: var(--color-tx-tertiary); }
 .pv-vs__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -437,7 +471,23 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* current card: a soft indigo wash rising from the bottom and a light ring; no shadow */
 .pv-day__item[data-now="true"] { border-color: var(--color-sr-indigo-200); background: linear-gradient(0deg, var(--color-sr-indigo-100) 0%, var(--color-sr-indigo-50) 40%, var(--color-sr-white) 85%); box-shadow: none; }
 .pv-day__item[data-now="true"] .pv-day__time { color: var(--color-accent); }
-@media (min-width: 1024px) {
+/* 1024–1279: five columns were ~160px wide, so titles ran 1–3 lines. Instead each task is one timeline row:
+   time · title · what lands · status. Title on one line; the body takes the remaining width. */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .pv-day__grid { gap: var(--space-2); }
+  .pv-day__item { grid-template-columns: 12px 56px minmax(0, 15em) minmax(0, 1fr) 104px; grid-template-areas: "dot time title body status"; column-gap: var(--space-5); align-items: center; padding: var(--space-4) var(--space-6); border-radius: var(--radius-card); }
+  .pv-day__dot { margin-top: 0; }
+  .pv-day__title { white-space: nowrap; }
+  .pv-day__status { justify-self: end; }
+}
+/* 1280+: five columns on one rail. Titles reserve two lines and the pill sits on the card's bottom edge,
+   so the five cards share every row line. */
+@media (min-width: 1280px) {
+  .pv-day__item { grid-template-rows: auto auto 1fr auto; }
+  .pv-day__title { min-height: calc(2lh); text-wrap: balance; }
+  .pv-day__status { align-self: end; }
+}
+@media (min-width: 1280px) {
   .pv-day { padding-top: 28px; }
   .pv-day__rail { display: block; position: absolute; left: 10%; right: 10%; top: 6px; height: 2px; margin-top: 0; background: var(--color-st-secondary); }
   .pv-day__fill { position: absolute; inset: 0; background: var(--color-sr-indigo-800); transform-origin: 0 50%; }
@@ -501,13 +551,15 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-int__label { margin: 0; font-size: var(--text-body); color: var(--color-tx-secondary); max-width: 30ch; }
 .pv-int__more { margin: var(--space-3) 0 0; font-size: var(--text-small); color: var(--color-tx-tertiary); }
 .pv-int__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
-@media (min-width: 600px) { .pv-int__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+/* six across at every width: 24 marks = 4 even rows (4 across made 6 rows of scroll on phones) */
+.pv-int__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@media (max-width: 479.98px) { .pv-int__grid { gap: 6px; } .pv-int__grid li { border-radius: 12px; } .pv-int__grid li img, .pv-int__grid li svg { max-width: 56%; } }
 .pv-int__grid li { display: grid; place-items: center; aspect-ratio: 1; border-radius: var(--radius-card); background: var(--color-sr-white); box-shadow: inset 0 0 0 1px var(--color-st-secondary); }
 .pv-int__grid li img, .pv-int__grid li svg { max-width: 60%; height: auto; }
 .sr-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* phone: the statement sits above the rows instead of over them, so the marks stay visible */
 @media (max-width: 767px) {
-  .pv-int { min-height: 0; padding: var(--space-8) 0; gap: var(--space-6); }
+  .pv-int { min-height: 0; padding: var(--space-6) var(--space-5); gap: var(--space-6); }
   .pv-int__card { position: static; transform: none; margin: 0 auto; background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0 var(--space-4); }
 }
 
@@ -642,6 +694,24 @@ html:has(.cw) { scroll-behavior: smooth; }
 .bv-query { display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 12px; border-radius: var(--radius-full); background: var(--color-sf-secondary); color: var(--color-tx-secondary); }
 .bv-src { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--color-sr-white); box-shadow: inset 0 0 0 1px var(--color-st-secondary); flex-shrink: 0; }
 .cw-tile__visual { padding: var(--space-5) var(--space-4); }
+/* Bento cards at phone widths: one line per row, always. The card is the container; a narrow card trims gaps and pill widths. */
+@media (max-width: 479.98px) { .cw-tile__visual { padding: var(--space-4) var(--space-3); } .cw-tile__text { padding: 0 var(--space-3); } }
+@media (max-width: 359.98px) { .bv-card { padding: 12px; } }
+.bv-card { container: bv / inline-size; }
+.bv-sched li { grid-template-columns: 40px 8px minmax(0, 1fr) auto; }
+.bv-sched__label, .bv-foot span, .bv-head code, .bv-head b, .bv-head span { white-space: nowrap; }
+.bv-head > :first-child { min-width: 0; }
+@container bv (max-width: 259.98px) {
+  .bv-roster li, .bv-sched li { gap: 6px; }
+  .bv-sched li { grid-template-columns: 36px 8px minmax(0, 1fr) auto; }
+  .bv-pill { min-width: 56px; padding: 2px 7px; }
+  .bv-foot { gap: 6px; }
+}
+/* narrowest schedule card (1024 bento): the Done/Next pill already carries the state, so the dot steps out */
+@container bv (max-width: 229.98px) {
+  .bv-sched li { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .bv-sched__dot { display: none; }
+}
 @media (prefers-reduced-motion: reduce) { .bv-pill, .bv-num, .bv-sched__dot, .bv-kb li { transition: none; } }
 /* knowledge rows: icon tiles are neutral at rest; the row being read gets the pink wash and its icon tile turns solid,
    so the active row never matches its own icon background */
@@ -703,3 +773,99 @@ html:has(.cw) { scroll-behavior: smooth; }
 
 /* the wordmark: grey → white bottom to top, the full container width, its lower 10% submerged below the bottom edge (height is 15.84% of width, so -1.58% margin), an inline SVG of the official path */
 .sf__giant { display: block; width: 100%; height: auto; margin: 0 auto -1.58%; overflow: visible; }
+
+/* Approval queue on a narrow card: the Approved pill keeps its check and drops the word, so titles stay on one line */
+.cw-sv--queue { container: queue / inline-size; }
+@container queue (max-width: 299.98px) {
+  .cw-sv--queue .cw-sv__mini { min-width: 0; width: 26px; padding: 0; font-size: 0; box-shadow: inset 0 0 0 1.5px var(--color-sr-grey-300); background: transparent; }
+  .cw-sv--queue .cw-sv__mini svg { display: none; }
+  .cw-sv--queue .cw-sv__mini[data-on="true"] { background: var(--color-sr-green-800); box-shadow: none; }
+  .cw-sv--queue .cw-sv__mini[data-on="true"] svg { display: block; }
+}
+/* phones: the mock card gets 4px more room on each side */
+@media (max-width: 479.98px) { .cw-how .sr-mock, .cw-how .cw-sv { padding: var(--space-4); } }
+
+/* Approval desk on a narrow card (phones): Approve becomes a round check beside the send-back X, so each task
+   title keeps one line. The result pill shrinks to match. Wider cards keep the worded button. */
+.pv-desk__queue { container: desk / inline-size; }
+.pv-btn__icon { display: none; }
+.pv-desk__what b, .pv-desk__what span { white-space: nowrap; }
+@container desk (max-width: 439.98px) {
+  .pv-desk__queue li { gap: var(--space-3); }
+  .pv-desk__btns { min-width: 104px; }
+  .pv-btn--yes { width: 44px; padding: 0; }
+  .pv-btn__label { display: none; }
+  .pv-btn__icon { display: block; }
+  .pv-desk__state { padding: 0 var(--space-3); gap: 4px; }
+}
+@container desk (max-width: 279.98px) {
+  .pv-desk__queue li { gap: var(--space-2); }
+  .pv-desk__what b { font-size: 13.5px; }
+  .pv-desk__what span { font-size: 12px; }
+}
+@media (max-width: 479.98px) { .pv-desk__queue { padding: var(--space-5); } }
+@media (max-width: 359.98px) { .pv-desk__queue { padding: var(--space-4); } .pv-desk__trail { padding: var(--space-3); } .pv-log { padding: var(--space-4); } }
+
+/* Build a teammate below ~480px of field/card width: short labels instead of wrapped or clipped ones.
+   Apps: "Google Calendar" → "Calendar" (the Google mark carries the brand; full name stays the accessible name).
+   Rhythm: Daily / Weekly / On demand (the full rhythm shows in the card's Runs row). CTA: "Talk to us". */
+.pv-mate { grid-template-columns: minmax(0, 1fr); }
+.pv-field, .pv-mate__card { container-type: inline-size; }
+.pv-app__short, .pv-seg__short { display: none; }
+.pv-seg__label, .pv-mate__cta, .pv-field__title { white-space: nowrap; }
+@container (max-width: 459.98px) {
+  .pv-seg__full { display: none; }
+  .pv-seg__short { display: inline; }
+}
+@container (max-width: 339.98px) {
+  .pv-wide { display: none; }
+}
+@media (max-width: 479.98px) {
+  .pv-field { padding: var(--space-5); }
+  .pv-mate { padding: var(--space-4); }
+  .pv-mate__card { padding: var(--space-5); }
+  .pv-mate__rows div { grid-template-columns: 68px minmax(0, 1fr); }
+}
+@media (max-width: 359.98px) { .pv-field { padding: var(--space-4); } .pv-field__title { font-size: 18px; } }
+/* App tiles: each tile is its own container, so the short name kicks in whenever the tile is narrow
+   (phones, the 3-up grid at 600, the 4-up grid at 1280), not only on narrow fields. 160px ≈ icon + "Google Calendar". */
+.pv-app { container: app / inline-size; }
+.pv-app > * { flex-shrink: 0; }
+@container app (max-width: 159.98px) {
+  .pv-app__full { display: inline; }
+  .pv-app:has(.pv-app__short) .pv-app__full { display: none; }
+  .pv-app__short { display: inline; }
+}
+/* Teammate card head: the role name sizes to the card (longest, "Product Performance", is 9.34em), one line always */
+.pv-mate__head > span:last-child { min-width: 0; }
+.pv-mate__head b, .pv-mate__head span span { white-space: nowrap; }
+.pv-mate__head b { font-size: clamp(15px, calc((100cqi - 60px) / 9.6), 22px); }
+@container (max-width: 259.98px) { .pv-mate__head span span { font-size: 13px; } .pv-mate__avatar { width: 44px; height: 44px; } }
+
+/* Trust on phones (< 768): icon beside the text, not above it. Four facts and three deployment tiles read as compact
+   rows (about half the scroll of the stacked cells) and every title stays on one line. */
+@media (max-width: 767.98px) {
+  .cw-sec li { display: grid; grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: var(--space-4); row-gap: 2px; align-items: start; padding: var(--space-5); }
+  .cw-sec .cw-sec__icon { grid-row: 1 / 3; width: 40px; height: 40px; margin: 2px 0 0; border-radius: 11px; }
+  .cw-sec .cw-sec__icon svg { width: 22px; height: 22px; }
+  .cw-sec span { max-width: 32ch; text-wrap: balance; }   /* 32ch: all four facts take two balanced lines at every phone width (sibling rule) */
+  .sr-tile-row .sr-tile-card .sr-body { text-wrap: balance; }
+  .cw-sec b { white-space: nowrap; }
+  .sr-tile-row .sr-tile-card { grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: var(--space-4); padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3); }
+  .sr-tile-row .sr-tile { width: 56px; height: 56px; border-radius: 14px; }
+  .sr-tile-row .sr-tile-card h3, .sr-tile-row .sr-tile-card .sr-h4 { white-space: nowrap; }
+}
+/* Quote on phones: 18px with tighter padding (was 13 lines at 20px+); the role line stays on one line */
+@media (max-width: 479.98px) {
+  .cw-quote { padding: var(--space-6) var(--space-5); gap: var(--space-5); }
+  .cw-quote__text { font-size: 18px; line-height: 1.45; }
+  .cw-quote__who .sr-meta { white-space: nowrap; }
+}
+@media (max-width: 359.98px) { .cw-quote__who .sr-meta { font-size: 12px; } }
+/* Hero CTAs on phones: two equal buttons side by side from 360px; below that, stacked at equal full width
+   (never two different widths stacked). */
+@media (max-width: 479.98px) {
+  .pv-hero__text .sr-button-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); width: 100%; }
+  .pv-hero__text .sr-button-row .sr-button { padding-inline: var(--space-4); font-size: 15px; white-space: nowrap; justify-content: center; }
+}
+@media (max-width: 359.98px) { .pv-hero__text .sr-button-row { grid-template-columns: minmax(0, 1fr); } }

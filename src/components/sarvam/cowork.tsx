@@ -36,7 +36,7 @@ export function Marquee({ children, label }: { children: ReactNode; label: strin
 /* ── Stage: a fixed-size product stage with a tab rail (how it works · roles).
  *  All panels share one grid cell, so the stage is always as tall as the tallest panel: switching never moves the page.
  *  Auto-advances while visible (progress bar = scaleX), stops for good once the reader picks a tab. ── */
-export type StageItem = { key: string; tab: string; tabNote?: string; panel: ReactNode; icon?: ReactNode; tone?: "indigo" | "orange" | "green" | "rose" };
+export type StageItem = { key: string; tab: string; tabShort?: string; tabNote?: string; panel: ReactNode; icon?: ReactNode; tone?: "indigo" | "orange" | "green" | "rose" };
 export function Stage({ items, interval = 7000, label, rail = "side" }: { items: StageItem[]; interval?: number; label: string; rail?: "side" | "top" }) {
   const [i, setI] = useState(0);
   const [auto, setAuto] = useState(true);
@@ -66,6 +66,7 @@ export function Stage({ items, interval = 7000, label, rail = "side" }: { items:
             {it.icon ? <span className="cw-stage__icon" aria-hidden>{it.icon}</span> : <span className="cw-stage__num">{String(n + 1).padStart(2, "0")}</span>}
             <span className="cw-stage__tabtext">
               <span className="cw-stage__tabtitle">{it.tab}</span>
+              {it.tabShort && <span className="cw-stage__short" aria-hidden>{it.tabShort}</span>}
               {it.tabNote && <span className="cw-stage__tabnote">{it.tabNote}</span>}
             </span>
             <span className="cw-stage__bar" aria-hidden>
@@ -196,7 +197,7 @@ function StepApprove() {
 function StepQueue() {
   const [ref, phase] = useLoop([1400, 1400, 1400, 1800]);   // approvals land one by one, then reset
   const reduced = useReducedMotion();
-  const items = [["Send 31 outreach emails", "Sales Outbound"], ["Merge the pricing-page fix", "Product Performance"], ["Pause two campaigns", "Paid Media"]];
+  const items = [["Send 31 outreach emails", "Sales Outbound"], ["Merge the pricing fix", "Product Performance"], ["Pause two campaigns", "Paid Media"]];
   return (
     <div ref={ref} className="cw-sv cw-sv--queue" aria-hidden>
       <div className="cw-sv__row"><b>Needs your yes</b><span>{3 - Math.min(3, phase)}</span></div>
@@ -206,7 +207,7 @@ function StepQueue() {
           <li key={a}>
             <span className="cw-sv__qtext"><b>{a}</b><span>{who}</span></span>
             <motion.span className="cw-sv__mini" data-on={ok} initial={false} animate={{ scale: ok && phase === n + 1 && !reduced ? [1, 0.92, 1] : 1 }} transition={{ duration: 0.4 }}>
-              {ok ? <>Approved<Check width={11} height={11} strokeWidth={2.25} /></> : "Approve"}
+              {ok ? <><span className="cw-sv__wide">Approved</span><Check width={11} height={11} strokeWidth={2.25} /></> : "Approve"}
             </motion.span>
           </li>
         );

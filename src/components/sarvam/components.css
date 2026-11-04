@@ -464,3 +464,32 @@ a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: 
 
 /* Mocks inside banner art are fully opaque (no see-through when cards stack) */
 [data-banner] .sr-mock { background: var(--color-sr-white); backdrop-filter: none; }
+
+/* Mocks at phone widths (container = the mock card). A narrow card drops decoration (time stamps, favicons,
+   status words, arrow) and tightens padding; it never truncates or wraps the content itself. */
+.sr-mock { container: mock / inline-size; }
+@container mock (max-width: 339.98px) {
+  .sr-mock__steps li { grid-template-columns: 18px minmax(0, 1fr); }
+  .sr-mock__steps li time { display: none; }
+  .sr-mock__head .sr-mock__wide { display: none; }
+  .sr-mock__head { gap: var(--space-2); }
+  .sr-mock__gate .sr-meta { display: none; }
+  .sr-mock__gate { justify-content: flex-end; }
+}
+@container mock (max-width: 299.98px) {
+  .sr-mock__status { width: auto; padding: 5px; }
+  .sr-mock__status .sr-mock__wide { display: none; }
+  .sr-mock__found { grid-template-columns: minmax(0, 1fr) 18px; }
+  .sr-mock__fav { display: none; }
+  .sr-mock__query { padding: 10px 12px; gap: var(--space-2); }
+  .sr-mock__gate .sr-meta { display: none; }
+  .sr-mock__gate { justify-content: flex-end; }
+}
+@container mock (max-width: 259.98px) {
+  .sr-mock__btn .sr-mock__wide { display: none; }
+  .sr-mock__btn { padding: 6px 10px; }
+  .sr-mock__btn--primary { width: 84px; padding: 6px 8px; }
+  .sr-mock__query { grid-template-columns: minmax(0, 1fr) 14px; }
+  .sr-mock__query > svg:first-child { display: none; }
+  .sr-mock__steps li, .sr-mock__src { font-size: 13px; }
+}

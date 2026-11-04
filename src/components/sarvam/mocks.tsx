@@ -33,9 +33,9 @@ export function MockPlan({ freeze }: { freeze?: number } = {}) {
     <div ref={ref} className="sr-mock sr-mock--plan" aria-hidden>
       <div className="sr-mock__head">
         <span className="sr-mock__avatar"><UserRound strokeWidth={S} /></span>
-        <div className="sr-mock__who"><b>Sales Outbound</b><span>Go-to-market teammate</span></div>
+        <div className="sr-mock__who"><b>Sales Outbound</b><span>Go-to-market<span className="sr-mock__wide"> teammate</span></span></div>
         <span className={`sr-mock__status${finished ? " sr-mock__status--ready" : ""}`}>
-          {finished ? <><Check strokeWidth={2} />Ready</> : <><span className="sr-spin"><LoaderCircle strokeWidth={S} /></span>Working</>}
+          {finished ? <><Check strokeWidth={2} /><span className="sr-mock__wide">Ready</span></> : <><span className="sr-spin"><LoaderCircle strokeWidth={S} /></span><span className="sr-mock__wide">Working</span></>}
         </span>
       </div>
       <p className="sr-mock__task">Work the new inbound list before EOD and draft outreach.</p>
@@ -57,7 +57,7 @@ export function MockPlan({ freeze }: { freeze?: number } = {}) {
 }
 
 /* 2 · Researches on its own ─ the query types in, sources arrive and get read, the plan grows. */
-const QUERY = "Indian SaaS market, 2026 outlook";
+const QUERY = "Indian SaaS outlook 2026";
 const SOURCES = [["Market size and growth", "industry-report.in"], ["Competitor positioning", "analyst-notes.com"], ["Recent launches", "news.example.org"]] as const;
 const RESEARCH_LOOP = [1400, 1100, 1100, 1100, 2800];
 export function MockResearch({ freeze }: { freeze?: number } = {}) {
@@ -91,7 +91,7 @@ export function MockResearch({ freeze }: { freeze?: number } = {}) {
         })}
       </ul>
       <motion.div className="sr-mock__diff" initial={false} animate={{ opacity: phase === 4 ? 1 : 0, y: phase === 4 ? 0 : 4 }} transition={T.enter}>
-        <Sparkles strokeWidth={S} /><span>2 new steps added to the plan</span>
+        <Sparkles strokeWidth={S} /><span>2 steps added to the plan</span>
       </motion.div>
     </div>
   );
@@ -126,12 +126,12 @@ export function MockReview({ freeze }: { freeze?: number } = {}) {
       </ul>
       <div className="sr-mock__gate">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.span key={phase === 4 ? "a" : "w"} className="sr-meta" {...rise} transition={T.state}>{phase === 4 ? "Approved · sending at 10:00" : "Waiting for your yes"}</motion.span>
+          <motion.span key={phase === 4 ? "a" : "w"} className="sr-meta" {...rise} transition={T.state}>{phase === 4 ? "Sends at 10:00" : "Needs your yes"}</motion.span>
         </AnimatePresence>
         <div className="sr-mock__actions">
           <span className="sr-mock__btn">Request changes</span>
           <motion.span className="sr-mock__btn sr-mock__btn--primary" animate={phase === 3 ? { scale: [1, 0.96, 1] } : { scale: 1 }} transition={{ duration: 0.6, ease: EASE_EMPH, delay: 1.1 }}>
-            {phase === 4 ? <>Approved<Check strokeWidth={2} /></> : <>Approve<ArrowUpRight strokeWidth={S} /></>}
+            {phase === 4 ? <>Approved<Check strokeWidth={2} /></> : <>Approve<ArrowUpRight strokeWidth={S} className="sr-mock__wide" /></>}
           </motion.span>
         </div>
       </div>

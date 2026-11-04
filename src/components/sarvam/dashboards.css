@@ -103,7 +103,7 @@
 .db-msg--mate .db-msg__text { background: var(--color-sf-secondary); border-top-left-radius: var(--radius-sm); }
 
 .db-input { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: var(--space-2); padding: 4px; border-radius: var(--radius-full); background: var(--color-sr-white); box-shadow: var(--shadow-button-light); }
-.db-input input { min-width: 0; border: 0; background: transparent; padding: 0 var(--space-4); font: var(--text-small) var(--font-text); color: var(--color-tx); outline: none; min-height: 44px; }
+.db-input input { min-width: 0; border: 0; text-overflow: ellipsis; background: transparent; padding: 0 var(--space-4); font: var(--text-small) var(--font-text); color: var(--color-tx); outline: none; min-height: 44px; }
 .db-input button { width: 44px; height: 44px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--surface-button-dark); box-shadow: var(--shadow-button-inset); color: var(--color-sr-white); cursor: pointer; }
 .db-input button:disabled { opacity: 0.35; cursor: default; }
 .db-input button svg { width: 18px; height: 18px; }
@@ -210,7 +210,7 @@
 @keyframes db-pulse { 0% { opacity: 0.6; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.4); } }
 
 /* Cowork: sidebar (swipe row on phone) + one detail view */
-.db[data-dashboard="cowork"] .db-body { grid-template-columns: 1fr; }
+.db[data-dashboard="cowork"] .db-body { grid-template-columns: minmax(0, 1fr); }
 .db-side { background: var(--color-sf); border-bottom: var(--border-subtle); padding: var(--space-4) 0 0; }
 .db-side__head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: 0 var(--space-4) var(--space-3); }
 .db-side__count { font-size: 12px; color: var(--color-sr-orange-900); white-space: nowrap; }
@@ -230,15 +230,64 @@
 .db-table__row { padding: 0; border-top: var(--border-subtle); }
 .db-table__row--head { background: transparent; border-top: 0; }
 @media (min-width: 1024px) {
-  .db[data-dashboard="cowork"] .db-body { grid-template-columns: 248px minmax(0, 1fr); height: 600px; }
+  .db[data-dashboard="cowork"] .db-body { grid-template-columns: 264px minmax(0, 1fr); height: 664px; }   /* 264: "Cluster Health Monitor" fits on one line */
   .db-side { border-bottom: 0; border-right: var(--border-subtle); padding: var(--space-6) var(--space-3); }
   .db-side__head { padding: 0 var(--space-2) var(--space-4); }
   .db-side__list { flex-direction: column; overflow: visible; padding: 0; gap: var(--space-1); }
   .db-mate { width: 100%; grid-template-columns: 32px minmax(0, 1fr) 8px; padding-right: var(--space-4); }
-  .db-detail { height: 600px; }
+  .db-detail { height: 664px; }
   .db-detail__head { padding: var(--space-8) var(--space-10) var(--space-4); }
   .db-detail__stage { padding: 0 var(--space-10) var(--space-6); }
   .db-detail__foot { padding: var(--space-4) var(--space-10) var(--space-8); }
+}
+
+/* Cowork below 1024: rearranged, never scrolled sideways (container queries on the dashboard's own width,
+   so every in-between width gets the layout that fits it, not the one the viewport guesses).
+   ≥ 520px wide: teammates in a 2-column named grid. < 520px: one row of six icon tiles (3 × 2 under 300px,
+   so taps stay ≥ 44px); the name and a short status move to the detail head; Run sits beside Approve;
+   result rows read "name · value" with the action underneath instead of three truncated columns. */
+.db[data-dashboard="cowork"] { container: db / inline-size; }
+.db-status__short { display: none; }
+.db-run--foot { display: none; }
+@media (max-width: 1023.98px) {
+  .db-side__head { flex-wrap: nowrap; }
+  .db-side__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); overflow: visible; scroll-snap-type: none; }
+  .db-mate { width: 100%; min-width: 0; grid-template-columns: 32px minmax(0, 1fr) 8px; }
+  .db-mate__text b, .db-mate__text small { overflow: hidden; text-overflow: ellipsis; }
+  .db-detail { height: 640px; }
+
+  @container db (max-width: 519.98px) {
+    .db-side { padding-top: var(--space-3); }
+    .db-side__head { padding: 0 var(--space-3) var(--space-2); }
+    .db-side__list { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-1); padding: 0 var(--space-2) var(--space-3); }
+    .db-mate { position: relative; grid-template-columns: 1fr; justify-items: center; height: 48px; padding: 0; }
+    .db-mate__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .db-mate > .db-status__dot { position: absolute; top: 7px; right: 7px; width: 6px; height: 6px; }
+    .db-mate > .db-status__dot--done, .db-mate > .db-status__dot--scheduled { display: none; }
+
+    .db-detail { height: 660px; }
+    .db-detail__head { padding: var(--space-4) var(--space-4) var(--space-3); }
+    .db-detail__who { flex: 1; justify-content: space-between; }
+    .db-status__full { display: none; }
+    .db-status__short { display: inline; }
+    .db-run--head { display: none; }
+    .db-detail__stage { padding: 0 var(--space-4) var(--space-4); gap: var(--space-4); }
+    .db-detail__task { font-size: 18px; }
+    .db-detail__foot { padding: var(--space-3) var(--space-4) var(--space-4); }
+    .db-approve .sr-meta { display: none; }
+    .db-approve .db-btn { flex: 1; }
+    .db-run--foot { display: inline-flex; }
+
+    .db-table__row--head { display: none; }
+    .db-table__row { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-3); row-gap: 2px; padding: var(--space-2) 0; }
+    .db-table__row:nth-child(2) { border-top: 0; }
+    .db-table__row span:nth-child(3) { grid-column: 1 / -1; font-size: 12px; color: var(--color-tx-tertiary); }
+  }
+  @container db (max-width: 299.98px) {
+    .db-side__your { display: none; }
+    .db-side__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .db-detail { height: 700px; }
+  }
 }
 
 /* Schedule: one list + approvals */
@@ -265,5 +314,6 @@
   .db-day { margin: 0 var(--space-8) var(--space-4); }
   .db-row--job { padding: 0 var(--space-8); }
 }
-.db-side__head { flex-direction: column; align-items: flex-start; gap: 2px; }
 .db-side__head .db-label { white-space: nowrap; }
+/* Narrow desktop sidebar (264px): label over count. Below 1024 they share one row. */
+@media (min-width: 1024px) { .db-side__head { flex-direction: column; align-items: flex-start; gap: 2px; } }

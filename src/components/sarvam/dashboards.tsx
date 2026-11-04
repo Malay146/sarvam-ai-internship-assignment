@@ -14,9 +14,17 @@ const S = 1.5;
 type Icon = typeof Target;
 type Status = "working" | "waiting" | "done" | "scheduled";
 const STATUS_LABEL: Record<Status, string> = { working: "Working", waiting: "Needs your yes", done: "Done", scheduled: "Scheduled" };
+// Phone label: same meaning, fits beside the longest teammate name in one line.
+const STATUS_SHORT: Record<Status, string> = { working: "Working", waiting: "Needs you", done: "Done", scheduled: "Scheduled" };
 
 function StatusPill({ s }: { s: Status }) {
-  return <span className={`db-status db-status--${s}`}><span className="db-status__dot" />{STATUS_LABEL[s]}</span>;
+  return (
+    <span className={`db-status db-status--${s}`}>
+      <span className="db-status__dot" />
+      <span className="db-status__full">{STATUS_LABEL[s]}</span>
+      <span className="db-status__short" aria-hidden>{STATUS_SHORT[s]}</span>
+    </span>
+  );
 }
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: T.state };
 
@@ -101,10 +109,10 @@ export function CoworkDashboard() {
     <div className="db" data-dashboard="cowork">
       <div className="db-body">
         <aside className="db-side">
-          <div className="db-side__head"><p className="db-label">Your teammates</p><span className="db-side__count">{needs} need your yes</span></div>
+          <div className="db-side__head"><p className="db-label"><span className="db-side__your">Your </span>teammates</p><span className="db-side__count">{needs} need your yes</span></div>
           <div className="db-side__list" role="listbox" aria-label="Teammates">
             {mates.map((m) => (
-              <button key={m.id} role="option" aria-selected={m.id === sel} className="db-mate" onClick={() => setSel(m.id)}>
+              <button key={m.id} role="option" aria-selected={m.id === sel} className="db-mate" title={m.name} onClick={() => setSel(m.id)}>
                 <span className="db-row__icon"><m.icon strokeWidth={S} /></span>
                 <span className="db-mate__text"><b>{m.name}</b><small>{m.team}</small></span>
                 <span className={`db-status__dot db-status__dot--${m.status}`} aria-label={STATUS_LABEL[m.status]} />
@@ -116,7 +124,7 @@ export function CoworkDashboard() {
         <section className="db-detail" aria-label={`${mate.name} details`}>
           <div className="db-detail__head">
             <div className="db-detail__who"><b>{mate.name}</b><StatusPill s={mate.status} /></div>
-            <button className="db-run" onClick={runNow} disabled={mate.status === "working"}><Play strokeWidth={S} /><span>Run now</span></button>
+            <button className="db-run db-run--head" onClick={runNow} disabled={mate.status === "working"}><Play strokeWidth={S} /><span>Run now</span></button>
           </div>
           <div className="db-detail__stage" ref={stageRef}>
             <p className="db-detail__task">{mate.task}</p>
@@ -159,6 +167,7 @@ export function CoworkDashboard() {
             <div className="db-approve">
               <span className="sr-meta">{mate.status === "waiting" ? "Nothing goes out without your yes." : mate.status === "working" ? "You'll be asked before anything ships." : mate.status === "scheduled" ? `Scheduled for ${mate.next}.` : "No action needed."}</span>
               <button className="sr-button sr-button--primary db-btn" onClick={approve} disabled={mate.status !== "waiting"}>{mate.approve ?? "Approve"}</button>
+              <button className="db-run db-run--foot" onClick={runNow} disabled={mate.status === "working"} aria-label="Run now"><Play strokeWidth={S} /></button>
             </div>
             <form className="db-input" onSubmit={(e) => { e.preventDefault(); send(draft); setDraft(""); }}>
               <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={`Message ${mate.name}…`} aria-label={`Message ${mate.name}`} />

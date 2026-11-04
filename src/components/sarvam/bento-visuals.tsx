@@ -62,7 +62,7 @@ export function BvSkill() {
       </ol>
       <div className="bv-foot">
         <span className="bv-stack">{ROLES.slice(0, 4).map((r) => <span key={r.key} className={`bv-ava bv-ava--sm cw-tone--${r.tone}`}><r.icon width={11} height={11} /></span>)}</span>
-        <span>{phase >= 3 ? "Ready · shared with 4 teammates" : "Shared with 4 teammates"}</span>
+        <span>{phase >= 3 ? "Ready for 4 teammates" : "Shared with 4 teammates"}</span>
       </div>
     </div>
   );

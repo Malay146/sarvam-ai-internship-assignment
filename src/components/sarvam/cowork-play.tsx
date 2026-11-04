@@ -113,7 +113,7 @@ export function DayScrubber() {
               <button type="button" role="tab" aria-selected={now} className="pv-day__item" data-done={done} data-now={now} onClick={() => { setI(n); setAuto(false); }}>
                 <span className="pv-day__dot" aria-hidden />
                 <span className="pv-day__time">{d.t}</span>
-                <span className="pv-day__title">{d.title}</span>
+                <span className="pv-day__title" data-may-wrap>{d.title}</span>
                 <span className="pv-day__body">{d.body}</span>
                 <span className="pv-day__status">{done ? <><Check width={12} height={12} strokeWidth={2.5} />Delivered</> : "Scheduled"}</span>
               </button>
@@ -130,9 +130,9 @@ export function DayScrubber() {
 type Item = { id: number; what: string; who: string };
 type Status = "waiting" | "approved" | "back";
 const QUEUE: Item[] = [
-  { id: 1, what: "Send 31 outreach emails", who: "Sales Outbound" },
+  { id: 1, what: "Send 31 emails", who: "Sales Outbound" },
   { id: 2, what: "Pause two campaigns", who: "Paid Media" },
-  { id: 3, what: "Post the weekly readout", who: "Product Performance" },
+  { id: 3, what: "Post the readout", who: "Product Performance" },
 ];
 const HISTORY: Ev[] = [
   { id: -1, text: "Drafted 31 emails", who: "Sales Outbound", time: "09:42", ok: true },
@@ -180,7 +180,7 @@ export function ApprovalDesk() {
                     {st === "waiting" ? (
                       <motion.span key="w" className="pv-desk__btnrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={ease(reduced)}>
                         <button type="button" className="pv-btn" aria-label={`Send back: ${it.what}`} onClick={() => { setTouched(true); decide(it, false); }}><X width={14} height={14} strokeWidth={2} /></button>
-                        <button type="button" className="pv-btn pv-btn--yes" onClick={() => { setTouched(true); decide(it, true); }}>Approve</button>
+                        <button type="button" className="pv-btn pv-btn--yes" aria-label={`Approve: ${it.what}`} onClick={() => { setTouched(true); decide(it, true); }}><Check className="pv-btn__icon" width={16} height={16} strokeWidth={2.25} /><span className="pv-btn__label">Approve</span></button>
                       </motion.span>
                     ) : (
                       <motion.span key="d" className={`pv-desk__state pv-desk__state--${st}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={ease(reduced)}>
@@ -222,6 +222,8 @@ export function ApprovalDesk() {
 /* ── 4 · Build a teammate: role + apps + rhythm → a live teammate card ── */
 const APP_CHOICES = ["Gmail", "Slack", "Google Sheets", "Notion", "Google Calendar", "Google Docs", "BigQuery", "PostHog", "Metabase", "Linear", "GitHub", "Jira"];
 const RHYTHMS = [["daily", "Every morning at 8"], ["weekly", "Every Friday"], ["ondemand", "When you message it"]] as const;
+/* one-word labels for a narrow segmented control; the full rhythm still shows in the card's "Runs" row */
+const RHYTHM_SHORT: Record<(typeof RHYTHMS)[number][0], string> = { daily: "Daily", weekly: "Weekly", ondemand: "On demand" };
 export function TeammateBuilder() {
   const [k, setK] = useState(0);
   const [apps, setApps] = useState<string[]>(ROLES[0].apps);
@@ -246,11 +248,11 @@ export function TeammateBuilder() {
           </div>
         </div>
         <div className="pv-field" role="group" aria-labelledby="pv-f2">
-          <p className="pv-field__title" id="pv-f2"><span className="pv-n">2</span>Connect its apps <span className="pv-hint">up to 5 of 100+</span></p>
+          <p className="pv-field__title" id="pv-f2"><span className="pv-n">2</span>Connect its apps <span className="pv-hint">up to 5<span className="pv-wide"> of 100+</span></span></p>
           <div className="pv-apps">
             {APP_CHOICES.map((a) => (
               <button key={a} type="button" aria-pressed={apps.includes(a)} className="pv-app" onClick={() => toggle(a)} title={a}>
-                <BrandMark name={a} size={20} colored /><span>{a}</span>
+                <BrandMark name={a} size={20} colored /><span className="pv-app__full">{a}</span>{a.startsWith("Google ") && <span className="pv-app__short" aria-hidden>{a.slice(7)}</span>}
               </button>
             ))}
           </div>
@@ -261,7 +263,7 @@ export function TeammateBuilder() {
             {RHYTHMS.map(([v, l]) => (
               <button key={v} type="button" aria-pressed={rhythm === v} onClick={() => setRhythm(v)}>
                 {rhythm === v && <motion.span layoutId="pv-seg-pill" className="pv-seg__pill" transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }} />}
-                <span className="pv-seg__label">{l}</span>
+                <span className="pv-seg__label"><span className="pv-seg__full">{l}</span><span className="pv-seg__short" aria-hidden>{RHYTHM_SHORT[v]}</span></span>
               </button>
             ))}
           </div>
@@ -272,7 +274,7 @@ export function TeammateBuilder() {
         <div className="pv-mate__card">
           <div className="pv-mate__head">
             <span className={`pv-mate__avatar cw-tone--${r.tone}`}><r.icon width={22} height={22} /></span>
-            <span><b>{r.role}</b><span>Your Indus Cowork teammate</span></span>
+            <span><b>{r.role}</b><span><span className="pv-wide">Your </span>Indus Cowork teammate</span></span>
           </div>
           <dl className="pv-mate__rows">
             <div><dt>Does</dt><dd>
@@ -285,7 +287,7 @@ export function TeammateBuilder() {
             <div><dt>Runs</dt><dd>{when}</dd></div>
             <div><dt>Ships</dt><dd>Only after your yes</dd></div>
           </dl>
-          <a className="sr-button sr-button--primary pv-mate__cta" href={`https://www.sarvam.ai/contact?subject=${subject}`}>Talk to us about this teammate<ArrowRight width={16} height={16} strokeWidth={1.75} /></a>
+          <a className="sr-button sr-button--primary pv-mate__cta" href={`https://www.sarvam.ai/contact?subject=${subject}`}>Talk to us<span className="pv-wide"> about this teammate</span><ArrowRight width={16} height={16} strokeWidth={1.75} /></a>
         </div>
       </div>
     </div>
