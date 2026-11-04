@@ -832,3 +832,17 @@ Entry format:
   - **SKILL.md:** a Fit non-negotiable, and the QA step names `check-fit`. **CLAUDE.md:** Malay's fit rule in the working rules. design.md regenerated.
   - **scripts/check-fit.mjs (new):** the round-3 audit made permanent. It flags SIDEWAYS / CLIP / OVERFLOW / PAST-VIEWPORT as errors (exit 1) and wrapped short labels as warnings. It only counts text that actually crosses a box edge, skips decoration and visually hidden text, and lets deliberate two-line slots opt in with `data-may-wrap`. Landing page: all 9 widths fit. Sanity check on /bulbul at 375: it correctly fails on the sideways voice rail.
 - Known gap: /bulbul breaks the new rule (sideways voice rail, recipes/bulbul-page.md). Flagged for the next pass.
+
+## 2026-11-04 · Claude Code (Opus 5.5) · Bulbul page: the same responsive rules
+
+- Prompt (verbatim): "apply that responsive rules on bulbul page"
+- Start: `check-fit` on /bulbul found 16 errors and 39 warnings. The voice list was a sideways rail (SIDEWAYS at 320–600), voice and chip labels were clipped (320 / 600 / 1024), the voice id clipped at 320, tracklist tags and spoken readings wrapped (320 / 768), request-timeline labels wrapped at 320, and "Sample rate" split at 768.
+- What changed:
+  - **Voices:** the sideways rail is gone. Phones get 4 × 2 avatar tiles with the name under each; style and language live in the stage card. Narrow 2-up rows (the 1024 list) put style and language on their own lines. The stage card head became a grid (avatar beside name + status, then style · language). On the narrowest card the status shows as its dot, and the foot drops the duplicate language code.
+  - **Playground:** chips go 4-up only when the control is ≥ 520px (container query, not viewport); chip labels never clip. On a narrow code card, Copy becomes an icon button. Phone padding tiers.
+  - **Tracklist:** at 768–1023 there's no number column, so the clip gets 7/12. Clip rows stay on one line, and narrow clips drop the voice-style word. The reading example changed to "₹1,200 → बारह सौ रुपये": it fits, and it shows context reading better.
+  - **Request timeline:** every step on one line; narrow cards read "Request", values at 11px, "in chunks".
+  - **Studio:** a narrow settings column gives each field a full row. **Chorus:** language codes never split, and the code-mixed note is two deliberate lines on phones.
+  - `check-fit` now treats `pre` code as may-wrap (code wraps by rule).
+- Docs: recipes/bulbul-page.md §2 rewritten, plus two rejected-approach rows. components.md gets a "Fit on every width" entry for the Bulbul pieces. layout.md §7.7 gets the Bulbul container thresholds. design.md regenerated.
+- QA: check-fit /bulbul and / at all 9 widths fit. check-layout 10/10 on both pages. All 8 voices, all 8 playground voice chips and all 10 segmented options clicked at 320–1280. The auto-playing studio, chorus and request timeline were watched through full cycles at 320 / 375 / 768 / 1024. tsc clean.

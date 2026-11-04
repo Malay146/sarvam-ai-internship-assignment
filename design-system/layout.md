@@ -325,6 +325,10 @@ Components switch on **their own width** (container queries), so they behave the
 | Builder field / card | `.pv-field`, `.pv-mate__card` | < 460 / < 340 | rhythm short labels; hint and CTA lose their tail |
 | Builder app tile | `.pv-app` (`app`) | < 160 | "Google X" → "X" |
 | Comparison card | `.pv-vs__col` (`vs`) | fluid | label size from `cqi` |
+| Bulbul voice list | `.bb-voices__list` (`vlist`) + `.bb-vbtn` (`vbtn`) | < 768 viewport / row < 280 | 4 × 2 avatar tiles; style and language on their own lines |
+| Bulbul voice card | `.bb-vcard` (`vcard`) | < 300 | status as a dot; style / language split; foot drops the language code |
+| Bulbul playground | `vctl`, `vchip`, `code` | ≥ 520 / < 130 / < 420 | chips 4-up; tighter chips; Copy → icon |
+| Bulbul transcript / request / studio | `tx`, `stream`, `side` | < 260 / < 300 / < 280 | drop style word; short heading + 11px values; full-row fields |
 
 ⚠️ A container can't style itself from its own query: put padding changes on a parent query or a viewport media query. Never put `container-type` on a subgrid item (§8.1).
 

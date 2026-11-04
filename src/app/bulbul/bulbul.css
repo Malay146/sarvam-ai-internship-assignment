@@ -111,7 +111,14 @@
 .bb-trk__text .sr-h4 { margin: 0; }
 .bb-trk__text .sr-body { margin: 0; color: var(--color-tx-tertiary); max-width: 44ch; }
 .bb-trk__clip { display: grid; place-items: center; padding: var(--space-5) var(--space-4); border-radius: var(--radius-card); background: var(--texture-grain), linear-gradient(180deg in oklab, var(--t-w1) 0%, var(--t-w2) 100%); background-blend-mode: overlay, normal; }
-@media (min-width: 768px) {
+/* 768–1023: no number column (it sits above the text), so the clip gets 7/12 and its rows stay on one line */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .bb-trk { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-rows: auto 1fr; column-gap: var(--space-6); row-gap: var(--space-3); align-items: start; padding: var(--space-6); }
+  .bb-trk__num { grid-column: 1; grid-row: 1; }
+  .bb-trk__text { grid-column: 1; grid-row: 2; }
+  .bb-trk__clip { grid-column: 2; grid-row: 1 / -1; align-self: stretch; padding: var(--space-4); }
+}
+@media (min-width: 1024px) {
   .bb-trk { grid-template-columns: 40px minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: var(--space-8); padding: var(--space-6) var(--space-8); }
   .bb-trk__num { align-self: start; padding-top: 6px; }
 }
@@ -259,8 +266,9 @@ li[data-on="true"] .bb-ok { opacity: 1; }
 .bb-ctl__label { margin: 0; display: flex; justify-content: space-between; font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-tx); }
 .bb-ctl__label output { font-family: var(--font-code); font-weight: 400; color: var(--color-tx-secondary); }
 .bb-ctl__voices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
-@media (min-width: 600px) { .bb-ctl__voices { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .bb-ctl__voices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* 4-up only when the control is wide enough for "Indian English" (container query, layout.md §7.7) */
+.bb-play__controls > .bb-ctl:first-child { container: vctl / inline-size; }
+@container vctl (min-width: 520px) { .bb-ctl__voices { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .bb-vchip { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; padding: var(--space-2); border: 0; border-radius: var(--radius-card); background: var(--color-sf-tertiary); font: inherit; text-align: left; cursor: pointer; color: var(--color-tx); transition: background-color var(--duration-normal) var(--ease-standard), box-shadow var(--duration-normal) var(--ease-standard); }
 .bb-vchip > span { display: flex; flex-direction: column; min-width: 0; }
 .bb-vchip b { font-size: var(--text-small); font-weight: var(--weight-medium); }
@@ -341,13 +349,7 @@ li[data-on="true"] .bb-eq i:nth-child(4) { animation-delay: -0.15s; }
 @media (max-width: 767px) {
   .bb-wave { gap: 1px; }
   .bb-studio__bar .bb-code-chip { display: none; }
-  /* voices: the list becomes a sideways rail of full-label buttons, edge to edge (playbook rule 24) */
-  .bb-voices__list { display: flex; gap: var(--space-2); overflow-x: auto; scrollbar-width: none; padding: 0 calc((100vw - 100%) / 2); margin-inline: calc((100vw - 100%) / -2); border: 0; border-radius: 0; background: none; scroll-snap-type: x proximity; scroll-padding-inline: calc((100vw - 100%) / 2); }
-  .bb-voices__list::-webkit-scrollbar { display: none; }
-  .bb-vbtn { flex: 0 0 auto; scroll-snap-align: start; padding-right: var(--space-5); }
-  .bb-vbtn__text small { overflow: visible; text-overflow: clip; }
   .bb-voices__stage { min-height: 380px; }
-  .bb-vcard__head { flex-wrap: wrap; }
 }
 
 /* Playground response: fills the code card under the request; replays on every change */
@@ -380,3 +382,105 @@ li[data-on="true"] .bb-eq i:nth-child(4) { animation-delay: -0.15s; }
    never runs past 2 lines at any width (voice.md §6) */
 .bb .sr-cta__title { max-width: 30ch; font-size: min(var(--text-display-2), 5.4vw); text-wrap: balance; }
 @media (max-width: 767px) { .bb .sr-cta { padding-inline: var(--space-4); } }
+
+/* Voices without a sideways rail (layout.md §7.4, §7.7). The list is a container:
+   < 560px: 4 × 2 avatar tiles, name under the avatar (style and language show in the stage card beside/below).
+   ≥ 560px: 2-up rows; a row narrower than 280px puts style and language on their own lines instead of clipping. */
+.bb-voices__list { container: vlist / inline-size; }
+.bb-vbtn { container: vbtn / inline-size; }
+.bb-vbtn__text b, .bb-vbtn__text small span { white-space: nowrap; }
+.bb-vbtn__text small { overflow: visible; text-overflow: clip; }
+@container vbtn (max-width: 279.98px) {
+  .bb-vbtn__text small { display: flex; flex-direction: column; line-height: 1.35; }
+  .bb-vbtn__sep { display: none; }
+}
+@media (max-width: 767.98px) {
+  .bb-voices__list { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: auto; gap: 6px; padding: var(--space-2); }
+  .bb-vbtn { flex-direction: column; justify-content: center; gap: 6px; min-height: 0; padding: var(--space-3) 4px; text-align: center; }
+  .bb-vbtn__text { align-items: center; }
+  .bb-vbtn__text b { font-size: 13px; }
+  .bb-vbtn__text small { display: none; }
+}
+@media (max-width: 359.98px) {
+  .bb-vbtn { padding: var(--space-2) 2px; }
+  .bb-vbtn .bb-ava { width: 34px !important; height: 34px !important; }
+  .bb-vbtn__text b { font-size: 12.5px; }
+}
+
+/* Voice card head: avatar beside two rows (name + status, then style · language), so nothing wraps under it.
+   The card is a container: < 300px the status shows as its dot only (the word stays for screen readers) and the foot
+   drops the duplicate language code so the voice id never clips. */
+.bb-vcard { container: vcard / inline-size; }
+.bb-vcard__head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ava name status" "ava meta meta"; column-gap: var(--space-3); row-gap: 2px; align-items: center; }
+.bb-vcard__head > .bb-ava { grid-area: ava; }
+.bb-vcard__head > span:nth-child(2) { display: contents; }
+.bb-vcard__name { grid-area: name; white-space: nowrap; }
+.bb-vcard__head small { grid-area: meta; white-space: nowrap; }
+.bb-vcard__head .bb-status { grid-area: status; margin-left: 0; }
+.bb-vcard__foot .bb-code-chip { max-width: none; overflow: visible; }
+@container vcard (max-width: 299.98px) {
+  .bb-vcard__head .bb-ava { width: 44px !important; height: 44px !important; }
+  .bb-status { width: 24px; padding: 0; justify-content: center; }
+  .bb-status__word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .bb-vcard__code { display: none; }
+  .bb-vcard__head small { display: flex; flex-direction: column; line-height: 1.35; }
+  .bb-vcard__head .bb-vbtn__sep { display: none; }
+  .bb-vcard__foot { justify-content: flex-start; }
+}
+@media (min-width: 1024px) and (max-width: 1279.98px) { .bb-voices__stage { padding: var(--space-6); } }
+
+/* Playground at phone widths: chips keep their language on one line; Copy turns into an icon on a narrow code card */
+.bb-vchip { container: vchip / inline-size; }
+.bb-vchip small { overflow: visible; text-overflow: clip; }
+@container vchip (max-width: 129.98px) {
+  .bb-vchip > span { gap: 0; }
+  .bb-vchip { gap: 6px; }
+}
+.bb-vchip .bb-ava { flex-shrink: 0; }
+@media (max-width: 359.98px) { .bb-vchip { padding: 6px; } .bb-vchip .bb-ava { width: 24px !important; height: 24px !important; } }
+.bb-codecard { container: code / inline-size; }
+@container code (max-width: 419.98px) {
+  .bb-copy { min-width: 44px; width: 44px; padding: 0; }
+  .bb-copy__word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .bb-codecard__bar .bb-ctl { max-width: none; }
+}
+@media (max-width: 479.98px) { .bb-play__controls { padding: var(--space-5); gap: var(--space-5); } }
+@media (max-width: 359.98px) { .bb-play__controls { padding: var(--space-4); } }
+
+/* Transcript clips: every row one line. The card is a container; a narrow card drops the voice-style word
+   (avatar + name are enough) and the reading rows size their first column to its content. */
+.bb-tx { container: tx / inline-size; }
+.bb-tx__head > *, .bb-tx__reads li > * { white-space: nowrap; }
+.bb-tx__head .bb-ava { flex-shrink: 0; }
+.bb-tx__reads li { grid-template-columns: minmax(52px, auto) auto minmax(0, 1fr); }
+@container tx (max-width: 259.98px) { .bb-tx__style { display: none; } }
+@media (max-width: 479.98px) { .bb-trk { padding: var(--space-5); gap: var(--space-4); } .bb-trk__clip { padding: var(--space-3); } }
+@media (max-width: 359.98px) { .bb-trk { padding: var(--space-4); } .bb-trk__clip { padding: var(--space-2); } .bb-tx { padding: var(--space-3); } }
+
+/* Request timeline: each step one line. On a narrow card: tighter padding, "Request" heading, 11px values. */
+.bb-short { display: none; }
+.bb-stream { container: stream / inline-size; }
+.bb-stream__steps li > span:not(.bb-stream__dot), .bb-stream__steps code, .bb-stream__head > * { white-space: nowrap; }
+@container stream (max-width: 299.98px) {
+  .bb-stream__head .bb-full { display: none; }
+  .bb-stream__head .bb-short { display: inline; }
+  .bb-stream__steps { padding: var(--space-2) var(--space-3); }
+  .bb-stream__steps li { gap: var(--space-2); }
+  .bb-stream__steps code, .bb-stream__head .bb-code-chip { font-size: 11px; }
+}
+@media (max-width: 479.98px) { .bb-stream { padding: var(--space-5); } }
+@media (max-width: 359.98px) { .bb-stream { padding: var(--space-4); } }
+/* Languages and studio fields: a name and its code (or a field label) never split */
+.bb-chorus__name, .bb-chorus__name code, .bb-label { white-space: nowrap; }
+/* Studio settings: a narrow settings column (the 4/12 column at 768–1023) gives every field a full row instead of
+   two halves too tight for "Sample rate" */
+.bb-studio__side { container: side / inline-size; }
+@container side (max-width: 279.98px) {
+  .bb-studio__side .bb-field--half { grid-column: 1 / -1; }
+  .bb-studio__side .bb-field--half + .bb-field--half { border-left: 0; }
+}
+/* Code-mixed note on phones: two deliberate lines (the greeting, then the sentence), no dangling "·" */
+@media (max-width: 599.98px) {
+  .bb-chorus__mix { flex-direction: column; gap: 2px; text-align: center; }
+  .bb-chorus__mix > span[aria-hidden] { display: none; }
+}

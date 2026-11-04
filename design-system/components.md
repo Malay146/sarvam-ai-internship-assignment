@@ -338,6 +338,13 @@ How each one stays whole on a phone. All use layout.md §7.6 (fit ladder) and §
 - **Per-item tone (`data-tone`)**: sets `--t`, `--t-soft` and `--t-w1/2` for anything that carries a tone (rows, stages, icons). Controls stay system indigo.
 - **Copy button**: see landing-page.md 19d.
 - **Fixed-height request pane + Response panel**: code tabs share one height; the response under it replays on every change.
+- **Fit on every width** (layout.md §7.4, §7.6, §7.7):
+  - **VoicePicker list**: never a sideways rail. Below 768 it is **4 × 2 avatar tiles** with the name under each; style and language show in the stage card. From 768, 2-up rows; a row narrower than 280px puts style and language on their own lines.
+  - **Voice card head**: a grid (avatar beside two rows: name + status, then style · language). A card < 300px shows the status as its dot (the word stays for screen readers), splits style / language onto two lines and drops the duplicate language code from the foot, so the voice id never clips.
+  - **Playground**: voice chips go 4-up only when the control is ≥ 520px wide; chip labels never clip. On a code card < 420px, Copy becomes a 44px icon button (label visually hidden).
+  - **Transcript clips** (tracklist): every row one line; a card < 260px drops the voice-style word; reading rows size their first column to content. Example readings are written to fit ("₹1,200 → बारह सौ रुपये").
+  - **Request timeline**: each step one line; a card < 300px reads "Request", values at 11px, "in chunks".
+  - **Studio settings**: a settings column < 280px gives each field a full row (no "Sample / rate").
 
 ## Do / Don't
 

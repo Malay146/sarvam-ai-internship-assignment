@@ -73,7 +73,7 @@ function Transcript({ voice, line, lang, marks = [], tags, reads }: { voice: num
   parts.push(rest);
   return (
     <div className="bb-tx">
-      <div className="bb-tx__head"><VoiceAvatar svg={v.avatar} size={24} /><b>{v.name}</b><span>{v.style}</span><code>{v.code}</code></div>
+      <div className="bb-tx__head"><VoiceAvatar svg={v.avatar} size={24} /><b>{v.name}</b><span className="bb-tx__style">{v.style}</span><code>{v.code}</code></div>
       <p className="bb-tx__line" lang={lang}>{parts}</p>
       {tags && <p className="bb-tx__tags">{tags.map((t) => <span key={t}>{t}</span>)}</p>}
       {reads && (
@@ -119,7 +119,7 @@ export default function BulbulPage() {
               <Track n="03" tone="green" icon={BookOpenFill} title="Names and numbers, read in context" desc="PNR, train, coach and seat numbers, PAN and Aadhaar, each read the way an agent would."
                 clip={<Transcript voice={3} lang="hi" line="हाँ जी, umm… एक second, आपकी booking details check कर रही हूँ…" marks={["umm…", "second"]} reads={[["Coach B2", "कोच बी टू"], ["Seat 34", "सीट चौंतीस"]]} />} />
               <Track n="04" tone="orange" icon={BoltFill} title="Amounts and dates in a payment reminder" desc="Rupee amounts, due dates and cut-off times, spoken clearly enough to act on."
-                clip={<Transcript voice={2} lang="hi" line="नमस्ते राहुल जी, मैं Vistaar Finance से बोल रही हूँ।" marks={["राहुल जी"]} reads={[["₹4,250", "चार हज़ार दो सौ पचास रुपये"], ["15 Nov", "पंद्रह नवंबर"]]} />} />
+                clip={<Transcript voice={2} lang="hi" line="नमस्ते राहुल जी, मैं Vistaar Finance से बोल रही हूँ।" marks={["राहुल जी"]} reads={[["₹1,200", "बारह सौ रुपये"], ["15 Nov", "पंद्रह नवंबर"]]} />} />
             </ol>
           </Reveal>
         </section>

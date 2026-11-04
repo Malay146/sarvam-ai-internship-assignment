@@ -36,15 +36,17 @@ Shared with every page: `MegaNav` (CTA "Get API key"), `HeroGlow` + `Motif`, `Se
 
 ## 2. Responsive
 
+Same rules as every page: nothing scrolls sideways, everything fits (layout.md §7.4, §7.6). Components switch on their own width (layout.md §7.7). Verified with `check-fit` + `check-layout` at every width, all 8 voices and every playground option clicked, and the auto-playing studio, chorus and request timeline watched through a full cycle.
+
 | Section | Phone (<768) | Tablet (768–1023) | Desktop (≥1024) |
 |---|---|---|---|
-| Studio | script, player, then settings in a 2-up grid; bar hides the model chip | main 8 / settings 4 | same; script 22–28px |
-| Tracklist | number, text, then clip | number / text 5 / clip 6 | same, more padding |
-| Chorus | 2-up tiles | wrapped row, centred | same |
-| Voices | sideways rail of voice buttons (edge to edge), then the stage | 2-up list above the stage | list 7 / stage 5, rows stretch to the stage |
+| Studio | script, player, then settings in a 2-up grid; bar hides the model chip | main 8 / settings 4; the narrow settings column gives every field a full row | same; script 22–28px |
+| Tracklist | number, text, then clip; tighter padding; clip rows one line (style word drops on narrow clips) | **no number column**: number above the text, text 5 / clip 7 | number column 40 / text 5 / clip 6 |
+| Chorus | 2-up tiles; the code-mixed note becomes two deliberate lines | wrapped row, centred | same |
+| Voices | **4 × 2 avatar tiles** (name under each), then the stage; card head is a grid, status a dot on the narrowest card | 2-up named rows above the stage | list 7 / stage 5, rows stretch to the stage; style / language on two lines when a row is narrow |
 | Multitrack | label above each lane; no ruler, no playhead | label column 320px + lanes, ruler, playhead | label 360px |
-| Developers | facts, then timeline | same | facts 5 / timeline 7 |
-| Playground | controls, then code | voices 4-up | controls 5 / code 7, equal height |
+| Developers | facts, then timeline; the timeline's steps stay one line ("Request", "in chunks" on narrow cards) | same | facts 5 / timeline 7 |
+| Playground | controls, then code; chips 2-up; Copy is an icon on narrow code cards | chips 4-up when the control is ≥ 520px | controls 5 / code 7, equal height |
 | Diff | stacked | 2 columns | same |
 | Doors | stacked, hairlines between | 3 columns | same |
 
@@ -65,3 +67,5 @@ Shared with every page: `MegaNav` (CTA "Get API key"), `HeroGlow` + `Motif`, `Se
 | Diagonal ↗ link arrow | Didn't read well | 19b: plain → that slides on hover |
 | Copy icon spinning on hover (inherited from the replay pill) | Looked tilted | 19c: don't inherit another component's hover motion |
 | Code tab changing the card height (Python is longer) | Siblings must stay equal | 22: tabbed panes have one fixed height |
+| Voices as a sideways rail of full-label buttons on phones | Nothing scrolls sideways (Malay's rule) | layout.md §7.4: 4 × 2 avatar tiles; details live in the stage card |
+| "₹4,250 → चार हज़ार दो सौ पचास रुपये" reading row | Broke onto 2–3 lines in a phone clip | Write example readings to fit; "₹1,200 → बारह सौ रुपये" also shows context reading better |

@@ -36,7 +36,7 @@ for (const w of WIDTHS) {
     if (document.documentElement.scrollWidth > vw) out.push(["E", "page", `PAGE SIDEWAYS ${document.documentElement.scrollWidth}>${vw}`]);
     const DECOR = ".sr-cta__lattice, .sr-lattice, [class*='glow'], [class*='pattern'], .cw-marquee, [data-fit-ignore], svg";
     const HIDDEN = ".cw-stage__panel[aria-hidden='true'], [inert], [hidden]";
-    const MAY_WRAP = "h1, h2, h3, p, dd, blockquote, .pv-faq__q, [data-line='desc'], [data-may-wrap]";
+    const MAY_WRAP = "h1, h2, h3, p, dd, blockquote, pre, .pv-faq__q, [data-line='desc'], [data-may-wrap]";   // code blocks wrap long lines by rule (layout.md §7.4)
     const name = (e) => (e.className && typeof e.className === "string" ? "." + e.className.trim().split(/\s+/).join(".") : e.tagName.toLowerCase());
     const textRects = (root) => {
       const rects = []; const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);

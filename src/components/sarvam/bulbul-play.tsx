@@ -91,7 +91,7 @@ export function VoicePicker() {
         {VOICES.map((x, n) => (
           <button key={x.id} type="button" className="bb-vbtn" aria-pressed={n === sel} onClick={() => { setTouched(true); setSel(n); }}>
             <VoiceAvatar svg={x.avatar} size={40} />
-            <span className="bb-vbtn__text"><b>{x.name}</b><small>{x.style} · {x.lang}</small></span>
+            <span className="bb-vbtn__text"><b>{x.name}</b><small><span>{x.style}</span><span className="bb-vbtn__sep"> · </span><span>{x.lang}</span></small></span>
             {n === sel && <motion.span layoutId="bb-vbtn-ring" className="bb-vbtn__ring" transition={{ duration: 0.35, ease: EASE.outQuint }} />}
           </button>
         ))}
@@ -102,12 +102,12 @@ export function VoicePicker() {
         <motion.div key={v.id} className="bb-vcard" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE.outQuint }}>
           <div className="bb-vcard__head">
             <VoiceAvatar svg={v.avatar} size={56} />
-            <span><b className="bb-vcard__name">{v.name}</b><small>{v.style} · {v.lang}</small></span>
-            <span className="bb-status" data-state={st}><i />{STATE_LABEL[st]}</span>
+            <span><b className="bb-vcard__name">{v.name}</b><small><span>{v.style}</span><span className="bb-vbtn__sep"> · </span><span>{v.lang}</span></small></span>
+            <span className="bb-status" data-state={st}><i /><span className="bb-status__word">{STATE_LABEL[st]}</span></span>
           </div>
           <p className="bb-vcard__line" lang={v.code.slice(0, 2)}>{v.line}</p>
           <Wave seed={v.seed} n={56} state={st} tone={v.tone} playMs={PLAY} />
-          <div className="bb-vcard__foot"><code className="bb-code-chip">{v.id}</code><span>{v.code}</span></div>
+          <div className="bb-vcard__foot"><code className="bb-code-chip">{v.id}</code><span className="bb-vcard__code">{v.code}</span></div>
         </motion.div>
       </div>
     </div>
@@ -161,11 +161,11 @@ export function StreamDemo() {
   const single = MODES[mode] === "Single response";
   return (
     <div ref={ref} className="bb-stream" data-phase={reduced ? 3 : phase} aria-hidden>
-      <div className="bb-stream__head"><b>One request</b><code className="bb-code-chip">POST /text-to-speech</code></div>
+      <div className="bb-stream__head"><b><span className="bb-full">One request</span><span className="bb-short" aria-hidden>Request</span></b><code className="bb-code-chip">POST /text-to-speech</code></div>
       <ol className="bb-stream__steps">
         <li data-on={phase >= 0}><span className="bb-stream__dot" /><span>Request sent</span><code>0 ms</code></li>
         <li data-on={phase >= 1}><span className="bb-stream__dot" /><span>First audio</span><span className="bb-ok"><BoltFill width={12} height={12} />Under 250 ms</span></li>
-        <li data-on={phase >= 2}><span className="bb-stream__dot" /><span>{single ? "Full audio returned" : "Audio streams in"}</span><code>{single ? "one file" : "chunk by chunk"}</code></li>
+        <li data-on={phase >= 2}><span className="bb-stream__dot" /><span>{single ? "Full audio returned" : "Audio streams in"}</span><code>{single ? "one file" : "in chunks"}</code></li>
         <li data-on={phase >= 3}><span className="bb-stream__dot" /><span>Ready to play</span><span className="bb-ok bb-ok--done"><Check width={12} height={12} strokeWidth={2.75} />Done</span></li>
       </ol>
       <div className="bb-chunks" data-single={single}>{Array.from({ length: 10 }, (_, i) => <i key={i} style={{ "--i": i } as CSSProperties} />)}</div>
@@ -297,7 +297,7 @@ export function Playground() {
             <AnimatePresence mode="wait" initial={false}>
               <motion.span key={copied ? "done" : "copy"} className="bb-copy__in" initial={{ opacity: 0, y: 6, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, transition: { duration: 0.1 } }} transition={{ duration: 0.25, ease: EASE.outQuint }}>
-                {copied ? <Check width={14} height={14} strokeWidth={2.5} /> : <Copy width={14} height={14} />}{copied ? "Copied" : "Copy"}
+                {copied ? <Check width={14} height={14} strokeWidth={2.5} /> : <Copy width={14} height={14} />}<span className="bb-copy__word">{copied ? "Copied" : "Copy"}</span>
               </motion.span>
             </AnimatePresence>
           </button>
