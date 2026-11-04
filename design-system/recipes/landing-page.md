@@ -24,6 +24,8 @@
 12. **Avatars:** real people get their real published photo (Sarvam CDN). AI teammates are shown by their **role icon** (Nucleo glyph in a tone tile), never initials and never stock faces.
 13. **Hero kicker:** the product name is a plain accent eyebrow (12px, uppercase, `--color-accent`), not a pill.
 14. **Tab rails carry the tone:** an icon tile per tab, and the active tab takes its tone's soft gradient + grain + a progress bar in the tone.
+15. **Patterns, quietly:** Sarvam's geometry as hairlines in one tone, ≤ 30% opacity, never filled (`src/components/sarvam/patterns.tsx`): gateway echoes rising behind the hero product shot, medallion echoes on the dark trust band and in the corner of each bento well. The ornamental divider / line motif appears **only in the hero**, never above every section.
+16. **Eyebrows sparingly:** an uppercase eyebrow only where it adds a label the heading lacks (here: How it works, Integrations, Skills). Most chapters are just heading + lead.
 9. **In-page links scroll smoothly** (`scroll-behavior: smooth`, off with reduced motion) and land each heading ~88px under the top. Menu items that exist on the page link to their section (`#how`, `#integrations`, `#stories`, `#faq`).
 
 

@@ -7,11 +7,12 @@ import {
   BookOpenFill, BriefcaseFill, ListTodoFill, ShieldCheckFill, CalendarClockFill, ChartFill, Check, Globe, Lock, MegaphoneFill, PlugFill, SearchFill, ShieldCheck, SparkleFill, TargetFill, UserFill, UserRound,
 } from "@/components/icons";
 import {
-  Button, ButtonRow, CardGrid, Checklist, CoworkDashboard, CtaCard, Eyebrow, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview,
+  Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Eyebrow, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview,
   Motif, ScheduleDashboard, SectionHeader, TileCard, TrustBand,
 } from "@/components/sarvam";
 import { BrandMark, LogoLockup, hasMark } from "@/components/sarvam/brand";
 import { MegaNav } from "@/components/sarvam/mega-nav";
+import { GatewayEcho, MedallionEcho } from "@/components/sarvam/patterns";
 import { Marquee, Reveal, SkillCreator, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import "./cowork.css";
@@ -68,8 +69,8 @@ function BentoTile({ area, tone, icon: I, eyebrow, title, desc, visual }: {
   eyebrow: string; title: string; desc: string; visual: React.ReactNode;
 }) {
   return (
-    <article className={`cw-tile cw-well--${tone}`} style={{ gridArea: area }} data-sibling>
-      <div className="cw-tile__visual" aria-hidden>{visual}</div>
+    <article className="cw-tile" style={{ gridArea: area }} data-sibling>
+      <div className={`cw-tile__visual cw-well--${tone}`} aria-hidden><MedallionEcho rings={2} className="cw-tile__pattern" />{visual}</div>
       <div className="cw-tile__text">
         <p className="cw-tile__eyebrow"><span className={`cw-tile__icon cw-tone--${tone}`}><I width={14} height={14} /></span>{eyebrow}</p>
         <h3 className="sr-h4" data-line="title">{title}</h3>
@@ -112,6 +113,7 @@ export default function IndusCoworkPage() {
             </ButtonRow>
           </Reveal>
           <Reveal delay={0.15} className="cw-hero__shot">
+            <GatewayEcho className="cw-hero__gates" />
             <CoworkDashboard />
           </Reveal>
         </section>
@@ -137,7 +139,7 @@ export default function IndusCoworkPage() {
 
         {/* 4 · Building blocks (Product): a bento of six tiles, each its own colour and its own small product moment */}
         <section id="blocks" className="sr-container cw-section" aria-labelledby="blocks-h">
-          <Reveal><SectionHeader eyebrow="Building blocks" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Five parts you set up once. Every teammate on your workspace shares them." /></Reveal>
+          <Reveal><SectionHeader title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Five parts you set up once. Every teammate on your workspace shares them." /></Reveal>
           <Reveal className="cw-bento" >
             <BentoTile area="mates" tone="indigo" icon={UserFill} eyebrow="Teammates" title="One teammate per job" desc="Point each one at a role and it runs the work from start to finish."
               visual={<div className="cw-bv-mates">{ROLES.map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
@@ -188,13 +190,13 @@ export default function IndusCoworkPage() {
 
         {/* 7 · Runs while you sleep (Product): the working schedule */}
         <section className="sr-container cw-section" aria-labelledby="sched-h">
-          <Reveal><SectionHeader eyebrow="Scheduled tasks" title={<span id="sched-h">Runs while you sleep</span>} lead="Set the schedule once and the work lands on its own, so your day starts with the output, not the to-do list." /></Reveal>
+          <Reveal><SectionHeader title={<span id="sched-h">Runs while you sleep</span>} lead="Set the schedule once and the work lands on its own, so your day starts with the output, not the to-do list." /></Reveal>
           <Reveal><ScheduleDashboard /></Reveal>
         </section>
 
         {/* 8 · Day to day (Product): three cards, each showing its moment */}
         <section className="sr-container cw-section" aria-labelledby="steps-h">
-          <Reveal><SectionHeader eyebrow="Day to day" title={<span id="steps-h">Message an agent like a teammate</span>} lead="Teammates live in Slack and Indus Chat. You talk to them the way you would a colleague." /></Reveal>
+          <Reveal><SectionHeader title={<span id="steps-h">Message an agent like a teammate</span>} lead="Teammates live in Slack and Indus Chat. You talk to them the way you would a colleague." /></Reveal>
           <Reveal className="cw-steps" >
             {[
               { kind: "message" as const, tone: "indigo", title: "Hand over the task", body: "Message a teammate in Slack or Indus Chat, the way you would a colleague." },
@@ -215,7 +217,7 @@ export default function IndusCoworkPage() {
 
         {/* 9 · Roles (Community-leaning Product): give each teammate a job */}
         <section className="sr-container cw-section" aria-labelledby="roles-h">
-          <Reveal><SectionHeader eyebrow="Teammates" title={<span id="roles-h">Give each teammate a job</span>} lead="Point a teammate at a role and let it run. Every result comes back for your review before anything goes out." /></Reveal>
+          <Reveal><SectionHeader title={<span id="roles-h">Give each teammate a job</span>} lead="Point a teammate at a role and let it run. Every result comes back for your review before anything goes out." /></Reveal>
           <Reveal>
             <Stage label="Example teammates" interval={6000} rail="top" items={ROLES.map((r) => ({ key: r.key, tab: r.role, tone: r.tone, icon: <span className={`cw-tab-icon cw-tone--${r.tone}`}><r.icon width={16} height={16} /></span>, panel: <RolePanel r={r} /> }))} />
           </Reveal>
@@ -223,7 +225,8 @@ export default function IndusCoworkPage() {
 
         {/* 10 · Sovereign by default (Product, the trust band) + security details */}
         <section className="sr-container cw-section" aria-labelledby="trust-h">
-          <Reveal>
+          <Reveal className="cw-trust">
+            <MedallionEcho className="cw-trust__pattern" />
             <TrustBand title="Sovereign by default" lead="Powerful teammates you can hand real work to, without handing over control." points={[
               { title: "Your data stays with you", body: "Knowledge and task history stay together in your own workspace." },
               { title: "Nothing ships without you", body: "Sending, merging and changes always wait for your approval first." },
@@ -231,13 +234,17 @@ export default function IndusCoworkPage() {
               { title: "Built on Sarvam's stack", body: "Runs on Sarvam's own models, with data residency in India." },
             ]} />
           </Reveal>
-          <Reveal className="cw-security">
-            <CardGrid name="security" columns={2} tone="neutral" cards={[
-              { icon: Globe, eyebrow: "Data residency", title: "Stored in India", desc: "Data for Indian deployments is stored in India, under your controls." },
-              { icon: ShieldCheck, eyebrow: "Certifications", title: "ISO and SOC 2", desc: "ISO 27001:2022 and SOC 2 Type I, with documents in the Trust Center." },
-              { icon: UserRound, eyebrow: "Access controls", title: "SSO and roles", desc: "Role-based access and single sign-on, with audit logs to review it." },
-              { icon: Lock, eyebrow: "Encryption", title: "At rest and in transit", desc: "Stored data and every connection between your services stay encrypted." },
-            ]} />
+          <Reveal>
+            <ul className="cw-sec" data-siblings="security">
+              {[
+                { icon: Globe, title: "Data residency", desc: "Data for Indian deployments stays in India." },
+                { icon: ShieldCheck, title: "Certifications", desc: "ISO 27001:2022 and SOC 2 Type I, on record." },
+                { icon: UserRound, title: "Access controls", desc: "SSO, role-based access and full audit logs." },
+                { icon: Lock, title: "Encryption", desc: "Your data is encrypted at rest and in transit." },
+              ].map(({ icon: I, title, desc }) => (
+                <li key={title} data-sibling><I width={20} height={20} strokeWidth={1.5} aria-hidden /><b data-line="title">{title}</b><span data-line="desc">{desc}</span></li>
+              ))}
+            </ul>
           </Reveal>
         </section>
 

@@ -1,5 +1,5 @@
 /* Indus Cowork landing page. Prefix cw-. Tokens only (design-system/tokens.css). Recipe: recipes/landing-page.md §2. */
-.cw { padding-bottom: var(--space-section); }
+.cw { padding-bottom: var(--space-section); overflow-x: clip; }
 .cw-section { padding-top: var(--space-section); display: flex; flex-direction: column; gap: var(--space-section-head); scroll-margin-top: 80px; }
 .cw-muted { color: var(--color-tx-tertiary); margin: 0; }
 .cw-narrow { width: 100%; max-width: 720px; margin-inline: auto; }
@@ -185,16 +185,17 @@
 .cw-bento { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); grid-template-areas: "mates" "skills" "sched" "kb" "apps"; }
 @media (min-width: 768px) { .cw-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "mates skills" "sched kb" "apps apps"; } }
 @media (min-width: 1024px) { .cw-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-areas: "mates mates mates skills skills skills" "sched sched kb kb apps apps"; gap: var(--space-5); } }
-/* the whole card carries the tone: a soft gradient (tone-50 top-left → tone-100 bottom-right) + grain + a hairline. No inner frame. */
-.cw-tile { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-rows: 168px auto; gap: var(--space-6); padding: var(--space-6) var(--space-6) var(--space-8); border-radius: var(--radius-3xl); box-shadow: inset 0 0 0 1px rgb(30 32 51 / 0.06); }
-.cw-tile::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--texture-grain), linear-gradient(150deg, var(--well-2) 0%, var(--well) 100%); background-blend-mode: overlay, normal; }
-.cw-tile__visual { display: grid; place-items: center; min-height: 0; }
+.cw-tile { display: grid; grid-template-rows: 1fr auto; gap: var(--space-5); padding: var(--space-2) var(--space-2) var(--space-6); border-radius: var(--radius-3xl); background: var(--color-sr-white); border: var(--border-default); min-height: 340px; }
+.cw-tile__visual { position: relative; display: grid; place-items: center; min-height: 180px; padding: var(--space-6) var(--space-4); border-radius: calc(var(--radius-3xl) - var(--space-2)); overflow: hidden; isolation: isolate; }
+/* the well: a pale tone that fades into white toward the bottom, grain on top, a 1px inner highlight */
+.cw-tile__visual::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--texture-grain), linear-gradient(180deg, var(--well) 0%, var(--well-2) 60%, var(--color-sr-white) 100%); background-blend-mode: overlay, normal; }
+.cw-tile__visual::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), inset 0 0 0 1px rgb(30 32 51 / 0.04); pointer-events: none; }
 .cw-well--indigo { --well: var(--color-sr-indigo-100); --well-2: var(--color-sr-indigo-50); }
 .cw-well--orange { --well: var(--color-sr-orange-100); --well-2: var(--color-sr-orange-50); }
 .cw-well--green { --well: var(--color-sr-green-100); --well-2: var(--color-sr-green-50); }
 .cw-well--rose { --well: var(--color-sr-pink-100); --well-2: var(--color-sr-pink-50); }
-.cw-well--neutral { --well: var(--color-sr-indigo-50); --well-2: var(--color-sr-white); }
-.cw-tile__text { display: flex; flex-direction: column; gap: var(--space-2); }
+.cw-well--neutral { --well: var(--color-sr-grey-100); --well-2: var(--color-sr-grey-50); }
+.cw-tile__text { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-4); }
 .cw-tile__text .sr-body { color: var(--color-tx-tertiary); margin: 0; }
 .cw-tile__eyebrow { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 12px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-tx-tertiary); }
 .cw-tile__icon { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; }
@@ -309,3 +310,24 @@ html:has(.cw) { scroll-behavior: smooth; }
 .cw-sc__mate { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-sr-white); }
 .cw-sc__mate + .cw-sc__mate { margin-left: -6px; }
 .cw-sc__note { font-size: 12px; color: var(--color-tx-tertiary); }
+
+/* ── Pattern layer (patterns.tsx): Sarvam geometry as hairlines, one tone, low opacity ── */
+.pt-chapter { display: block; width: 140px; height: 20px; margin: 0 auto var(--space-5); color: var(--color-sr-orange-800); opacity: 0.55; }
+@media (max-width: 767px) { .pt-chapter { margin-left: 0; } }
+.cw-hero__shot { position: relative; }
+.cw-hero__gates { position: absolute; z-index: -1; left: 0; bottom: 40%; width: 100%; height: 72%; color: var(--color-sr-indigo-400); opacity: 0.28; pointer-events: none; }
+.cw-hero__shot > *:not(.cw-hero__gates) { position: relative; }
+.cw-trust { position: relative; border-radius: var(--radius-3xl); overflow: hidden; isolation: isolate; }
+.cw-trust__pattern { position: absolute; z-index: 1; right: -12%; top: 50%; width: 46%; height: auto; transform: translateY(-50%); color: var(--color-sr-white); opacity: 0.08; pointer-events: none; }
+@media (max-width: 1023px) { .cw-trust__pattern { width: 90%; right: -40%; top: 0; transform: none; } }
+.cw-tile__pattern { position: absolute; z-index: -1; right: -18%; top: -30%; width: 60%; height: auto; color: var(--color-tx); opacity: 0.06; pointer-events: none; }
+
+/* Security: one quiet panel, four items split by hairlines (4 across from 1024, 2×2 on tablet, a list on phone) */
+.cw-sec { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); border: var(--border-default); border-radius: var(--radius-3xl); background: var(--color-sr-white); overflow: hidden; }
+@media (min-width: 768px) { .cw-sec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .cw-sec { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.cw-sec li { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-6); box-shadow: inset 1px 1px 0 var(--color-st-secondary); margin: 0 0 -1px -1px; }
+.cw-sec svg { color: var(--color-sr-indigo-800); margin-bottom: var(--space-2); }
+.cw-sec b { font-weight: var(--weight-medium); font-size: var(--text-body); color: var(--color-tx); }
+.cw-sec span { font-size: var(--text-small); color: var(--color-tx-tertiary); max-width: 26ch; }
+@media (min-width: 1024px) and (max-width: 1279px) { .cw-sec li { padding: var(--space-5); } .cw-sec span { font-size: 13px; } }
