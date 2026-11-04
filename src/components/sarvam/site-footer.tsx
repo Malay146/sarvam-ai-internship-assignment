@@ -1,5 +1,5 @@
 // Site footer (v2): a calm white top (brand, columns, trust, socials) and a closing band where the official white
-// wordmark sits large on Sarvam's indigo-glow horizon, filled with a light gradient (exception to logo.md rule 4, Malay's call).
+// wordmark sits large on Sarvam's indigo-glow horizon, in solid white over the footer wash, with a subtle shadow (exception to logo.md rule 4, Malay's call).
 // Links and address [verified: sarvam.ai footer].
 import { GlobeFill, LockFill, ShieldCheckFill } from "@/components/icons";
 import { SOCIAL } from "./social";
@@ -51,8 +51,8 @@ export function SiteFooter() {
       </div>
       <div className="sf__band">
         <div className="sr-container sf__band-inner">
-          {/* Malay's call (2026-11-04): the official wordmark shape, filled with a gradient — a deliberate exception to
-              logo.md rule 4, used only here as a decorative footer mark. The shape is the official file used as a mask. */}
+          {/* Malay's call (2026-11-04): the official white wordmark, large and decorative, with a subtle shadow — an exception to
+              logo.md rule 4 (shadow only; no gradient), used only here. The shape is the official file used as a mask. */}
           {/* the shadow sits on a wrapper: a filter on the masked element itself would be masked away */}
           <span className="sf__giant-wrap" aria-hidden><span className="sf__giant" /></span>
           <div className="sf__band-foot">

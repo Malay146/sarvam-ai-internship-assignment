@@ -665,7 +665,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* footer wash: the spectrum stacked bottom → top (saffron, peach, blush, lilac, periwinkle), well blended in OKLab,
    subtle, fading out three-quarters of the way up; grain over it */
 .sf::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 75%; pointer-events: none;
-  background: linear-gradient(0deg in oklab, rgb(250 155 67 / 0.40) 0%, rgb(250 190 163 / 0.42) 18%, rgb(236 196 208 / 0.38) 38%, rgb(194 171 204 / 0.32) 58%, rgb(167 192 241 / 0.22) 78%, rgb(232 239 252 / 0) 100%); }
+  background: linear-gradient(0deg in oklab, rgb(250 140 50 / 0.48) 0%, rgb(250 170 135 / 0.48) 18%, rgb(232 172 196 / 0.42) 38%, rgb(178 150 210 / 0.36) 58%, rgb(140 168 240 / 0.26) 78%, rgb(232 239 252 / 0) 100%); }
 .sf::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.4; pointer-events: none; }
 .sf__top { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-12); padding: var(--space-16) 0 var(--space-12); }
 @media (min-width: 1024px) { .sf__top { grid-template-columns: 4fr 8fr; gap: var(--space-16); padding: var(--space-20) 0 var(--space-16); } }
@@ -698,9 +698,9 @@ html:has(.cw) { scroll-behavior: smooth; }
 @media (min-width: 1024px) { .sf__band-inner { padding-top: var(--space-20); } }
 .sf__band-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6); font-size: 12px; color: rgb(30 32 51 / 0.72); }
 
-/* the wordmark: the container width, filled with a soft spectrum (pale indigo → lilac → blush → pale peach) */
+/* the wordmark: 82% of the container, solid white (official white file as a mask) on the footer wash */
 .sf__giant { display: block; width: 82%; margin-inline: auto; aspect-ratio: 202 / 32;
   -webkit-mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat; mask: url(/brand/sarvam-wordmark-white.svg) center / contain no-repeat;
-  background: linear-gradient(100deg in oklab, #a7b4ef 0%, #c6bfe6 35%, #e8cdd6 65%, #f6c9b0 100%); }
+  background: var(--color-sr-white); }
 .sf__band-foot { color: var(--color-tx-tertiary); }
 .sf__giant-wrap { display: block; filter: drop-shadow(0 1px 1px rgb(51 51 204 / 0.10)) drop-shadow(0 10px 22px rgb(51 51 204 / 0.10)); }
