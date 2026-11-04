@@ -268,7 +268,7 @@ export default function BulbulPage() {
 
         {/* 11 · Act (Campaign moment) */}
         <section id="start" className="sr-container cw-section cw-cta" aria-label="Get started">
-          <Reveal><CtaCard title="Make it sound like home." cta={<Button size="lg" href={API_KEY}>Get API key</Button>} /></Reveal>
+          <Reveal><CtaCard title="Your next million conversations can sound more human." cta={<Button size="lg" href={API_KEY}>Get API key</Button>} /></Reveal>
         </section>
       </main>
       <SiteFooter />

@@ -8,7 +8,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 
 | Where | Treatment |
 |---|---|
-| Hero light | **Dawn**: stops `#f57613 → #faac57 → #ccd0e7 → #e2ebff`, radial from the top, colour and alpha eased over 17 stops (no ring). Each product page has its own light (home Sun, Cowork indigo glow). |
+| Hero light | **Bulbul horizon**: rose `#e27fa6` → orchid `#d88fbf` → lilac `#bba3e0` → periwinkle `#a2b5f0` → peach fringe `#f6cfc0`, radial from the top, colour and alpha eased over 17 stops (no ring). Each product page has its own light (home Sun, Cowork indigo glow). |
 | Controls | System indigo: selection rings, slider, segmented pills, playhead, live dots, level meters |
 | Per-item tone | `data-tone` sets `--t`, `--t-soft` and `--t-w1/2`. Tracklist rows: 01 indigo, 02 rose, 03 green, 04 orange. The voice stage and its ripple take the voice's tone. Lanes take theirs. Fact icons: orange, indigo, green. Doors: indigo, orange, rose. |
 | Filled icons | Glyphs with a gradient in their own tone, rising bottom → top, plus a soft inner shadow and no tile (`#bb-grad-<tone>`, `#bb-icon-inset`) |
@@ -30,7 +30,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 | 8 | Upgrade | Switch from V3 in one line | split | Diff card + "What you get for that one line" checklist | passive |
 | 9 | Where to use | Use it where you build | centred | **Doors**: one band, three columns (API, Playground, Content Studio), each with a link | links |
 | 10 | Questions | Questions developers ask first | centred | `OneFaq` (shared), 8 questions | accordion |
-| 11 | Act | Make it sound like home. (echoes the hero; 2 lines max, voice.md §6) | — | `CtaCard` (shared) on Dusk | Get API key |
+| 11 | Act | Your next million conversations can sound more human. (Sarvam's line; title 30ch wide, balanced, scales on phones, so it stays at 2 lines) | — | `CtaCard` (shared) on Dusk | Get API key |
 
 Shared with every page: `MegaNav` (CTA "Get API key"), `HeroGlow` + `Motif`, `SectionHeader`, `OneFaq`, `CtaCard`, `SiteFooter`, tokens, `pv-seg` and `pv-again` controls.
 

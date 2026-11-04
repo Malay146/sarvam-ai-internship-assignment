@@ -5,10 +5,11 @@
 /* ── Page theme. Bulbul's theme is its structure and presentation (studio, tracklist, chorus, ripple stage, multitrack,
    playground), not one colour. Colour stays the system's: indigo for controls and selection, and the full tone set
    (indigo, rose, green, orange, neutral) given per item, one tone per row, voice, fact or door.
-   The hero light is Dawn (Sarvam's sampled stops #f57613 → #faac57 → #ccd0e7 → #e2ebff, eased colour + alpha, 17 stops),
+   The hero light is Bulbul's own horizon: rose → orchid → lilac → periwinkle with a peach fringe (Sarvam's pink and
+   indigo ramps meeting the spectrum's warm end), eased colour + alpha, 17 stops so no ring shows,
    and the closing card is on Dusk; both are multi-colour, so the page doesn't read as a single hue. ── */
 .bb { --bb-accent: var(--color-sr-indigo-800); --bb-accent-ink: var(--color-accent); }
-.bb .sr-hero-glow__sun { background-image: var(--texture-grain), radial-gradient(circle farthest-side at 50% 0% in oklab, rgb(242 115 28 / 1.00) 0.0%, rgb(243 121 34 / 1.00) 6.2%, rgb(246 134 46 / 1.00) 12.5%, rgb(248 144 56 / 1.00) 18.8%, rgb(248 148 60 / 1.00) 25.0%, rgb(249 158 71 / 1.00) 31.2%, rgb(250 169 83 / 1.00) 37.5%, rgb(250 172 89 / 1.00) 43.8%, rgb(244 180 121 / 1.00) 50.0%, rgb(236 190 165 / 1.00) 56.2%, rgb(233 195 184 / 0.94) 62.5%, rgb(224 199 199 / 0.85) 68.8%, rgb(209 206 222 / 0.73) 75.0%, rgb(204 208 231 / 0.58) 81.2%, rgb(211 217 239 / 0.41) 87.5%, rgb(221 229 249 / 0.21) 93.8%, rgb(226 235 255 / 0.00) 100.0%); }
+.bb .sr-hero-glow__sun { background-image: var(--texture-grain), radial-gradient(circle farthest-side at 50% 0% in oklab, rgb(226 127 166 / 1.00) 0.0%, rgb(224 131 172 / 1.00) 6.2%, rgb(219 138 183 / 1.00) 12.5%, rgb(216 143 191 / 1.00) 18.8%, rgb(211 146 196 / 1.00) 25.0%, rgb(199 155 211 / 1.00) 31.2%, rgb(188 162 223 / 1.00) 37.5%, rgb(185 165 225 / 1.00) 43.8%, rgb(174 172 232 / 1.00) 50.0%, rgb(164 179 239 / 1.00) 56.2%, rgb(166 182 238 / 0.94) 62.5%, rgb(196 192 220 / 0.85) 68.8%, rgb(233 203 200 / 0.73) 75.0%, rgb(246 207 192 / 0.58) 81.2%, rgb(248 213 199 / 0.41) 87.5%, rgb(250 222 209 / 0.21) 93.8%, rgb(251 227 214 / 0.00) 100.0%); }
 .bb .sr-cta.sr-gradient-night { background-image: var(--texture-grain), var(--gradient-dusk); }
 /* per-item tone: sets --t (ink), --t-soft (tile), --t-well-1/2 (well) for anything with data-tone */
 .bb [data-tone="indigo"] { --t: var(--color-sr-indigo-800); --t-soft: var(--color-sr-indigo-100); --t-w1: var(--color-sr-indigo-50); --t-w2: var(--color-sr-indigo-100); }
@@ -374,3 +375,8 @@ li[data-on="true"] .bb-eq i:nth-child(4) { animation-delay: -0.15s; }
 .bb-codecard .bb-pre { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); padding-bottom: var(--space-8); }
 /* Copy reuses the pv-again pill, whose replay icon spins on hover; a copy icon must stay upright: a small lift instead */
 @media (hover: hover) { .bb-copy:hover svg { transform: translateY(-1px); } }
+
+/* closing card: Sarvam's own line, kept whole. The title widens (30ch) and scales with the viewport on phones, so it
+   never runs past 2 lines at any width (voice.md §6) */
+.bb .sr-cta__title { max-width: 30ch; font-size: min(var(--text-display-2), 5.4vw); text-wrap: balance; }
+@media (max-width: 767px) { .bb .sr-cta { padding-inline: var(--space-4); } }

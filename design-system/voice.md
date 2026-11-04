@@ -129,7 +129,7 @@ Use only these claims.
 | Banner headline | 8 words / 40 characters; ~26 characters when it sits inside a shape on LinkedIn | ≤ 3 lines (Meta), ≤ 2 lines (LinkedIn), at full size |
 | Banner subhead | 70 characters | 1–2 lines |
 | Eyebrow | 24 characters | uppercase via CSS, written in sentence case |
-| Closing CTA title | 28 characters, ~14 per line | **never more than 2 lines at any width** (the card's title is 14ch wide). Sarvam's long closing lines go in a lead or nowhere |
+| Closing CTA title | 2 lines | **never more than 2 lines at any width.** Keep the copy (Malay's call); for a longer line, widen the title (up to 30ch), balance it, and scale it with the viewport on phones (`min(var(--text-display-2), 6vw)`) |
 
 ---
 
