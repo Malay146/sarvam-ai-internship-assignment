@@ -643,3 +643,18 @@ Entry format:
 - Round 4 (v3, current): a story order (promise → how → why → made of → where → control → try → trust → proof → questions → act); proven sections (how-it-works stage, bento) kept, mixed with ours (contrast, integrations grid, approval desk + activity trail, day timeline, teammate builder, one-open FAQ).
 - Fixes along the way: indigo hero glow (no visible ring), no blank states (in-place row states, pre-filled logs, timelines show every card), dots on the rail, sliding segmented pill, fieldset legend on the border → div, patterns tried then removed, gradient icons without tiles, softer shadows, grain token 0.22 → 0.30.
 - Every rule is recorded in  §0 (34 rules) so the next page needs no correction rounds; components.md updated for icons, brand marks, MegaNav, Stage.
+
+## 2026-11-04 · Claude Code · Landing page footer (rounds 5+)
+
+- Prompts (verbatim, in order): "improve the footer, make it more professiona, and modern,yet keeping it minimal and sarvam, have that sarvam name belwo footer and like gradients and all that things" · "have a gradient to the footer bottom to top or like 75%, with a multi color and beautiful colors well blended and subtle one" · "improve this have filled icons and maybe colors" (trust badges) · "make the footer gradient stronger" · "remove the gradient from the sarvam logo, and increase the satrureation of footer gradient by a bitt" · "remove shadow from logo" · "make the footer gradient reach like 85%" · "make it like 95%" · "have gradient on each char of logo, ane inner shadow of light…" · "and outer shadow too" · "make the sarvam logo submerged belwo and increase the size by a bit, and reduce the opacity of outer shadow" · "haev this place somewhat properly, this looks odd" (© row) · "it is submerged too deep" · "there are 2 dividers need only one" · "increase the size of the sarvam logo" · "95% of logo should be visible…" → 3% → 7% → 10% · "for now remove gradient from the logo and have a very simple gray one" · "like gray to white" · "bottom to top" · "reduce the opaticy of both" · "have inner subtle white shadows" · "have outer shadow to make it slightly 3d, and subtle not to much spread and blur" · "reduce the opacituy of gradient by a bit" · "make the outer shadow more subtle and slightly reduce opacity too"
+- What came out (current):
+  - A spectrum wash stacked bottom → top (saffron, peach, blush, lilac, periwinkle; OKLab), fading out at 95% of the footer height, with grain on top.
+  - Trust badges: a filled glyph in its own brand hue on a soft tint (ISO indigo, SOC 2 green, residency orange).
+  - The © and address row sits under the trust/legal row, with one hairline above both.
+  - The giant wordmark is the official path inline, at the full container width, with its lower 10% submerged. Fill is grey → white bottom to top at 40% opacity, with a subtle inner white edge and a tight, faint outer shadow for a slight 3D lift.
+- What changed and why:
+  - The logo gradient went through several versions: a spectrum fill, then plain white, then per-letter hues, then the current grey → white. Malay settled on a quieter mark. This is recorded as the one exception in logo.md rule 4.
+  - The drop shadow is built from a solid copy of the shape and cut away under the letters, so the semi-transparent fill doesn't show a dark shadow through it.
+  - A filter on a CSS-masked element is masked away, so the wordmark became an inline SVG (official path, unchanged).
+  - The © row floated alone in the wash, so it moved into the meta block. The second divider was dropped.
+- QA: check-layout 10/10 widths after each round. Chromium and WebKit screenshots of the wordmark filters.
