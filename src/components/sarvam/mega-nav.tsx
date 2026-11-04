@@ -29,14 +29,14 @@ const MENUS: Menu[] = [
     items: [
       { label: "Voice Agents", desc: "Conversational AI", icon: Microphone, tone: "indigo" },
       { label: "Token Factory", desc: "Open model inference in India", icon: Server, tone: "green" },
-      { label: "Work Agents", desc: "AI for Work", icon: Nodes, tone: "green", href: "#how" },
+      { label: "Work Agents", desc: "AI for Work", icon: Nodes, tone: "green", href: "#build" },
       { label: "Model Training", desc: "Custom AI models", icon: Brain, tone: "indigo" },
       { label: "Coding Agents", desc: "Ship high quality code", icon: Code, tone: "orange" },
       { label: "Sarvam Edge", desc: "On device AI", icon: Mobile, tone: "neutral" },
       { label: "Content Studio", desc: "Content Transformation", icon: Newspaper, tone: "green" },
       { label: "Document AI", desc: "Parse, extract and translate docs", icon: FileText, tone: "orange" },
     ],
-    feature: { eyebrow: "New", title: "Indus Cowork", desc: "AI teammates that finish the work.", cta: "See how it works", href: "#how", surface: "sr-gradient-dawn" },
+    feature: { eyebrow: "New", title: "Indus Cowork", desc: "AI teammates that finish the work.", cta: "Build a teammate", href: "#build", surface: "sr-gradient-dawn" },
   },
   {
     key: "developers", label: "Developers", heading: "APIs",
@@ -54,7 +54,7 @@ const MENUS: Menu[] = [
     key: "resources", label: "Resources", heading: "Resources",
     items: [
       { label: "Customer Stories", icon: Quote, tone: "orange", href: "#stories" },
-      { label: "Integrations", icon: Plug, tone: "green", href: "#integrations" },
+      { label: "Integrations", icon: Plug, tone: "green", href: "#build" },
       { label: "API Pricing", icon: Tag, tone: "red" },
       { label: "Events", icon: CalendarCheck, tone: "indigo" },
       { label: "Partnerships", icon: Handshake, tone: "green" },

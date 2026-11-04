@@ -1,80 +1,73 @@
 # Recipe · Indus Cowork landing page
 
-> **Built:** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork,mega-nav,brand}.tsx`. The table below is the build as shipped (round 2); follow it for any new product page.
+> **Built (v2):** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork-play,mega-nav,brand,cowork}.tsx`.
+> **Read §0 before building any page.** It is every lesson from building this one, so the next page needs no correction rounds.
 
-## 0. Rules learned on this page (apply to every new page)
-1. **Feel close to sarvam.ai's homepage, not to a product subpage:**
-   - Sun hero, a proof strip under it, a product stage, centred chapter headers
-   - bento / pillars, deployment cards, a customer quote on the horizon gradient, the night CTA
-   - the mega menu
-2. **Authentic or absent:**
-   - only verified facts and real assets: official brand marks (`brand-marks.ts`), Sarvam's published customer logo and photo, real quotes
-   - no invented logos, testimonials, numbers or customer names
-   - a quote about Sarvam (not this product) is headed "What Sarvam's customers say"
-3. **Logos:** mono in the proof marquee; **official colours** in the directory and logo tiles (components.md §3.1b).
-4. **Equal heights everywhere:**
-   - sibling cards, bento rows, step cards
-   - **and side-by-side pairs** (stage rail = panel; skills text = skills card)
-5. **Colour by tone, one tone per block:** indigo, orange, green, rose, neutral (haze) surfaces with grain (`cw-surface--*`), and the matching ink for icons (`cw-tone--*`).
-6. **Every card that explains a step shows its moment:** a small product mock (StepVisual), not plain text.
-7. **Icons:** outline by default; Nucleo glyph (filled) in tab icons, small coloured tiles and the mega-menu item icons.
-8. **Cards stay soft:** colour lives in a pale **well** at the top of a white card (tone-100 → tone-50 → white, grain, hairline), never as a full saturated card. One tone per card; 5 building-block cards (3 + 3 / 2 + 2 + 2).
-10. **Card colour comes from the card itself**: a soft gradient across the whole card (tone-50 → tone-100, grain, 1px hairline). No inner frames or wells inside cards. Visual areas have one fixed height so every card in a row has the same rhythm.
-11. **Mocks inside cards:** one size per row (e.g. 300 × 184 side by side), content from the top with one padding, and they **loop** while visible (useLoop). If a mock has buttons, they really work (answer, then the loop resumes). Real buttons are 44px to the finger (transparent border) even when they look 32px.
-12. **Avatars:** real people get their real published photo (Sarvam CDN). AI teammates are shown by their **role icon** (Nucleo glyph in a tone tile), never initials and never stock faces.
-13. **Hero kicker:** the product name is a plain accent eyebrow (12px, uppercase, `--color-accent`), not a pill.
-14. **Tab rails carry the tone:** an icon tile per tab, and the active tab takes its tone's soft gradient + grain + a progress bar in the tone.
-15. **Patterns only where Malay places them.** Don't add decorative patterns (gateway / medallion echoes, ornaments) on your own; `src/components/sarvam/patterns.tsx` provides them (hairlines, one tone, ≤ 30% opacity, never filled) for when a placement is asked for. The official line motif stays in the hero only.
-17. **Hero light by expression:** the homepage owns the orange **Sun**. A Product page uses the **indigo glow** disc (indigo core → lilac → peach rim, same shape and fade as HeroGlow), so the page reads as Sarvam but not as a copy of the homepage.
-18. **Logos with no Simple Icons / Nucleo entry** come from the company's own website (e.g. canva.com, apify.com, datarobot.com), stored unchanged in `public/brand/integrations/`. Wordmark logos (Canva) stand alone, without the name repeated beside them.
-19. **One header-to-content gap:** every section uses exactly `--space-section-head` (40px phone, 56px from 768) between its header and its content. Don't stack the header's own margin on top of a flex gap.
-16. **Eyebrows sparingly:** an uppercase eyebrow only where it adds a label the heading lacks (here: How it works, Integrations, Skills). Most chapters are just heading + lead.
-9. **In-page links scroll smoothly** (`scroll-behavior: smooth`, off with reduced motion) and land each heading ~88px under the top. Menu items that exist on the page link to their section (`#how`, `#integrations`, `#stories`, `#faq`).
+## 0. Page-building playbook (apply to every new page)
 
+### 0.1 Originality: our sections, their facts
+1. **Take facts from the source, never its structure.** Read sarvam.ai (or the product page) for *what is true*; then invent our own section formats. Do not mirror Sarvam's section order or formats (tabbed feature stage, building-block grid, connector directory, schedule timeline, steps row, roles tabs, deployment cards). v1 of this page did, and was rejected.
+2. **Engage, but don't make every section a control panel.** Only a few sections are hands-on (here: the teammate builder, the day scrubber, and the approval desk, which plays itself until the reader steps in). The rest are passive and motion-led (dashboard, drifting integrations, contrast, facts, quote). Interactive sections end in a clear next step ("Talk to us about this teammate").
+3. **One idea per section, said as a contrast or a promise** ("An assistant answers. A teammate finishes.", "Nothing ships without your yes").
+4. The subject stays the product (Indus Cowork); feel stays Sarvam (tokens, type, gradients, logo rules).
 
-One complete, responsive product page, hero → footer, built only from `src/components/sarvam` and tokens. Expression: **Product**, with one **Campaign** moment (the closing CTA) and one **Community** moment (the testimonial / proof band).
-Exports: **375 / 768 / 1440**. It must also hold at every width in between (QA at 10 widths).
+### 0.2 Authentic or absent
+5. Facts only from `voice.md` §5 (add a new fact there first, with its source). Illustrative UI text inside mocks is fine; claims are not.
+6. Real assets only: official brand marks (`brand-marks.ts`: Simple Icons CC0, Nucleo social, or the company's own site → `public/brand/integrations/`), Sarvam's published customer logo and photo (from `assets.sarvam.ai`), real quotes. No lookalike logos, no initials as avatars, no stock faces. AI teammates' avatar = their role icon.
+7. A quote about Sarvam (not this product) is headed "What Sarvam's customers say".
 
----
+### 0.3 Look
+8. **Hero light by expression:** the homepage owns the orange Sun; product pages use the indigo glow (eased colour + alpha, ≥ 16 stops, so no ring shows).
+9. **Cards:** white card + hairline; colour lives in a soft tone well or a tone-50 → tone-100 surface with grain. Never a full saturated card. One tone per block.
+10. **Logos coloured** wherever the mark is the subject (pickers, directories); mono only in a proof strip.
+11. **Icons:** Nucleo Core only. Outline by default; glyph (filled) in chips, tab icons, small tone tiles and the mega-menu.
+12. **Patterns** (gateway / medallion echoes, ornaments) only where Malay asks. The official line motif appears in the hero only. No divider above every section.
+13. **Eyebrows sparingly:** only where they add a label the heading lacks (here: Indus Cowork kicker, "Try it").
+14. **Hero kicker** = plain accent text, not a pill.
+14b. **Hero** = centred kicker + H1 + lead + buttons, with the **main product dashboard** (`CoworkDashboard`) full-width below. The product is the hero image.
+15. **Navbar:** MegaNav with real menu items, filled icons, a frameless featured tile, and **one CTA** (Talk to Us, primary).
 
-## 1. Section order
+### 0.4 Layout
+16. **Side-by-side blocks end on the same line** (stretch; check equal `bottom` at ≥ 1024). Sibling cards: equal heights and line counts (`check-layout`).
+17. **One header-to-content gap:** `--space-section-head` (40 / 56). Never stack the header margin on a flex gap.
+18. **Interactive boxes have a fixed size** (all states share one grid cell or a fixed height), so nothing moves when content changes.
+19. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children, or wide mocks push the page sideways. The page clips at `overflow-x: clip`.
+20. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 
-| # | Section | Component(s) | Expression | Copy source |
+### 0.5 Motion
+21. Transform + opacity only; nothing changes size. Loops run only while visible and stop for good once the reader interacts. Reduced motion = the finished state, no movement.
+22. Real controls inside mocks really work (approve, toggle) and are 44px to the finger.
+23. In-page links scroll smoothly (off with reduced motion) and land each heading ~88px under the top. QA scripts must scroll with `behavior: "instant"`.
+
+### 0.6 Before calling it done
+24. `check-layout` (10 widths), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look at it: screenshots at 375 / 768 / 1440.
+
+## 1. Section order (v2, as built)
+
+| # | Section | What the reader does | Component | Facts from |
 |---|---|---|---|---|
-| 1 | Nav (overlay) | `MegaNav` (Products / Developers / Resources / Company panels, Log In + Talk to Us) | — | sarvam.ai navbar |
-| 2 | Hero | `HeroGlow` + motif + eyebrow "Indus Cowork" + `display-product` H1 + lead + `ButtonRow` (Talk to Us / See how it works) + `CoworkDashboard` as the product shot | Product | H1: "Hire an AI teammate that finishes the work" |
-| 3 | How it works | `SectionHeader` chapter + 3 × `FeatureRow` (Plan / Research / Review mocks, tints indigo → orange → green) | Product | voice.md §5 |
-| 4 | Building blocks | `SectionHeader` + `CardGrid` (Skills, Teammates, Scheduled tasks…) or `EmblemCard` row | Product | voice.md §5 |
-| 5 | Runs while you sleep | `SectionHeader` split + `ScheduleDashboard` | Product | voice.md §5 |
-| 6 | Steps | `SectionHeader` + `Steps` (Hand over / It works / You approve) | Product | |
-| 7 | Facts | `FactCard` row (100+ apps / Your yes / India) | Product | verified only |
-| 8 | Deployment | `TileCard` row (Sarvam Cloud / Private Cloud (VPC) / On-Premises) | Product | brand-findings |
-| 9 | Sovereign by default | `TrustBand` | Product | voice.md §5 |
-| 10 | FAQ | `Faq` | Product | /indus-cowork FAQ |
-| 11 | Closing CTA | `CtaCard` "Meet your first teammate." | Campaign | |
-| 12 | Footer | `Footer` | — | |
+| 1 | Hero | Reads the promise; watches the live Cowork dashboard | `CoworkDashboard` | H1, "message it like a colleague" |
+| 2 | Assistant vs teammate | Reads one contrast, side by side (passive) | `.pv-vs` | FAQ: chat assistant vs Cowork teammate |
+| 3 | Works where your work already lives | Watches real coloured marks drift behind "100+" (passive) | `IntegrationField` | 24 named connectors, 100+, bring your own |
+| 4 | Nothing ships without your yes | Watches the desk approve items and write the trail; can step in | `ApprovalDesk` | approvals, "every task leaves a trail" |
+| 5 | It works while you sleep | Scrubs the clock (06:00 → Fri), auto-advances until touched | `DayScrubber` | "Runs while you sleep" schedule |
+| 6 | Build your first teammate | Picks a job, toggles apps (real logos, up to 5), sets a rhythm; a live teammate card ends in "Talk to us about this teammate" | `TeammateBuilder` | roles, 100+ connectors, scheduled tasks |
+| 7 | Sovereign by default | Reads four facts in one panel | `.cw-sec` | data residency, ISO / SOC 2 Type I, SSO, encryption |
+| 8 | What Sarvam's customers say | — | `.cw-quote` | Tata Capital (sarvam.ai) |
+| 9 | Questions teams ask first | Opens answers | `Faq` | /indus-cowork FAQ |
+| 10 | Meet your first teammate | Talk to Us | `CtaCard` | — |
 
-Vertical rhythm: `--space-section` between sections (96 / 176). Header → content `--space-section-head`.
-
----
-
-## 2. Responsive behaviour per section (rearrange, not shrink)
+## 2. Responsive behaviour
 
 | Section | Phone (<768) | Tablet (768–1023) | Desktop (≥1024) |
 |---|---|---|---|
-| Nav | wordmark · Talk to Us · menu sheet | same | wordmark · 4 links · Talk to Us |
-| Hero | centred text; buttons stacked if they don't fit; dashboard below with its teammate list as a swipe row | centred; buttons side by side; dashboard full width | H1 2 lines (max 56rem); dashboard 1200 wide with the sidebar |
-| How it works | feature cards stacked, mock on top | stacked, mock full width | 5 / 7 split, mock right |
-| Building blocks | 1 column | horizontal cards, 1 column | 3 columns, subgrid |
-| Schedule | list rows with status on line 2; approvals below | 4-column list; approvals below | list + approvals side by side |
-| Steps | vertical with connector | 3 columns | 3 columns |
-| Facts / Deployment | 1 column | 1 column (tiles stack) | 3 columns (tiles from 1280) |
-| Trust band | points 1 column | 2 columns | title left, 2×2 points right |
-| FAQ | full width | max 720 | max 720, centred |
-| CTA | 420 tall, centred | 400 | 460 |
-| Footer | 2 link columns | 4 columns | brand + 4 columns |
-
----
+| Hero | centred text, dashboard below (its own phone layout) | same | same, dashboard full container width |
+| Integrations | statement above, logo rows below | statement card over the rows | same |
+| Assistant vs teammate | stacked | 2 columns | 2 columns |
+| Approval desk | queue, then trail | same | queue 7 / trail 5, equal height |
+| Day scrubber | 5 stops across, card below | same | same, wider card |
+| Builder | controls, then the teammate card | same; apps 3-up | controls 7 / card 5 (card sticky); apps 4-up from 1280 |
+| Security | list | 2 × 2 | 4 across |
 
 ## 3. Quality gates (all must pass before export)
 1. `node scripts/check-layout.mjs http://localhost:3000/`: no overflow, sibling parity, 44px tap targets at 10 widths.
