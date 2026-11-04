@@ -5,7 +5,7 @@
 import type { Metadata } from "next";
 import type { ComponentType, ReactNode } from "react";
 import {
-  ArrowUpRight, BoltFill, BookOpenFill, Check, ClapperboardFill, CodeFill, FilmFill, GraduationCapFill, HeadsetFill, LanguageFill, MegaphoneFill, MicrophoneFill, PlayCircleFill, SlidersFill, TrophyFill,
+  ArrowRight, BoltFill, BookOpenFill, Check, ClapperboardFill, CodeFill, FilmFill, GraduationCapFill, HeadsetFill, LanguageFill, MegaphoneFill, MicrophoneFill, PlayCircleFill, SlidersFill, TrophyFill,
 } from "@/components/icons";
 import { Button, ButtonRow, CtaCard, HeroGlow, Motif, SectionHeader } from "@/components/sarvam";
 import { MegaNav } from "@/components/sarvam/mega-nav";
@@ -242,7 +242,7 @@ export default function BulbulPage() {
                   <span className="bb-fact__icon" data-tone={tone} aria-hidden><I width={28} height={28} /></span>
                   <b data-line="title">{t}</b>
                   <span className="bb-doors__desc" data-line="desc">{d}</span>
-                  <a className="bb-doors__link" href={href}>{cta}<ArrowUpRight width={16} height={16} aria-hidden /></a>
+                  <a className="bb-doors__link" href={href}>{cta}<ArrowRight width={16} height={16} aria-hidden /></a>
                 </li>
               ))}
             </ul>

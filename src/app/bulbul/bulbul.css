@@ -320,7 +320,7 @@ li[data-on="true"] .bb-ok { opacity: 1; }
 .bb-doors .bb-fact__icon svg { width: 28px; height: 28px; }
 .bb-doors__link { color: var(--color-accent) !important; margin-top: auto; padding-top: var(--space-3); display: inline-flex; align-items: center; gap: 6px; min-height: 44px; align-self: flex-start; font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--bb-accent-ink); text-decoration: none; }
 .bb-doors__link svg { transition: transform var(--duration-normal) var(--ease-standard); }
-@media (hover: hover) { .bb-doors__link:hover svg { transform: translate(2px, -2px); } }
+@media (hover: hover) { .bb-doors__link:hover svg { transform: translateX(3px); } }
 @media (min-width: 768px) { .bb-doors { grid-template-columns: repeat(3, minmax(0, 1fr)); } .bb-doors li { padding: var(--space-8); } .bb-doors li + li { border-top: 0; border-left: var(--border-subtle); } }
 
 /* level meter: four bars beside the item being "sung" */
