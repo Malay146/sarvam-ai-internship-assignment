@@ -8,7 +8,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 
 | Where | Treatment |
 |---|---|
-| Hero light | **Bulbul horizon**: rose `#e27fa6` → orchid `#d88fbf` → lilac `#bba3e0` → periwinkle `#a2b5f0` → peach fringe `#f6cfc0`, radial from the top, colour and alpha eased over 17 stops (no ring). Each product page has its own light (home Sun, Cowork indigo glow). |
+| Hero light | **Bulbul horizon, a garden at sunrise**: leaf green `#5fae8c` → spring green `#94cc86` → lime `#cfdc84` → marigold `#f4d474` → cream `#fbe1b4`, radial from the top, colour and alpha eased over 17 stops (no ring). It uses Sarvam's green and yellow craft ramps so it can't be confused with the homepage Sun (orange) or Cowork's indigo glow. |
 | Controls | System indigo: selection rings, slider, segmented pills, playhead, live dots, level meters |
 | Per-item tone | `data-tone` sets `--t`, `--t-soft` and `--t-w1/2`. Tracklist rows: 01 indigo, 02 rose, 03 green, 04 orange. The voice stage and its ripple take the voice's tone. Lanes take theirs. Fact icons: orange, indigo, green. Doors: indigo, orange, rose. |
 | Filled icons | Glyphs with a gradient in their own tone, rising bottom → top, plus a soft inner shadow and no tile (`#bb-grad-<tone>`, `#bb-icon-inset`) |
