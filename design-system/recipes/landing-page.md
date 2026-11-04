@@ -6,7 +6,8 @@
 ## 0. Page-building playbook (apply to every new page)
 
 ### 0.1 Originality: our sections, their facts
-1. **Take facts from the source, never its structure.** Read sarvam.ai (or the product page) for *what is true*; then invent our own section formats. Do not mirror Sarvam's section order or formats (tabbed feature stage, building-block grid, connector directory, schedule timeline, steps row, roles tabs, deployment cards). v1 of this page did, and was rejected.
+1. **Hierarchy first, then originality.** A product page reads as a story: **promise → why it's different → how it works → what it's made of → where it works → control → try it → trust → proof → questions → act.** Proven sections that carry that story (a how-it-works stage, a building-block bento) are fine even when sarvam.ai has similar ones; mix them with our own formats (contrast, integration field, approval desk, day scrubber, teammate builder). v1 copied Sarvam's order wholesale; v2 dropped the proven sections and lost the hierarchy. Both were rejected.
+1b. **Header rhythm:** big chapters use the centred header (How it works, Integrations, Try it, Trust); sub-sections inside a chapter use the split header (title left, lead right: building blocks, your yes, while you sleep). Never two identical header styles three times in a row.
 2. **Engage, but don't make every section a control panel.** Only a few sections are hands-on (here: the teammate builder, the day scrubber, and the approval desk, which plays itself until the reader steps in). The rest are passive and motion-led (dashboard, drifting integrations, contrast, facts, quote). Interactive sections end in a clear next step ("Talk to us about this teammate").
 3. **One idea per section, said as a contrast or a promise** ("An assistant answers. A teammate finishes.", "Nothing ships without your yes").
 4. The subject stays the product (Indus Cowork); feel stays Sarvam (tokens, type, gradients, logo rules).
@@ -42,20 +43,22 @@
 ### 0.6 Before calling it done
 24. `check-layout` (10 widths), `check-nav`, no overflow and no page errors in **Chromium and WebKit** at 375 / 768 / 1440, interactions clicked in a script, a production `next build`. Then look at it: screenshots at 375 / 768 / 1440.
 
-## 1. Section order (v2, as built)
+## 1. Section order (v3, as built)
 
-| # | Section | What the reader does | Component | Facts from |
-|---|---|---|---|---|
-| 1 | Hero | Reads the promise; watches the live Cowork dashboard | `CoworkDashboard` | H1, "message it like a colleague" |
-| 2 | Assistant vs teammate | Reads one contrast, side by side (passive) | `.pv-vs` | FAQ: chat assistant vs Cowork teammate |
-| 3 | Works where your work already lives | Watches real coloured marks drift behind "100+" (passive) | `IntegrationField` | 24 named connectors, 100+, bring your own |
-| 4 | Nothing ships without your yes | Watches the desk approve items and write the trail; can step in | `ApprovalDesk` | approvals, "every task leaves a trail" |
-| 5 | It works while you sleep | Scrubs the clock (06:00 → Fri), auto-advances until touched | `DayScrubber` | "Runs while you sleep" schedule |
-| 6 | Build your first teammate | Picks a job, toggles apps (real logos, up to 5), sets a rhythm; a live teammate card ends in "Talk to us about this teammate" | `TeammateBuilder` | roles, 100+ connectors, scheduled tasks |
-| 7 | Sovereign by default | Reads four facts in one panel | `.cw-sec` | data residency, ISO / SOC 2 Type I, SSO, encryption |
-| 8 | What Sarvam's customers say | — | `.cw-quote` | Tata Capital (sarvam.ai) |
-| 9 | Questions teams ask first | Opens answers | `Faq` | /indus-cowork FAQ |
-| 10 | Meet your first teammate | Talk to Us | `CtaCard` | — |
+| # | Story beat | Section | Header | Interaction | Component |
+|---|---|---|---|---|---|
+| 1 | Promise | Hero: title + live dashboard | — | passive | `CoworkDashboard` |
+| 2 | Why it's different | An assistant answers. A teammate finishes. | centred | passive | `.pv-vs` |
+| 3 | How it works | It runs the whole task (4 tabs: plans · researches · improves · waits for your yes) | centred + eyebrow | auto-advances; tabs | `Stage` + `HowPanel` |
+| 4 | What it's made of | Everything a teammate is made of (5-card bento) | split | passive | `BentoTile` |
+| 5 | Where it works | Works where your work already lives (100+) | centred | passive | `IntegrationField` |
+| 6 | Control | Nothing ships without your yes | split | plays itself; can step in | `ApprovalDesk` |
+| 7 | Control | It works while you sleep | split | auto; tap a time | `DayScrubber` |
+| 8 | Try it | Build your first teammate | centred + eyebrow | hands-on → Talk to Us | `TeammateBuilder` |
+| 9 | Trust | Sovereign by default | centred | passive | `.cw-sec` |
+| 10 | Proof | What Sarvam's customers say | centred | passive | `.cw-quote` |
+| 11 | Questions | Questions teams ask first | centred | accordion | `Faq` |
+| 12 | Act | Meet your first teammate | — | Talk to Us | `CtaCard` |
 
 ## 2. Responsive behaviour
 
