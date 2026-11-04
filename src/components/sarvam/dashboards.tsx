@@ -185,9 +185,9 @@ export function CoworkDashboard() {
 type Job = { id: string; time: string; mins: number; label: string; mate: string; result: string; status: Status; approval?: string; on: boolean };
 const NOW_MIN = 13 * 60 + 20;                          // the dashboard shows "today, 13:20"
 const JOBS: Job[] = [
-  { id: "cluster", time: "06:00", mins: 360, label: "Overnight cluster check", mate: "Cluster Health Monitor", result: "Report saved to the knowledge base", status: "done", on: true },
+  { id: "cluster", time: "06:00", mins: 360, label: "Overnight cluster check", mate: "Cluster Health Monitor", result: "Health report saved", status: "done", on: true },
   { id: "standup", time: "08:00", mins: 480, label: "Morning standup digest", mate: "Chief of Staff", result: "Digest posted to #leadership", status: "done", on: true },
-  { id: "inbox", time: "12:00", mins: 720, label: "Inbox, cleared", mate: "Account Manager", result: "14 replies drafted, 2 flagged", status: "waiting", approval: "Send 14 drafted replies", on: true },
+  { id: "inbox", time: "12:00", mins: 720, label: "Inbox, cleared", mate: "Account Manager", result: "14 replies drafted, 2 flagged", status: "waiting", approval: "Send 14 replies", on: true },
   { id: "spend", time: "17:00", mins: 1020, label: "Spend watch", mate: "Paid Media", result: "Wasted budget flagged", status: "scheduled", approval: "Pause 2 ad sets", on: true },
   { id: "readout", time: "18:00", mins: 1080, label: "Weekly readout", mate: "Product Performance", result: "Readout drafted for review", status: "scheduled", on: false },
 ];
@@ -201,9 +201,9 @@ export function ScheduleDashboard() {
   const [log, setLog] = useState<Log[]>([
     { id: 2, at: "12:00", job: "Inbox, cleared", text: "14 replies drafted, 2 flagged" },
     { id: 1, at: "08:00", job: "Morning standup digest", text: "Digest posted to #leadership" },
-    { id: 0, at: "06:00", job: "Overnight cluster check", text: "Report saved to the knowledge base" },
+    { id: 0, at: "06:00", job: "Overnight cluster check", text: "Health report saved" },
   ]);
-  const [queue, setQueue] = useState<{ id: string; text: string; state: "waiting" | "approved" | "declined" }[]>([{ id: "inbox", text: "Send 14 drafted replies", state: "waiting" }]);
+  const [queue, setQueue] = useState<{ id: string; text: string; state: "waiting" | "approved" | "declined" }[]>([{ id: "inbox", text: "Send 14 replies", state: "waiting" }]);
   const logId = useRef(3);
   const ranToday = jobs.filter((j) => j.status === "done" || j.status === "waiting").length;
   const waiting = queue.filter((q) => q.state === "waiting").length;

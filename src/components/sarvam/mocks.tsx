@@ -57,7 +57,7 @@ export function MockPlan({ freeze }: { freeze?: number } = {}) {
 }
 
 /* 2 · Researches on its own ─ the query types in, sources arrive and get read, the plan grows. */
-const QUERY = "Indian SaaS outlook 2026";
+const QUERY = "SaaS outlook 2026";
 const SOURCES = [["Market size and growth", "industry-report.in"], ["Competitor positioning", "analyst-notes.com"], ["Recent launches", "news.example.org"]] as const;
 const RESEARCH_LOOP = [1400, 1100, 1100, 1100, 2800];
 export function MockResearch({ freeze }: { freeze?: number } = {}) {

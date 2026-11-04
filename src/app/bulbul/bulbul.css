@@ -9,7 +9,7 @@
    green and yellow craft ramps, used by no other page's light), eased colour + alpha, 17 stops so no ring shows,
    and the closing card is on Dusk; both are multi-colour, so the page doesn't read as a single hue. ── */
 .bb { --bb-accent: var(--color-sr-indigo-800); --bb-accent-ink: var(--color-accent); }
-.bb .sr-hero-glow__sun { background-image: var(--texture-grain), radial-gradient(circle farthest-side at 50% 0% in oklab, rgb(95 174 140 / 1.00) 0.0%, rgb(105 180 139 / 1.00) 6.2%, rgb(127 192 136 / 1.00) 12.5%, rgb(145 202 134 / 1.00) 18.8%, rgb(152 205 134 / 1.00) 25.0%, rgb(174 211 133 / 1.00) 31.2%, rgb(199 218 132 / 1.00) 37.5%, rgb(208 220 132 / 1.00) 43.8%, rgb(222 217 125 / 1.00) 50.0%, rgb(240 213 118 / 1.00) 56.2%, rgb(244 213 119 / 0.94) 62.5%, rgb(247 217 142 / 0.85) 68.8%, rgb(250 223 170 / 0.73) 75.0%, rgb(251 225 180 / 0.58) 81.2%, rgb(252 230 193 / 0.41) 87.5%, rgb(253 237 212 / 0.21) 93.8%, rgb(253 240 222 / 0.00) 100.0%); }
+.bb .sr-hero-glow__sun { background-image: var(--texture-grain), var(--light-garden-sunrise); }
 .bb .sr-cta.sr-gradient-night { background-image: var(--texture-grain), var(--gradient-dusk); }
 /* per-item tone: sets --t (ink), --t-soft (tile), --t-well-1/2 (well) for anything with data-tone */
 .bb [data-tone="indigo"] { --t: var(--color-sr-indigo-800); --t-soft: var(--color-sr-indigo-100); --t-w1: var(--color-sr-indigo-50); --t-w2: var(--color-sr-indigo-100); }

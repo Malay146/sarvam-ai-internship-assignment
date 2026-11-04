@@ -359,7 +359,7 @@ html:has(.cw) { scroll-behavior: smooth; }
    Indigo core → lilac → a peach rim [indigo-glow ramp, sampled]. Colour and alpha both ease (smoothstep, 17 stops),
    so the rim dissolves instead of drawing a visible arc. */
 .cw .sr-hero-glow__sun {
-  background-image: var(--texture-grain), radial-gradient(circle farthest-side at 50% 0% in oklab, rgb(89 87 196 / 1.00) 0.0%, rgb(92 89 197 / 1.00) 6.2%, rgb(98 95 199 / 1.00) 12.5%, rgb(107 102 201 / 1.00) 18.8%, rgb(118 110 204 / 1.00) 25.0%, rgb(127 118 207 / 1.00) 31.2%, rgb(134 124 209 / 1.00) 37.5%, rgb(138 127 210 / 1.00) 43.8%, rgb(145 132 209 / 1.00) 50.0%, rgb(165 148 207 / 1.00) 56.2%, rgb(186 165 205 / 1.00) 62.5%, rgb(194 171 204 / 0.92) 68.8%, rgb(208 180 197 / 0.73) 75.0%, rgb(229 193 187 / 0.49) 81.2%, rgb(236 199 185 / 0.25) 87.5%, rgb(242 211 197 / 0.07) 93.8%, rgb(246 220 207 / 0.00) 100.0%);
+  background-image: var(--texture-grain), var(--light-indigo-glow);
 }
 
 /* One gap between a section's header and its content, everywhere: --space-section-head (40 phone / 56 from 768).
@@ -637,13 +637,16 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-faq__item { border-bottom: var(--border-default); }
 .pv-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); min-height: 64px; padding: var(--space-4) 0; border: 0; background: none; font: inherit; font-size: var(--text-body); font-weight: var(--weight-medium); color: var(--color-tx); text-align: left; cursor: pointer; }
 .pv-faq__q:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.pv-faq__chev { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
-.pv-faq__chev::before, .pv-faq__chev::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 1.5px; border-radius: 1px; background: var(--color-tx-secondary); transition: transform var(--duration-moderate) var(--ease-emphasized); }
-.pv-faq__chev::after { transform: rotate(90deg); }
-.pv-faq__item[data-open="true"] .pv-faq__chev::after { transform: rotate(0deg); }
+/* Plus → minus: the icon turns half a turn while its vertical bar folds to nothing, so the horizontal bar lands as the minus. Bars are centred with inset+margin (no off-by-subpixel top). */
+.pv-faq__chev { position: relative; width: 14px; height: 14px; flex-shrink: 0; transition: transform var(--duration-moderate) var(--ease-emphasized); }
+.pv-faq__chev::before, .pv-faq__chev::after { content: ""; position: absolute; inset: 0; margin: auto; border-radius: 1px; background: var(--color-tx-secondary); transition: transform var(--duration-moderate) var(--ease-emphasized), opacity var(--duration-moderate) var(--ease-emphasized); }
+.pv-faq__chev::before { width: 14px; height: 1.5px; }
+.pv-faq__chev::after { width: 1.5px; height: 14px; }
+.pv-faq__item[data-open="true"] .pv-faq__chev { transform: rotate(180deg); }
+.pv-faq__item[data-open="true"] .pv-faq__chev::after { transform: scaleY(0); opacity: 0; }
 .pv-faq__a { overflow: hidden; }
 .pv-faq__a p { margin: 0; padding: 0 var(--space-8) var(--space-5) 0; font-size: var(--text-body); line-height: 1.6; color: var(--color-tx-secondary); max-width: 62ch; }
-@media (prefers-reduced-motion: reduce) { .pv-faq__chev::before, .pv-faq__chev::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pv-faq__chev, .pv-faq__chev::before, .pv-faq__chev::after { transition: none; } }
 
 /* Hero horizon: on landing, the light rises — it grows down from the top edge (scaleY only, so the sides never show an edge)
    while fading in. Runs once per page load; nothing else moves (no layout shift). Off with reduced motion. */

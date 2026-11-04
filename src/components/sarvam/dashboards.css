@@ -146,7 +146,8 @@
 .db-row--job .db-row__status { grid-area: status; padding-left: 60px; }
 .db-row--job .db-row__actions { grid-area: actions; display: flex; align-items: center; gap: var(--space-1); }
 .db-row--job.is-off { opacity: 0.55; }
-@media (min-width: 768px) {
+/* One row per job from 1024; 768–1023 keeps the two-line row so the result line isn't cut (layout.md §7.6, rung 1). */
+@media (min-width: 1024px) {
   .db-list__head--jobs { display: grid; grid-template-columns: 60px minmax(0, 1fr) 150px 180px; }
   .db-list__head--jobs span:last-child { text-align: right; }
   .db-row--job { grid-template-columns: 60px minmax(0, 1fr) 150px 180px; grid-template-areas: "time who status actions"; height: 68px; }
@@ -181,11 +182,12 @@
 .db-log li span { display: flex; flex-direction: column; font-size: 13px; line-height: 1.35; min-width: 0; }
 .db-log li span b, .db-log li span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .db-log time { font-family: var(--font-code); font-size: 12px; color: var(--color-tx-tertiary); font-variant-numeric: tabular-nums; align-self: start; }
-@media (min-width: 1024px) {
+/* Approvals sit beside the list only from 1280: at 1024 a 340px aside left the job names ~10px (layout.md §7.6, rung 1). */
+@media (min-width: 1024px) { .db-icon-btn { width: 36px; height: 36px; } }
+@media (min-width: 1280px) {
   .db-body--schedule { grid-template-columns: minmax(0, 1fr) 340px; }
   .db-body--schedule .db-list { border-bottom: 0; border-right: var(--border-subtle); }
   .db-body--schedule .db-panel:first-child { border-top: 0; }
-  .db-icon-btn { width: 36px; height: 36px; }
 }
 
 @media (prefers-reduced-motion: reduce) { .db-row, .db-switch span, .db-switch span::after, .db-table__row, .db-queue li { transition: none; } }
@@ -300,15 +302,15 @@
 .db-icon-btn--ghost:disabled { opacity: 0.35; cursor: default; }
 @media (hover: hover) { .db-icon-btn--ghost:not(:disabled):hover { background: var(--color-sf-tertiary); } }
 .db-row--job { height: 104px; }
-@media (min-width: 768px) { .db-row--job { grid-template-columns: 60px minmax(0, 1fr) 150px 100px; height: 72px; } }
+@media (min-width: 1024px) { .db-row--job { grid-template-columns: 60px minmax(0, 1fr) 150px 100px; height: 72px; } }
 .db-panel__title { display: flex; justify-content: space-between; align-items: center; }
 .db-queue { height: auto; max-height: none; }
 .db-queue { min-height: 52px; }
 .db--schedule .db-log { height: auto; margin-top: var(--space-4); }
 .db--schedule .db-log li { background: transparent; border: 0; border-top: var(--border-subtle); border-radius: 0; padding: 0; }
 .db--schedule .db-aside .db-panel { height: 100%; box-sizing: border-box; }
+
 @media (min-width: 1024px) {
-  .db-body--schedule { grid-template-columns: minmax(0, 1fr) 320px; }
   .db--schedule .db-aside { border-top: var(--border-subtle); }
   .db-top { padding: var(--space-8) var(--space-8) var(--space-4); }
   .db-day { margin: 0 var(--space-8) var(--space-4); }
@@ -317,3 +319,18 @@
 .db-side__head .db-label { white-space: nowrap; }
 /* Narrow desktop sidebar (264px): label over count. Below 1024 they share one row. */
 @media (min-width: 1024px) { .db-side__head { flex-direction: column; align-items: flex-start; gap: 2px; } }
+
+/* Phone fit: approvals queue keeps its label and both buttons on one row (layout.md §7.6, rung 2) */
+@media (max-width: 399px) {
+  .db--schedule .db-panel { padding: var(--space-4) var(--space-3); }
+  .db--schedule .db-queue li { padding-left: var(--space-2); gap: var(--space-2); }
+}
+/* The schedule body's track must be allowed to shrink below its rows' min-content (it pushed 17px past the card at 320). */
+.db-body--schedule { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 399px) {
+  .db--schedule .db-row--job .db-row__status { padding-left: 0; }
+  .db--schedule .db-row--job { grid-template-columns: 44px minmax(0, 1fr) auto; padding: 0 var(--space-3); }
+}
+@media (min-width: 1280px) { .db-body--schedule { grid-template-columns: minmax(0, 1fr) 320px; } }
+/* Phone: the day track drops its time labels (rung 3, decoration); every job's time is on its row below */
+@media (max-width: 479px) { .db--schedule .db-day__job em { display: none; } .db--schedule .db-day { height: 36px; } }

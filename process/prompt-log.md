@@ -847,6 +847,20 @@ Entry format:
 - Docs: recipes/bulbul-page.md §2 rewritten, plus two rejected-approach rows. components.md gets a "Fit on every width" entry for the Bulbul pieces. layout.md §7.7 gets the Bulbul container thresholds. design.md regenerated.
 - QA: check-fit /bulbul and / at all 9 widths fit. check-layout 10/10 on both pages. All 8 voices, all 8 playground voice chips and all 10 segmented options clicked at 320–1280. The auto-playing studio, chorus and request timeline were watched through full cycles at 320 / 375 / 768 / 1024. tsc clean.
 
+## 2026-11-04 · Claude Code (Opus 5.5) · Review pages brought up to date with the system
+
+- Prompt (verbatim): "now based on everything thing updated files, improve/update the /system pages and other pages except the home page and bulbul page"
+- Gap found: the review pages were last touched on 2026-11-03 and missed the 11-04 rules: page lights (tokens.md §2.4c), vertical gradient stacking, campaign gradients (§2.9), the full motion set, the fit ladder (layout.md §7.6), page-owned formats (landing-page.md 9a), filled icons, forward-arrow links and the final banner set. The tokens page still said "fonts are placeholders" and used unicode glyphs as icons.
+- What changed:
+  - **tokens.css:** page lights are now tokens (`--light-sun`, `--light-indigo-glow`, `--light-garden-sunrise`). cowork.css and bulbul.css reference them instead of pasting 17 stops each (computed backgrounds checked identical on / and /bulbul).
+  - **/system/tokens:** new sections for page lights, campaign gradients, fit; a vertical-stack do/don't; colour proportions bar; breakpoint tier table that highlights the current tier; extra contrast pairs; borders + shadows; all seven durations and six easing curves; Nucleo IconTiles in the sibling demo; footer.
+  - **/system:** "Eight rules every piece follows", "Built with it" (Indus Cowork, Bulbul, banner set; each page shown by its own hero light), the full file list (design.md, every recipe), quality gates.
+  - **/components:** block index, outline vs filled icon rule, text-link block, "Page-owned formats" (what lives on / and /bulbul and how each switches on its own width).
+  - **/banners:** leads with the final set (3 subjects × 2 formats, expression + device per subject); earlier briefs moved under "Explorations". **/studio:** copy + footer.
+  - **Shared component fixes found by check-fit on /components:** ScheduleDashboard job names were ~10px wide at 1024 and the card pushed 17px past its box at 320 (track `1fr` → `minmax(0, 1fr)`; approvals beside the list only from 1280; two-line rows until 1024; day-track times drop below 480; short queue copy). MockResearch query shortened to "SaaS outlook 2026" (clipped at 320 / 768). Feature and bento panels tighten on phones. None of these are used on / or /bulbul except the shared token change above.
+  - Docs: tokens.md §2.4c (light tokens), components.md (Schedule responsive), layout.md §7.7 (Schedule row); design.md regenerated.
+- QA: check-fit: /system, /system/tokens, /components, /banners, /banners/make, /studio, /system/expressions all fit at 9 widths. check-layout PASS on /system, /system/tokens, /components, /banners. check-motion: the 1px bento-tile jitter at 768 and the Run-now click timeout at 375 are pre-existing (same result with these changes stashed).
+
 ## 2026-11-04 · Claude Code · Document AI page (`/document-ai`)
 
 - Prompt (verbatim): "what i want you to do is that create another landing page, find a subject from sarvam website, just like bulbul do a theme thing, make thing around that subject and create a professional and visually appealling landing page"

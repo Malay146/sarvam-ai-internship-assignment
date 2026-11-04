@@ -40,7 +40,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | Any banner (Meta / LinkedIn), from a subject or a reference | `recipes/banner-builder.md` (+ `/banners/make`, `.claude/skills/sarvam-banner`) → `voice.md` |
 | Meta banner grid details | `recipes/meta-banner.md` |
 | LinkedIn banner grid details | `recipes/linkedin-banner.md` |
-| Landing page / web section | `recipes/landing-page.md` (§0 playbook first) → `layout.md` → `components.md` → `typography.md`; a worked second page: `recipes/bulbul-page.md` |
+| Landing page / web section | `recipes/landing-page.md` (§0 playbook first) → `layout.md` → `components.md` → `typography.md`; worked examples: `recipes/bulbul-page.md`, `recipes/document-ai-page.md` |
 | New component | `components.md` §0–3 → `layout.md` §5 (siblings) → `tokens.md` |
 | Illustration, pattern, gradient art | `imagery.md` → `tokens.md` §2 → `/studio` (`src/lib/shapes.ts`) |
 | Any copy | `voice.md` |
@@ -63,6 +63,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 | `recipes/linkedin-banner.md` | Landscape grid (1200×627), how each layout rearranges, the final LinkedIn set |
 | `recipes/landing-page.md` | The page-building playbook (§0) + the Indus Cowork page: section order, per-breakpoint behaviour, quality gates, export |
 | `recipes/bulbul-page.md` | The Bulbul V4 Flash page (`/bulbul`): its own theme (structure, garden-sunrise hero light, per-item tones), sections and responsive table |
+| `recipes/document-ai-page.md` | The Document AI page (`/document-ai`): paper-and-ink theme, seal-ink hero light, sections and responsive table |
 
 ### Non-negotiables (summary)
 
@@ -73,6 +74,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 - **Fit:** nothing scrolls sideways, ever; no label breaks onto two lines; no text is clipped, truncated with "…" or runs past its box. Fix with the fit ladder in `layout.md` §7.6 (rearrange → tighten → drop decoration → short label → fluid size → rewrite). Components switch on their own width (`layout.md` §7.7).
 - **Icons:** Nucleo Core outline, 24 grid, 1.5 stroke, round caps.
 - **Motion:** transform and opacity only; loops only in product mocks; nothing changes size; respect reduced motion.
+- **Banners (the script-enforced rules, stated here so a model sees them first):** two formats (1080×1350, 1200×627); two text slots max; one hero device; never stretch a shape; **sharp, not soft**: every shape has a crisp edge and an inner glow blur ≤ 3.5% of its size, with no soft blobs; text inside the shape; official logo only.
 - **Voice:** calm, plain, confident; "Talk to Us" for Indus Cowork; only verified facts.
 
 ### Live reference
@@ -407,8 +409,9 @@ Every product page owns one light, so pages read as different places in the same
 | Homepage | **Sun** (§2.4) | `#f9730c` → `#ed8c44` → `#bfc9f1` → `#e8effd` → transparent |
 | Indus Cowork | **Indigo glow** | `#5957c4` → `#8a7fd2` → `#c2abcc` → `#fabea3` → transparent |
 | Bulbul V4 Flash | **Garden sunrise** | `#5fae8c` → `#94cc86` → `#cfdc84` → `#f4d474` → `#fbe1b4` → `#fdf0de` → transparent (Sarvam's green and yellow craft ramps) |
+| Document AI | **Seal ink** | `#cf5f5a` → `#e3847a` → `#f0a99c` → `#f6c9b9` → `#f9e2d3` → `#fcf1e6` → transparent (Sarvam's red and pink ramps; an official seal, an editor's red pen) |
 
-A new page picks a light no other page uses, built from the named ramps. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
+Tokens: `--light-sun` (= `--gradient-sun`), `--light-indigo-glow`, `--light-garden-sunrise` in `tokens.css` (sRGB first, OKLab inside `@supports`). Pages apply them as `background-image: var(--texture-grain), var(--light-x)` on `.sr-hero-glow__sun`; never paste the stops into page CSS. A new page picks a light no other page uses, built from the named ramps, and adds it here as a `--light-*` token. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
 
 #### 2.5 Blend space: OKLab `[addition]`
 All gradients interpolate **in OKLab** (`linear-gradient(in oklab 180deg, …)`). With sRGB, the default, blue meeting orange turns slightly grey and muddy. OKLab keeps brightness even and passes through the soft lavender and peach seen in Sarvam's images.
@@ -1197,6 +1200,7 @@ Components switch on **their own width** (container queries), so they behave the
 | Builder field / card | `.pv-field`, `.pv-mate__card` | < 460 / < 340 | rhythm short labels; hint and CTA lose their tail |
 | Builder app tile | `.pv-app` (`app`) | < 160 | "Google X" → "X" |
 | Comparison card | `.pv-vs__col` (`vs`) | fluid | label size from `cqi` |
+| Schedule dashboard | viewport | < 1024 / < 1280 / < 480 / < 400 | two-line job rows → one row; approvals below → beside the list; day track drops time labels; tighter panels |
 | Bulbul voice list | `.bb-voices__list` (`vlist`) + `.bb-vbtn` (`vbtn`) | < 768 viewport / row < 280 | 4 × 2 avatar tiles; style and language on their own lines |
 | Bulbul voice card | `.bb-vcard` (`vcard`) | < 300 | status as a dot; style / language split; foot drops the language code |
 | Bulbul playground | `vctl`, `vchip`, `code` | ≥ 520 / < 130 / < 420 | chips 4-up; tighter chips; Copy → icon |
@@ -1544,6 +1548,7 @@ Calm, information-dense product views that **work**. They sit on a tint stage (`
   - **Approve** updates the "need your yes" count.
   - **Messages** get a reply.
 - **Schedule (today):** a quiet day timeline + one list (time, task, last result, status, a run icon, an on/off switch) + "Needs your yes" with approve/decline and the latest activity.
+  - **Responsive (Schedule):** below 1024 each job is a two-line row (time + task + result, then status + actions); from 1024 one row per job; "Needs your yes" sits beside the list only from **1280** (at 1024 a 340px aside left job names ~10px wide). Below 480 the day track drops its time labels (every time is on its row) and below 400 the panels tighten to 16 / 12px. The body track is `minmax(0, 1fr)` so rows can't push the card wider. Queue copy is short ("Send 14 replies", "Health report saved").
 - **Status:** a small dot + plain text (indigo working, orange needs your yes, green done, grey scheduled). No colourful pills.
 - **Rules:** no KPI-box walls, one accent, hairline separators instead of boxes. Fixed heights per breakpoint, **sized so no teammate needs inner scrolling** (640 tablet, 660 phone, 700 under 300px, 664 desktop with a 264px sidebar); only an added chat thread scrolls inside, so the page never moves. Tap targets are 44px on touch screens.
 - **Responsive (Cowork), keyed to the dashboard's own width** (`container: db`, layout.md §7.7). The grid track is `minmax(0, 1fr)` so a wide child can't widen it.
@@ -1611,6 +1616,10 @@ How each one stays whole on a phone. All use layout.md §7.6 (fit ladder) and §
   - **Transcript clips** (tracklist): every row one line; a card < 260px drops the voice-style word; reading rows size their first column to content. Example readings are written to fit ("₹1,200 → बारह सौ रुपये").
   - **Request timeline**: each step one line; a card < 300px reads "Request", values at 11px, "in chunks".
   - **Studio settings**: a settings column < 280px gives each field a full row (no "Sample / rate").
+
+#### Document AI page pieces `[addition]` (`doc-play.tsx`, recipe `recipes/document-ai-page.md`)
+- **`<SamplePage shown active scanning>`**: a paper document. Each block of content sits exactly inside its element's box (boxes in % of the page), so the layout boxes always line up with the text. Boxes are numbered in reading order and typed, with one tone per element type.
+- **Stacked states**: when tabs swap content (the read-twice comparison), every state renders in one grid cell and only the active one is shown, so the box keeps one height (landing-page.md rule 22).
 
 ### Do / Don't
 
@@ -2032,6 +2041,21 @@ Use only these claims.
 - Closing line on Sarvam's page: "Your next million conversations can sound more human."
 - **Source conflicts, don't copy:** the marketing page lists pitch and loudness controls, but the API docs say they are Bulbul V2 only, so don't claim them for V4 Flash. The marketing cURL uses `target_language_code`; the API reference uses `language_code` (use `language_code`). The marketing page pairs Kalpit with Bengali and Ishita with Tamil, but the voices guide doesn't (avoid those pairings). The sample conversations on Sarvam's page are scripted demos, not live calls.
 
+**Document AI** `[verified: sarvam.ai/products/doc-agents, 2026-11-04]`
+- Name: **Document AI** (Sarvam). Sarvam's line: "Intelligent document processing, down to the last page."
+- It **parses, extracts, reviews and translates** long, messy documents (scanned archives, handwritten notes, complex tables) and returns **structured output with layout and reading order intact**.
+- Inputs: PDFs, Word files, spreadsheets, presentations, web pages. Translation: **up to 300 MB and 500 pages** per upload. Scanned PDFs are OCR'd before translation, with progress tracked page by page.
+- Languages: **English and 22 Indian languages**: Assamese, Bengali, Bodo, Dogri, Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali, Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu. Mixed-language pages are handled.
+- Outputs: **Parse** → HTML, Markdown, DOCX, plain text. **Extract** → JSON, CSV, XLSX. **Translate** → DOCX, PDF, HTML, EPUB, TXT.
+- Understands layout (paragraphs, headings, tables, footnotes, figures) and reading order across columns and sections.
+- Review and correction: agent-driven corrections, **visual grounding** (every element linked to its source location), manual editing. The translation editor has Bulk Translate, AI Assistance, Learned Rules and Edit Guidelines (genre + guidelines for terminology). Side-by-side review, then export.
+- Translation keeps headings, paragraphs, images and layout in place. Multiple target languages, each with its own editor and progress bar.
+- Pain points it names ("Where OCR falls short"): complex layouts, Indian scripts misread, tables lose structure, no way to fix errors.
+- Two ways in: the **API** (batch, no manual step) and the **Platform** (visual review and correction before export; sign up free via the Sarvam dashboard; enterprise volumes via sales).
+- Use cases: government and public records; publishing and archives; finance and legal; research and education; developers (Parse via the API).
+- CTAs on Sarvam's page: "Try the API", "Explore the Platform", "Try Document AI".
+- No customer names, accuracy figures or benchmarks are published: don't invent any.
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.
@@ -2382,7 +2406,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 ## Recipe · Indus Cowork landing page (+ the playbook for every page)
 
 > **Built (v3):** `src/app/page.tsx` + `src/app/cowork.css` + `src/components/sarvam/{cowork-play,cowork-data,cowork,mega-nav,brand,brand-marks,patterns}.tsx`.
-> **Read §0 before building any page.** It is every lesson from building this one and the Bulbul test page (`recipes/bulbul-page.md`), so the next page needs no correction rounds.
+> **Read §0 before building any page.** It is every lesson from building this one and the Bulbul and Document AI pages (`recipes/bulbul-page.md`, `recipes/document-ai-page.md`), so the next page needs no correction rounds.
 
 ### 0. Page-building playbook (apply to every new page)
 
@@ -2399,8 +2423,8 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 8. A quote about Sarvam (not this product) is headed "What Sarvam's customers say".
 
 #### 0.3 Look
-9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. **Hero light: each page owns one** (tokens.md §2.4c): homepage = orange **Sun**, Indus Cowork = **indigo glow**, Bulbul = **garden sunrise** (green core → marigold → cream). A radial from the top edge, colour and alpha eased over ≥ 16 stops so no ring shows. A new page picks a light no other page uses.
-9a. **Each product page owns its theme: its structure and presentation.** Shared on every page: nav, hero structure, section headers, FAQ, closing card, footer, tokens and controls. Each page owns **section formats drawn from its subject** (Cowork: approval desk, day timeline, teammate builder; Bulbul: studio, tracklist, chorus, ripple stage, multitrack, playground) and **one Sarvam light for the hero** (homepage Sun, Cowork indigo glow, Bulbul Dawn). The theme is **not one colour**: colour stays the system's, with indigo for controls and selection and the full tone set given per item (one tone per row, card, voice, fact or door). Never reuse another page's signature format (bento tiles, integrations panel, deployment tiles) just because it exists. Recipe per page: `recipes/<page>.md`.
+9. **Hero:** centred kicker (plain accent text, not a pill) + H1 + lead + buttons, with the **main product dashboard** full-width below. **Hero light: each page owns one** (tokens.md §2.4c): homepage = orange **Sun**, Indus Cowork = **indigo glow**, Bulbul = **garden sunrise** (green core → marigold → cream), Document AI = **seal ink** (red-rose → blush → paper). A radial from the top edge, colour and alpha eased over ≥ 16 stops so no ring shows. A new page picks a light no other page uses.
+9a. **Each product page owns its theme: its structure and presentation.** Shared on every page: nav, hero structure, section headers, FAQ, closing card, footer, tokens and controls. Each page owns **section formats drawn from its subject** (Cowork: approval desk, day timeline, teammate builder; Bulbul: studio, tracklist, chorus, ripple stage, multitrack, playground; Document AI: workspace, read-twice comparison, folders, proofreading desk, specimen sheet, index cards) and **one Sarvam light for the hero** (homepage Sun, Cowork indigo glow, Bulbul Dawn). The theme is **not one colour**: colour stays the system's, with indigo for controls and selection and the full tone set given per item (one tone per row, card, voice, fact or door). Never reuse another page's signature format (bento tiles, integrations panel, deployment tiles) just because it exists. Recipe per page: `recipes/<page>.md`.
 10. **Navbar:** MegaNav — real menu items, **filled** Nucleo icons in item tones, a frameless featured tile (kicker + serif title + one line + text link), **one CTA** (Talk to Us, primary). Nav links scroll to on-page sections when they exist.
 11. **Cards:** white + hairline by default. Colour lives in a soft tone well or a tone surface with grain; never a full saturated card. One tone per block.
 12. **Gradients — only where they add a calm sense of place, and soft. Multi-colour gradients always stack their colours vertically** (top → bottom for a hero horizon, bottom → top for panels and the footer), never side by side (Malay, 2026-11-04):

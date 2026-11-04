@@ -19,7 +19,7 @@
 .hub-docs li { display: grid; grid-template-columns: 1fr; gap: var(--space-1); padding: var(--space-4) 0; border-bottom: var(--border-subtle); }
 .hub-docs code { font-family: var(--font-code); font-size: var(--text-small); color: var(--color-tx); }
 .hub-docs span { font-size: var(--text-body); color: var(--color-tx-tertiary); }
-@media (min-width: 768px) { .hub-docs li { grid-template-columns: 320px 1fr; gap: var(--space-8); align-items: baseline; } }
+@media (min-width: 768px) { .hub-docs li { grid-template-columns: 380px 1fr; gap: var(--space-8); align-items: baseline; } }
 
 /* ── Expressions page ── */
 .ex-lead { max-width: 60ch; }
@@ -94,3 +94,36 @@
   .hub-tools .hub-wide { grid-template-columns: 1fr; align-items: stretch; padding: var(--space-2) var(--space-2) var(--space-6); }
   .hub-tools .hub-wide__text { padding: 0 var(--space-4); }
 }
+
+/* ── Hub additions (2026-11-04): rules at a glance, proof cards, quality gates ── */
+.hub-gap { padding-top: var(--space-section); }
+.hub-section .sr-section-head { margin-bottom: 0; }
+.hub-section .sr-lead code { font-family: var(--font-code); font-size: 0.9em; }
+
+.hub-rules { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; border-top: var(--border-default); }
+@media (min-width: 768px) { .hub-rules { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-grid); } }
+@media (min-width: 1280px) { .hub-rules { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.hub-rules li { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: var(--space-3); row-gap: var(--space-1); padding: var(--space-5) 0; border-bottom: var(--border-subtle); }
+.hub-rules__n { grid-row: span 2; font-family: var(--font-code); font-size: var(--text-small); color: var(--color-tx-tertiary); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.hub-rules b { font-weight: var(--weight-medium); color: var(--color-tx); white-space: nowrap; }
+.hub-rules li > span:last-child { font-size: var(--text-small); line-height: var(--leading-body); color: var(--color-tx-secondary); }
+
+.hub-proof { position: relative; display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-2) var(--space-2) var(--space-6); border: var(--border-default); border-radius: var(--radius-card); background: var(--color-sr-white); text-decoration: none; color: inherit; transition: border-color var(--duration-normal) var(--ease-standard); }
+@media (min-width: 1024px) { .sr-card-row > .hub-proof { display: grid; grid-template-rows: subgrid; grid-row: span 2; row-gap: var(--space-5); } }
+.hub-proof::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; box-shadow: var(--shadow-ambient-md); opacity: 0; transition: opacity var(--duration-normal) var(--ease-standard); pointer-events: none; }
+@media (hover: hover) { .hub-proof:hover { border-color: var(--color-sr-grey-400); } .hub-proof:hover::after { opacity: 1; } .hub-proof:hover .hub-arrow span { transform: translateX(3px); } }
+.hub-proof:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.hub-proof__art { position: relative; aspect-ratio: 16 / 10; border-radius: calc(var(--radius-card) - var(--space-2)); overflow: hidden; background: var(--color-sf); }
+.hub-proof__disc { position: absolute; left: 50%; top: 0; width: 220%; aspect-ratio: 1622 / 872; transform: translate(-50%, -50%); background-size: var(--texture-grain-size), 100% 100%; background-blend-mode: overlay, normal;
+  -webkit-mask-image: radial-gradient(circle farthest-side at 50% 0%, #000 0%, #000 82%, transparent 100%); mask-image: radial-gradient(circle farthest-side at 50% 0%, #000 0%, #000 82%, transparent 100%); }
+.hub-proof__light { border: var(--border-subtle); box-sizing: border-box; }
+.hub-proof__banner { display: grid; place-items: center; padding: var(--space-5); background: var(--color-sf-secondary); box-sizing: border-box; }
+.hub-proof__banner .sr-artboard { width: 100%; border-radius: var(--radius-sm); box-shadow: var(--shadow-ambient-sm); }
+.hub-proof__text { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-4); }
+.hub-proof__text > * { margin: 0; }
+.hub-arrow { margin-top: var(--space-2); font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-sr-indigo-700); }
+.hub-arrow span { display: inline-block; transition: transform var(--duration-normal) var(--ease-standard); }
+/* the folder prefix is drawn from 480 up; on phones the section lead names the folder */
+@media (min-width: 480px) { .hub-docs__path::before { content: "design-system/"; } }
+.hub-proof__light { container-type: inline-size; }
+.hub-proof__h1 { position: absolute; inset: auto 0 14%; padding: 0 10%; text-align: center; font-family: var(--font-display); font-size: clamp(16px, 7.2cqi, 26px); line-height: 1.15; color: var(--color-tx); text-wrap: balance; }

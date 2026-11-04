@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import "./system.css";
-import { Nav, SYSTEM_NAV } from "@/components/sarvam";
+import { Footer, HeroGlow, IconTile, Nav, SYSTEM_NAV } from "@/components/sarvam";
+import { BookOpen, CalendarClock, Sparkles } from "@/components/icons";
 
 export const metadata = { title: "Tokens · Sarvam design system" };
 
@@ -24,6 +25,22 @@ const GRADIENTS = [
   { name: "sun", label: "Sun", use: "Light hero, hangs from top", source: "/system/hero-gradient-1622.webp", sourceLabel: "homepage hero", text: "var(--color-tx)", textTop: false },
 ];
 
+// tokens.md §2.4c: one hero light per page. A radial from the top edge; only the lower part of the disc shows.
+const LIGHTS = [
+  { token: "--light-sun", name: "Sun", page: "sarvam.ai home", href: "https://www.sarvam.ai", stops: ["#f9730c", "#ed8c44", "#bfc9f1", "#e8effd"] },
+  { token: "--light-indigo-glow", name: "Indigo glow", page: "Indus Cowork", href: "/", stops: ["#5957c4", "#8a7fd2", "#c2abcc", "#fabea3"] },
+  { token: "--light-garden-sunrise", name: "Garden sunrise", page: "Bulbul V4 Flash", href: "/bulbul", stops: ["#5fae8c", "#94cc86", "#cfdc84", "#f4d474", "#fdf0de"] },
+];
+
+// tokens.md §2.9: social only, never website UI.
+const CAMPAIGN = [
+  { name: "olive", label: "Olive", mood: "Research, depth", seen: "Knowledge Fabric", ink: "#fff" },
+  { name: "meadow", label: "Meadow", mood: "Datasets, open research", seen: "Indic DiarBench", ink: "var(--color-sr-black)" },
+  { name: "saffron-rose", label: "Saffron rose", mood: "Model launches", seen: "Sarvam 30B", ink: "var(--color-sr-black)" },
+  { name: "lavender-dusk", label: "Lavender dusk", mood: "Stories, partnerships", seen: "Supernova story", ink: "var(--color-sr-black)" },
+  { name: "spring", label: "Spring", mood: "Stories, growth", seen: "Equal story", ink: "var(--color-sr-black)" },
+];
+
 const CONTRAST = [
   { fg: "var(--color-tx)", bg: "var(--color-sf)", label: "tx on sf", ratio: 16.1, ok: "all" },
   { fg: "var(--color-tx-secondary)", bg: "var(--color-sf)", label: "tx-secondary on sf", ratio: 10.6, ok: "all" },
@@ -33,6 +50,9 @@ const CONTRAST = [
   { fg: "#fff", bg: "var(--color-sr-indigo-800)", label: "white on indigo-800", ratio: 8.5, ok: "all" },
   { fg: "var(--color-tx-inverse)", bg: "var(--color-sr-black)", label: "tx-inverse on sr-black", ratio: 17.4, ok: "all" },
   { fg: "var(--color-sr-grey-600)", bg: "var(--color-sr-black)", label: "grey-600 on sr-black", ratio: 6.5, ok: "all" },
+  { fg: "var(--color-tx-inverse-secondary)", bg: "var(--color-sr-black)", label: "white 75% on sr-black", ratio: 10.6, ok: "all" },
+  { fg: "#fff", bg: "#314b82", label: "white on Dusk, top 38%", ratio: 8.5, ok: "all" },
+  { fg: "var(--color-sr-black)", bg: "#fc9230", label: "sr-black on Dawn middle", ratio: 8.2, ok: "all" },
   { fg: "#fff", bg: "var(--color-sr-orange-900)", label: "white on orange-900", ratio: 6.0, ok: "all" },
   { fg: "#fff", bg: "var(--color-sr-orange-800)", label: "white on orange-800", ratio: 3.4, ok: "large" },
   { fg: "#fff", bg: "#f9730c", label: "white on Sun core", ratio: 2.8, ok: "never" },
@@ -60,9 +80,28 @@ const TYPE_ROLES = [
 ];
 
 const SIBLINGS = [
-  { icon: "✦", eyebrow: "Skills", title: "Teach it once", desc: "Write it once and every teammate can use and improve it." },
-  { icon: "◷", eyebrow: "Scheduled tasks", title: "Runs on its own", desc: "Set a report once and it arrives on its own every morning." },
-  { icon: "▤", eyebrow: "Knowledge base", title: "Never forgets", desc: "Store your context once and every task can draw on it." },
+  { icon: Sparkles, eyebrow: "Skills", title: "Teach it once", desc: "Write it once and every teammate can use and improve it." },
+  { icon: CalendarClock, eyebrow: "Scheduled tasks", title: "Runs on its own", desc: "Set a report once and it arrives on its own every morning." },
+  { icon: BookOpen, eyebrow: "Knowledge base", title: "Never forgets", desc: "Store your context once and every task can draw on it." },
+];
+
+// layout.md §1: Tailwind defaults; most changes at 768.
+const TIERS = [
+  { t: "T1", name: "Phone", range: "0–639", cols: 4, frame: "375", cls: "sys-tier--t1" },
+  { t: "T2", name: "Large phone", range: "640–767", cols: 4, frame: "640 check", cls: "sys-tier--t2" },
+  { t: "T3", name: "Tablet", range: "768–1023", cols: 8, frame: "768", cls: "sys-tier--t3" },
+  { t: "T4", name: "Laptop", range: "1024–1279", cols: 12, frame: "1024 check", cls: "sys-tier--t4" },
+  { t: "T5", name: "Desktop", range: "1280+", cols: 12, frame: "1440", cls: "sys-tier--t5" },
+];
+
+// layout.md §7.6: when something doesn't fit, try these in order and stop at the first that works.
+const FIT_LADDER = [
+  ["Rearrange", "Change the layout, not the size: tab rail → 2 × 2 grid, five columns → one row per event"],
+  ["Tighten spacing", "On the tight tier only: card padding 32 → 24 → 20 → 16"],
+  ["Drop decoration", "Never content: timestamps, favicons, arrow icons, a dot the pill already says"],
+  ["Short label", "Same meaning: “Needs you” for “Needs your yes”, “Calendar” for “Google Calendar”"],
+  ["Fluid size", "Inside the component: clamp(min, calc((100cqi − fixed) / em-width), max)"],
+  ["Rewrite the copy", "To the character budget in layout.md §5.2"],
 ];
 
 const SPACE = [1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 20, 24, 32];
@@ -74,6 +113,15 @@ const RESPONSIVE = [
   { token: "--space-grid", values: "32 / 40 / 48" },
   { token: "--space-card", values: "24 / 32 / 32" },
 ];
+const EASES = [
+  { k: "standard", v: [0.4, 0, 0.2, 1], use: "default" },
+  { k: "out", v: [0, 0, 0.2, 1], use: "entering" },
+  { k: "in", v: [0.4, 0, 1, 1], use: "exiting" },
+  { k: "emphasized", v: [0.2, 0, 0, 1], use: "buttons" },
+  { k: "out-quint", v: [0.22, 1, 0.36, 1], use: "reveals" },
+  { k: "out-expo", v: [0.16, 1, 0.3, 1], use: "arrivals" },
+];
+const DURATIONS = [["instant", "press"], ["fast", "colour"], ["normal", "hover"], ["moderate", "panels"], ["button", "buttons"], ["slow", "zoom"], ["entrance", "reveal"]];
 const RADII = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "full"];
 const SHADOWS = ["ambient-sm", "ambient-md", "ambient-lg", "ambient-xl", "ambient-xl-hover"];
 
@@ -97,17 +145,17 @@ export default function SystemPage() {
     <>
     <Nav overlay links={SYSTEM_NAV} cta="Indus Cowork page" ctaHref="/" />
     <main className="sys-page sr-under-nav">
+      <HeroGlow />
       <header className="sys-hero">
-        
         <div className="sys-heroInner">
           <p className="sys-eyebrow">Sarvam design system</p>
           <h1 className="sys-h1">Tokens, type and layout</h1>
           <p className="sys-lead">
             Every value on this page is read live from <code>design-system/tokens.css</code>. If it looks wrong here, it is wrong in
-            the system. Fonts are placeholders until the font decision is made.
+            the system. Labels say where each value comes from: verified from sarvam.ai, sampled from Sarvam&apos;s images, or added by us.
           </p>
           <nav className="sys-toc">
-            {["gradients", "colour", "semantic", "contrast", "type", "layout", "spacing", "radius", "shadow", "motion"].map((s) => (
+            {["gradients", "lights", "campaign", "colour", "semantic", "contrast", "type", "layout", "fit", "spacing", "radius", "depth", "motion"].map((s) => (
               <a key={s} href={`#${s}`}>{s}</a>
             ))}
           </nav>
@@ -142,9 +190,57 @@ export default function SystemPage() {
             </figure>
           ))}
         </div>
+        <div className="sys-rule">
+          <div className="sys-rule__item">
+            <div className="sys-rule__swatch sys-rule__swatch--do" aria-hidden />
+            <p><b className="sys-pass">Do</b> Stack colours vertically: top → bottom for a hero, bottom → top for panels and the footer.</p>
+          </div>
+          <div className="sys-rule__item">
+            <div className="sys-rule__swatch sys-rule__swatch--dont" aria-hidden />
+            <p><b className="sys-fail">Don&apos;t</b> Put two colours side by side, run a diagonal rainbow, or stack two named gradients.</p>
+          </div>
+        </div>
       </Section>
 
-      <Section id="colour" eyebrow="02 · Colour" title="Brand ramps" lead="Indigo 800 and orange 800 are the anchors (outlined). Yellow, pink, red and green are craft-derived accents, used small.">
+      <Section id="lights" eyebrow="02 · Page lights" title="One hero light per page" lead="Every product page owns one light, so pages read as different places in the same system. A radial from the top edge, colour and alpha eased over 17 stops so no ring shows, with grain. Only the lower part of the disc is visible. A new page picks a light no other page uses.">
+        <div className="sys-lightGrid">
+          {LIGHTS.map((l) => (
+            <figure key={l.token} className="sys-gradCol">
+              <div className="sys-light">
+                <div className="sys-light__disc" style={{ backgroundImage: `var(--texture-grain), var(${l.token})` }} aria-hidden />
+                <div className="sys-light__text">
+                  <span className="sys-t-eyebrow">{l.page}</span>
+                  <span className="sys-light__h" data-may-wrap>The headline sits below the light</span>
+                </div>
+              </div>
+              <figcaption>
+                <strong>{l.token}</strong>
+                <span className="sys-stops" aria-label={`Stops: ${l.stops.join(", ")}`}>
+                  {l.stops.map((c) => <i key={c} style={{ background: c }} title={c} />)}
+                </span>
+                <span className="sys-muted">{l.name} · <a href={l.href}>{l.page}</a></span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="campaign" eyebrow="03 · Campaign" title="Campaign gradients, sampled from Sarvam's posts" lead="Social art uses a wider, earthier palette than the website: smooth, vertical and grainy. Used in the Campaign and Community expressions, never in website UI. One per banner.">
+        <div className="sys-campGrid">
+          {CAMPAIGN.map((c) => (
+            <figure key={c.name} className="sys-gradCol">
+              <div className={`sys-camp sr-gradient-${c.name}`}><span className="sys-gradText" style={{ color: c.ink }}>{c.label}</span></div>
+              <figcaption>
+                <strong>--gradient-{c.name}</strong>
+                <span>{c.mood}</span>
+                <span className="sys-muted">Seen in: {c.seen}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="colour" eyebrow="04 · Colour" title="Brand ramps" lead="Indigo 800 and orange 800 are the anchors (outlined). Yellow, pink, red and green are craft-derived accents, used small.">
         <div className="sys-ramps">
           {RAMPS.map((r) => (
             <div key={r} className="sys-rampRow">
@@ -166,9 +262,16 @@ export default function SystemPage() {
             </div>
           ))}
         </div>
+        <h3 className="sys-h3">Proportions in any composition</h3>
+        <div className="sys-prop" role="img" aria-label="About 70% neutral, 25% spectrum, 5% solid accent">
+          <span className="sys-prop__n">~70% neutral</span>
+          <span className="sys-prop__s sr-gradient-indigo-glow">~25% spectrum</span>
+          <span className="sys-prop__a" aria-hidden />
+        </div>
+        <p className="sys-muted sys-note">Neutral surfaces hold the content; one gradient field or glow; ≤ 5% solid accent (indigo 800, orange 800, or a craft-ramp dot).</p>
       </Section>
 
-      <Section id="semantic" eyebrow="03 · Roles" title="Semantic tokens" lead="Components use these, not the raw ramps.">
+      <Section id="semantic" eyebrow="05 · Roles" title="Semantic tokens" lead="Components use these, not the raw ramps.">
         <div className="sys-semGrid">
           <div className="sys-semCard" style={{ background: "var(--color-sf)" }}>
             <p className="sys-eyebrow">Light surface · sf</p>
@@ -202,7 +305,7 @@ export default function SystemPage() {
         </div>
       </Section>
 
-      <Section id="contrast" eyebrow="04 · Legibility" title="Approved text pairs" lead="Large = 24px and up. Red means never use for text.">
+      <Section id="contrast" eyebrow="06 · Legibility" title="Approved text pairs" lead="Large = 24px and up. Red means never use for text.">
         <div className="sys-contrastGrid">
           {CONTRAST.map((c) => (
             <div key={c.label} className="sys-contrastCard" style={{ background: c.bg, color: c.fg }}>
@@ -219,7 +322,7 @@ export default function SystemPage() {
         </div>
       </Section>
 
-      <Section id="type" eyebrow="05 · Type" title="Typography" lead="Gambetta, General Sans and DM Mono stand in for Sarvam's licensed Season Mix, Matter and Matter Mono. Sizes are fluid: resize the window and every row scales smoothly between 375 and 1024.">
+      <Section id="type" eyebrow="07 · Type" title="Typography" lead="Gambetta, General Sans and DM Mono stand in for Sarvam's licensed Season Mix, Matter and Matter Mono; the swap point is the --font-* tokens. Sizes are fluid: resize the window and every row scales smoothly between 375 and 1024.">
         <div className="sys-typeList">
           {TYPE_ROLES.map((r) => (
             <div key={r.role} className="sys-typeRow">
@@ -248,7 +351,16 @@ export default function SystemPage() {
         </p>
       </Section>
 
-      <Section id="layout" eyebrow="06 · Layout" title="Grid and sibling consistency" lead="4 columns on phone, 8 on tablet, 12 from 1024. Below: three sibling cards built with subgrid. Every icon, eyebrow, title and description row lines up, and every title and description has the same line count at every width.">
+      <Section id="layout" eyebrow="08 · Layout" title="Grid and sibling consistency" lead="Tailwind's breakpoints, as on sarvam.ai. 4 columns on phone, 8 on tablet, 12 from 1024. Layout rearranges at each tier; it never just shrinks. The highlighted row is the tier you are viewing now.">
+        <div className="sys-tiers" role="table" aria-label="Breakpoint tiers">
+          <div className="sys-tier sys-tier--head" role="row"><span role="columnheader">Tier</span><span role="columnheader">Width</span><span role="columnheader">Columns</span><span role="columnheader">Export frame</span></div>
+          {TIERS.map((r) => (
+            <div key={r.t} className={`sys-tier ${r.cls}`} role="row">
+              <span role="cell" className="sys-tier__name">{r.name}</span><span role="cell">{r.range}</span>
+              <span role="cell"><span className="sys-tier__k">Columns </span>{r.cols}</span><span role="cell"><span className="sys-tier__k">Export </span>{r.frame}</span>
+            </div>
+          ))}
+        </div>
         <div className="sys-gridDemo" aria-hidden>
           {Array.from({ length: 12 }).map((_, i) => (
             <div key={i} className="sys-gridCol"><span>{i + 1}</span></div>
@@ -260,10 +372,11 @@ export default function SystemPage() {
           <span className="sys-bpDesktop">laptop+ · 12 columns · 83% container</span>
         </p>
         <h3 className="sys-h3">Sibling cards (copy written to the character budget)</h3>
+        <p className="sys-lead sys-note">Built with subgrid: every icon, eyebrow, title and description row lines up, and every title and description has the same line count at every width.</p>
         <div className="sys-sibRow" data-siblings="system sibling cards">
           {SIBLINGS.map((c) => (
             <article key={c.eyebrow} className="sys-sibCard" data-sibling>
-              <div className="sys-sibIcon">{c.icon}</div>
+              <div className="sys-sibIcon"><IconTile icon={c.icon} /></div>
               <p className="sys-t-eyebrow-mono">{c.eyebrow}</p>
               <h4 className="sys-t-h4 sys-sibTitle" data-line="title">{c.title}</h4>
               <p className="sys-t-body sys-sibDesc" data-line="desc">{c.desc}</p>
@@ -272,7 +385,19 @@ export default function SystemPage() {
         </div>
       </Section>
 
-      <Section id="spacing" eyebrow="07 · Space" title="Spacing" lead="4px base. The responsive tokens change value at 768px and 1024px. Resize the window to see the live bars move.">
+      <Section id="fit" eyebrow="09 · Fit" title="Nothing scrolls sideways, everything fits" lead="No label on two lines, no text clipped or cut with “…”, nothing past the screen edge, at every width from 320. When something doesn't fit, climb this ladder in order and stop at the first rung that works.">
+        <ol className="sys-ladder">
+          {FIT_LADDER.map(([k, v], i) => (
+            <li key={k}><span className="sys-ladder__n">{String(i + 1).padStart(2, "0")}</span><b>{k}</b><span data-may-wrap>{v}</span></li>
+          ))}
+        </ol>
+        <p className="sys-muted sys-note">
+          Components switch on their own width with container queries (layout.md §7.7), so a card behaves the same in a phone column or a narrow
+          desktop cell. Gate: <code>node scripts/check-fit.mjs &lt;url&gt;</code> must exit 0, next to <code>check-layout</code>.
+        </p>
+      </Section>
+
+      <Section id="spacing" eyebrow="10 · Space" title="Spacing" lead="4px base. The responsive tokens change value at 768px and 1024px. Resize the window to see the live bars move.">
         <div className="sys-spaceList">
           {SPACE.map((k) => (
             <div key={k} className="sys-spaceRow">
@@ -299,7 +424,7 @@ export default function SystemPage() {
         </p>
       </Section>
 
-      <Section id="radius" eyebrow="08 · Shape" title="Radius" lead="Radius grows with element size. Card = 2xl (16), feature panel = 4xl (32), buttons = full.">
+      <Section id="radius" eyebrow="11 · Shape" title="Radius" lead="Radius grows with element size. Card = 2xl (16), feature panel = 4xl (32), buttons = full.">
         <div className="sys-radiusGrid">
           {RADII.map((r) => (
             <div key={r} className="sys-radiusItem">
@@ -311,7 +436,12 @@ export default function SystemPage() {
         </div>
       </Section>
 
-      <Section id="shadow" eyebrow="09 · Depth" title="Shadows" lead="Soft, neutral, ambient. Cards rest with a border; shadow appears on hover or for floating elements.">
+      <Section id="depth" eyebrow="12 · Depth" title="Borders and shadows" lead="Soft, neutral, ambient. Cards rest with a hairline border and no shadow; a shadow appears on hover or for floating elements. Selected states use a ring and a tint, not a lift.">
+        <div className="sys-shadowGrid sys-borderGrid">
+          {[["border-default", { border: "var(--border-default)" }], ["border-subtle", { border: "var(--border-subtle)" }], ["ring-selected", { boxShadow: "var(--ring-selected)" }], ["focus outline", { outline: "2px solid var(--color-focus)", outlineOffset: 2 }], ["st-dark on sf-dark", { background: "var(--color-sf-dark)", border: "1px solid var(--color-st-dark)", color: "var(--color-tx-inverse)" }]].map(([k, st]) => (
+            <div key={k as string} className="sys-shadowCard" style={st as React.CSSProperties}><code>{k as string}</code></div>
+          ))}
+        </div>
         <div className="sys-shadowGrid">
           {SHADOWS.map((s) => (
             <div key={s} className="sys-shadowCard" style={{ boxShadow: `var(--shadow-${s})` }}>
@@ -321,18 +451,35 @@ export default function SystemPage() {
         </div>
       </Section>
 
-      <Section id="motion" eyebrow="10 · Motion" title="Motion" lead="Hover the cards. Calm, short, standard easing. Image zoom is 1.02 over 500ms.">
+      <Section id="motion" eyebrow="13 · Motion" title="Motion" lead="Calm and short, names matching sarvam.ai's own tokens. Transform and opacity only; nothing changes size; loops only in product mocks; reduced motion turns reveals and zooms off. Hover a card to feel its duration.">
         <div className="sys-motionGrid">
-          {[["fast", "150ms · colour"], ["normal", "200ms · hover"], ["moderate", "300ms · panels"], ["slow", "500ms · image zoom"]].map(([k, d]) => (
+          {DURATIONS.map(([k, d]) => (
             <div key={k} className="sys-motionCard" style={{ transitionDuration: `var(--duration-${k})` }}>
               <div className="sys-motionInner sr-gradient-indigo-glow" style={{ transitionDuration: `var(--duration-${k})` }} />
               <code>duration-{k}</code>
-              <span className="sys-muted">{d}</span>
+              <span className="sys-muted">{t[`--duration-${k}`]} · {d}</span>
             </div>
           ))}
         </div>
+        <h3 className="sys-h3">Easing</h3>
+        <div className="sys-easeGrid">
+          {EASES.map((e) => {
+            const [a, b, c, d] = e.v;
+            const pt = (x: number, y: number) => `${4 + x * 92} ${96 - y * 72}`;
+            return (
+              <figure key={e.k} className="sys-ease">
+                <svg viewBox="0 0 100 100" aria-hidden>
+                  <path d={`M${pt(0, 0)} L${pt(1, 1)}`} className="sys-ease__base" />
+                  <path d={`M${pt(0, 0)} C${pt(a, b)} ${pt(c, d)} ${pt(1, 1)}`} className="sys-ease__curve" />
+                </svg>
+                <figcaption><code>ease-{e.k}</code><span className="sys-muted">{e.use}</span></figcaption>
+              </figure>
+            );
+          })}
+        </div>
       </Section>
     </main>
+    <Footer />
     </>
   );
 }

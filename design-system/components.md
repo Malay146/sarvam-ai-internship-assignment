@@ -278,6 +278,7 @@ Calm, information-dense product views that **work**. They sit on a tint stage (`
   - **Approve** updates the "need your yes" count.
   - **Messages** get a reply.
 - **Schedule (today):** a quiet day timeline + one list (time, task, last result, status, a run icon, an on/off switch) + "Needs your yes" with approve/decline and the latest activity.
+  - **Responsive (Schedule):** below 1024 each job is a two-line row (time + task + result, then status + actions); from 1024 one row per job; "Needs your yes" sits beside the list only from **1280** (at 1024 a 340px aside left job names ~10px wide). Below 480 the day track drops its time labels (every time is on its row) and below 400 the panels tighten to 16 / 12px. The body track is `minmax(0, 1fr)` so rows can't push the card wider. Queue copy is short ("Send 14 replies", "Health report saved").
 - **Status:** a small dot + plain text (indigo working, orange needs your yes, green done, grey scheduled). No colourful pills.
 - **Rules:** no KPI-box walls, one accent, hairline separators instead of boxes. Fixed heights per breakpoint, **sized so no teammate needs inner scrolling** (640 tablet, 660 phone, 700 under 300px, 664 desktop with a 264px sidebar); only an added chat thread scrolls inside, so the page never moves. Tap targets are 44px on touch screens.
 - **Responsive (Cowork), keyed to the dashboard's own width** (`container: db`, layout.md §7.7). The grid track is `minmax(0, 1fr)` so a wide child can't widen it.

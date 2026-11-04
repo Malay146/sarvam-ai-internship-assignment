@@ -493,3 +493,10 @@ a.sr-card::after { content: ""; position: absolute; inset: -1px; border-radius: 
   .sr-mock__query > svg:first-child { display: none; }
   .sr-mock__steps li, .sr-mock__src { font-size: 13px; }
 }
+
+/* Phone fit (layout.md §7.6, rung 2): the mock gets the width on narrow phones */
+@media (max-width: 479px) {
+  .sr-mesh-panel { padding: var(--space-5) var(--space-3); }
+  .sr-bento__visual { padding: var(--space-5) var(--space-3); }
+  .sr-feature-row { padding: var(--space-3); }
+}

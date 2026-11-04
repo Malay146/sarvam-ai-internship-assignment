@@ -223,7 +223,7 @@ Every product page owns one light, so pages read as different places in the same
 | Bulbul V4 Flash | **Garden sunrise** | `#5fae8c` → `#94cc86` → `#cfdc84` → `#f4d474` → `#fbe1b4` → `#fdf0de` → transparent (Sarvam's green and yellow craft ramps) |
 | Document AI | **Seal ink** | `#cf5f5a` → `#e3847a` → `#f0a99c` → `#f6c9b9` → `#f9e2d3` → `#fcf1e6` → transparent (Sarvam's red and pink ramps; an official seal, an editor's red pen) |
 
-A new page picks a light no other page uses, built from the named ramps. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
+Tokens: `--light-sun` (= `--gradient-sun`), `--light-indigo-glow`, `--light-garden-sunrise` in `tokens.css` (sRGB first, OKLab inside `@supports`). Pages apply them as `background-image: var(--texture-grain), var(--light-x)` on `.sr-hero-glow__sun`; never paste the stops into page CSS. A new page picks a light no other page uses, built from the named ramps, and adds it here as a `--light-*` token. Only the lower part of the disc is visible (the centre sits above the frame), so the visible colour is the outer stops: marigold and cream for Bulbul.
 
 ### 2.5 Blend space: OKLab `[addition]`
 All gradients interpolate **in OKLab** (`linear-gradient(in oklab 180deg, …)`). With sRGB, the default, blue meeting orange turns slightly grey and muddy. OKLab keeps brightness even and passes through the soft lavender and peach seen in Sarvam's images.

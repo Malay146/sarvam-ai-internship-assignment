@@ -1,4 +1,4 @@
-import { BookOpen, CalendarClock, Globe, Library, Plug, ShieldCheck, Sparkles } from "@/components/icons";
+import { ArrowRight, BookOpen, CalendarClock, CalendarClockFill, Globe, GlobeFill, Library, Plug, PlugFill, ShieldCheck, SparkleFill, Sparkles } from "@/components/icons";
 import {
   Button, ButtonRow, CardGrid, Checklist, Chip, CtaCard, Eyebrow, Faq, FeatureRow, Footer, IconTile,
   CoworkDashboard, EmblemArt, EmblemCard, FactCard, SYSTEM_NAV, FeatureBento, ScheduleDashboard, TileCard, GatewayFrame, GlowCard, MockChecklist, MockPlan, MockResearch, MockReview, Motif, Nav, SectionHeader, Steps, Timeline, TrustBand,
@@ -20,6 +20,29 @@ function Block({ id, name, note, children }: { id: string; name: string; note: s
   );
 }
 
+// Shared components are on this page. Page-owned formats live on their page and are never reused elsewhere
+// (landing-page.md rule 9a); each switches on its own width (layout.md §7.7).
+const OWNED: { page: string; href: string; light: string; pieces: [string, string][] }[] = [
+  { page: "Indus Cowork", href: "/", light: "Indigo glow", pieces: [
+    ["MegaNav", "Mega menu with one sliding pill; burger sheet with accordions below 1024"],
+    ["Stage", "Tab rail: 2 × 2 grid above the panel below 1280, side rail from 1280"],
+    ["ApprovalDesk", "Card < 440px: Approve becomes a round ✓ button"],
+    ["DayScrubber", "Stacked cards → one row per event at 1024 → five columns at 1280"],
+    ["TeammateBuilder", "Role name sized to the card; app tile < 160px drops “Google”"],
+    ["IntegrationField", "Six coloured marks across at every width, four even rows"],
+  ] },
+  { page: "Bulbul V4 Flash", href: "/bulbul", light: "Garden sunrise", pieces: [
+    ["Wave", "Deterministic waveform; state drives transform and colour only"],
+    ["VoicePicker", "4 × 2 avatar tiles below 768, 2-up rows from 768"],
+    ["Voice card", "Card < 300px: status as a dot, style and language split"],
+    ["Playground", "Chips 4-up from 520px; code card < 420px: Copy becomes an icon"],
+    ["Tracklist", "Every row one line; a card < 260px drops the style word"],
+    ["Studio settings", "Column < 280px: every field gets a full row"],
+  ] },
+];
+
+const TOC = [["buttons", "Buttons"], ["icons", "Icons"], ["links", "Links"], ["headers", "Headers"], ["cards", "Cards"], ["mesh", "Surfaces"], ["gateway", "Gateways"], ["dashboards", "Dashboards"], ["features", "Features"], ["bento", "Bento"], ["tiles", "Tiles"], ["emblems", "Emblems"], ["card-variants", "Card variants"], ["steps", "Steps"], ["timeline", "Timeline"], ["trust", "Trust"], ["faq", "FAQ"], ["cta", "CTA"], ["checklist", "Checklist"], ["owned", "Page-owned"]];
+
 export default function ComponentsPage() {
   return (
     <>
@@ -31,8 +54,11 @@ export default function ComponentsPage() {
           <h1 className="sr-display-product">Components</h1>
           <p className="sr-lead">
             Every component reads from <code>tokens.css</code> and follows <code>components.md</code>. Resize the window: each one rearranges at
-            768 and 1024, and every sibling set keeps equal heights and line counts.
+            768 and 1024, switches on its own width where it needs to, keeps sibling sets at equal heights and line counts, and never scrolls sideways.
           </p>
+          <nav className="cs-toc" aria-label="Components on this page">
+            {TOC.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
+          </nav>
         </header>
 
         <Block id="buttons" name="Button · Chip" note="Pill, 44px min tap height, inset bevel, press scale 0.97 (verified)">
@@ -55,7 +81,7 @@ export default function ComponentsPage() {
           </div>
         </Block>
 
-        <Block id="icons" name="IconTile" note="Stroke icons only (24 grid, 1.5 stroke). Icon ≥ 3:1 against its tile, fixing Sarvam's same-tone pairs">
+        <Block id="icons" name="IconTile" note="Nucleo Core only: outline by default (24 grid, 1.5 stroke, round caps). Icon ≥ 3:1 against its tile, fixing Sarvam's same-tone pairs">
           <div className="cs-contrast">
             <div className="cs-contrast__col">
               <Eyebrow mono>Sarvam (same tone)</Eyebrow>
@@ -74,6 +100,30 @@ export default function ComponentsPage() {
               </div>
               <span className="sr-meta">7.3 · 5.3 · 5.1 : 1. Same hue, one shade family darker</span>
             </div>
+          </div>
+          <div className="cs-contrast">
+            <div className="cs-contrast__col">
+              <Eyebrow mono>Outline: buttons, inline, nav bar</Eyebrow>
+              <div className="cs-contrast__tiles">
+                <IconTile icon={Sparkles} tone="indigo" /><IconTile icon={CalendarClock} tone="orange" /><IconTile icon={Globe} tone="green" /><IconTile icon={Plug} tone="neutral" />
+              </div>
+              <span className="sr-meta">The default. The stroke never scales: 1.5 at every size</span>
+            </div>
+            <div className="cs-contrast__col">
+              <Eyebrow mono>Filled: chips, tabs, tone tiles, menus</Eyebrow>
+              <div className="cs-contrast__tiles">
+                <IconTile icon={SparkleFill} tone="indigo" /><IconTile icon={CalendarClockFill} tone="orange" /><IconTile icon={GlobeFill} tone="green" /><IconTile icon={PlugFill} tone="neutral" />
+              </div>
+              <span className="sr-meta">Where a solid mark reads better. Never mixed in one sibling group</span>
+            </div>
+          </div>
+        </Block>
+
+        <Block id="links" name="Text link" note="Links read forward: a plain → that slides 3px right on hover (200ms). No diagonal ↗ arrow, no bare text link as a secondary action">
+          <div className="cs-links">
+            <a href="#links" className="cs-link">Explore the Trust Center <ArrowRight aria-hidden /></a>
+            <a href="#links" className="cs-link">Read the docs <ArrowRight aria-hidden /></a>
+            <a href="#links" className="cs-link">See every connector <ArrowRight aria-hidden /></a>
           </div>
         </Block>
 
@@ -214,6 +264,22 @@ export default function ComponentsPage() {
             <Checklist tone="indigo" items={["Breaks the task into steps", "Orders the work itself"]} />
             <Checklist tone="orange" items={["Searches the web as it works", "Pulls from your apps"]} />
             <Checklist tone="green" items={["Reviews its own output", "Returns it for approval"]} />
+          </div>
+        </Block>
+        <Block id="owned" name="Page-owned formats" note="Each page owns formats drawn from its subject and one hero light. They live on that page, are never reused on another, and switch on their own width">
+          <div className="cs-owned">
+            {OWNED.map((o) => (
+              <article key={o.page} className="cs-owned__col">
+                <header className="cs-owned__head">
+                  <h2 className="sr-h4">{o.page}</h2>
+                  <span className="sr-meta">Hero light: {o.light}</span>
+                </header>
+                <ul className="cs-owned__list">
+                  {o.pieces.map(([k, v]) => <li key={k}><code>{k}</code><span data-may-wrap>{v}</span></li>)}
+                </ul>
+                <a href={o.href} className="cs-link">Open the {o.page} page <ArrowRight aria-hidden /></a>
+              </article>
+            ))}
           </div>
         </Block>
       </main>
