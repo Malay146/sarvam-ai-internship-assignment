@@ -382,7 +382,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-vs { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
 @media (min-width: 768px) { .pv-vs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .pv-vs__col { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-8); border-radius: var(--radius-3xl); background: var(--color-sr-white); border: var(--border-default); }
-.pv-vs__col--mate { border-color: transparent; background: var(--texture-grain), linear-gradient(160deg, var(--color-sr-white) 0%, var(--color-sr-indigo-50) 55%, var(--color-sr-indigo-100) 100%); background-blend-mode: overlay, normal; box-shadow: inset 0 0 0 1px rgb(51 51 204 / 0.12); }
+.pv-vs__col--mate { border-color: var(--color-sr-indigo-200); }   /* white like its sibling; the indigo border, icon and checks mark it */
 .pv-vs__label { margin: 0; display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-display); font-size: 22px; color: var(--color-tx); }
 .pv-vs__icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; }
 .pv-vs__icon--muted { background: var(--color-sf-tertiary); color: var(--color-tx-tertiary); }
