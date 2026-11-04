@@ -35,6 +35,10 @@
 19. Grids use `minmax(0, 1fr)` tracks and `min-width: 0` on children, or wide mocks push the page sideways. The page clips at `overflow-x: clip`.
 20. Phone/tablet rearrange, never squeeze: rails become horizontal scrollers with untruncated labels; 3-up cards become horizontal cards at 768–1023.
 
+25. **No dead space in live panels:** items change state in place (Waiting → Approved / Sent back) instead of leaving; logs start pre-filled and stay at a fixed length.
+26. **Minimal beats busy:** a static grid of real marks with one soft fade-in beats drifting rows with overlays. Text columns beside a grid are top-aligned, with their action pinned to the bottom.
+27. **Cards inside a panel sit centred and are never sticky** unless asked.
+
 ### 0.5 Motion
 21. Transform + opacity only; nothing changes size. Loops run only while visible and stop for good once the reader interacts. Reduced motion = the finished state, no movement.
 22. Real controls inside mocks really work (approve, toggle) and are 44px to the finger.
@@ -51,7 +55,7 @@
 | 2 | Why it's different | An assistant answers. A teammate finishes. | centred | passive | `.pv-vs` |
 | 3 | How it works | It runs the whole task (4 tabs: plans · researches · improves · waits for your yes) | centred + eyebrow | auto-advances; tabs | `Stage` + `HowPanel` |
 | 4 | What it's made of | Everything a teammate is made of (5-card bento) | split | passive | `BentoTile` |
-| 5 | Where it works | Works where your work already lives (100+) | centred | passive | `IntegrationField` |
+| 5 | Where it works | Works where your work already lives: 100+ (top-left) + a static 6 × 4 grid of the 24 named marks, "Pick apps for a teammate" link at the bottom | centred | passive (one fade-in) | `IntegrationField` |
 | 6 | Control | Nothing ships without your yes | split | plays itself; can step in | `ApprovalDesk` |
 | 7 | Control | It works while you sleep | split | auto; tap a time | `DayScrubber` |
 | 8 | Try it | Build your first teammate | centred + eyebrow | hands-on → Talk to Us | `TeammateBuilder` |

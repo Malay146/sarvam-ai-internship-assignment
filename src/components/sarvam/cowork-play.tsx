@@ -122,66 +122,80 @@ export function DayScrubber() {
   );
 }
 
-/* ── 3 · Your yes: approve or send back, and watch the trail ── */
+/* ── 3 · Your yes: rows never leave (no empty space). Each row turns Approved / Sent back in place; the trail is always
+ *  four lines (history pre-filled, new events push the oldest out). Plays itself until the reader acts. ── */
 type Item = { id: number; what: string; who: string };
-const START: Item[] = [
+type Status = "waiting" | "approved" | "back";
+const QUEUE: Item[] = [
   { id: 1, what: "Send 31 outreach emails", who: "Sales Outbound" },
   { id: 2, what: "Pause two campaigns", who: "Paid Media" },
   { id: 3, what: "Post the weekly readout", who: "Product Performance" },
 ];
+const HISTORY = [
+  { id: -1, text: "Drafted 31 emails · Sales Outbound", ok: true },
+  { id: -2, text: "Flagged wasted spend · Paid Media", ok: true },
+  { id: -3, text: "Pulled the funnel · Product Performance", ok: true },
+  { id: -4, text: "Researched 40 accounts · Sales Outbound", ok: true },
+];
 export function ApprovalDesk() {
-  const [items, setItems] = useState<Item[]>(START);
-  const [trail, setTrail] = useState<{ id: number; text: string; ok: boolean }[]>([
-    { id: 0, text: "Drafted 31 emails · Sales Outbound", ok: true },
-  ]);
-  const reduced = useReducedMotion();
+  const fresh = () => Object.fromEntries(QUEUE.map((q) => [q.id, "waiting"])) as Record<number, Status>;
+  const [status, setStatus] = useState<Record<number, Status>>(fresh);
+  const [trail, setTrail] = useState(HISTORY);
+  const [touched, setTouched] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
-  const [touched, setTouched] = useState(false);
-  // self-playing demo: approves the next item every 2.4s and starts over; stops once the reader acts
+  const reduced = useReducedMotion();
+  const waiting = QUEUE.filter((q) => status[q.id] === "waiting");
+  const decide = (it: Item, ok: boolean) => {
+    setStatus((s) => ({ ...s, [it.id]: ok ? "approved" : "back" }));
+    setTrail((tr) => [{ id: Date.now(), text: `${ok ? "Approved" : "Sent back"}: ${it.what.toLowerCase()}`, ok }, ...tr].slice(0, 4));
+  };
   useEffect(() => {
     if (touched || !inView || reduced) return;
     const t = setTimeout(() => {
-      if (items.length) {
-        const it = items[0];
-        setItems((xs) => xs.slice(1));
-        setTrail((tr) => [{ id: Date.now(), text: `Approved: ${it.what.toLowerCase()}`, ok: true }, ...tr].slice(0, 4));
-      } else { setItems(START); setTrail((tr) => tr.slice(-1)); }
-    }, items.length ? 2400 : 3000);
+      if (waiting.length) decide(waiting[0], true);
+      else { setStatus(fresh()); setTrail(HISTORY); }
+    }, waiting.length ? 2400 : 3200);
     return () => clearTimeout(t);
-  }, [items, touched, inView, reduced]);
-  const act = (it: Item, ok: boolean) => {
-    setTouched(true);
-    setItems((xs) => xs.filter((x) => x.id !== it.id));
-    setTrail((t) => [{ id: Date.now(), text: `${ok ? "Approved" : "Sent back"}: ${it.what.toLowerCase()}`, ok }, ...t].slice(0, 4));
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, touched, inView, reduced]);
+  const reset = () => { setStatus(fresh()); setTrail(HISTORY); };
   return (
     <div ref={ref} className="pv-desk">
       <div className="pv-desk__queue">
-        <div className="pv-desk__head"><b>Needs your yes</b><span>{items.length}</span></div>
+        <div className="pv-desk__head"><b>Needs your yes</b><span>{waiting.length ? `${waiting.length} waiting` : <button type="button" className="pv-link" onClick={() => { setTouched(true); reset(); }}>Run it again</button>}</span></div>
         <ul>
-          <AnimatePresence initial={false}>
-            {items.map((it) => (
-              <motion.li key={it.id} layout={!reduced} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: 12 }} transition={ease(reduced)}>
+          {QUEUE.map((it) => {
+            const st = status[it.id];
+            return (
+              <li key={it.id} data-status={st}>
                 <span className="pv-desk__what"><b>{it.what}</b><span>{it.who}</span></span>
                 <span className="pv-desk__btns">
-                  <button type="button" className="pv-btn" aria-label={`Send back: ${it.what}`} onClick={() => act(it, false)}><X width={14} height={14} strokeWidth={2} /></button>
-                  <button type="button" className="pv-btn pv-btn--yes" onClick={() => act(it, true)}>Approve</button>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {st === "waiting" ? (
+                      <motion.span key="w" className="pv-desk__btnrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={ease(reduced)}>
+                        <button type="button" className="pv-btn" aria-label={`Send back: ${it.what}`} onClick={() => { setTouched(true); decide(it, false); }}><X width={14} height={14} strokeWidth={2} /></button>
+                        <button type="button" className="pv-btn pv-btn--yes" onClick={() => { setTouched(true); decide(it, true); }}>Approve</button>
+                      </motion.span>
+                    ) : (
+                      <motion.span key="d" className={`pv-desk__state pv-desk__state--${st}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={ease(reduced)}>
+                        {st === "approved" ? <><Check width={13} height={13} strokeWidth={2.5} />Approved</> : <><X width={13} height={13} strokeWidth={2.5} />Sent back</>}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </span>
-              </motion.li>
-            ))}
-          </AnimatePresence>
-          {items.length === 0 && (
-            <li className="pv-desk__empty">All clear. <button type="button" className="pv-link" onClick={() => { setItems(START); setTrail(trail.slice(-1)); }}>Run it again</button></li>
-          )}
+              </li>
+            );
+          })}
         </ul>
+        <p className="pv-desk__foot">Sending, merging and changes always wait here first.</p>
       </div>
       <div className="pv-desk__trail">
         <div className="pv-desk__head"><b>Trail</b><span>Every task leaves one</span></div>
         <ol>
-          <AnimatePresence initial={false}>
+          <AnimatePresence initial={false} mode="popLayout">
             {trail.map((t) => (
-              <motion.li key={t.id} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={ease(reduced)} data-ok={t.ok}>
+              <motion.li key={t.id} layout={!reduced} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={ease(reduced)} data-ok={t.ok}>
                 <span className="pv-desk__mark" aria-hidden />{t.text}
               </motion.li>
             ))}
@@ -260,35 +274,34 @@ export function TeammateBuilder() {
   );
 }
 
-/* ── Integrations: three rows of real, coloured app marks drifting in opposite directions behind one statement.
- *  Passive (no clicks). CSS transform loops, paused off-screen; static rows with reduced motion. ── */
-const ROW_APPS = [
-  ["Gmail", "Google Calendar", "Google Docs", "Google Drive", "Google Sheets", "Slack", "Notion", "Airtable"],
-  ["Metabase", "PostHog", "BigQuery", "Snowflake", "Asana", "Calendly", "Dropbox", "Apify"],
-  ["GitHub", "Linear", "Jira", "Sentry", "PagerDuty", "Vercel", "DataRobot", "Canva"],
+/* ── Integrations: one quiet panel. The number on the left, a static grid of the 24 named connectors (real,
+ *  coloured marks) on the right. Only motion: the grid fades in once (soft stagger). ── */
+const INT_APPS = [
+  "Gmail", "Google Calendar", "Google Docs", "Google Drive", "Google Sheets", "Slack",
+  "Notion", "Airtable", "Metabase", "PostHog", "BigQuery", "Snowflake",
+  "GitHub", "Linear", "Jira", "Sentry", "PagerDuty", "Vercel",
+  "Asana", "Calendly", "Dropbox", "Apify", "DataRobot", "Canva",
 ];
 export function IntegrationField() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0 });
+  const on = useInView(ref, { once: true, amount: 0.3 });
+  const reduced = useReducedMotion();
   return (
-    <div ref={ref} className="pv-int" data-run={inView}>
-      <div className="pv-int__card">
+    <div ref={ref} className="pv-int">
+      <div className="pv-int__text">
         <p className="pv-int__num">100+</p>
-        <p className="pv-int__label">connectors across productivity, data and engineering</p>
-        <p className="pv-int__more">Bring your own connector for anything custom.</p>
+        <p className="pv-int__label">connectors across productivity, data and engineering tools.</p>
+        <p className="pv-int__more">Need something custom? Bring your own connector.</p>
+        <a className="pv-int__cta" href="#build">Pick apps for a teammate<ArrowRight width={16} height={16} strokeWidth={1.75} /></a>
       </div>
-      <div className="pv-int__rows" aria-hidden>
-        {ROW_APPS.map((row, r) => (
-          <div key={r} className="pv-int__row" data-dir={r % 2 ? "rev" : "fwd"}>
-            {[0, 1].map((copy) => (
-              <div key={copy} className="pv-int__set">
-                {row.map((a) => <span key={a} className="pv-int__tile" title={a}><BrandMark name={a} size={28} colored /></span>)}
-              </div>
-            ))}
-          </div>
+      <ul className="pv-int__grid">
+        {INT_APPS.map((a, n) => (
+          <motion.li key={a} title={a} initial={reduced ? false : { opacity: 0 }} animate={on || reduced ? { opacity: 1 } : {}}
+            transition={reduced ? { duration: 0 } : { duration: DUR.slow, ease: EASE.outQuint, delay: n * 0.02 }}>
+            <BrandMark name={a} size={24} colored title={a} />
+          </motion.li>
         ))}
-      </div>
-      <ul className="sr-visually-hidden">{ROW_APPS.flat().map((a) => <li key={a}>{a}</li>)}</ul>
+      </ul>
     </div>
   );
 }

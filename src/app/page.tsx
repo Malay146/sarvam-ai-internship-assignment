@@ -123,7 +123,7 @@ export default function IndusCoworkPage() {
         </section>
 
 
-        {/* 5 · Integrations (Product): passive — real marks drifting behind one number */}
+        {/* 5 · Integrations (Product): passive — the number and a quiet grid of real marks */}
         <section id="integrations" className="sr-container cw-section" aria-labelledby="int-h">
           <Reveal><SectionHeader title={<span id="int-h">Works where your work already lives</span>} lead="Teammates act inside the tools your team already uses, from inboxes and docs to warehouses and trackers." /></Reveal>
           <Reveal><IntegrationField /></Reveal>
