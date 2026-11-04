@@ -265,9 +265,8 @@ export function TeammateBuilder() {
           </div>
           <dl className="pv-mate__rows">
             <div><dt>Does</dt><dd>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span key={r.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={ease(reduced)}>{r.plan.slice(0, 3).join(" · ")}</motion.span>
-              </AnimatePresence>
+              {/* swaps in the same frame as the role (no exit wait), then a quick fade so the change still reads */}
+              <motion.span key={r.key} initial={reduced ? false : { opacity: 0.35 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0 : 0.18 }}>{r.plan.slice(0, 3).join(" · ")}</motion.span>
             </dd></div>
             <div><dt>Works in</dt><dd className="pv-mate__apps">
               {apps.length ? apps.map((a) => <span key={a} title={a}><BrandMark name={a} size={18} colored title={a} /></span>) : <span className="pv-hint">Pick at least one app</span>}
