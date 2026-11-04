@@ -174,7 +174,7 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - [x] Export page at 375 / 768 / 1440 (final deliverable = Indus Cowork `/`; Bulbul + Document AI exported as system stress tests)
 - [x] Write-up (`deliverables/6-writeup/writeup.md`)
 - [x] Public repo: https://github.com/Malay146/sarvam-ai-internship-assignment (Sarvam's reference images are git-ignored, kept locally)
-- [x] Submission page: repo README (live site https://sarvam-ai-internship-assignment-4of.vercel.app/) · [ ] reply on the original email thread (Malay)
+- [x] /submission page (live, built with the system) · Submission page: repo README (live site https://sarvam-ai-internship-assignment-4of.vercel.app/) · [ ] reply on the original email thread (Malay)
 
 ---
 

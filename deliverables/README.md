@@ -1,6 +1,6 @@
 # Deliverables
 
-Everything the brief asks for, in its order. Live site: **https://sarvam-ai-internship-assignment-4of.vercel.app/**
+Everything the brief asks for, in its order. The same, as one page: **https://sarvam-ai-internship-assignment-4of.vercel.app/submission** · live page: **https://sarvam-ai-internship-assignment-4of.vercel.app/**
 
 | # | Deliverable | Folder |
 |---|---|---|

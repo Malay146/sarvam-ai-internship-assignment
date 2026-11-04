@@ -2,7 +2,7 @@
 
 **Malay Patel** · A design system built on Sarvam's existing brand, and everything generated from it.
 
-**Live site → https://sarvam-ai-internship-assignment-4of.vercel.app/**
+**Submission page → https://sarvam-ai-internship-assignment-4of.vercel.app/submission** · Live page → https://sarvam-ai-internship-assignment-4of.vercel.app/
 
 The brand system is the main deliverable. I captured Sarvam's brand as explicit tokens, rules and recipes written for AI, then used AI to generate the banners and the page from it, while I directed, rejected and refined. Every correction became a rule. The banners and the page are the proof that the system works.
 

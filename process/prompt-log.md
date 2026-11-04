@@ -919,3 +919,18 @@ Entry format:
 - All path references were updated: imports, the tokens review page, scripts, the banner skill, recipes, CLAUDE.md, README, memory. `design.md` was regenerated.
 - `scripts/export-page.mjs` now writes into the new folders.
 - QA: tsc, production build, check-layout 10/10 on all three pages; `/system/tokens` reads from the new path.
+
+## 2026-11-04 · Claude Code · /submission page
+
+- Prompt (verbatim): "atleast create the /submission page tho"
+- **What came out:** one page built with the system that walks through the six deliverables:
+  1. Hero: homepage Sun light, kicker, H1, live page + repo buttons
+  2. Numbered index of the six, equal-height cards with links
+  3. The system's files with GitHub links
+  4. Banners: each subject's Meta and LinkedIn side by side at equal height (column ratio 1 : 2.392 from the two aspect ratios)
+  5. The page: desktop in browser chrome, tablet and phone frames, a "10 widths checked" note
+  6. Testing: before/after pairs and the two system-test pages
+  7. How it was made, then a thank-you closing card
+- **Header and footer:** plain, not Sarvam's marketing nav and footer. The page is Malay's submission, so it names him and carries a note that Sarvam's name and marks belong to Sarvam.
+- **Images:** web-sized WebP copies in `public/submission/` (1.3 MB total).
+- **QA:** check-layout 10/10, no overflow at 375 or 1440, `next build` passes.
