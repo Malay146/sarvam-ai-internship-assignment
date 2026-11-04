@@ -429,13 +429,13 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-day__item[data-now="true"] .pv-day__time { color: var(--color-accent); }
 @media (min-width: 1024px) {
   .pv-day { padding-top: 28px; }
-  .pv-day__rail { display: block; position: absolute; left: 10%; right: 10%; top: 6px; height: 2px; background: var(--color-st-secondary); }
+  .pv-day__rail { display: block; position: absolute; left: 10%; right: 10%; top: 6px; height: 2px; margin-top: 0; background: var(--color-st-secondary); }
   .pv-day__fill { position: absolute; inset: 0; background: var(--color-sr-indigo-800); transform-origin: 0 50%; }
   .pv-day__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4); }
   .pv-day__item { grid-template-columns: minmax(0, 1fr); grid-template-areas: "time" "title" "body" "status"; row-gap: var(--space-2); align-content: start; padding: var(--space-6) var(--space-5); }
-  .pv-day__item[data-now="true"] { transform: translateY(-4px); }
   /* the dot sits on the rail above each card */
-  .pv-day__dot { position: absolute; left: 50%; top: -29px; margin: 0; transform: translateX(-50%); width: 14px; height: 14px; }
+  /* rail centre = 7px from the top of .pv-day; cards start at 28px, so a 14px dot centred on the rail sits at top -29px (the card border adds 1px) */
+  .pv-day__dot { position: absolute; left: 50%; top: -29px; margin: 0; transform: translateX(-50%); width: 14px; height: 14px; box-sizing: border-box; }
   .pv-day__status { justify-self: start; margin-top: var(--space-2); }
 }
 @media (prefers-reduced-motion: reduce) { .pv-day__item, .pv-day__dot, .pv-day__status { transition: none; } }
