@@ -5,9 +5,10 @@ import type { Metadata } from "next";
 import {
   BookOpenFill, CalendarClockFill, Check, GlobeFill, LockFill, MessageFill, ListTodoFill, SearchFill, ShieldCheckFill, SparkleFill, UserFill,
 } from "@/components/icons";
-import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
+import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import { MegaNav } from "@/components/sarvam/mega-nav";
+import { SiteFooter } from "@/components/sarvam/site-footer";
 import { Reveal, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { ApprovalDesk, DayScrubber, IntegrationField, OneFaq, TeammateBuilder } from "@/components/sarvam/cowork-play";
 import { BvKnowledge, BvResearch, BvSchedule, BvSkill, BvTeammates } from "@/components/sarvam/bento-visuals";
@@ -224,7 +225,7 @@ export default function IndusCoworkPage() {
           <Reveal><CtaCard title="Meet your first teammate." cta={<Button size="lg" href="https://www.sarvam.ai/contact">Talk to Us</Button>} /></Reveal>
         </section>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }
