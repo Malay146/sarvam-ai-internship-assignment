@@ -570,3 +570,11 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-int::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 75%; pointer-events: none;
   background: linear-gradient(0deg in oklab, rgb(250 155 67 / 0.30) 0%, rgb(250 190 163 / 0.34) 22%, rgb(194 171 204 / 0.32) 48%, rgb(167 192 241 / 0.24) 72%, rgb(232 239 252 / 0) 100%); }
 .pv-int::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.35; pointer-events: none; }
+
+/* "Run it again": a small secondary pill in the desk header */
+.pv-again { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 var(--space-4); border-radius: var(--radius-full); border: var(--border-default); background: var(--color-sr-white); box-shadow: var(--shadow-ambient-sm); font: inherit; font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--color-tx); cursor: pointer; transition: border-color var(--duration-normal) var(--ease-standard); }
+@media (hover: hover) { .pv-again:hover { border-color: var(--color-sr-grey-400); } .pv-again:hover svg { transform: rotate(60deg); } }
+.pv-again svg { transition: transform var(--duration-moderate) var(--ease-standard); }
+.pv-again:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.pv-again::after { content: ""; position: absolute; inset: -4px; }
+.pv-again { position: relative; }

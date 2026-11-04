@@ -6,7 +6,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import {
-  ArrowRight, ArrowUp, Check, X,
+  ArrowRight, ArrowUp, Check, Replay, X,
 } from "@/components/icons";
 import { BrandMark } from "./brand";
 import { MedallionEcho } from "./patterns";
@@ -169,7 +169,7 @@ export function ApprovalDesk() {
   return (
     <div ref={ref} className="pv-desk">
       <div className="pv-desk__queue">
-        <div className="pv-desk__head"><b>Needs your yes</b><span>{waiting.length ? `${waiting.length} waiting` : <button type="button" className="pv-link" onClick={() => { setTouched(true); reset(); }}>Run it again</button>}</span></div>
+        <div className="pv-desk__head"><b>Needs your yes</b><span>{waiting.length ? `${waiting.length} waiting` : <button type="button" className="pv-again" onClick={() => { setTouched(true); reset(); }}><Replay width={14} height={14} strokeWidth={1.75} />Run it again</button>}</span></div>
         <ul>
           {QUEUE.map((it) => {
             const st = status[it.id];
