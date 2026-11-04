@@ -434,7 +434,8 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-day__status { grid-area: status; display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--color-sf-tertiary); font-size: 12px; font-weight: var(--weight-medium); color: var(--color-tx-tertiary); white-space: nowrap; transition: background var(--duration-moderate) var(--ease-standard), color var(--duration-moderate) var(--ease-standard); }
 .pv-day__item[data-done="true"] .pv-day__dot { background: var(--color-sr-indigo-800); border-color: var(--color-sr-indigo-800); }
 .pv-day__item[data-done="true"] .pv-day__status { background: var(--color-sr-green-50); color: var(--color-sr-green-800); }
-.pv-day__item[data-now="true"] { border-color: var(--color-sr-indigo-300); box-shadow: var(--shadow-ambient-md); }
+/* current card: a soft indigo wash rising from the bottom and a light ring; no shadow */
+.pv-day__item[data-now="true"] { border-color: var(--color-sr-indigo-200); background: linear-gradient(0deg, var(--color-sr-indigo-100) 0%, var(--color-sr-indigo-50) 40%, var(--color-sr-white) 85%); box-shadow: none; }
 .pv-day__item[data-now="true"] .pv-day__time { color: var(--color-accent); }
 @media (min-width: 1024px) {
   .pv-day { padding-top: 28px; }
@@ -578,3 +579,16 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-again:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .pv-again::after { content: ""; position: absolute; inset: -4px; }
 .pv-again { position: relative; }
+
+/* FAQ (one open at a time) */
+.pv-faq { border-top: var(--border-default); }
+.pv-faq__item { border-bottom: var(--border-default); }
+.pv-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); min-height: 64px; padding: var(--space-4) 0; border: 0; background: none; font: inherit; font-size: var(--text-body); font-weight: var(--weight-medium); color: var(--color-tx); text-align: left; cursor: pointer; }
+.pv-faq__q:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.pv-faq__chev { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
+.pv-faq__chev::before, .pv-faq__chev::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 1.5px; border-radius: 1px; background: var(--color-tx-secondary); transition: transform var(--duration-moderate) var(--ease-emphasized); }
+.pv-faq__chev::after { transform: rotate(90deg); }
+.pv-faq__item[data-open="true"] .pv-faq__chev::after { transform: rotate(0deg); }
+.pv-faq__a { overflow: hidden; }
+.pv-faq__a p { margin: 0; padding: 0 var(--space-8) var(--space-5) 0; font-size: var(--text-body); line-height: 1.6; color: var(--color-tx-secondary); max-width: 62ch; }
+@media (prefers-reduced-motion: reduce) { .pv-faq__chev::before, .pv-faq__chev::after { transition: none; } }

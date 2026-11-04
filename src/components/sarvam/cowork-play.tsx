@@ -333,3 +333,32 @@ export function IntegrationField() {
     </div>
   );
 }
+
+/* ── FAQ: one answer open at a time (opening one closes the other). Height animates with Motion; reduced motion = instant. ── */
+export function OneFaq({ items }: { items: { q: string; a: string }[] }) {
+  const [open, setOpen] = useState<number | null>(0);
+  const reduced = useReducedMotion();
+  return (
+    <div className="pv-faq">
+      {items.map((it, n) => {
+        const on = open === n;
+        return (
+          <div key={it.q} className="pv-faq__item" data-open={on}>
+            <button type="button" className="pv-faq__q" aria-expanded={on} aria-controls={`pv-faq-${n}`} id={`pv-faq-q-${n}`} onClick={() => setOpen(on ? null : n)}>
+              <span>{it.q}</span><span className="pv-faq__chev" aria-hidden />
+            </button>
+            <AnimatePresence initial={false}>
+              {on && (
+                <motion.div id={`pv-faq-${n}`} role="region" aria-labelledby={`pv-faq-q-${n}`} className="pv-faq__a"
+                  initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                  transition={reduced ? { duration: 0 } : { height: { duration: 0.3, ease: EASE.outQuint }, opacity: { duration: 0.2 } }}>
+                  <p>{it.a}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

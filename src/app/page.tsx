@@ -5,11 +5,11 @@ import type { Metadata } from "next";
 import {
   BookOpenFill, CalendarClockFill, Check, GlobeFill, LockFill, MessageFill, ListTodoFill, SearchFill, ShieldCheckFill, SparkleFill, UserFill,
 } from "@/components/icons";
-import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
+import { Button, ButtonRow, Checklist, CoworkDashboard, CtaCard, Footer, HeroGlow, MockPlan, MockResearch, MockReview, Motif, SectionHeader, TileCard } from "@/components/sarvam";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import { MegaNav } from "@/components/sarvam/mega-nav";
 import { Reveal, Stage, StepVisual } from "@/components/sarvam/cowork";
-import { ApprovalDesk, DayScrubber, IntegrationField, TeammateBuilder } from "@/components/sarvam/cowork-play";
+import { ApprovalDesk, DayScrubber, IntegrationField, OneFaq, TeammateBuilder } from "@/components/sarvam/cowork-play";
 import { ROLES } from "@/components/sarvam/cowork-data";
 import "./cowork.css";
 
@@ -206,12 +206,15 @@ export default function IndusCoworkPage() {
         <section id="faq" className="sr-container cw-section cw-faq" aria-labelledby="faq-h">
           <Reveal><SectionHeader title={<span id="faq-h">Questions teams ask first</span>} /></Reveal>
           <Reveal className="cw-narrow">
-            <Faq items={[
+            <OneFaq items={[
               { q: "How can my team get access?", a: "Indus Cowork is not generally available yet. Talk to us about your team's workflows and access to the product." },
+              { q: "How is Indus Cowork different from a chat assistant?", a: "A chat assistant answers a question. A Cowork teammate plans the work, researches and acts inside your connected apps. It reviews its output and brings the result back for your approval." },
               { q: "Where do teammates live?", a: "In Slack or Indus Chat. You message them like any colleague, and they can also run scheduled tasks on their own." },
               { q: "Which apps can a teammate connect to?", a: "More than 100 connectors across productivity, data and engineering tools. You can also bring your own connector for anything custom." },
-              { q: "Can I teach it how my team works?", a: "Yes. Write a skill once and every teammate can use it. A skill-creator skill can even draft new skills from a prompt." },
+              { q: "Can I create my own skills?", a: "Yes. Create as many skills as you need. There is a skill-creator skill too, so you can use AI to build new skills for your own purpose." },
+              { q: "Do I stay in control of what a teammate does?", a: "Yes. Teammates come back for your approval, and every task shows a live progress trail of what was done." },
               { q: "Where does my data go?", a: "Your knowledge bases and task history stay within your workspace. Data for Indian deployments is stored in India and encrypted at rest and in transit." },
+              { q: "Which security certifications does Sarvam hold?", a: "Sarvam holds ISO 27001:2022 certification and SOC 2 Type I. Supporting documents are available through Sarvam's Trust Center." },
             ]} />
           </Reveal>
         </section>
