@@ -85,6 +85,13 @@ import { SuitcaseOutline24 } from "./nucleo/SuitcaseOutline24";
 import { TargetOutline24 } from "./nucleo/TargetOutline24";
 import { UserOutline24 } from "./nucleo/UserOutline24";
 import { XmarkOutline24 } from "./nucleo/XmarkOutline24";
+import { TrophyGlyph24 } from "./nucleo/TrophyGlyph24";
+import { GraduationCapGlyph24 } from "./nucleo/GraduationCapGlyph24";
+import { HeadsetGlyph24 } from "./nucleo/HeadsetGlyph24";
+import { CircleMediaPlayGlyph24 } from "./nucleo/CircleMediaPlayGlyph24";
+import { CopyOutline24 } from "./nucleo/CopyOutline24";
+import { BoltGlyph24 } from "./nucleo/BoltGlyph24";
+import { Sliders2Glyph24 } from "./nucleo/Sliders2Glyph24";
 
 export type IconProps = SVGProps<SVGSVGElement> & { strokeWidth?: number | string; corners?: "round" | "square"; size?: number };
 type NucleoIcon = (p: SVGProps<SVGSVGElement> & { strokeWidth?: number | string; corners?: "round" | "square" }) => React.JSX.Element;
@@ -184,3 +191,11 @@ export const MessageFill = make(Message2Glyph24 as NucleoIcon, "MessageFill");
 export const GlobeFill = make(GlobeGlyph24 as NucleoIcon, "GlobeFill");
 export const LockFill = make(LockGlyph24 as NucleoIcon, "LockFill");
 export const Replay = make(ArrowRotateClockwiseOutline24, "Replay");
+// Bulbul page (2026-11-04)
+export const TrophyFill = make(TrophyGlyph24 as NucleoIcon, "TrophyFill");
+export const GraduationCapFill = make(GraduationCapGlyph24 as NucleoIcon, "GraduationCapFill");
+export const HeadsetFill = make(HeadsetGlyph24 as NucleoIcon, "HeadsetFill");
+export const PlayCircleFill = make(CircleMediaPlayGlyph24 as NucleoIcon, "PlayCircleFill");
+export const Copy = make(CopyOutline24, "Copy");
+export const BoltFill = make(BoltGlyph24 as NucleoIcon, "BoltFill");
+export const SlidersFill = make(Sliders2Glyph24 as NucleoIcon, "SlidersFill");

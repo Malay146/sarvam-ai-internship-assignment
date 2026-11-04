@@ -168,6 +168,7 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - [ ] Run before/after tests, log them
 - [x] 3 Meta + 3 LinkedIn banners: final set in `banners/final/` (Prism, Every task leaves a trail, Indus Cowork early access). Engine: `recipes/banner-builder.md`; skill: `.claude/skills/sarvam-banner`; gallery `/banners`; expressions `/system/expressions`
 - [x] Landing page built (`src/app/page.tsx`, v3); rules in `design-system/recipes/landing-page.md` §0 — read before any new page
+- [x] Consistency test page `/bulbul` (Bulbul V4 Flash, Dawn theme): `design-system/recipes/bulbul-page.md`. Each product page owns its light and its formats (landing-page.md rule 9a)
 - [ ] Deploy to Vercel
 - [ ] Export page at 375 / 768 / 1440
 - [ ] Write-up

@@ -97,6 +97,19 @@ Use only these claims.
 - Scores **71.8**, with a **median response time of 44 milliseconds**: "the highest average score among decision models that respond in under 100 milliseconds."
 - Write "Sarvam Prism" exactly. Don't round 71.8 or 44 ms, and don't drop the "under 100 ms" qualifier when claiming "highest".
 
+**Bulbul V4 Flash** (text to speech) `[verified: sarvam.ai/apis/text-to-speech, sarvam.ai/models, docs.sarvam.ai TTS reference + voices guide, 2026-11-04]`
+- Name: **Bulbul V4 Flash**; model string `bulbul:v4-flash`. Sarvam's line: "Expressive, accurate, fast."
+- **11 languages:** Hindi, Bengali, Gujarati, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu and Indian English. Codes: `hi-IN`, `bn-IN`, `gu-IN`, `kn-IN`, `ml-IN`, `mr-IN`, `od-IN`, `pa-IN`, `ta-IN`, `te-IN`, `en-IN`. Code-mixed text (e.g. Hinglish) works when each language is in its own script.
+- **83 voices in 224 styles.** Speaker IDs are `<name>_<language>_<style>` (e.g. `ishita_enhi_companion`, `shubh_enhi_ads` = default, `sophia_en_conversational`, `sanchita_hi_assistant`, `aparna_hi_customer`, `arnab_bn_conversation`, `ashwin_en_sports`, `anand_hi_documentary`, `gokul_ta_narration`).
+- **First audio in under 250 ms** in production, over **HTTP streaming, WebSocket or a single response**.
+- Output: **8 kHz to 48 kHz**; **WAV, MP3, FLAC or AAC**. Pace **0.5–2.0** (default 1.0).
+- Same request shape as **Bulbul V3**: switching is a **one-line change** (the model name). **Python and Node.js SDKs.**
+- Versus V3: more expressive; better with Indian names, numbers and abbreviations in context.
+- Price: **₹20 per 10,000 characters** (a third less than V3's ₹30); launch offer **₹10, 50% off until 12 Nov**.
+- Where: the **Sarvam API**, the **Playground** and **Content Studio**. Use cases named: voice agents, support agents, teaching, live sports, documentary, ads; dubbing and localisation.
+- Closing line on Sarvam's page: "Your next million conversations can sound more human."
+- **Source conflicts, don't copy:** the marketing page lists pitch and loudness controls, but the API docs say they are Bulbul V2 only, so don't claim them for V4 Flash. The marketing cURL uses `target_language_code`; the API reference uses `language_code` (use `language_code`). The marketing page pairs Kalpit with Bengali and Ishita with Tamil, but the voices guide doesn't (avoid those pairings). The sample conversations on Sarvam's page are scripted demos, not live calls.
+
 **Company line:** Sarvam AI is an Indic language AI company. Mission (press): "make artificial intelligence accessible and useful for every Indian language speaker." Tagline: **"AI for all from India."**
 
 **Don't invent** user numbers, customer names, speed claims, language counts (sources say 22 and 23 in different places, so avoid the number) or pricing.

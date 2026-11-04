@@ -736,3 +736,23 @@ Entry format:
   - A filter on a CSS-masked element is masked away, so the wordmark became an inline SVG (official path, unchanged).
   - The © row floated alone in the wash, so it moved into the meta block. The second divider was dropped.
 - QA: check-layout 10/10 widths after each round. Chromium and WebKit screenshots of the wordmark filters.
+
+## 2026-11-04 · Claude Code · Bulbul V4 Flash page (`/bulbul`): the consistency test
+
+- Prompts (verbatim, in order): "now what i want to do is that create a page /whatever you want, choose a subject from sarvam, understand and gather information from it, and genareta a full landing page, a new one new creativity, try to make it as sarvam as possible and beauitful, make sure evertghing is conisistent, understandable and visually apealling and not too cluttered, make sure everythign is aligned properly … do your best, go all out" · "use pattersns, cards, or logos, etc, but make sure accordingly and not too much and make it look good" · "basically this is going to be a testing page to me check how consistent you are" · "ya but gradient thing should be like differnt know so we know the theme is different for bulbul" · "not everything section should feel like indus page, it should have its own theme like bulbul"
+- Research:
+  - Sources: sarvam.ai/apis/text-to-speech, sarvam.ai/models, the docs.sarvam.ai TTS reference and the voices guide.
+  - Facts went into voice.md §5 first (Bulbul fact sheet), including the source conflicts. Pitch and loudness are V2 only per the docs. The API field is `language_code`, not `target_language_code`. The Kalpit and Ishita language pairings differ between the page and the docs.
+- What came out, round 1:
+  - The playbook followed as written: centred hero + product UI, split/centred header rhythm, real assets (official Python and Node.js marks, Nucleo icons), 8 FAQs and one CTA.
+  - Too many sections reused Cowork's formats: bento tiles, the integrations panel and the deployment tiles.
+- What changed and why:
+  1. **Theme.** Each product page now owns one of Sarvam's lights. Bulbul has **Dawn**: hero light, saffron accent rings, the Dusk closing card and saffron fact icons.
+  2. **Bulbul's own formats** replace the Cowork ones: tracklist, chorus band, ripple stage (Sarvam's medallion as sound rings), multitrack with a playhead, and doors.
+  3. A class collision (`bb-track` was used by both the pace slider and the tracklist) was caught in a screenshot and renamed (`bb-trk`).
+- New rule: landing-page.md 9a, "each product page owns a theme and its own formats". Recipe: recipes/bulbul-page.md.
+- QA:
+  - check-layout 10/10 widths and check-nav pass.
+  - No overflow and no page errors in Chromium or WebKit at 375 / 768 / 1440.
+  - Playground interactions scripted (voice, pace, rate, format, tab → code updated).
+  - `next build` passes.
