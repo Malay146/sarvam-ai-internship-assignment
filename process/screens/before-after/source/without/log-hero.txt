@@ -1,0 +1,17 @@
+I've written `hero.html` in your working directory, but I haven't seen it rendered. Screenshot tooling needed approval, so I checked the 1440px and 375px layouts by reading the CSS only. Open the file in a browser before relying on it.
+
+**What's in it**
+- **Nav:** logo, "Indus Cowork by Sarvam AI", four links, and Sign in / Get started buttons. Below 820px the links collapse to a menu button, but that button doesn't open anything yet.
+- **Copy:** a "New" label, then the headline "AI teammates that *finish* the work." with "finish" in italic serif and an orange underline that draws in. The supporting line is "Hand Indus Cowork a brief, not a prompt…". Two buttons: "Start coworking" and "Watch a teammate work". Under them are two short lines: "You approve before anything ships" and "Built in India".
+- **Product visual:** a mock app window. A teammate called Asha works through a 4-step invoice reconciliation, each step getting a tick. The status then changes from Working to Done and a "Ready for your review" bar appears. The brief includes a line in Hindi, and two floating cards show "4 / 4 steps done" and the supported language scripts.
+
+**Layout**
+- **1440px:** copy and visual side by side.
+- **Below 1080px:** they stack.
+- **375px:** 16px side margins, buttons full width, the app sidebar hidden and only one floating card shown. Long step text wraps instead of being cut off, and nothing scrolls sideways.
+
+**Other details**
+- The page has no images; everything is HTML, CSS and inline SVG. It loads fonts from Google Fonts and falls back to system fonts if they don't load.
+- Animations are turned off for anyone whose system asks for reduced motion.
+- I didn't use real customer names, logos or usage numbers. The figures in the mock (214 invoices, 7 mismatches) are placeholders. The tool names in the steps (Gmail, Tally, Sheets) are also only examples, so check them against what the product really connects to.
+- I didn't publish it as a hosted page because it uses Sarvam's name and branding.

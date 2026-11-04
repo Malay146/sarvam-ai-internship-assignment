@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Indus Cowork Banner</title>
+<style>
+  :root {
+    --bg: #FBF7F1;
+    --ink: #14123A;
+    --ink-soft: #4A4870;
+    --muted: #8A87A6;
+    --line: #E7E0D4;
+    --card: #FFFFFF;
+    --orange: #F26B1D;
+    --amber: #FFB547;
+    --indigo: #3B3BD6;
+    --green: #1F9D6B;
+    --green-bg: #E5F5EE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    width: 1200px; height: 627px; overflow: hidden;
+    font-family: "Inter", "SF Pro Display", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .banner {
+    position: absolute; top: 0; left: 0;
+    width: 1200px; height: 627px; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+  }
+
+  /* Background: warm glow + fine dot grid */
+  .glow {
+    position: absolute; right: -160px; top: -180px;
+    width: 820px; height: 820px; border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(255,181,71,.55) 0%, rgba(242,107,29,.22) 38%, rgba(251,247,241,0) 70%);
+  }
+  .glow-2 {
+    position: absolute; right: 120px; bottom: -340px;
+    width: 640px; height: 640px; border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(59,59,214,.16) 0%, rgba(251,247,241,0) 65%);
+  }
+  .dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(20,18,58,.09) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%, #000 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 55%, #000 100%);
+  }
+
+  /* Left column */
+  .left { position: absolute; left: 72px; top: 64px; width: 560px; height: 499px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: conic-gradient(from 200deg, var(--orange), var(--amber), var(--orange));
+    position: relative;
+  }
+  .mark::after {
+    content: ""; position: absolute; inset: 9px; border-radius: 50%;
+    background: var(--bg);
+  }
+  .brand-name { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+
+  .eyebrow {
+    margin-top: 76px;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px 8px 10px; border-radius: 999px;
+    background: rgba(242,107,29,.10); color: #B8480C;
+    font-size: 15px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase;
+  }
+  .eyebrow .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(242,107,29,.18); }
+
+  h1 {
+    margin-top: 22px;
+    font-size: 88px; line-height: .98; font-weight: 800; letter-spacing: -3.2px;
+  }
+  h1 .accent {
+    background: linear-gradient(95deg, var(--orange) 0%, #E2521A 45%, var(--indigo) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub {
+    margin-top: 24px; max-width: 500px;
+    font-size: 30px; line-height: 1.22; font-weight: 500; letter-spacing: -0.6px; color: var(--ink-soft);
+  }
+  .sub strong { color: var(--ink); font-weight: 700; }
+
+  /* Right column: task board */
+  .board {
+    position: absolute; left: 676px; top: 92px; width: 452px;
+    background: rgba(255,255,255,.78);
+    border: 1px solid var(--line); border-radius: 22px;
+    box-shadow: 0 30px 60px -24px rgba(20,18,58,.28), 0 2px 6px rgba(20,18,58,.05);
+    padding: 22px 22px 18px;
+  }
+  .board-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .board-title { font-size: 15px; font-weight: 700; letter-spacing: -0.1px; }
+  .board-meta { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .avatars { display: flex; }
+  .av {
+    width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff;
+    margin-left: -8px; display: grid; place-items: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+  .av:first-child { margin-left: 0; }
+  .av.a { background: var(--orange); }
+  .av.b { background: var(--indigo); }
+  .av.c { background: #0F8F8A; }
+
+  .task {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; margin-top: 10px;
+  }
+  .check {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--green); display: grid; place-items: center;
+  }
+  .check svg { width: 14px; height: 14px; }
+  .task-body { flex: 1; min-width: 0; }
+  .task-name { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
+  .task-by { margin-top: 3px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  .tag {
+    flex: none; font-size: 12px; font-weight: 700; letter-spacing: .4px;
+    color: var(--green); background: var(--green-bg);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .task.done .task-name { color: var(--ink); }
+
+  .task.live { border-color: rgba(242,107,29,.45); box-shadow: 0 0 0 4px rgba(242,107,29,.08); }
+  .spinner {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: conic-gradient(var(--orange) 0 72%, rgba(242,107,29,.18) 72% 100%);
+    -webkit-mask: radial-gradient(circle, transparent 7px, #000 8px);
+            mask: radial-gradient(circle, transparent 7px, #000 8px);
+  }
+  .bar { margin-top: 8px; height: 5px; border-radius: 3px; background: #F1EBE1; overflow: hidden; }
+  .bar i { display: block; width: 86%; height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--amber), var(--orange)); }
+  .tag.live { color: #B8480C; background: rgba(242,107,29,.12); }
+
+  .board-foot {
+    margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--muted); font-weight: 500;
+  }
+  .board-foot b { color: var(--ink); font-weight: 700; }
+
+  /* Floating chip */
+  .chip {
+    position: absolute; left: 618px; top: 470px;
+    display: flex; align-items: center; gap: 10px;
+    background: var(--ink); color: #fff;
+    padding: 12px 18px 12px 14px; border-radius: 14px;
+    font-size: 15px; font-weight: 600; letter-spacing: -0.1px;
+    box-shadow: 0 18px 36px -14px rgba(20,18,58,.55);
+  }
+  .chip .spark {
+    width: 24px; height: 24px; border-radius: 7px;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    display: grid; place-items: center;
+  }
+  .chip .spark svg { width: 14px; height: 14px; }
+
+  /* Bottom strip */
+  .strip {
+    position: absolute; left: 0; bottom: 0; width: 1200px; height: 8px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--amber) 40%, var(--indigo) 100%);
+  }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="glow"></div>
+  <div class="glow-2"></div>
+  <div class="dots"></div>
+
+  <div class="left">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="brand-name">Sarvam AI</div>
+    </div>
+
+    <div class="eyebrow"><span class="pulse"></span>Introducing</div>
+    <h1>Indus<br><span class="accent">Cowork</span></h1>
+    <p class="sub">AI teammates that <strong>finish the work.</strong></p>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <div>
+        <div class="board-title">Today's work</div>
+        <div class="board-meta">Indus Cowork · your team</div>
+      </div>
+      <div class="avatars">
+        <div class="av a">AI</div>
+        <div class="av b">AI</div>
+        <div class="av c">AI</div>
+      </div>
+    </div>
+
+    <div class="task done">
+      <div class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="task-body">
+        <div class="task-name">Draft the quarterly report</div>
+        <div class="task-by">Research → write → review</div>
+      </div>
+      <div class="tag">DONE</div>
+    </div>
+
+    <div class="task done">
+      <div class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="task-body">
+        <div class="task-name">Reconcile vendor invoices</div>
+        <div class="task-by">Matched, flagged, filed</div>
+      </div>
+      <div class="tag">DONE</div>
+    </div>
+
+    <div class="task live">
+      <div class="spinner"></div>
+      <div class="task-body">
+        <div class="task-name">Summarise customer calls</div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="tag live">WORKING</div>
+    </div>
+
+    <div class="board-foot">
+      <span>From brief to <b>delivered</b></span>
+      <span><b>2</b> of 3 done</span>
+    </div>
+  </div>
+
+  <div class="chip">
+    <span class="spark"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    Not just answers. Finished work.
+  </div>
+
+  <div class="strip"></div>
+</div>
+</body>
+</html>

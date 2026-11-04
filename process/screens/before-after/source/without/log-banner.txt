@@ -1,0 +1,17 @@
+I wrote `banner.html`. I couldn't check how it looks: the headless Chrome screenshot needed your approval and didn't run. I checked the layout by working out sizes and positions in the code instead.
+
+**Layout (1200×627, pinned to the top-left, no scrollbars):**
+- **Left side:** a "Sarvam AI" name with a simple placeholder logo, an "Introducing" label, a large two-line "Indus / **Cowork**" headline with an orange-to-indigo gradient, and the line "AI teammates that **finish the work.**"
+- **Right side:** a card showing the AI teammates' task list. Two tasks are marked DONE ("Draft the quarterly report", "Reconcile vendor invoices") and one is WORKING ("Summarise customer calls", with a progress bar). The footer reads "From brief to delivered · 2 of 3 done".
+- **Below the card:** a dark label reading "Not just answers. Finished work."
+- **Background:** warm cream with orange and indigo glows, a faint dot grid on the right, and an 8px gradient strip along the bottom.
+
+**Things to check:**
+- **Logo:** the logo is a placeholder shape, not Sarvam's real mark. Swap in the official SVG at `.mark` / `.brand-name` before you post it.
+- **Tasks and taglines:** the example tasks, the "Not just answers. Finished work." line and the "2 of 3 done" footer are copy I made up for illustration. Edit them if they don't match how Sarvam talks about Indus Cowork.
+- **Font:** it uses fonts already on the computer (Inter if installed, otherwise the system font), so the file needs no internet connection. The exact look depends on the machine you export from.
+
+**To export the PNG** (Chrome must stay at 1200×627 at 1× scale):
+```
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --window-size=1200,627 --screenshot=banner.png "file://$PWD/banner.html"
+```

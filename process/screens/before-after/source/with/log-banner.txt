@@ -1,0 +1,19 @@
+I wrote `banner.html` but couldn't render or screenshot it. The shell blocked every command I tried, so I haven't seen it, and none of the design system's QA checks have been run.
+
+**Design choices** (the "launch" preset from `recipes/banner-builder.md`):
+- **Background:** the saffron-rose gradient with grain on top.
+- **Main shape:** one onion-lantern shape in deep rose, with a warm saffron glow just inside its edge and a sharp thin rim. It runs off the top and bottom edges, which the LinkedIn rules allow, and leaves 200px clear on each side (the minimum is 84px).
+- **Text, centred inside the shape:**
+  - the white Sarvam wordmark at 96px wide, copied from `brand/sarvam-wordmark-white.svg`
+  - "Indus Cowork" as the headline, General Sans 600 at 92px (the largest step the rules allow)
+  - "AI teammates that finish the work" as the second line, 28px
+- **Text limit:** the rules allow two text sections on the art at most. The call to action ("Talk to Us") and the URL go in the post caption.
+- **Colours:** all from the design system's tokens, copied in under the same names. The page has no margin, and the banner is a fixed 1200×627 box at the top-left.
+
+**Where it breaks the brand rules:**
+1. **Grain:** the rules want the grain image `brand/grain.png`. Putting a picture inside one file means converting it to text first, and that needed a shell command that was blocked. I used the system's built-in generated grain instead, which keeps the file self-contained but goes against rule 10. If you can run a command, I can convert `grain.png` and put it in its place.
+2. **Fonts:** these load from Fontshare's stylesheet, as `typography.md` says to do. Downloading and embedding them was also blocked, so the file needs internet when you export it, or the headline falls back to a system font. Wait until the fonts have loaded before taking the PNG.
+
+**To check before exporting:** open it in Chrome at 100% and confirm the headline and second line sit inside the shape, clear of the glowing edge. Then capture it with any tool that screenshots a 1200×627 page area.
+
+Also, the Gmail and Cloudflare connectors need to be authorised before they'll work, and the "paper" connector failed to connect. None of them were needed for this.

@@ -1,0 +1,1 @@
+Create the hero section of a landing page for Sarvam AI's Indus Cowork, their AI teammates that finish the work. Output one self-contained file hero.html: a responsive hero (nav, headline, supporting line, call to action, a product visual) that looks right at 1440px and 375px wide.

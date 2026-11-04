@@ -55,6 +55,7 @@ Sarvam AI's existing brand ("AI for all from India"), captured as explicit token
 - **Fit:** nothing scrolls sideways, ever; no label breaks onto two lines; no text is clipped, truncated with "…" or runs past its box. Fix with the fit ladder in `layout.md` §7.6 (rearrange → tighten → drop decoration → short label → fluid size → rewrite). Components switch on their own width (`layout.md` §7.7).
 - **Icons:** Nucleo Core outline, 24 grid, 1.5 stroke, round caps.
 - **Motion:** transform and opacity only; loops only in product mocks; nothing changes size; respect reduced motion.
+- **Banners (the script-enforced rules, stated here so a model sees them first):** two formats (1080×1350, 1200×627); two text slots max; one hero device; never stretch a shape; **sharp, not soft**: every shape has a crisp edge and an inner glow blur ≤ 3.5% of its size, with no soft blobs; text inside the shape; official logo only.
 - **Voice:** calm, plain, confident; "Talk to Us" for Indus Cowork; only verified facts.
 
 ## Live reference

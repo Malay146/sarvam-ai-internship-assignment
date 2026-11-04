@@ -1,0 +1,31 @@
+I've written `hero.html`, but I haven't opened it in a browser. Running the browser screenshot and the Playwright install both needed approval, so the checks at 1440px and 375px were done by working out widths and heights by hand. Open the file at both widths before you treat it as done; if you approve headless Chrome, I can take the screenshots and run the layout checks myself.
+
+**What's in it** (built to `design-system/recipes/landing-page.md` and the product expression):
+- **Nav:**
+  - The official Sarvam wordmark, embedded as an `<img>` data URI, so nothing loads from `./brand` at runtime.
+  - Products / Developers / Resources / Company in the middle, and one "Talk to Us" button.
+  - The bar is see-through at the top of the page and a white surface fades in after 8px of scrolling.
+  - On phone and tablet the links move into a full-screen menu.
+- **Copy:**
+  - The official line motif and an "Indus Cowork" label in indigo above the headline.
+  - Headline: "Hire an AI teammate that finishes the work".
+  - Supporting line, using only claims from the fact sheet in `voice.md`: "Hand off the outcome, not the steps. A teammate plans the work, connects to your apps and researches on its own, then returns the result for your yes."
+  - Buttons: "Talk to Us" and "See how it works". On phones they sit side by side at equal width from 360px, and stack below that.
+- **Background:** the Indus Cowork indigo glow with grain, coming down from the top edge.
+- **Product visual:** a working teammate dashboard on an indigo panel.
+  - Six teammates using the example roles from the fact sheet.
+  - Picking a teammate shows its task, steps and results.
+  - **Run now** walks through the steps and stops to wait for approval.
+  - **Approve** lowers the "need your yes" count.
+  - Sending a message shows a reply.
+- **Layout by width:**
+  - Desktop: a 264px sidebar beside the detail.
+  - Tablet: a two-column list above the detail.
+  - Phone: a row of six icon tiles, with shorter mock text so no line is cut off at 375px.
+
+**Where it departs from the design system:**
+- **Icons are hand-drawn.** I didn't have permission to use the Nucleo icon tool. I drew the 17 icons on the same 24px grid with 1.5 stroke and round ends; swap in real Nucleo Core icons if you need an exact match.
+- **Fonts load from Fontshare and Google Fonts**, as `typography.md` specifies. Offline, the page falls back to Georgia and the system font.
+- **Dashboard heights are taller than the spec:** 704px on desktop instead of 664, about 904px on tablet instead of 640, and 772px on phone instead of 660. By my estimates the spec heights would cut off the content I put in.
+- **The tablet list switches on at 560px wide instead of 520**, so "Cluster Health Monitor" doesn't run into its status dot.
+- **The nav links don't open menus.** The real menu items live in a source file that isn't in `./design-system`.

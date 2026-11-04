@@ -1,0 +1,1 @@
+Create a LinkedIn single-image post banner, 1200x627, for Sarvam AI announcing Indus Cowork, their AI teammates that finish the work. Output one self-contained file banner.html that renders the banner at exactly 1200x627 at the top-left of the page, ready to export as a PNG.

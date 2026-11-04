@@ -877,3 +877,17 @@ Entry format:
   - No overflow or page errors in Chromium or WebKit at 375 / 768 / 1440.
   - Tabs and grounding clicked in a script.
   - `next build` passes.
+
+## 2026-11-04 · Claude Code · Exports, before/after test, write-up
+
+- Prompts (verbatim): "1. already done, do other rests, but before that i am kinda confused which to have it as our final deliverable webiste: cowork, bulbul or document-ai, help me with that" → final deliverable: **Indus Cowork** (same subject as the 6 banners; Bulbul and Document AI shown as system tests).
+- **Exports:** `scripts/export-page.mjs` writes full-page PNGs at 375/768/1440 for all three pages. Reduced motion is on, so every section shows its finished state, and dev tooling is hidden.
+- **Before/after:**
+  - Setup: four fresh headless `claude -p` runs in empty folders. The without runs had the prompt only; the with runs also had `design-system/` and the official logos. No edits, no retries.
+  - Without: generic output with an invented logo, invented data and a wrong CTA.
+  - With: on-brand.
+  - One drift: a soft banner glow, against rule 8, which only `check-banners.mjs` enforces.
+  - Fix: the script-enforced banner rules were added to SKILL.md's non-negotiables.
+  - Evidence and notes: `process/screens/before-after/`.
+  - First draft of the notes wrongly called two outputs "drift" (the serif primary button, the sans banner headline). Both are allowed by the system, so the notes were corrected.
+- **Write-up:** `process/writeup.md`, built from this log.
