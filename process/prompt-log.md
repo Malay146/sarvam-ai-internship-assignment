@@ -591,3 +591,55 @@ Entry format:
     - rule order fixed; no "cloud"
   - sarvam-banner skill: all presets, expressions, the 96 / 72px and 2-line rules, the fine-tuning fields, how to add new facts, and `banners/final/`.
   - SKILL.md routing descriptions and the CLAUDE.md checklist (banners done, repo public) are updated. design.md rebuilt.
+
+## 2026-11-04 — Indus Cowork landing page, round 1
+- Prompts (verbatim): "Are you able to create the indus cowork page professionally … Don't do anything, just tell me." → "it should feel close to sarvam ai, not to sarvam's own indus cowork page, use your own creativity and all that. Try to add things, which are needed, like integration, testimonials and all that, or according to the Sarvam design sensors, all that. Try to build it. Also, try to use motion where needed."
+- Direction: follow the rhythm of sarvam.ai's **homepage** (Sun hero, a marquee under it, a big product stage, centred chapters, pillars, deployment cards, a customer quote, a night CTA), told for one product. It is not a reskin of /indus-cowork.
+- Sections, each with its expression named in a code comment:
+  1. hero with the Sun, the line motif, a pill and the live CoworkDashboard
+  2. connector marquee
+  3. "How it works" stage: plan / research / improve, auto-advancing with a progress bar
+  4. six building blocks
+  5. integrations directory (Productivity / Data / Engineering / And more)
+  6. skills, with a skill card whose steps write in
+  7. live schedule dashboard
+  8. three steps
+  9. a roles stage with a message thread and an "Approve" moment
+  10. Sovereign by default + four security cards
+  11. deployment tiles
+  12. customer quote
+  13. FAQ
+  14. night CTA
+  15. footer
+- Honesty calls:
+  - Connectors appear as names with monograms, never third-party logos.
+  - The only testimonial is Tata Capital's real quote from sarvam.ai, headed "What Sarvam's customers say", because it is about Sarvam, not Indus Cowork.
+  - No customer-logo wall (none verified for Cowork); no invented numbers.
+  - The role request lines inside the mock threads are illustrative UI text.
+- Motion (new `src/components/sarvam/cowork.tsx`):
+  - Reveal: 12px rise + fade, once
+  - Marquee: CSS transform loop, paused off-screen and on hover
+  - Stage: all panels share one grid cell, so switching never moves the page; it crossfades, auto-advances only while visible, and stops once the reader picks a tab; the rail scrolls to keep the active tab in view
+  - SkillCard: steps write in once
+  - Everything is static under reduced motion.
+- Fixes found by looking / QA:
+  - At 375 the page overflowed by 77px. Three causes: the hero column grew to the dashboard's swipe row; grid tracks sized to the mocks; a place-items cell sized to content. Fixed with min-width 0 and minmax(0, 1fr) tracks.
+  - The hero dashboard was framed twice → the extra frame was removed.
+  - Phone and tablet tabs were truncated ("Plans the …") → they size to their labels and the rail scrolls edge to edge.
+  - The security cards broke unevenly (1 vs 2 lines) → copy evened out and the line capped at 40ch.
+- QA:
+  - check-layout PASS at all 10 widths; check-nav PASS.
+  - No section or page height change over 10s while animating.
+  - Ongoing layout only inside the plan / research / review mocks (~2ms/s).
+  - No overflow or errors in Chromium or WebKit at 375 / 768 / 1440.
+  - A production `next build` of a clean checkout passes.
+- Known, not fixed here: on the shared ScheduleDashboard the 17:00 / 18:00 timeline labels nearly touch at ≤768. The component has uncommitted edits by someone else, so it was left alone.
+- Screens: `process/screens/landing/landing-r1-{375,768,1440}.png`.
+
+## 2026-11-04 — Indus Cowork landing page, rounds 2–4 (summary)
+- Prompts (verbatim, in order): "in this have like 4 cards…" · "remove patter and gradient…" · "Okay, so what I want you to do is that keep notes of everything what we have done… build the whole landing page again but in our style." · "the subject is sarvam indus cowork only, just get the information from their page, but build the sections and all that in our way" · "less user interactivities will be there also… In the hero section, I want that our title and below dashboard thing." · "It's okay to have some sections to be similar as them because your hierarchy and structure are not proper at all." · then many section-level notes, ending with "update all the files and rules accordingly and properly".
+- Round 2: real brand marks (Simple Icons CC0 + Nucleo Slack + Canva/Apify/DataRobot from their own sites), bento, toned tabs, step visuals, mega nav, filled icons.
+- Round 3 (v2): our own interactive sections — rejected for losing the hierarchy.
+- Round 4 (v3, current): a story order (promise → how → why → made of → where → control → try → trust → proof → questions → act); proven sections (how-it-works stage, bento) kept, mixed with ours (contrast, integrations grid, approval desk + activity trail, day timeline, teammate builder, one-open FAQ).
+- Fixes along the way: indigo hero glow (no visible ring), no blank states (in-place row states, pre-filled logs, timelines show every card), dots on the rail, sliding segmented pill, fieldset legend on the border → div, patterns tried then removed, gradient icons without tiles, softer shadows, grain token 0.22 → 0.30.
+- Every rule is recorded in  §0 (34 rules) so the next page needs no correction rounds; components.md updated for icons, brand marks, MegaNav, Stage.

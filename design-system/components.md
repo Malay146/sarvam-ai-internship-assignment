@@ -10,7 +10,7 @@ The building blocks of Sarvam pages, as React components with exact anatomy, tok
 
 1. **Use the components; don't restyle them.** Compose pages from the components below. If something is missing, build it from the same tokens and add it here.
 2. **Quiet surfaces, generous space.** White or `sf` surfaces, 1px `st` borders, radius 16 (cards) or 24 (panels), and plenty of padding. Colour lives in gradient panels and accents, never in borders or text blocks.
-3. **Line icons only** (§3). Never use filled, duotone or emoji icons.
+3. **Line icons by default** (§3). Filled (glyph) icons only where §3.1 allows; never duotone or emoji.
 4. **Every symbol is visible.** An icon or symbol must reach **≥ 3:1** against what it sits on. No same-tone icon on a same-tone tile (§3.2).
 5. **Siblings are identical** (`layout.md` §5): mark sets with `data-siblings`, items with `data-sibling`, slots with `data-line`, and run `node scripts/check-layout.mjs <url>`.
 6. **Gradients carry grain and sit behind content, never on it.** Use the surface classes (§2), never a hand-written gradient.
@@ -71,6 +71,7 @@ Recipes read from sarvam.ai markup. All of them are classes in `tokens.css`.
 | Trust band | `--color-sr-indigo-950` | flat `#11115b` | "Sovereign by default" |
 | Haze | `.sr-haze` | transparent → periwinkle | Product hero background |
 
+
 **Grain:** Sarvam overlays a 64px noise tile with `mix-blend-mode: soft-light` at 50% opacity on gradients `[verified]`. We use our SVG noise token (`--texture-grain`, `overlay`), which looks equivalent and needs no image file.
 
 **Inner shadows and bevels** `[verified]`:
@@ -101,7 +102,20 @@ Recipes read from sarvam.ai markup. All of them are classes in `tokens.css`.
   - book-open, calendar-clock, books, plug, shield-check
 - Sizes: 20px inside a 40px tile; 18px inline with 16px text; 22–24px for nav and controls. **Never scale the stroke**: keep 1.5 at every size.
 - Checkmarks in lists use stroke 2 so they don't look faint next to body text.
+- **Filled (glyph) icons, sparingly** `[addition, Malay 2026-11-04]`: Nucleo Core **glyph 24** (exported with a `Fill` suffix: `TargetFill`, `UserFill`, `SparkleFill`…). Use them where a solid mark reads better: **tab icons, chips, small tone tiles, mega-menu items, card labels and fact lists**. In fact lists the glyph carries its own bottom-to-top indigo gradient + a soft inner shadow and sits **without a tile**. Outline stays the default for buttons, inline text and the nav bar itself. Never mix outline and glyph inside one group of siblings.
 - Colour: `currentColor` (or the `color` prop inside SVG art), inheriting from the text or tile.
+
+### 3.1b Brand logos (third-party marks) `[addition]`
+- **Real marks only, never invented ones.** Integrations are shown with the official mark from `src/components/sarvam/brand-marks.ts`:
+  - Simple Icons (CC0) paths on a 24 grid
+  - Slack from Nucleo `social-media` (licensed)
+  - each mark's official colour from Simple Icons data
+- Render with `<BrandMark name colored? />`.
+- **Colour rule:**
+  - **coloured** (official colour) wherever the mark is the subject: the integrations directory, bento logo tiles, app pickers
+  - **mono** (`currentColor`, `tx-tertiary`) only in a logo marquee / proof strip, where many marks must read as one quiet row (as sarvam.ai's customer strip does)
+- No official mark in either source (Canva, Apify, DataRobot) → **name only**, with a neutral dot. Never draw a lookalike.
+- Customer logos and people: use **Sarvam's own published assets** (e.g. `assets.sarvam.ai/assets/logos/investors/tata-capital.svg`, the testimonial photo). Load them from Sarvam's CDN; don't copy them into the repo.
 
 ### 3.2 Contrast fix `[addition]`
 Sarvam sometimes sets a symbol in the same tone as its background (e.g. an indigo-500 icon on an indigo-100 tile is 2.9:1). WCAG 1.4.11 asks for **≥ 3:1** for meaningful graphics. Our tiles keep the same hue but use the accessible shade:
@@ -270,12 +284,35 @@ Our richest illustration, built only from our assets (`imagery.md` §2.4):
 
 Same emblem box (104 of 200) in every card, so siblings match. No decorative extras (e.g. no tiny diamond accents), from review.
 
+### MegaNav `<MegaNav cta ctaHref login>` `[verified items + addition]`
+- **Current build:** filled item icons; featured tile = a frameless gradient tile (kicker, serif title) + one line + a text link with arrow, 320px wide, no divider line; **one CTA** in the bar (`login={false}`, Talk to Us as primary).
+- **What:** sarvam.ai's opening navbar.
+  - Products / Developers / Resources / Company open one panel under the bar.
+  - Labels, descriptions and icon tones come from sarvam.ai's navbar bundle (`references/brand-css/dep_Navbar.Bna_uiTB.js`).
+- **Desktop (≥1024):**
+  - Hover (mouse) or click opens; Esc, an outside click or leaving the bar closes.
+  - Panel: the section heading, items in **2 columns** (a 44px white icon tile with a hairline, Nucleo outline icon in the item's tone, then title + description), and a **featured card** on the right (a named gradient + the title).
+  - The page dims behind it (scrim, 6px blur).
+  - Switching menus crossfades inside one panel; the panel never moves.
+- **Phone/tablet:**
+  - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom.
+  - Page scroll is locked while open.
+- **Motion:** opacity + 6px slide only (`--duration-moderate`, outQuint); none with reduced motion.
+- **Tones** (icon colour, never the tile): indigo-800, green-800, orange-900, red-800, `tx-secondary`.
+
+### Stage `<Stage items rail="side"|"top">` `[addition]`
+- **What:** a product stage with a tab rail. Each tab has an optional icon (glyph, in a tone tile) and a `tone`; the active tab shows the tone's border and a progress bar.
+- **No page movement:** all panels share one grid cell, so the stage is as tall as the tallest panel and switching never moves the page.
+- **Side rail (≥1024):** the tabs stretch to exactly the panel's height (`grid-auto-rows: 1fr`), so both columns start and end on one line. Use 4 tabs.
+- **Phone/tablet:** the rail becomes a full-bleed horizontal scroller; tabs size to their labels (never truncated); the active tab scrolls into view.
+- **Auto-advance:** only while visible; it stops for good once the reader picks a tab.
+
 ## Do / Don't
 
 | Do | Don't |
 |---|---|
 | Use one primary "Talk to Us" per view | Put two dark buttons side by side |
-| Use line icons at 1.5 stroke | Use filled or duotone icons, or emoji |
+| Use line icons at 1.5 stroke; glyphs where §3.1 allows | Use duotone icons or emoji, or mix outline and glyph in one group |
 | Use dark accessible shades for icons on tints | Put indigo-500 on indigo-100 |
 | Put product UI on a tint panel inside a white mock card | Put text directly on a tint or mesh |
 | Keep the visual on the right of feature rows | Alternate left/right (it breaks scanning on tablet) |

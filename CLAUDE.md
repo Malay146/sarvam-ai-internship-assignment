@@ -167,7 +167,8 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - [x] `scripts/export-banners.mjs` (banners) · [ ] `scripts/export-page.mjs` (page exports)
 - [ ] Run before/after tests, log them
 - [x] 3 Meta + 3 LinkedIn banners: final set in `banners/final/` (Prism, Every task leaves a trail, Indus Cowork early access). Engine: `recipes/banner-builder.md`; skill: `.claude/skills/sarvam-banner`; gallery `/banners`; expressions `/system/expressions`
-- [ ] Build landing page in Next.js from the same tokens; deploy to Vercel
+- [x] Landing page built (`src/app/page.tsx`, v3); rules in `design-system/recipes/landing-page.md` §0 — read before any new page
+- [ ] Deploy to Vercel
 - [ ] Export page at 375 / 768 / 1440
 - [ ] Write-up
 - [x] Public repo: https://github.com/Malay146/sarvam-ai-internship-assignment (Sarvam's reference images are git-ignored, kept locally)
@@ -213,6 +214,7 @@ Nav (Products, Developers, Resources, Company + Log In / Contact Us) → gradien
 - Stay true to the brand; flair goes into composition, subject and copy, not into new colors or fonts.
 - **Malay's flair rule: sibling consistency.** Side-by-side blocks have equal width and height, aligned inner rows, and identical line counts per text slot at every width (layout.md §5). Write copy to the character budget and run `node scripts/check-layout.mjs <url>` before calling any section done.
 - Mobile gets equal care to desktop (Malay's explicit ask).
+- **Before building any page or section: read `design-system/recipes/landing-page.md` §0** (the playbook: story hierarchy, facts from the source but our formats, real assets only, soft gradients + grain, no patterns unless asked, filled icons where allowed, no blank states, one CTA in the nav).
 - **Icons: Nucleo Core outline 24px only** (Malay owns Nucleo Pro). Import from `@/components/icons`; add new ones via the Nucleo MCP and copy them into `src/components/icons/nucleo/`. No other icon library.
 - **Three expressions** (`design-system/expressions.md`): Campaign / Product / Community, picked by content type. Banners and page sections must name their expression.
 - **Social references:** `references/social/` (12 posts, indexed and analysed in its README). Sarvam posts the same art on every platform.
