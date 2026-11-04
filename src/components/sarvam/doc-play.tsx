@@ -156,6 +156,44 @@ export function Grounding() {
   );
 }
 
+/* A textbook figure: photosynthesis as a labelled line diagram (sun, leaf with veins, inputs and outputs). The same
+   drawing appears on both pages; only the labels change, which is what "layout kept" means. */
+function PlantFigure({ l }: { l: { sun: string; co2: string; o2: string; water: string } }) {
+  return (
+    <svg className="da-fig" viewBox="0 0 320 132" role="img" aria-label={`${l.sun}, ${l.water}, ${l.co2}, ${l.o2}`}>
+      <defs>
+        <marker id="da-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#6b625b" /></marker>
+        <linearGradient id="da-leaf" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#bcdca4" /><stop offset="1" stopColor="#e3f1d6" /></linearGradient>
+      </defs>
+      {/* sun */}
+      <g transform="translate(46 34)">
+        {Array.from({ length: 8 }, (_, i) => <line key={i} x1="0" y1="-17" x2="0" y2="-23" stroke="#d29a2a" strokeWidth="1.6" strokeLinecap="round" transform={`rotate(${i * 45})`} />)}
+        <circle r="12" fill="#f6d77a" stroke="#d29a2a" strokeWidth="1.4" />
+      </g>
+      {/* leaf with midrib and veins, on a short stem */}
+      <g transform="translate(160 70) rotate(-28)">
+        <path d="M-58 0C-38-30 10-34 58 0C10 34-38 30-58 0Z" fill="url(#da-leaf)" stroke="#4f8a3a" strokeWidth="1.6" />
+        <path d="M-58 0H52" stroke="#4f8a3a" strokeWidth="1.3" fill="none" />
+        {[-34, -12, 10, 30].map((x) => <g key={x} stroke="#4f8a3a" strokeWidth="1" fill="none"><path d={`M${x} 0q8 -9 16 -16`} /><path d={`M${x} 0q8 9 16 16`} /></g>)}
+        <path d="M-58 0q-12 4 -20 14" stroke="#4f8a3a" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      </g>
+      {/* inputs and outputs */}
+      <g stroke="#6b625b" strokeWidth="1.2" fill="none">
+        <path d="M64 46 112 62" strokeDasharray="3 3" markerEnd="url(#da-arrow)" />
+        <path d="M96 122 V100 q0 -8 10 -12" markerEnd="url(#da-arrow)" />
+        <path d="M282 24 Q246 30 214 46" markerEnd="url(#da-arrow)" />
+        <path d="M212 92 Q246 104 282 106" markerEnd="url(#da-arrow)" />
+      </g>
+      <g className="da-fig__labels" fill="#4a423c" fontSize="10.5">
+        <text x="70" y="26">{l.sun}</text>
+        <text x="104" y="128">{l.water}</text>
+        <text x="236" y="18">{l.co2}</text>
+        <text x="236" y="122">{l.o2}</text>
+      </g>
+    </svg>
+  );
+}
+
 /* ── Translate: the whole document, layout kept. Four steps; the translated page fills in as the steps run ── */
 const STEPS = [["Upload", "PDF, Word, Excel, PowerPoint or a web page"], ["Choose", "One or more target languages"], ["Review", "Side by side, page against source"], ["Export", "DOCX, PDF, HTML, EPUB or TXT"]];
 export function TranslateFlow() {
@@ -168,7 +206,7 @@ export function TranslateFlow() {
           <p className="da-sheet__tag"><span>Source</span><code>English</code></p>
           <p className="da-sheet__ch">Chapter 7</p>
           <h4 className="da-sheet__h">How plants make food</h4>
-          <div className="da-sheet__fig" aria-hidden><span /></div>
+          <figure className="da-sheet__fig"><PlantFigure l={{ sun: "Sunlight", water: "Water", co2: "Carbon dioxide", o2: "Oxygen" }} /></figure>
           <p className="da-sheet__p">Photosynthesis is the process by which green plants make their own food.</p>
           <p className="da-sheet__cap">Fig. 7.1 · A leaf in sunlight</p>
         </article>
@@ -177,7 +215,7 @@ export function TranslateFlow() {
           <p className="da-sheet__tag"><span>Translated</span><code>हिन्दी</code></p>
           <p className="da-sheet__ch">अध्याय 7</p>
           <h4 className="da-sheet__h">पौधे भोजन कैसे बनाते हैं</h4>
-          <div className="da-sheet__fig" aria-hidden><span /></div>
+          <figure className="da-sheet__fig"><PlantFigure l={{ sun: "सूर्य का प्रकाश", water: "जल", co2: "कार्बन डाइऑक्साइड", o2: "ऑक्सीजन" }} /></figure>
           <p className="da-sheet__p">प्रकाश संश्लेषण वह प्रक्रिया है जिसके द्वारा हरे पौधे अपना भोजन स्वयं बनाते हैं।</p>
           <p className="da-sheet__cap">चित्र 7.1 · धूप में एक पत्ती</p>
         </article>

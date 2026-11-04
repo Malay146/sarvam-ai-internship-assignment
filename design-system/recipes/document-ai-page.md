@@ -24,7 +24,7 @@ The theme is the **structure and presentation** (rule 9a): everything is a docum
 | 3 | What | Parse it. Extract it. Translate it. | centred | **Folders**: three tabbed folders (indigo, orange, green) with the formats each returns as file chips | passive |
 | 4 | Control | Check every element against its source | split | **Proofreading desk**: output elements (with a "1 fix" agent correction) ↔ the page, the chosen element's box lit, with its location | hands-on; cycles until touched |
 | 5 | Where | English and 22 Indian languages | centred | **Specimen sheet**: languages grouped by script, each with a large glyph and the languages in their own names; a "Mixed pages" cell completes the last row at every width | passive |
-| 6 | Translate | Translate the whole document, layout and all | split | **Translated pages**: an English textbook page → the Hindi page (fills in at Review), four steps (Upload, Choose, Review, Export) and limit chips | plays itself |
+| 6 | Translate | Translate the whole document, layout and all | split | **Translated pages**: an English textbook page with a labelled line diagram (sun, leaf with veins, water, CO₂, O₂) → the Hindi page with the same diagram and translated labels (fills in at Review), four steps (Upload, Choose, Review, Export) and limit chips | plays itself |
 | 7 | Who | Built for documents that matter | centred | **Index cards**: five library cards (lettered tab, red margin rule, ruled lines, punched hole), titles always 2 lines | passive |
 | 8 | Access | Two ways in | split | API vs Platform, two tinted cards with forward-arrow links | links |
 | 9 | Questions | Questions teams ask first | centred | `OneFaq`, 8 | accordion |
