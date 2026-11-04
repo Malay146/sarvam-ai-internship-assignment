@@ -156,39 +156,82 @@ export function Grounding() {
   );
 }
 
-/* A textbook figure: photosynthesis as a labelled line diagram (sun, leaf with veins, inputs and outputs). The same
-   drawing appears on both pages; only the labels change, which is what "layout kept" means. */
-function PlantFigure({ l }: { l: { sun: string; co2: string; o2: string; water: string } }) {
+/* A textbook figure: photosynthesis, drawn in the system's way (soft vertical gradients, hairline strokes, tone colours
+   per idea: sunlight orange, water indigo, carbon dioxide neutral, oxygen green). Sky to paper behind, a plant with a
+   veined leaf on a soil mound, a chloroplast callout. The same drawing on both pages; only the labels change. */
+type FigLabels = { sun: string; co2: string; o2: string; water: string; chloro: string };
+function PlantFigure({ l, id }: { l: FigLabels; id: string }) {
+  const u = (k: string) => `${k}-${id}`;
+  const veins = [-48, -26, -4, 18, 38];
   return (
-    <svg className="da-fig" viewBox="0 0 320 132" role="img" aria-label={`${l.sun}, ${l.water}, ${l.co2}, ${l.o2}`}>
+    <svg className="da-fig" viewBox="0 0 360 176" role="img" aria-label={`${l.sun}, ${l.water}, ${l.co2}, ${l.o2}, ${l.chloro}`}>
       <defs>
-        <marker id="da-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#6b625b" /></marker>
-        <linearGradient id="da-leaf" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#bcdca4" /><stop offset="1" stopColor="#e3f1d6" /></linearGradient>
+        <linearGradient id={u("sky")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e9effc" /><stop offset="0.55" stopColor="#f5f1ea" /><stop offset="1" stopColor="#fbf8f1" /></linearGradient>
+        <radialGradient id={u("glow")}><stop offset="0" stopColor="#f9b24a" stopOpacity="0.55" /><stop offset="1" stopColor="#f9b24a" stopOpacity="0" /></radialGradient>
+        <linearGradient id={u("sun")} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#f2972f" /><stop offset="1" stopColor="#fbd77a" /></linearGradient>
+        <linearGradient id={u("leaf")} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#5f9f45" /><stop offset="0.6" stopColor="#8cc46c" /><stop offset="1" stopColor="#b9dd9c" /></linearGradient>
+        <linearGradient id={u("soil")} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#d9c3a3" /><stop offset="1" stopColor="#c4a57f" /></linearGradient>
+        <marker id={u("a")} viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 8 4 0 8 2 4z" fill="context-stroke" /></marker>
       </defs>
-      {/* sun */}
-      <g transform="translate(46 34)">
-        {Array.from({ length: 8 }, (_, i) => <line key={i} x1="0" y1="-17" x2="0" y2="-23" stroke="#d29a2a" strokeWidth="1.6" strokeLinecap="round" transform={`rotate(${i * 45})`} />)}
-        <circle r="12" fill="#f6d77a" stroke="#d29a2a" strokeWidth="1.4" />
+      <rect width="360" height="176" rx="8" fill={`url(#${u("sky")})`} />
+
+      {/* sun: a soft glow, a core rising bottom → top, short rays */}
+      <circle cx="54" cy="42" r="40" fill={`url(#${u("glow")})`} />
+      <g transform="translate(54 42)" stroke="#e8a23a" strokeWidth="1.4" strokeLinecap="round">
+        {Array.from({ length: 12 }, (_, i) => <line key={i} x1="0" y1="-19" x2="0" y2={i % 2 ? "-23" : "-26"} transform={`rotate(${i * 30})`} />)}
       </g>
-      {/* leaf with midrib and veins, on a short stem */}
-      <g transform="translate(160 70) rotate(-28)">
-        <path d="M-58 0C-38-30 10-34 58 0C10 34-38 30-58 0Z" fill="url(#da-leaf)" stroke="#4f8a3a" strokeWidth="1.6" />
-        <path d="M-58 0H52" stroke="#4f8a3a" strokeWidth="1.3" fill="none" />
-        {[-34, -12, 10, 30].map((x) => <g key={x} stroke="#4f8a3a" strokeWidth="1" fill="none"><path d={`M${x} 0q8 -9 16 -16`} /><path d={`M${x} 0q8 9 16 16`} /></g>)}
-        <path d="M-58 0q-12 4 -20 14" stroke="#4f8a3a" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <circle cx="54" cy="42" r="14" fill={`url(#${u("sun")})`} />
+
+      {/* sunlight: three parallel dashed beams onto the leaf */}
+      <g stroke="#e6651b" strokeWidth="1.2" strokeDasharray="3 4" fill="none" opacity="0.8">
+        <path d="M72 52 L150 74" /><path d="M70 62 L148 86" markerEnd={`url(#${u("a")})`} /><path d="M66 72 L140 96" />
       </g>
-      {/* inputs and outputs */}
-      <g stroke="#6b625b" strokeWidth="1.2" fill="none">
-        <path d="M64 46 112 62" strokeDasharray="3 3" markerEnd="url(#da-arrow)" />
-        <path d="M96 122 V100 q0 -8 10 -12" markerEnd="url(#da-arrow)" />
-        <path d="M282 24 Q246 30 214 46" markerEnd="url(#da-arrow)" />
-        <path d="M212 92 Q246 104 282 106" markerEnd="url(#da-arrow)" />
+
+      {/* soil mound with roots */}
+      <ellipse cx="150" cy="176" rx="118" ry="20" fill={`url(#${u("soil")})`} />
+      <g stroke="#9a7650" strokeWidth="1" fill="none" strokeLinecap="round" opacity="0.8">
+        <path d="M150 158 q-6 8 -16 12" /><path d="M150 158 q4 9 14 13" /><path d="M150 160 v12" /><path d="M142 166 q-8 2 -12 8" />
       </g>
-      <g className="da-fig__labels" fill="#4a423c" fontSize="10.5">
-        <text x="70" y="26">{l.sun}</text>
-        <text x="104" y="128">{l.water}</text>
-        <text x="236" y="18">{l.co2}</text>
-        <text x="236" y="122">{l.o2}</text>
+
+      {/* stem, a small leaf, and the main leaf with midrib, veins and a light highlight */}
+      <path d="M150 158 Q140 134 126 112" stroke="#4f8a3a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <g transform="translate(142 138) rotate(28)">
+        <path d="M0 0C8 -10 26 -10 34 0C26 10 8 10 0 0Z" fill={`url(#${u("leaf")})`} stroke="#4f8a3a" strokeWidth="1.1" />
+        <path d="M0 0H30" stroke="#4f8a3a" strokeWidth="0.8" />
+      </g>
+      <g transform="translate(190 84) rotate(-24)">
+        <path d="M-70 0C-48 -40 18 -44 72 0C18 44 -48 40 -70 0Z" fill={`url(#${u("leaf")})`} stroke="#3f7d2e" strokeWidth="1.5" />
+        <path d="M-62 -6C-40 -34 14 -38 62 -6C20 -24 -30 -22 -62 -6Z" fill="#ffffff" opacity="0.28" />
+        <path d="M-70 0H66" stroke="#3f7d2e" strokeWidth="1.3" fill="none" />
+        {veins.map((x) => <g key={x} stroke="#3f7d2e" strokeWidth="0.9" fill="none" opacity="0.85"><path d={`M${x} 0q9 -10 18 -22`} /><path d={`M${x} 0q9 10 18 22`} /></g>)}
+      </g>
+
+      {/* water: up through the roots and stem */}
+      <g stroke="#3333cc" strokeWidth="1.2" fill="none">
+        <path d="M70 154 Q110 160 138 146" markerEnd={`url(#${u("a")})`} />
+      </g>
+      <g fill="#3333cc" opacity="0.7"><path d="M84 146c0 0 -3 4 -3 6a3 3 0 0 0 6 0c0 -2 -3 -6 -3 -6z" /><path d="M98 150c0 0 -2.4 3.2 -2.4 4.8a2.4 2.4 0 0 0 4.8 0c0 -1.6 -2.4 -4.8 -2.4 -4.8z" /></g>
+
+      {/* carbon dioxide in, oxygen out (with small bubbles) */}
+      <path d="M338 36 Q292 38 252 58" stroke="#6b625b" strokeWidth="1.2" fill="none" markerEnd={`url(#${u("a")})`} />
+      <path d="M236 100 Q284 94 334 104" stroke="#3f7d2e" strokeWidth="1.2" fill="none" markerEnd={`url(#${u("a")})`} />
+      <g fill="none" stroke="#3f7d2e" strokeWidth="0.9" opacity="0.8"><circle cx="262" cy="88" r="2.6" /><circle cx="284" cy="84" r="2" /><circle cx="304" cy="90" r="2.8" /></g>
+
+      {/* chloroplast callout: a magnified cell, linked to the leaf */}
+      <path d="M214 104 L283 130" stroke="#6b625b" strokeWidth="0.8" strokeDasharray="2 3" fill="none" />
+      <circle cx="300" cy="140" r="20" fill="#f4faef" stroke="#3f7d2e" strokeWidth="1.1" />
+      <g fill="#8cc46c" stroke="#3f7d2e" strokeWidth="0.6">
+        <ellipse cx="292" cy="134" rx="6" ry="3.4" transform="rotate(-20 292 134)" /><ellipse cx="306" cy="132" rx="5.4" ry="3" transform="rotate(15 306 132)" />
+        <ellipse cx="297" cy="146" rx="6" ry="3.2" transform="rotate(10 297 146)" /><ellipse cx="310" cy="144" rx="4.6" ry="2.8" transform="rotate(-30 310 144)" />
+      </g>
+
+      {/* labels: a tone dot + text, in the page's text face */}
+      <g className="da-fig__labels" fontSize="10.5" fill="#3b342f">
+        <circle cx="92" cy="20" r="3" fill="#e6651b" /><text x="99" y="24">{l.sun}</text>
+        <circle cx="30" cy="140" r="3" fill="#3333cc" /><text x="37" y="144">{l.water}</text>
+        <circle cx="244" cy="20" r="3" fill="#6b625b" /><text x="251" y="24">{l.co2}</text>
+        <circle cx="292" cy="72" r="3" fill="#3f7d2e" /><text x="299" y="76">{l.o2}</text>
+        <text x="300" y="173" textAnchor="middle" fontSize="9.5" fill="#5f5750">{l.chloro}</text>
       </g>
     </svg>
   );
@@ -206,7 +249,7 @@ export function TranslateFlow() {
           <p className="da-sheet__tag"><span>Source</span><code>English</code></p>
           <p className="da-sheet__ch">Chapter 7</p>
           <h4 className="da-sheet__h">How plants make food</h4>
-          <figure className="da-sheet__fig"><PlantFigure l={{ sun: "Sunlight", water: "Water", co2: "Carbon dioxide", o2: "Oxygen" }} /></figure>
+          <figure className="da-sheet__fig"><PlantFigure id="en" l={{ sun: "Sunlight", water: "Water", co2: "Carbon dioxide", o2: "Oxygen", chloro: "Chloroplasts" }} /></figure>
           <p className="da-sheet__p">Photosynthesis is the process by which green plants make their own food.</p>
           <p className="da-sheet__cap">Fig. 7.1 · A leaf in sunlight</p>
         </article>
@@ -215,7 +258,7 @@ export function TranslateFlow() {
           <p className="da-sheet__tag"><span>Translated</span><code>हिन्दी</code></p>
           <p className="da-sheet__ch">अध्याय 7</p>
           <h4 className="da-sheet__h">पौधे भोजन कैसे बनाते हैं</h4>
-          <figure className="da-sheet__fig"><PlantFigure l={{ sun: "सूर्य का प्रकाश", water: "जल", co2: "कार्बन डाइऑक्साइड", o2: "ऑक्सीजन" }} /></figure>
+          <figure className="da-sheet__fig"><PlantFigure id="hi" l={{ sun: "सूर्य का प्रकाश", water: "जल", co2: "कार्बन डाइऑक्साइड", o2: "ऑक्सीजन", chloro: "हरितलवक" }} /></figure>
           <p className="da-sheet__p">प्रकाश संश्लेषण वह प्रक्रिया है जिसके द्वारा हरे पौधे अपना भोजन स्वयं बनाते हैं।</p>
           <p className="da-sheet__cap">चित्र 7.1 · धूप में एक पत्ती</p>
         </article>

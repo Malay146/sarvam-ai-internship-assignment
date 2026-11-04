@@ -173,7 +173,8 @@
 .da-sheet__ch { font-size: 12px; color: var(--color-sr-pink-800); }
 .da-sheet__h { font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.25; }
 .da-sheet[lang="hi"] .da-sheet__h { font-family: var(--font-text), "Kohinoor Devanagari", system-ui, sans-serif; font-weight: 600; }
-.da-sheet__fig { margin: 0; padding: var(--space-3) var(--space-2) var(--space-2); border-radius: 6px; background: #fbf8f1; box-shadow: inset 0 0 0 1px rgb(60 40 20 / 0.10); }
+.da-sheet__fig { position: relative; margin: 0; border-radius: 8px; overflow: hidden; box-shadow: inset 0 0 0 1px rgb(60 40 20 / 0.10); }
+.da-sheet__fig::after { content: ""; position: absolute; inset: 0; background: url(/brand/grain.png) center / 400px auto repeat; mix-blend-mode: multiply; opacity: 0.16; pointer-events: none; }
 .da-fig { display: block; width: 100%; height: auto; }
 .da-fig__labels { font-family: var(--font-text), "Kohinoor Devanagari", system-ui, sans-serif; }
 .da-sheet__p { font-size: 15px; line-height: 1.6; }
