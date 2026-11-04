@@ -9,6 +9,7 @@ import {
   ArrowRight, ArrowUp, Check, X,
 } from "@/components/icons";
 import { BrandMark } from "./brand";
+import { MedallionEcho } from "./patterns";
 import { DUR, EASE } from "./motion";
 
 export type Tone = "indigo" | "orange" | "green" | "rose";
@@ -291,6 +292,7 @@ export function IntegrationField() {
   const reduced = useReducedMotion();
   return (
     <div ref={ref} className="pv-int">
+      <MedallionEcho shape="Scalloped medallion" rings={4} className="pv-int__pattern" />
       <div className="pv-int__text">
         <p className="pv-int__num">100+</p>
         <p className="pv-int__label">connectors across productivity, data and engineering tools.</p>

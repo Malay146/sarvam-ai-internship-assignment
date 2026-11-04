@@ -473,7 +473,13 @@ html:has(.cw) { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { .pv-chip, .pv-app, .pv-day__knob, .pv-plan li, .pv-dot, .pv-result__btn { transition: none; } }
 
 /* Integrations: one white panel, number left, a static logo grid right (6 × 4); phone: number on top, 4-up grid */
-.pv-int { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); padding: var(--space-8); border-radius: var(--radius-3xl); background: var(--color-sr-white); border: var(--border-default); }
+.pv-int { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); padding: var(--space-8); border-radius: var(--radius-3xl); border: var(--border-default);
+  /* subtle bottom → top wash: pale indigo at the foot fading to white */
+  background: var(--texture-grain), linear-gradient(0deg, var(--color-sr-indigo-100) 0%, var(--color-sr-indigo-50) 30%, var(--color-sr-white) 70%); background-blend-mode: overlay, normal; }
+/* a medallion echo tucked into the bottom-left corner, cropped by the panel, behind the text and the link */
+.pv-int__pattern { position: absolute; z-index: -1; left: -150px; bottom: -150px; width: 420px; height: auto; color: var(--color-sr-indigo-400); opacity: 0.45; pointer-events: none; }
+.pv-int__grid li { background: var(--color-sr-white); }
+@media (max-width: 1023px) { .pv-int__pattern { width: 300px; left: -110px; bottom: -110px; } }
 @media (min-width: 1024px) { .pv-int { grid-template-columns: 4fr 8fr; gap: var(--space-12); padding: var(--space-12); align-items: stretch; } }
 .pv-int__text { display: flex; flex-direction: column; gap: var(--space-2); }   /* top-aligned; the link sits at the bottom of the column */
 .pv-int__cta { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: auto; min-height: 48px; padding: 0 var(--space-5); border-radius: var(--radius-full); background: var(--color-sf-tertiary); color: var(--color-tx); font-size: var(--text-small); font-weight: var(--weight-medium); text-decoration: none; transition: background var(--duration-normal) var(--ease-standard); }
