@@ -487,7 +487,7 @@ html:has(.cw) { scroll-behavior: smooth; }
 /* Integrations: one white panel, number left, a static logo grid right (6 × 4); phone: number on top, 4-up grid */
 .pv-int { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); padding: var(--space-8); border-radius: var(--radius-3xl); border: var(--border-default);
   background: var(--color-sr-white); }
-.pv-int__grid li { background: var(--color-sf); }
+.pv-int__grid li { background: var(--color-sr-white); }
 
 @media (min-width: 1024px) { .pv-int { grid-template-columns: 4fr 8fr; gap: var(--space-12); padding: var(--space-12); align-items: stretch; } }
 .pv-int__text { display: flex; flex-direction: column; gap: var(--space-2); }   /* top-aligned; the link sits at the bottom of the column */
@@ -562,3 +562,14 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-mate[data-tone="green"] .pv-mate__pattern { color: rgb(73 109 33 / 0.28); }
 .pv-mate[data-tone="rose"] .pv-mate__pattern { color: rgb(157 32 85 / 0.26); }
 .pv-mate__pattern { -webkit-mask-image: radial-gradient(closest-side, #000 35%, rgb(0 0 0 / 0.45) 75%, transparent 100%); mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 30%, rgb(0 0 0 / 0.5) 70%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 30%, rgb(0 0 0 / 0.5) 70%, transparent 100%); }
+
+/* Integrations: a soft multi-colour horizon rising from the bottom to about half the panel — the brand spectrum,
+   indigo · lilac · peach · orange side by side, each blurred into the next, fading to white by 50% */
+.pv-int::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 60%; pointer-events: none;
+  background:
+    radial-gradient(60% 90% at 10% 100% in oklab, rgb(124 113 208 / 0.42), transparent 70%),
+    radial-gradient(55% 85% at 38% 100% in oklab, rgb(194 171 204 / 0.45), transparent 70%),
+    radial-gradient(55% 85% at 66% 100% in oklab, rgb(250 190 163 / 0.5), transparent 70%),
+    radial-gradient(60% 90% at 92% 100% in oklab, rgb(250 155 67 / 0.38), transparent 70%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 25%, transparent 100%); mask-image: linear-gradient(0deg, #000 0%, #000 25%, transparent 100%); }
+.pv-int::after { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/brand/grain.png) center / 600px auto repeat; mix-blend-mode: overlay; opacity: 0.35; pointer-events: none; }
