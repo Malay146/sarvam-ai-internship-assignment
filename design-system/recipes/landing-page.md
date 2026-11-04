@@ -19,6 +19,11 @@
 6. **Every card that explains a step shows its moment:** a small product mock (StepVisual), not plain text.
 7. **Icons:** outline by default; Nucleo glyph (filled) in tab icons, small coloured tiles and the mega-menu item icons.
 8. **Cards stay soft:** colour lives in a pale **well** at the top of a white card (tone-100 → tone-50 → white, grain, hairline), never as a full saturated card. One tone per card; 5 building-block cards (3 + 3 / 2 + 2 + 2).
+10. **Card colour comes from the card itself**: a soft gradient across the whole card (tone-50 → tone-100, grain, 1px hairline). No inner frames or wells inside cards. Visual areas have one fixed height so every card in a row has the same rhythm.
+11. **Mocks inside cards:** one size per row (e.g. 300 × 184 side by side), content from the top with one padding, and they **loop** while visible (useLoop). If a mock has buttons, they really work (answer, then the loop resumes). Real buttons are 44px to the finger (transparent border) even when they look 32px.
+12. **Avatars:** real people get their real published photo (Sarvam CDN). AI teammates are shown by their **role icon** (Nucleo glyph in a tone tile), never initials and never stock faces.
+13. **Hero kicker:** the product name is a plain accent eyebrow (12px, uppercase, `--color-accent`), not a pill.
+14. **Tab rails carry the tone:** an icon tile per tab, and the active tab takes its tone's soft gradient + grain + a progress bar in the tone.
 9. **In-page links scroll smoothly** (`scroll-behavior: smooth`, off with reduced motion) and land each heading ~88px under the top. Menu items that exist on the page link to their section (`#how`, `#integrations`, `#stories`, `#faq`).
 
 

@@ -65,6 +65,8 @@ import { CalendarCheckGlyph24 } from "./nucleo/CalendarCheckGlyph24";
 import { HandshakeGlyph24 } from "./nucleo/HandshakeGlyph24";
 import { CircleInfoGlyph24 } from "./nucleo/CircleInfoGlyph24";
 import { FilmGlyph24 } from "./nucleo/FilmGlyph24";
+import { ListTodoGlyph24 } from "./nucleo/ListTodoGlyph24";
+import { ShieldCheckGlyph24 } from "./nucleo/ShieldCheckGlyph24";
 import { LockOutline24 } from "./nucleo/LockOutline24";
 import { MagnifierOutline24 } from "./nucleo/MagnifierOutline24";
 import { MediaPlayOutline24 } from "./nucleo/MediaPlayOutline24";
@@ -170,3 +172,5 @@ export const CalendarCheckFill = make(CalendarCheckGlyph24 as NucleoIcon, "Calen
 export const HandshakeFill = make(HandshakeGlyph24 as NucleoIcon, "HandshakeFill");
 export const InfoFill = make(CircleInfoGlyph24 as NucleoIcon, "InfoFill");
 export const FilmFill = make(FilmGlyph24 as NucleoIcon, "FilmFill");
+export const ListTodoFill = make(ListTodoGlyph24 as NucleoIcon, "ListTodoFill");
+export const ShieldCheckFill = make(ShieldCheckGlyph24 as NucleoIcon, "ShieldCheckFill");

@@ -4,7 +4,7 @@
 // told for one product. Expression per section is named in each comment.
 import type { Metadata } from "next";
 import {
-  BookOpenFill, BriefcaseFill, CalendarClockFill, ChartFill, Check, Globe, Lock, MegaphoneFill, PlugFill, SearchFill, ShieldCheck, SparkleFill, TargetFill, UserFill, UserRound,
+  BookOpenFill, BriefcaseFill, ListTodoFill, ShieldCheckFill, CalendarClockFill, ChartFill, Check, Globe, Lock, MegaphoneFill, PlugFill, SearchFill, ShieldCheck, SparkleFill, TargetFill, UserFill, UserRound,
 } from "@/components/icons";
 import {
   Button, ButtonRow, CardGrid, Checklist, CoworkDashboard, CtaCard, Eyebrow, Faq, Footer, HeroGlow, MockPlan, MockResearch, MockReview,
@@ -12,7 +12,7 @@ import {
 } from "@/components/sarvam";
 import { BrandMark, LogoLockup, hasMark } from "@/components/sarvam/brand";
 import { MegaNav } from "@/components/sarvam/mega-nav";
-import { Marquee, Reveal, SkillCard, Stage, StepVisual } from "@/components/sarvam/cowork";
+import { Marquee, Reveal, SkillCreator, Stage, StepVisual } from "@/components/sarvam/cowork";
 import { FLOWER_PRESETS, MEDALLION_PRESETS, flowerPath, glowSVG, medallionPath } from "@/lib/shapes";
 import "./cowork.css";
 
@@ -68,8 +68,8 @@ function BentoTile({ area, tone, icon: I, eyebrow, title, desc, visual }: {
   eyebrow: string; title: string; desc: string; visual: React.ReactNode;
 }) {
   return (
-    <article className="cw-tile" style={{ gridArea: area }} data-sibling>
-      <div className={`cw-tile__visual cw-well--${tone}`} aria-hidden>{visual}</div>
+    <article className={`cw-tile cw-well--${tone}`} style={{ gridArea: area }} data-sibling>
+      <div className="cw-tile__visual" aria-hidden>{visual}</div>
       <div className="cw-tile__text">
         <p className="cw-tile__eyebrow"><span className={`cw-tile__icon cw-tone--${tone}`}><I width={14} height={14} /></span>{eyebrow}</p>
         <h3 className="sr-h4" data-line="title">{title}</h3>
@@ -103,7 +103,7 @@ export default function IndusCoworkPage() {
         <section className="sr-container cw-hero" aria-labelledby="hero-h">
           <Reveal className="cw-hero__text">
             <Motif />
-            <span className="cw-pill">Indus Cowork</span>
+            <p className="cw-kicker">Indus Cowork</p>
             <h1 id="hero-h" className="sr-display-product">Hire an AI teammate that finishes the work</h1>
             <p className="sr-lead">Message it like a colleague. It plans the work, researches on its own, acts inside your apps and brings the result back for your yes.</p>
             <ButtonRow center>
@@ -127,10 +127,10 @@ export default function IndusCoworkPage() {
           <Reveal><SectionHeader eyebrow="How it works" eyebrowTone="accent" title={<span id="how-h">It runs the whole task, start to finish.</span>} lead="Every teammate plans, researches and checks its own work, so you hand off the outcome and not the steps." /></Reveal>
           <Reveal>
             <Stage label="How a teammate works" interval={6500} items={[
-              { key: "plan", tab: "Plans the work", tabNote: "A to-do list first", panel: <HowPanel tone="indigo" title="Plans the work before it starts." body="It turns your request into a to-do list and works through it in order." checks={["Breaks the task into steps", "Orders the work itself", "Tracks progress as it goes"]} visual={<MockPlan />} /> },
-              { key: "research", tab: "Researches", tabNote: "Web and your apps", panel: <HowPanel tone="orange" title="Researches on its own." body="Web search is built in, so it finds what it needs while it works." checks={["Searches the web as it works", "Pulls from your connected apps", "Re-plans when it learns more"]} visual={<MockResearch />} /> },
-              { key: "review", tab: "Improves", tabNote: "Until it holds up", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Sources every claim", "Refines until it is right"]} visual={<MockReview />} /> },
-              { key: "approve", tab: "Waits for your yes", tabNote: "Nothing ships without it", panel: <HowPanel tone="rose" title="Nothing ships without your yes." body="Sending, merging and making changes all wait for your approval." checks={["Drafts and prepares the work", "Asks before anything goes out", "Leaves a trail of every step"]} visual={<StepVisual kind="approvals" />} /> },
+              { key: "plan", tone: "indigo", icon: <span className="cw-tab-icon cw-tone--indigo"><ListTodoFill width={18} height={18} /></span>, tab: "Plans the work", tabNote: "A to-do list first", panel: <HowPanel tone="indigo" title="Plans the work before it starts." body="It turns your request into a to-do list and works through it in order." checks={["Breaks the task into steps", "Orders the work itself", "Tracks progress as it goes"]} visual={<MockPlan />} /> },
+              { key: "research", tone: "orange", icon: <span className="cw-tab-icon cw-tone--orange"><SearchFill width={18} height={18} /></span>, tab: "Researches", tabNote: "Web and your apps", panel: <HowPanel tone="orange" title="Researches on its own." body="Web search is built in, so it finds what it needs while it works." checks={["Searches the web as it works", "Pulls from your connected apps", "Re-plans when it learns more"]} visual={<MockResearch />} /> },
+              { key: "review", tone: "green", icon: <span className="cw-tab-icon cw-tone--green"><SparkleFill width={18} height={18} /></span>, tab: "Improves", tabNote: "Until it holds up", panel: <HowPanel tone="green" title="Improves until the work holds up." body="It reviews its own output and fixes weak spots before you see it." checks={["Reviews its own output", "Sources every claim", "Refines until it is right"]} visual={<MockReview />} /> },
+              { key: "approve", tone: "rose", icon: <span className="cw-tab-icon cw-tone--rose"><ShieldCheckFill width={18} height={18} /></span>, tab: "Waits for your yes", tabNote: "Nothing ships without it", panel: <HowPanel tone="rose" title="Nothing ships without your yes." body="Sending, merging and making changes all wait for your approval." checks={["Drafts and prepares the work", "Asks before anything goes out", "Leaves a trail of every step"]} visual={<StepVisual kind="approvals" />} /> },
             ]} />
           </Reveal>
         </section>
@@ -140,9 +140,9 @@ export default function IndusCoworkPage() {
           <Reveal><SectionHeader eyebrow="Building blocks" title={<span id="blocks-h">Everything a teammate is made of</span>} lead="Five parts you set up once. Every teammate on your workspace shares them." /></Reveal>
           <Reveal className="cw-bento" >
             <BentoTile area="mates" tone="indigo" icon={UserFill} eyebrow="Teammates" title="One teammate per job" desc="Point each one at a role and it runs the work from start to finish."
-              visual={<div className="cw-bv-mates">{ROLES.slice(0, 4).map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
+              visual={<div className="cw-bv-mates">{ROLES.map((r) => <span key={r.key} className="cw-bv-mate"><span className={`cw-bv-mate__icon cw-tone--${r.tone}`}><r.icon width={14} height={14} /></span>{r.role}</span>)}</div>} />
             <BentoTile area="skills" tone="orange" icon={SparkleFill} eyebrow="Skills" title="Teach it once" desc="Write a way of working down and every teammate can use it."
-              visual={<div className="cw-bv-code"><code>weekly-revenue-readout</code><span>4 steps · shared</span></div>} />
+              visual={<div className="cw-bv-code"><div className="cw-bv-code__head"><code>weekly-revenue-readout</code><span>Shared</span></div><ol><li>Pull the week&apos;s numbers</li><li>Explain the movement</li><li>Park it for review</li></ol></div>} />
             <BentoTile area="sched" tone="green" icon={CalendarClockFill} eyebrow="Scheduled tasks" title="Runs on its own" desc="Set a report up once and it lands on its own every morning."
               visual={<ul className="cw-bv-times">{[["06:00", "Cluster check"], ["08:00", "Standup digest"], ["17:00", "Spend watch"]].map(([h, l]) => <li key={h}><code>{h}</code>{l}</li>)}</ul>} />
             <BentoTile area="kb" tone="rose" icon={BookOpenFill} eyebrow="Knowledge base" title="Never forgets" desc="Store your context once and every task can draw on it."
@@ -182,12 +182,7 @@ export default function IndusCoworkPage() {
             </ul>
           </Reveal>
           <Reveal delay={0.1} className="cw-split__visual sr-tint-orange cw-panel">
-            <SkillCard name="weekly-revenue-readout" tags={["Skill", "Ops"]} foot="Drafted by the skill-creator" steps={[
-              "Pull the week's numbers from the connected data source",
-              "Compare against the prior week and the plan",
-              "Explain the movement, not just the delta",
-              "Draft the readout and park it for review",
-            ]} />
+            <SkillCreator />
           </Reveal>
         </section>
 
