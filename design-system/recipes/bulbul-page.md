@@ -30,7 +30,7 @@ Bulbul's theme is its **structure and presentation**: a studio hero, a tracklist
 | 8 | Upgrade | Switch from V3 in one line | split | Diff card + "What you get for that one line" checklist | passive |
 | 9 | Where to use | Use it where you build | centred | **Doors**: one band, three columns (API, Playground, Content Studio), each with a link | links |
 | 10 | Questions | Questions developers ask first | centred | `OneFaq` (shared), 8 questions | accordion |
-| 11 | Act | Your next million conversations can sound more human. | — | `CtaCard` (shared) on Dusk | Get API key |
+| 11 | Act | Make it sound like home. (echoes the hero; 2 lines max, voice.md §6) | — | `CtaCard` (shared) on Dusk | Get API key |
 
 Shared with every page: `MegaNav` (CTA "Get API key"), `HeroGlow` + `Motif`, `SectionHeader`, `OneFaq`, `CtaCard`, `SiteFooter`, tokens, `pv-seg` and `pv-again` controls.
 
