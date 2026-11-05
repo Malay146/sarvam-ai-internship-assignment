@@ -311,7 +311,7 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
   - Switching menus crossfades inside one panel; the panel never moves.
   - **Direction-aware hover** `[addition]`: the links share **one grey pill** (`sf-tertiary`, full radius). It appears under the first link the mouse enters (200ms fade, no slide in from nowhere), **slides** to each next link with its width (300ms out-quint), stays on the open link, and fades out when the pointer leaves the links with no menu open. The panel content slides **24px in from the side the pointer moved toward** and leaves to the other side (200ms, standard ease). Reduced motion: no slide, the pill jumps.
 - **Phone/tablet:**
-  - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom.
+  - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom: full width on phones, natural width (min 168px, left-aligned) from 640. A sheet-wide pill on a tablet reads as a banner, not a button.
   - Page scroll is locked while open.
 - **Motion:** opacity + 6px slide only (`--duration-moderate`, outQuint); none with reduced motion.
 - **Tones** (icon colour, never the tile): indigo-800, green-800, orange-900, red-800, `tx-secondary`.

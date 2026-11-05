@@ -1581,7 +1581,7 @@ Same emblem box (104 of 200) in every card, so siblings match. No decorative ext
   - Switching menus crossfades inside one panel; the panel never moves.
   - **Direction-aware hover** `[addition]`: the links share **one grey pill** (`sf-tertiary`, full radius). It appears under the first link the mouse enters (200ms fade, no slide in from nowhere), **slides** to each next link with its width (300ms out-quint), stays on the open link, and fades out when the pointer leaves the links with no menu open. The panel content slides **24px in from the side the pointer moved toward** and leaves to the other side (200ms, standard ease). Reduced motion: no slide, the pill jumps.
 - **Phone/tablet:**
-  - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom.
+  - The burger opens a full sheet with **one accordion per section** (64px rows, `+` rotates to `×`), items in 1 column (2 from 640), and CTAs at the bottom: full width on phones, natural width (min 168px, left-aligned) from 640. A sheet-wide pill on a tablet reads as a banner, not a button.
   - Page scroll is locked while open.
 - **Motion:** opacity + 6px slide only (`--duration-moderate`, outQuint); none with reduced motion.
 - **Tones** (icon colour, never the tile): indigo-800, green-800, orange-900, red-800, `tx-secondary`.
@@ -2506,12 +2506,13 @@ Viewport breakpoints move the big layout; inside each section, components switch
 | Integrations | padded panel; number, text, pill; 6-up logo grid (4 rows) | same | number left (pill at the foot) / 6 × 4 grid right |
 | Approval desk | queue (Approve = round ✓ beside ✕), then trail | same, worded Approve | queue 7 / trail 5, equal height |
 | Timeline | stacked cards | same | 1024–1279: one row per event · ≥ 1280: five cards on one rail, aligned rows |
-| Builder | controls, then the teammate card; short labels on narrow fields and tiles; CTA "Talk to us" | same; apps 3-up | controls 7 / panel 5 (card centred, not sticky); apps 4-up from 1280 |
-| Security | icon-beside rows, two balanced lines each; deployment tiles as rows | 2 × 2 | 4 across; deployment tiles 3 across from 1280 |
+| Builder | controls, then the teammate card; short labels on narrow fields and tiles; CTA "Talk to us"; card rows are flex (label 68px, value fills), never grid: WebKit kept grid rows at their old height when a value rewrapped on resize | same; apps 3-up | controls 7 / panel 5 (card centred, not sticky); apps 4-up from 1280 |
+| Security | < 560: icon-beside rows, two balanced lines each · 560–767: facts 2 × 2, icon above (24ch) · deployment tiles as rows (19ch under 372, so all three take three lines) | facts 2 × 2 · deployment tiles 3-up with the tile above the text, titles one line (sized to the card), 19ch so all take three lines | facts 4 across · 1024–1439: deployment tiles 3-up, tile above the text · ≥ 1440: tile beside the text |
 | Customer quote | 18px quote, tighter padding, role line one line | centred | centred |
 | FAQ | full width | max 720 | max 720, centred |
 
 ### 3. Quality gates (all must pass before export)
+Check sibling line counts with a resize **sweep, not spot widths**: every 4px from 320 to 1920, resizing **down as well as up**, in **WebKit as well as Chromium**. The Builder overlap and the Private Cloud three-line wrap only showed up that way (2026-11-05).
 1. `node scripts/check-layout.mjs http://localhost:3000/`: no overflow, sibling parity, 44px tap targets at 10 widths.
 2. `node scripts/check-motion.mjs http://localhost:3000/`: no element changes size while animating; dashboards work.
 3. `node scripts/check-nav.mjs http://localhost:3000/`: transparent → solid → transparent.

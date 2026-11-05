@@ -528,8 +528,10 @@ html:has(.cw) { scroll-behavior: smooth; }
 .pv-mate__head > span:last-child { display: flex; flex-direction: column; } .pv-mate__head b { font-family: var(--font-display); font-weight: var(--weight-regular); font-size: 22px; } .pv-mate__head span span { font-size: var(--text-small); color: var(--color-tx-tertiary); }
 .pv-mate__avatar { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0; }
 .pv-mate__rows { margin: 0; display: flex; flex-direction: column; }
-.pv-mate__rows div { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-3) 0; border-top: var(--border-subtle); font-size: var(--text-small); }
-.pv-mate__rows dt { color: var(--color-tx-tertiary); } .pv-mate__rows dd { margin: 0; color: var(--color-tx); min-height: 20px; }
+.pv-mate__rows > div { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) 0; border-top: var(--border-subtle); font-size: var(--text-small); }
+/* flex, not grid: WebKit kept a grid row at its old height when the card narrowed and the Does line rewrapped */
+.pv-mate__rows dt { flex: 0 0 80px; color: var(--color-tx-tertiary); } .pv-mate__rows dd { flex: 1 1 0; margin: 0; color: var(--color-tx); min-height: 20px; min-width: 0; }
+.pv-mate__rows dd > span:only-child:not([title]) { display: block; }   /* the Does line is a block, so its row always grows with the wrapped text (an inline, animated span could leave the row one line tall) */
 .pv-mate__apps { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 .pv-mate__apps > span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--color-sr-white); box-shadow: inset 0 0 0 1px var(--color-st-secondary); }
 .pv-mate__cta { justify-content: center; gap: var(--space-2); }
@@ -827,7 +829,7 @@ html:has(.cw) { scroll-behavior: smooth; }
   .pv-field { padding: var(--space-5); }
   .pv-mate { padding: var(--space-4); }
   .pv-mate__card { padding: var(--space-5); }
-  .pv-mate__rows div { grid-template-columns: 68px minmax(0, 1fr); }
+  .pv-mate__rows dt { flex-basis: 68px; }
 }
 @media (max-width: 359.98px) { .pv-field { padding: var(--space-4); } .pv-field__title { font-size: 18px; } }
 /* App tiles: each tile is its own container, so the short name kicks in whenever the tile is narrow
@@ -872,3 +874,26 @@ html:has(.cw) { scroll-behavior: smooth; }
   .pv-hero__text .sr-button-row .sr-button { padding-inline: var(--space-4); font-size: 15px; white-space: nowrap; justify-content: center; }
 }
 @media (max-width: 359.98px) { .pv-hero__text .sr-button-row { grid-template-columns: minmax(0, 1fr); } }
+
+/* Trust on tablets (560–1279): no full-width rows with half the width empty.
+   Facts: 2 × 2 from 560 (icon beside the text until 768, above it after). Deployment: 3-up from 768, where each card
+   is narrower than 360px and the tile card's own container rule stacks the tile above the text. */
+@media (min-width: 560px) and (max-width: 767.98px) {
+  .cw-sec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cw-sec li { display: flex; flex-direction: column; row-gap: var(--space-1); }
+  .cw-sec .cw-sec__icon { width: auto; height: auto; margin: 0 0 var(--space-3); }
+  .cw-sec .cw-sec__icon svg { width: 28px; height: 28px; }
+  .cw-sec span { max-width: 24ch; }
+}
+/* 768–1439: 3-up, tile above the text. Side by side, the text column fell to ~210px under 1440 and "Private Cloud"
+   took three lines next to two; stacked, it gets the full card width. 1440+ keeps the approved tile-beside cards. */
+@media (min-width: 768px) and (max-width: 1439.98px) {
+  #trust .sr-tile-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #trust .sr-tile-card { grid-template-columns: minmax(0, 1fr); align-items: start; gap: var(--space-4); padding: var(--space-5) var(--space-5) var(--space-6); }
+  /* exact product names, one line: "Private Cloud (VPC)" is the longest at ~9.2em */
+  #trust .sr-tile-card h3 { white-space: nowrap; font-size: clamp(16px, calc((100cqi - 40px) / 9.4), 22px); }
+}
+/* 768–1023: cards are ~200–290px, so the descriptions sit at a fixed measure and all three take three lines */
+@media (min-width: 768px) and (max-width: 1023.98px) { #trust .sr-tile-card .sr-body { max-width: 19ch; } }
+/* narrow phones (< 372): the text column beside the tile is under ~210px, so all three take three lines at one measure */
+@media (max-width: 371.98px) { #trust .sr-tile-card .sr-body { max-width: 19ch; } }

@@ -53,4 +53,6 @@
 @media (min-width: 640px) { .mn-acc__body { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-6); } }
 .mn-sheet__ctas { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-3); padding-top: var(--space-6); }
 .mn-sheet__ctas .sr-button { justify-content: center; }
+/* tablet sheet: CTAs keep their natural width (a 700px-wide pill reads as a banner, not a button) */
+@media (min-width: 640px) { .mn-sheet__ctas { display: flex; flex-wrap: wrap; } .mn-sheet__ctas .sr-button { min-width: 168px; } }
 @media (prefers-reduced-motion: reduce) { .mn-acc__chev { transition: none; } }
