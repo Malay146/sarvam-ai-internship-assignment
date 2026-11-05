@@ -19,4 +19,5 @@ Three Meta banners (1080×1350) and three LinkedIn banners (1200×627). Each sub
 - **Source:** (in the repo) `banners/briefs.json` (the specs) → `src/components/sarvam/composer.tsx` (the engine).
 - **Export:** `node scripts/export-banners.mjs <id>`.
 - **QA:** `node scripts/check-banners.mjs set`. All six pass.
+- **Known exception:** banner 2 (Meta) sets its headline at 88px, below the engine's 96px minimum, so the text sits comfortably inside the star. Malay chose this over shortening the copy (2026-11-05), so `check-banners set` reports it.
 - **Partner lockup:** banner 3 uses Qualcomm's official logo file (`public/brand/partners/qualcomm.svg`). The partnership (Sarvam Edge validated for the Snapdragon Hexagon NPU) is published by Sarvam on sarvam.ai/products/edge.

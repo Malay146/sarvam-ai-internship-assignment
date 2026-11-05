@@ -956,3 +956,4 @@ Entry format:
 - Files renamed to `*-2-nothing-ships-without-your-yes.png`. READMEs, the recipes, the /banners gallery, /submission and expressions.md were updated. `final-trail` stays as the Product worked example on /system/expressions.
 - **QA:** check-banners passes the LinkedIn version. The Meta version is flagged: its title is set at 88px, below the 96px minimum. The engine's own fit is 63px (the text must sit inside the star), so we kept Malay's approved 88px version. This is a known exception.
 - `check-banners.mjs` now reads `BASE` (the dev server ran on 3001).
+- Decision (2026-11-05): Malay chose option 1, keeping the 88px Meta headline as a documented exception. Noted in both banner READMEs.
