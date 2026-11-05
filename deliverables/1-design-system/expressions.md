@@ -40,7 +40,7 @@ Big, saturated, symmetric. The moment something new arrives.
 - **Type:** centred. A product or model name in Matter 600 (`Sarvam Prism`) `[observed]`; statements in Season Mix.
 - **Logo:** logomark or wordmark, top-centre, white.
 - **Energy:** saturated, symmetric, one moment.
-- **Final set:** `prism`. Presets: `launch`, `announcement`, `milestone`, `funding`.
+- **Final set:** `prism`, `your-yes`. Presets: `launch`, `announcement`, `milestone`, `funding`.
 
 ### B · Product: *the work, shown plainly*
 Calm and structured. The object explains.
@@ -54,7 +54,7 @@ Calm and structured. The object explains.
 - **Type:** left-aligned claim + one fact (split / editorial layouts), Season Mix.
 - **Logo:** wordmark, top-left.
 - **Energy:** quiet; one accent at a time.
-- **Final set:** `final-trail`. Presets: `capability`, `product`, `spectrum`, `sunrise`.
+- **Worked example:** `final-trail` (shown on /system/expressions; replaced in the submission set by `your-yes`). Presets: `capability`, `product`, `spectrum`, `sunrise`.
 
 ### C · Community: *people, warmly*
 Light, warm and floral. Programs, partners and people.

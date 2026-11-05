@@ -48,7 +48,7 @@ const SYSTEM: [string, string, string][] = [
 
 const BANNERS: [string, string, string][] = [
   ["Sarvam Prism launch", "meta-1-sarvam-prism", "linkedin-1-sarvam-prism"],
-  ["Every task leaves a trail", "meta-2-every-task-leaves-a-trail", "linkedin-2-every-task-leaves-a-trail"],
+  ["Nothing ships without your yes", "meta-2-nothing-ships-without-your-yes", "linkedin-2-nothing-ships-without-your-yes"],
   ["Sarvam Edge × Qualcomm", "meta-3-sarvam-edge-qualcomm", "linkedin-3-sarvam-edge-qualcomm"],
 ];
 

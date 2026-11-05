@@ -6,7 +6,7 @@
 import { chromium } from "playwright";
 import { readFileSync } from "node:fs";
 const mode = process.argv[2] ?? "situations";
-const base = "http://localhost:3000";
+const base = process.env.BASE ?? "http://localhost:3000";
 const SIT_SRC = readFileSync("src/components/sarvam/composer.tsx", "utf8");
 const SIT = [...SIT_SRC.slice(SIT_SRC.indexOf("export const SITUATIONS")).matchAll(/^  ([a-z]+): \{ situation:/gm)].map((m) => m[1]);
 const FMT = { portrait: [1080, 1350, 72], landscape: [1200, 627, 56] };   // two formats only

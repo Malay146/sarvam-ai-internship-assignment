@@ -126,7 +126,7 @@ Big, saturated, symmetric. The moment something new arrives.
 - **Type:** centred. A product or model name in Matter 600 (`Sarvam Prism`) `[observed]`; statements in Season Mix.
 - **Logo:** logomark or wordmark, top-centre, white.
 - **Energy:** saturated, symmetric, one moment.
-- **Final set:** `prism`. Presets: `launch`, `announcement`, `milestone`, `funding`.
+- **Final set:** `prism`, `your-yes`. Presets: `launch`, `announcement`, `milestone`, `funding`.
 
 #### B · Product: *the work, shown plainly*
 Calm and structured. The object explains.
@@ -140,7 +140,7 @@ Calm and structured. The object explains.
 - **Type:** left-aligned claim + one fact (split / editorial layouts), Season Mix.
 - **Logo:** wordmark, top-left.
 - **Energy:** quiet; one accent at a time.
-- **Final set:** `final-trail`. Presets: `capability`, `product`, `spectrum`, `sunrise`.
+- **Worked example:** `final-trail` (shown on /system/expressions; replaced in the submission set by `your-yes`). Presets: `capability`, `product`, `spectrum`, `sunrise`.
 
 #### C · Community: *people, warmly*
 Light, warm and floral. Programs, partners and people.
@@ -2245,7 +2245,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | # | Brief id | Subject | Expression | Device |
 |---|---|---|---|---|
 | 1 | `prism` | Sarvam Prism launch | Campaign | `medallion-glow` · Eight-point star · dawn · logomark |
-| 2 | `final-trail` | Every task leaves a trail | Product | `emblem` · shield · indigo glow |
+| 2 | `your-yes` | Nothing ships without your yes | Campaign | `medallion-glow` · Ogee cross · olive · logomark |
 | 3 | `final-early-access` | Sarvam Edge on Snapdragon | Community | `gloss` · split · `sarvam · Qualcomm` (official logo via `partnerLogo`) |
 
 Each brief renders the Meta (1080×1350) and the LinkedIn (1200×627) banner. Every preset is shown on `/banners` and, by expression, on `/system/expressions`.
@@ -2348,7 +2348,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 | # | Banner | Expression | Device |
 |---|---|---|---|
 | 1 | Sarvam Prism | Campaign | `medallion-glow` · Eight-point star · dawn · logomark above the star |
-| 2 | Every task leaves a trail | Product | `emblem` · shield · indigo glow · stacked |
+| 2 | Nothing ships without your yes | Campaign | `medallion-glow` · Ogee cross · olive · logomark above |
 | 3 | Sarvam Edge on Snapdragon | Community | `gloss` · stacked · `sarvam · Qualcomm` |
 
 ### Don't
@@ -2398,7 +2398,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 | # | Banner | Notes for landscape |
 |---|---|---|
 | 1 | Sarvam Prism | Whole star (tips touch the edges); logomark inside the star above the title; title pinned at 79px and nudged up 28px |
-| 2 | Every task leaves a trail | Split: claim left, the emblem right |
+| 2 | Nothing ships without your yes | Centred: the Ogee cross bleeds top and bottom, logomark inside above the title |
 | 3 | Sarvam Edge on Snapdragon | Split: `sarvam · Qualcomm` lockup + title left, gloss cluster right |
 
 ### Don't

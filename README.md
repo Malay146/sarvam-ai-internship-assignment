@@ -24,7 +24,7 @@ Three messages (a model launch, a Cowork capability, a hardware partnership), on
 | Meta 1080×1350 | LinkedIn 1200×627 |
 |---|---|
 | <img src="deliverables/2-meta-banners/meta-1-sarvam-prism.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-1-sarvam-prism.png" width="420"> |
-| <img src="deliverables/2-meta-banners/meta-2-every-task-leaves-a-trail.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-2-every-task-leaves-a-trail.png" width="420"> |
+| <img src="deliverables/2-meta-banners/meta-2-nothing-ships-without-your-yes.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-2-nothing-ships-without-your-yes.png" width="420"> |
 | <img src="deliverables/2-meta-banners/meta-3-sarvam-edge-qualcomm.png" width="260"> | <img src="deliverables/3-linkedin-banners/linkedin-3-sarvam-edge-qualcomm.png" width="420"> |
 
 ## How the system was tested

@@ -129,7 +129,7 @@ Every Sarvam banner is a **composition of a few choices + at most two lines of t
 | # | Brief id | Subject | Expression | Device |
 |---|---|---|---|---|
 | 1 | `prism` | Sarvam Prism launch | Campaign | `medallion-glow` · Eight-point star · dawn · logomark |
-| 2 | `final-trail` | Every task leaves a trail | Product | `emblem` · shield · indigo glow |
+| 2 | `your-yes` | Nothing ships without your yes | Campaign | `medallion-glow` · Ogee cross · olive · logomark |
 | 3 | `final-early-access` | Sarvam Edge on Snapdragon | Community | `gloss` · split · `sarvam · Qualcomm` (official logo via `partnerLogo`) |
 
 Each brief renders the Meta (1080×1350) and the LinkedIn (1200×627) banner. Every preset is shown on `/banners` and, by expression, on `/system/expressions`.

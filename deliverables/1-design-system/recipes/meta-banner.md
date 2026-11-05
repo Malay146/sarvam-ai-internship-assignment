@@ -35,7 +35,7 @@ Read first: `banner-builder.md` §0 (hard rules) and §5 (subject → banner), `
 | # | Banner | Expression | Device |
 |---|---|---|---|
 | 1 | Sarvam Prism | Campaign | `medallion-glow` · Eight-point star · dawn · logomark above the star |
-| 2 | Every task leaves a trail | Product | `emblem` · shield · indigo glow · stacked |
+| 2 | Nothing ships without your yes | Campaign | `medallion-glow` · Ogee cross · olive · logomark above |
 | 3 | Sarvam Edge on Snapdragon | Community | `gloss` · stacked · `sarvam · Qualcomm` |
 
 ## Don't

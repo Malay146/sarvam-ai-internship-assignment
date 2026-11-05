@@ -36,7 +36,7 @@ Read first: `banner-builder.md` §0 and §5, `meta-banner.md` (the same banners 
 | # | Banner | Notes for landscape |
 |---|---|---|
 | 1 | Sarvam Prism | Whole star (tips touch the edges); logomark inside the star above the title; title pinned at 79px and nudged up 28px |
-| 2 | Every task leaves a trail | Split: claim left, the emblem right |
+| 2 | Nothing ships without your yes | Centred: the Ogee cross bleeds top and bottom, logomark inside above the title |
 | 3 | Sarvam Edge on Snapdragon | Split: `sarvam · Qualcomm` lockup + title left, gloss cluster right |
 
 ## Don't

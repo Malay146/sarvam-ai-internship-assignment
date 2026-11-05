@@ -948,3 +948,11 @@ Entry format:
 - **Facts:** a Sarvam Edge fact sheet was added to voice.md, including the cloud-fallback conflict on Sarvam's page.
 - **Files:** renamed to `*-3-sarvam-edge-qualcomm.png`. READMEs, recipes, the /banners gallery, /submission and the write-up were updated.
 - **QA:** check-banners set PASS (both formats); check-layout 10/10 on /submission and /banners; build passes.
+
+## 2026-11-05 · Claude Code · Banner 2 swapped to "Nothing ships without your yes"
+
+- Prompt (verbatim): "replace this bluish finalised version with this green one" (screenshots: the indigo "Every task leaves a trail" pair → the olive `your-yes` banner).
+- **What changed:** banner 2 is now `your-yes`: Ogee-cross medallion glow on olive, logomark above, "Nothing ships without your yes" / "Every task waits for your approval". Both formats exported (1080×1350, 1200×627).
+- Files renamed to `*-2-nothing-ships-without-your-yes.png`. READMEs, the recipes, the /banners gallery, /submission and expressions.md were updated. `final-trail` stays as the Product worked example on /system/expressions.
+- **QA:** check-banners passes the LinkedIn version. The Meta version is flagged: its title is set at 88px, below the 96px minimum. The engine's own fit is 63px (the text must sit inside the star), so we kept Malay's approved 88px version. This is a known exception.
+- `check-banners.mjs` now reads `BASE` (the dev server ran on 3001).

@@ -6,7 +6,7 @@ export const metadata = { title: "Banners · Sarvam design system" };
 // The submission set (deliverables/2-meta-banners, 3-linkedin-banners). Each subject comes in both formats, rearranged for the format.
 const FINAL = [
   { id: "prism", n: "01", subject: "Sarvam Prism launch", expression: "Campaign", device: "Lit medallion on Dawn" },
-  { id: "final-trail", n: "02", subject: "Every task leaves a trail", expression: "Product", device: "Shield emblem on indigo glow" },
+  { id: "your-yes", n: "02", subject: "Nothing ships without your yes", expression: "Campaign", device: "Ogee-cross medallion on olive, logomark" },
   { id: "final-early-access", n: "03", subject: "Sarvam Edge on Snapdragon", expression: "Community", device: "Gloss cluster, sarvam · Qualcomm lockup" },
 ];
 const FINAL_IDS = new Set(FINAL.map((f) => f.id));
